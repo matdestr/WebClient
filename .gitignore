@@ -1,0 +1,19 @@
+# Built application files
+*.iml
+
+# Directory-based project format:
+.idea/
+
+# IntelliJ
+/out/
+.target/
+
+*.class
+*.jar
+*.war
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# Log Files
+*.log
