@@ -1,7 +1,13 @@
 package be.kdg.kandoe.frontend.config;
 
+import be.kdg.kandoe.backend.config.BackendContextConfig;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
 /**
- * Created by Vincent on 5-2-2016.
+ * Configuration class that imports the {@link BackendContextConfig BackendContext Configuration class}.
  */
+@Configuration
+@Import({BackendContextConfig.class})
 public class RootContextConfig {
 }
