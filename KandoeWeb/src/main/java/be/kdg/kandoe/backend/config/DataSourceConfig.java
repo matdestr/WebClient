@@ -18,7 +18,7 @@ public class DataSourceConfig {
         dataSource.setDriverClassName("org.h2.Driver");
 
         // datasource in-memory
-        dataSource.setUrl("jdbc:h2:mem:memorydb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+        dataSource.setUrl("jdbc:h2:mem:kandoedb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
 
         // datasource file
         //dataSource.setUrl("jdbc:h2:file:./filename;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
