@@ -6,7 +6,7 @@
 
 # IntelliJ
 /out/
-.target/
+/target/
 
 *.class
 *.jar
