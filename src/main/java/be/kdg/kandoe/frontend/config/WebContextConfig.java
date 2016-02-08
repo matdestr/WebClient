@@ -15,15 +15,19 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry)
     {
-/*
+
+        /*
         registry.addResourceHandler("/css/**")
                 .addResourceLocations("/css/");
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("/images/");
+                */
         registry.addResourceHandler("/js/**")
-                .addResourceLocations("/js/");
+                .addResourceLocations("/resources/js/");
+        /*
         registry.addResourceHandler("/app/**").addResourceLocations("/app/");
- */
+        */
+
     }
 
     @Override
