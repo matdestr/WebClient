@@ -6,9 +6,6 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-/**
- * Created by Vincent on 5-2-2016.
- */
 @Configuration
 @ComponentScan(basePackages = "be.kdg.kandoe.backend",
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION,
