@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ITTestTest {
+public class ITTestDummy {
     @Test
-    public void TestTest() {
+    public void TestDummy() {
         System.out.println("Integration test run");
         assertTrue(true);
     }
