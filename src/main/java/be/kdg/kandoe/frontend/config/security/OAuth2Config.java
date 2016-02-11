@@ -35,7 +35,6 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
             Authentication returnVal = authenticationManager.authenticate(authentication);
             return returnVal;
         }).accessTokenConverter(accessTokenConverter());
-        System.out.println("authenticationManager :" + authenticationManager);
     }
 
     @Override

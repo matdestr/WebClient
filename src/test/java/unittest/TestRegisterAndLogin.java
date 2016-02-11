@@ -33,7 +33,7 @@ public class TestRegisterAndLogin {
         User user = new User("username", "password");
         userService.addUser(user);
 
-        // Need to create new user, otherwise the repositor sees the ID and updates the record
+        // Need to create new user, otherwise the repository sees the ID and updates the record
         User duplicateUser = new User("username", "password");
         userService.addUser(duplicateUser);
     }
