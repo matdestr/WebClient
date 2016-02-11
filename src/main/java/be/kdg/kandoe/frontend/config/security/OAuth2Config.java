@@ -1,10 +1,10 @@
 package be.kdg.kandoe.frontend.config.security;
 
+import be.kdg.kandoe.backend.service.api.OAuthClientDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -17,6 +17,9 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private OAuthClientDetailsService oAuthClientDetailsService;
 
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
@@ -31,22 +34,15 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.authenticationManager(authentication -> {
-            Authentication returnVal = authenticationManager.authenticate(authentication);
-            return returnVal;
-        }).accessTokenConverter(accessTokenConverter());
-        System.out.println("authenticationManager :" + authenticationManager);
+        endpoints.authenticationManager(authenticationManager).accessTokenConverter(accessTokenConverter());
     }
+
+
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // @formatter:off
-        clients.inMemory()
-                .withClient("webapp")
-                .authorizedGrantTypes("password", "authorization_code", "refresh_token", "client_credentials")
-                .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
-                .scopes("read", "write", "trust")
-                .secret("secret");
+        clients.withClientDetails(oAuthClientDetailsService);
         // @formatter:on
     }
 }
