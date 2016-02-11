@@ -5,7 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "`User`")
@@ -21,7 +23,13 @@ public class User implements Serializable, UserDetails {
     private String email;
     private String profilePictureUrl;
 
-    public User() { }
+    private boolean accountNonExpired = true;
+    private boolean accountNonLocked = true;
+    private boolean enabled = true;
+    private boolean credentialsNonExpired = true;
+
+    public User() {
+    }
 
     public User(String username, String password) {
         this.username = username;
@@ -30,7 +38,8 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+        return grantedAuthorities;
     }
 
     @Override
@@ -45,22 +54,22 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return accountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return accountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return credentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return enabled;
     }
 
     public int getUserId() {

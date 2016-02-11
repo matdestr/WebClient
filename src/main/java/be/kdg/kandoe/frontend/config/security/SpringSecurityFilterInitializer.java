@@ -5,4 +5,5 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 /**
  * This class enables the Spring Security filter
  */
+
 public class SpringSecurityFilterInitializer extends AbstractSecurityWebApplicationInitializer { }
