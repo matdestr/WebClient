@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-/**
- * Created by Wannes on 2/11/2016.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BackendContextConfig.class })
 @Transactional // Rollback after each test
+@Rollback
 public class TestOrganizationService {
     @Autowired
     private UserService userService;
@@ -33,7 +32,7 @@ public class TestOrganizationService {
 
     @Before
     public void initialize(){
-        User user = new User("user", "pass");
+        User user = new User("username", "pass");
         userService.addUser(user);
     }
 
