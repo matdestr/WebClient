@@ -258,7 +258,7 @@
                         
                         <!-- Optional ?? -->
                         <configuration>
-                            <port>9966</port>
+                            <port>15001</port>
                             <fork>true</fork>
                         </configuration>
                     </execution>
