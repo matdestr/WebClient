@@ -1,6 +1,10 @@
 @charset "UTF-8";
 html {
-  height: 100%; }
+  height: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box; }
 
 *,
 *:before,
@@ -10,10 +14,6 @@ html {
 * {
   margin: 0;
   padding: 0;
-  -webkit-border-radius: border-box;
-  -moz-border-radius: border-box;
-  -ms-border-radius: border-box;
-  border-radius: border-box;
   text-decoration: none;
   list-style: none; }
 
@@ -288,7 +288,7 @@ th {
   position: relative;
   top: 1px;
   display: inline-block;
-  font-family: 'Glyphico ns Halflings';
+  font-family: 'Glyphicons Halflings';
   font-style: normal;
   font-weight: normal;
   line-height: 1;

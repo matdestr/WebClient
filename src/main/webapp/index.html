@@ -1,19 +1,26 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Kandoe</title>
+
+    <meta charset="utf-8" />
+    <meta name="description" content="Kandoe web application">
+
     <link rel="stylesheet" href="css/main.css">
-    <!-- 1. Load libraries -->
-    <!-- IE required polyfills, in this exact order -->
+
+    <!-- remark: IE required polyfills, in this exact order -->
     <script src="js/es6-shim.min.js"></script>
     <script src="js/system-polyfills.js"></script>
 
-    <script src="js/angular2-polyfills.js"></script>
+    <script src="js/angular2-polyfills.min.js"></script>
     <script src="js/system.src.js"></script>
     <script src="js/Rx.js"></script>
     <script src="js/angular2.dev.js"></script>
 
-    <!-- 2. Configure SystemJS -->
+    <script src="js/bootstrap.min.js"></script>
+
     <script>
         System.config({
             packages: {
@@ -29,7 +36,6 @@
 
 </head>
 
-<!-- 3. Display the application -->
 <body>
 <my-app>Loading...</my-app>
 </body>
