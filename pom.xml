@@ -188,6 +188,11 @@
         <finalName>kandoe</finalName>
         <plugins>
             <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+            </plugin>
+            <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
