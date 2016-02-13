@@ -23,12 +23,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/*@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootContextConfig.class, WebContextConfig.class, OAuth2TestConfig.class})
-@Transactional*/
+@WebAppConfiguration
+@Transactional
 public class ITTestOAuthEndpoints {
-    /*@Autowired
+    @Autowired
     WebApplicationContext context;
 
     @Autowired
@@ -37,30 +37,30 @@ public class ITTestOAuthEndpoints {
     @Autowired
     private OAuthClientDetailsService oAuthClientDetailsService;
 
-    private MockMvc mvc;*/
+    private MockMvc mvc;
 
     @Before
     public void setUp() {
-        /*MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.webAppContextSetup(context)
-                .addFilter(springSecurityFilterChain).build();
-
-
+                .addFilter(springSecurityFilterChain)
+                .build();
+        
         OAuthClientDetails clientDetails = new OAuthClientDetails("test");
         clientDetails.setAuthorizedGrandTypes("password", "refresh_token");
         clientDetails.setAuthorities("ROLE_TEST_CLIENT");
         clientDetails.setScopes("read");
         clientDetails.setSecret("secret");
 
-        oAuthClientDetailsService.addClientsDetails(clientDetails);*/
+        oAuthClientDetailsService.addClientsDetails(clientDetails);
     }
 
     @Test
     public void testNotProtectedMethod() throws Exception {
-        /*mvc.perform(get("/test")
+        mvc.perform(get("/test")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("test"));*/
+                .andExpect(content().string("test"));
     }
 
     @Test
