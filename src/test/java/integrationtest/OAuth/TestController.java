@@ -18,4 +18,10 @@ public class TestController {
     public String authorizedTestMethod(){
         return "test";
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping("/admin")
+    public String adminTestMethod(){
+        return "test";
+    }
 }

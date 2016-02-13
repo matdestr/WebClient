@@ -11,12 +11,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { BackendContextConfig.class })
 @Transactional // Automatically rollbacks after each test
-public class TestRegisterAndLogin {
+public class TestUserService {
     @Autowired
     private UserService userService;
 
@@ -36,5 +37,20 @@ public class TestRegisterAndLogin {
         // Need to create new user, otherwise the repository sees the ID and updates the record
         User duplicateUser = new User("username", "password");
         userService.addUser(duplicateUser);
+    }
+
+    @Test
+    public void testUpdateUser() throws Exception
+    {
+        User user = new User("username", "password");
+        userService.addUser(user);
+        User fetchedUser = userService.getUserByUsername("username");
+
+        String email = "test@mail.com";
+        fetchedUser.setEmail(email);
+
+        userService.updateUser(fetchedUser);
+        fetchedUser = userService.getUserByUsername("username");
+        assertThat(fetchedUser.getEmail(), equalTo(email));
     }
 }
