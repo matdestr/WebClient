@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,18 +32,18 @@ public class ITTestOAuthEndpoints {
     @Autowired
     WebApplicationContext context;
 
-    @Autowired
-    private FilterChainProxy springSecurityFilterChain;
+    /*@Autowired
+    private FilterChainProxy springSecurityFilterChain;*/
 
-    @Autowired
-    private OAuthClientDetailsService oAuthClientDetailsService;
+    /*@Autowired
+    private OAuthClientDetailsService oAuthClientDetailsService;*/
 
     private MockMvc mvc;
 
     @Before
     public void setUp() {
         // Debug info - TODO : Remove
-        if (context == null)
+        /*if (context == null)
             System.out.println("WebApplicationContext is null !!");
         else
             System.out.println("WebApplicationContext initialized");
@@ -50,21 +51,22 @@ public class ITTestOAuthEndpoints {
         if (springSecurityFilterChain == null)
             System.out.println("FilterChainProxy is null !!");
         else
-            System.out.println("FilterChainProxy initialized");
+            System.out.println("FilterChainProxy initialized");*/
         // TODO : Remove Debug info
         
         MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.webAppContextSetup(context)
-                .addFilter(springSecurityFilterChain)
+                //.addFilter(springSecurityFilterChain)
+                //.apply(SecurityMockMvcConfigurers.springSecurity(springSecurityFilterChain))
                 .build();
         
-        OAuthClientDetails clientDetails = new OAuthClientDetails("test");
+        /*OAuthClientDetails clientDetails = new OAuthClientDetails("test");
         clientDetails.setAuthorizedGrandTypes("password", "refresh_token");
         clientDetails.setAuthorities("ROLE_TEST_CLIENT");
         clientDetails.setScopes("read");
         clientDetails.setSecret("secret");
 
-        oAuthClientDetailsService.addClientsDetails(clientDetails);
+        oAuthClientDetailsService.addClientsDetails(clientDetails);*/
     }
 
     @Test
