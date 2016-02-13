@@ -241,9 +241,6 @@
                             <includes>
                                 <include>**/AT*.java</include>
                             </includes>
-                            <excludes>
-                                <exclude>**/ITTestOAuthEndpoints.java</exclude>
-                            </excludes>
                         </configuration>
                     </execution>
                 </executions>
