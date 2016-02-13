@@ -41,6 +41,18 @@ public class ITTestOAuthEndpoints {
 
     @Before
     public void setUp() {
+        // Debug info - TODO : Remove
+        if (context == null)
+            System.out.println("WebApplicationContext is null !!");
+        else
+            System.out.println("WebApplicationContext initialized");
+        
+        if (springSecurityFilterChain == null)
+            System.out.println("FilterChainProxy is null !!");
+        else
+            System.out.println("FilterChainProxy initialized");
+        // TODO : Remove Debug info
+        
         MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.webAppContextSetup(context)
                 .addFilter(springSecurityFilterChain)
