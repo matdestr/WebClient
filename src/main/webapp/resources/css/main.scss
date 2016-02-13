@@ -1,0 +1,24 @@
+// Reset Css
+@import "core/reset";
+// Core
+@import "core/variables";
+@import "core/mixins";
+@import "core/fonts";
+// Partials
+//TODO: fill with partials
+// Vendors
+@import "vendors/bootstrap-3.3.6/bootstrap";
+
+
+body {
+  position: relative;
+  min-height: 100%;
+
+  font-family: $font-stack;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+footer {
+  position: absolute;
+}

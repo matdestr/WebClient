@@ -1,0 +1,21 @@
+@at-root {
+  @font-face {
+    font-family: 'WeblySleek UI';
+    src: url('../../fonts/weblysleek_ui/weblysleekuisl.ttf') format("truetype");
+  }
+
+  @font-face {
+    font-family: 'WeblySleek UI Light';
+    src: url('../../fonts/weblysleek_ui/weblysleekuil.ttf') format("truetype");
+  }
+
+  @font-face {
+    font-family: 'WeblySleek UI Condensed';
+    src: url('../../fonts/weblysleek_ui/weblysleekuisb.ttf') format("truetype");
+  }
+}
+
+// Font Stacks
+$font-stack: "WeblySleek UI", Helvetica, sans-serif;
+$font-stack-light: "WeblySleek UI Light", "Segoe UI", Helvetica, sans-serif;
+$font-stack-condensed: "WeblySleek UI Condensed", "Segoe UI", Helvetica, sans-serif;
