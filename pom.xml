@@ -21,6 +21,30 @@
         </dependencies>
     </dependencyManagement>
 
+    <!-- add Spring Security 4 Milestone Repos for Spring Security Test -->
+    <repositories>
+        <repository>
+            <id>spring-snasphot</id>
+            <url>https://repo.spring.io/libs-snapshot</url>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>http://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    
+    <!--<repositories>
+        <repository>
+            <id>spring-milestone</id>
+            <name>Spring Portfolio Milestone Repository</name>
+            <url>http://repo.springsource.org/libs-milestone/</url>
+        </repository>
+    </repositories>-->
+    
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -55,7 +79,14 @@
             <scope>test</scope>
         </dependency>
 
-
+        <!-- Test dependencies added 2016-02-13 -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>4.0.3.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        
         <!-- Spring dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
