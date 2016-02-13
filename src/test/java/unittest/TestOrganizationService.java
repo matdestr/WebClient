@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BackendContextConfig.class })
-@Transactional // Rollback after each test
+@Transactional
 @Rollback
 public class TestOrganizationService {
     @Autowired

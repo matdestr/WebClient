@@ -1,14 +1,21 @@
-package be.kdg.kandoe.frontend.controller.rest;
+package integrationtest.OAuth;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(value = "/test")
 public class TestController {
-    @RequestMapping("/test")
+
+    @RequestMapping()
+    public String unAuthorizedTestMethod(){
+        return "test";
+    }
+
     @PreAuthorize("isAuthenticated()")
-    public int test() {
-        return 1337;
+    @RequestMapping("/auth")
+    public String authorizedTestMethod(){
+        return "test";
     }
 }

@@ -7,6 +7,10 @@ import java.util.List;
 
 @Entity
 public class Organization {
+
+    public Organization() {
+    }
+
     public Organization(String name, User owner) {
         this.name = name;
         this.owner = owner;
