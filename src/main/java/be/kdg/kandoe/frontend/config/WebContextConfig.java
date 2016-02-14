@@ -20,6 +20,9 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry)
     {
 
+        registry.addResourceHandler("/html/**")
+                .addResourceLocations("/resources/html/");
+
         registry.addResourceHandler("/css/**")
             .addResourceLocations("/resources/css/");
 

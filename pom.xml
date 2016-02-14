@@ -104,6 +104,20 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>2.44.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Spring dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -227,8 +241,26 @@
     </dependencies>
 
     <profiles>
+
+        <profile>
+            <id>dev</id>
+
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <properties>
+                <profile.baseUrl>http://localhost:8080/${artifactId}</profile.baseUrl>
+            </properties>
+
+        </profile>
+
         <profile>
             <id>openshift</id>
+
+            <properties>
+                <profile.baseUrl>https://wildfly-teameip2kdgbe.rhcloud.com</profile.baseUrl>
+            </properties>
 
             <build>
                 <finalName>kandoe</finalName>
@@ -258,6 +290,7 @@
                 </plugins>
             </build>
         </profile>
+
     </profiles>
 
     <build>
@@ -353,6 +386,17 @@
                     </execution>
                 </executions>
             </plugin>-->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <app.baseUrl>${profile.baseUrl}</app.baseUrl>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

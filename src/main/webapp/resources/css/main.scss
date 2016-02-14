@@ -1,13 +1,12 @@
+// Vendors
+@import "vendors/bootstrap-3.3.6/bootstrap";
 // Core
 @import "core/reset";
 @import "core/variables";
 @import "core/mixins";
 @import "core/fonts";
 // Partials
-//TODO: fill with partials
-// Vendors
-@import "vendors/bootstrap-3.3.6/bootstrap";
-
+@import "partials/toolbar";
 
 body {
   position: relative;

@@ -1,0 +1,27 @@
+@import "../core/variables";
+@import "../core/mixins";
+
+.toolbar {
+  box-shadow: 0 0.025em .75em #333;
+  background-color: $primary-color;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  z-index: 1000;
+
+  .toolbar-brand{
+    font-size: 2.25em;
+  }
+  .toolbar-brand, .toolbar-dropdown-toggle{
+    color: $text-color-light !important;
+  }
+
+  .toolbar-dropdown-menu {
+    padding: 1em;
+
+    @media screen and (min-width: $breakpoint-tablet) {
+      padding: 3em;
+      width: 25em !important;
+    }
+  }
+}
