@@ -11,6 +11,7 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
  * This class registers all converters and mappers with Orika's MapperFactory
@@ -18,6 +19,7 @@ import org.springframework.context.ApplicationContextAware;
  * 
  * GitHub link: https://github.com/dlizarra/orika-spring-integration/blob/master/src/main/java/com/dlizarra/orika/mapper/OrikaBeanMapper.java
  * */
+@Component
 public class OrikaBeanMapper extends ConfigurableMapper implements ApplicationContextAware {
     private MapperFactory mapperFactory;
     private ApplicationContext applicationContext;
