@@ -18,7 +18,6 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/api/users")
 public class UserRestController {
-    //TODO: password encoder
     @Autowired
     private MapperFacade mapper;
 
@@ -27,10 +26,8 @@ public class UserRestController {
     
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserResource> createUser(@Valid @RequestBody CreateUserResource createUserResource){
-        User user_in = new User(createUserResource.getUsername(), createUserResource.getPassword());
-        user_in.setEmail(createUserResource.getEmail());
-        User user_out = userService.addUser(user_in);
-        
-        return new ResponseEntity<UserResource>(mapper.map(user_out, UserResource.class), HttpStatus.CREATED);
+        User userIn = mapper.map(createUserResource, User.class);
+        User userOut = userService.addUser(userIn);
+        return new ResponseEntity<UserResource>(mapper.map(userOut, UserResource.class), HttpStatus.CREATED);
     }
 }

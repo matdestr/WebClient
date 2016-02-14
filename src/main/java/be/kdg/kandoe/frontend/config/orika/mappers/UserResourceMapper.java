@@ -7,7 +7,7 @@ import ma.glasnost.orika.MappingContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserMapper extends CustomMapper<User, UserResource> {
+public class UserResourceMapper extends CustomMapper<User, UserResource> {
     @Override
     public void mapAtoB(User user, UserResource userResource, MappingContext context) {
 

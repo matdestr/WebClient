@@ -1,6 +1,7 @@
 package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.users.User;
+import be.kdg.kandoe.backend.model.users.roles.RoleType;
 import be.kdg.kandoe.backend.persistence.api.UserRepository;
 import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.backend.service.exceptions.UserServiceException;
@@ -29,7 +30,9 @@ public class UserServiceImpl implements UserService {
             String unencryptedPassword = user.getPassword();
             String encryptedPassword = passwordEncoder.encode(unencryptedPassword);
             user.setPassword(encryptedPassword);
-            
+
+            user.addRole(RoleType.ROLE_CLIENT);
+
             return userRepository.save(user);
         } catch (Exception e) {
             throw new UserServiceException(String.format("Could not save user with username %s", user.getUsername()));
