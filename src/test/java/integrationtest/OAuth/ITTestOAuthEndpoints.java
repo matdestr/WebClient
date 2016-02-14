@@ -136,8 +136,13 @@ public class ITTestOAuthEndpoints {
     public void testProtectedMethodWithAdminRoleAsAdmin() throws Exception {
         user.addRole(RoleType.ROLE_ADMIN);
         userService.updateUser(user);
+
+        String token = getToken();
+        String authorizationHeader = String.format("Bearer %s", token);
+
         mvc.perform(get("/test/admin")
+                .header("Authorization", authorizationHeader)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isOk());
     }
 }
