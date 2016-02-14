@@ -29,12 +29,17 @@ public class User implements Serializable, UserDetails {
 
     @Column(unique = true)
     private String username;
+    
     private String password;
+    
     @Column(unique = true)
     private String email;
+    
     private String profilePictureUrl;
+    
     @Column(length = 100)
     private String name;
+    
     @Column(length = 100)
     private String surname;
 
@@ -44,7 +49,6 @@ public class User implements Serializable, UserDetails {
     private boolean credentialsNonExpired = true;
 
     @OneToMany(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
-    @Setter
     private List<Role> roles = new ArrayList<>();
 
     public User(String username, String password) {

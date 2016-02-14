@@ -5,15 +5,9 @@ import be.kdg.kandoe.backend.persistence.api.UserRepository;
 import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.backend.service.exceptions.UserServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.ClientRegistrationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,15 +15,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User addUser(User user) {
         try {
+            String unencryptedPassword = user.getPassword();
+            String encryptedPassword = passwordEncoder.encode(unencryptedPassword);
+            user.setPassword(encryptedPassword);
+            
             return userRepository.save(user);
         } catch (Exception e) {
             throw new UserServiceException(String.format("Could not save user with username %s", user.getUsername()));

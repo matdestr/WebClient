@@ -24,16 +24,13 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
-
-
-
+    
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserResource> createUser(@Valid @RequestBody CreateUserResource createUserResource){
         User user_in = new User(createUserResource.getUsername(), createUserResource.getPassword());
         user_in.setEmail(createUserResource.getEmail());
         User user_out = userService.addUser(user_in);
+        
         return new ResponseEntity<UserResource>(mapper.map(user_out, UserResource.class), HttpStatus.CREATED);
     }
-
-
 }

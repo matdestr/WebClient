@@ -46,6 +46,8 @@ public class ITTestOAuthEndpoints {
 
     @Autowired
     private UserService userService;
+    
+    private String unencryptedPassword = "password";
     private User user;
 
     private MockMvc mvc;
@@ -55,14 +57,13 @@ public class ITTestOAuthEndpoints {
         MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.webAppContextSetup(context).addFilter(springSecurityFilterChain).build();
 
-
         OAuthClientDetails newClientDetails = new OAuthClientDetails("test");
         newClientDetails.setAuthorizedGrandTypes("password", "refresh_token");
         newClientDetails.setAuthorities("ROLE_TEST_CLIENT");
         newClientDetails.setScopes("read");
         newClientDetails.setSecret("secret");
 
-        User testUser = new User("oauthtestuser", "password");
+        User testUser = new User("oauthtestuser", unencryptedPassword);
         this.user = userService.addUser(testUser);
 
         this.clientDetails = oAuthClientDetailsService.addClientsDetails(newClientDetails);
@@ -86,7 +87,7 @@ public class ITTestOAuthEndpoints {
     private String getToken() throws Exception {
         String base64authorizationString = new String(Base64Utils.encode(String.format("%s:%s", clientDetails.getClientId(), clientDetails.getClientSecret()).getBytes()));
         String authorizationHeader = String.format("Basic %s", base64authorizationString);
-
+        
         String token = mvc.perform(
                 post("/oauth/token")
                         .header("Authorization", authorizationHeader)
@@ -95,7 +96,7 @@ public class ITTestOAuthEndpoints {
                         .param("client_id", clientDetails.getClientId())
                         .param("client_secret", clientDetails.getClientSecret())
                         .param("username", user.getUsername())
-                        .param("password", user.getPassword())
+                        .param("password", unencryptedPassword)
         ).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andReturn().getResponse().getContentAsString();

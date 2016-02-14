@@ -5,12 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
 
-/**
- * Created by Vincent on 5-2-2016.
- */
 @Configuration
 public class DataSourceConfig {
     @Bean(name = "datasource")
@@ -40,5 +38,9 @@ public class DataSourceConfig {
         //initializer.setDatabasePopulator(populator);
         return initializer;
     }
-
+    
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
