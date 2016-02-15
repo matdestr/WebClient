@@ -14,7 +14,7 @@ import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.UserService;
 
 /**
- * This class enables the usage of @AuthenticationPrincipal.
+ * This class enables the usage of @AuthenticationPrincipal for an OAuth2Authentication object.
  * https://stackoverflow.com/questions/12464042/spring-oauth-oauth2-how-can-i-get-the-client-credentials-in-a-spring-mvc-cont
  * */
 public class OAuth2UserArgumentResolver implements HandlerMethodArgumentResolver {

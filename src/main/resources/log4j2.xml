@@ -6,9 +6,9 @@
     </Properties>
     
     <Appenders>
-        <!--<Console name="CONSOLE" target="SYSTEM_OUT">
-            <PatternLayout pattern="${pattern}" />
-        </Console>-->
+        <!--<Console name="CONSOLE" target="SYSTEM_OUT">-->
+            <!--<PatternLayout pattern="${pattern}" />-->
+        <!--</Console>-->
         <File name="FILE_WARN" fileName="${log-location}/kandoe-warn.log" append="true">
             <PatternLayout pattern="${pattern}"/>
         </File>

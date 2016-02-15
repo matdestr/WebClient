@@ -11,6 +11,7 @@ import org.springframework.security.web.method.annotation.AuthenticationPrincipa
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -25,16 +26,15 @@ import java.util.List;
 public class WebContextConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private OAuth2UserArgumentResolver oAuth2UserArgumentResolver;
-    
+
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry)
-    {
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
         registry.addResourceHandler("/html/**")
                 .addResourceLocations("/resources/html/");
 
         registry.addResourceHandler("/css/**")
-            .addResourceLocations("/resources/css/");
+                .addResourceLocations("/resources/css/");
 
         registry.addResourceHandler("/fonts/**")
                 .addResourceLocations("/resources/fonts/");
@@ -60,12 +60,20 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
         return bean;
     }
 
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setDefaultEncoding("utf-8");
+        resolver.setMaxInMemorySize(20);
+        resolver.setMaxUploadSize(10);
+        return resolver;
+    }
+
     @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer)
-    {
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
-    
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(oAuth2UserArgumentResolver);
