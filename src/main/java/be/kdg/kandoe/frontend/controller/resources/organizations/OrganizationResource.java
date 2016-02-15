@@ -8,6 +8,8 @@ import java.util.List;
 
 @Data
 public class OrganizationResource {
+    private int organizationId;
+
     @NotEmpty
     private String name;
     

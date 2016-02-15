@@ -1,6 +1,6 @@
 package be.kdg.kandoe.backend.service.exceptions;
 
-public class OrganizationServiceException extends RuntimeException {
+public class OrganizationServiceException extends KandoeServiceRuntimeException {
 
     public OrganizationServiceException(String message) {
         super(message);

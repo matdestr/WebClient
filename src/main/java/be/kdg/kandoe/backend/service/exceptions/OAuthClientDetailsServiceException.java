@@ -1,9 +1,6 @@
 package be.kdg.kandoe.backend.service.exceptions;
 
-public class OAuthClientDetailsServiceException extends RuntimeException {
-    public OAuthClientDetailsServiceException() {
-    }
-
+public class OAuthClientDetailsServiceException extends KandoeServiceRuntimeException {
     public OAuthClientDetailsServiceException(String message) {
         super(message);
     }
@@ -12,11 +9,11 @@ public class OAuthClientDetailsServiceException extends RuntimeException {
         super(message, cause);
     }
 
-    public OAuthClientDetailsServiceException(Throwable cause) {
+    /*public OAuthClientDetailsServiceException(Throwable cause) {
         super(cause);
     }
 
     public OAuthClientDetailsServiceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
-    }
+    }*/
 }

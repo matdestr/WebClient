@@ -1,6 +1,7 @@
 package be.kdg.kandoe.frontend.config.security;
 
 import be.kdg.kandoe.backend.service.api.UserService;
+import be.kdg.kandoe.frontend.config.security.resolvers.OAuth2UserArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +34,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
-
+    @Bean
+    public OAuth2UserArgumentResolver oAuth2UserArgumentResolver() {
+        return new OAuth2UserArgumentResolver(userService);
+    }
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().permitAll();

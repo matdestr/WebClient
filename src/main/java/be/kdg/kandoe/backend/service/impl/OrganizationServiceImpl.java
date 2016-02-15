@@ -32,6 +32,16 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
+    public Organization getOrganizationById(int id) throws OrganizationServiceException {
+        Organization organization = repository.findOne(id);
+        
+        if (organization == null)
+            throw new OrganizationServiceException(String.format("Could not find organization with ID %d", id));
+        
+        return organization;
+    }
+
+    @Override
     public Organization getOrganizationByName(String name) throws OrganizationServiceException {
         if (name == null)
             throw new OrganizationServiceException("name cannot be null");

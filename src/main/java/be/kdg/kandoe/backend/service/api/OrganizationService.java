@@ -10,6 +10,7 @@ import java.util.List;
  */
 public interface OrganizationService {
     Organization addOrganization(Organization organization) throws OrganizationServiceException;
+    Organization getOrganizationById(int id) throws OrganizationServiceException;
     Organization getOrganizationByName(String name) throws OrganizationServiceException;
     List<Organization> getOrganizationsByOwner(String owner) throws OrganizationServiceException;
 }

@@ -1,6 +1,6 @@
 package be.kdg.kandoe.backend.service.exceptions;
 
-public class UserServiceException extends RuntimeException {
+public class UserServiceException extends KandoeServiceRuntimeException {
     public UserServiceException(String message) {
         super(message);
     }
