@@ -16,6 +16,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -65,6 +67,29 @@ public class TestOrganizationService {
 
         Organization existing = organizationService.getOrganizationByName(organizationName);
         assertEquals(organization, existing);
+    }
+
+    @Test
+    public void getOrganizationsByExistingOwner() throws UserServiceException {
+        String organizationOne = "Organization 1";
+        String organizationTwo = "Organization 2";
+        User user = userService.getUserByUsername("user");
+
+        Organization organization1 = new Organization(organizationOne, user);
+        Organization organization2 = new Organization(organizationTwo, user);
+        organizationService.addOrganization(organization1);
+        organizationService.addOrganization(organization2);
+
+        List<Organization> existing = organizationService.getOrganizationsByOwner("user");
+
+        assertEquals("list should contain 2 items", 2, existing.size());
+    }
+
+    @Test
+    public void getOrganizationsByUnexistingOwner() throws UserServiceException {
+        List<Organization> unexisting = organizationService.getOrganizationsByOwner("unexsisting");
+
+        assertEquals("list should be empty", 0, unexisting.size());
     }
 
     @Test
