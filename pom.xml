@@ -259,7 +259,8 @@
             <id>openshift</id>
 
             <properties>
-                <profile.baseUrl>https://wildfly-teameip2kdgbe.rhcloud.com</profile.baseUrl>
+                <!--<profile.baseUrl>https://wildfly-teameip2kdgbe.rhcloud.com</profile.baseUrl>-->
+                <profile.baseUrl>https://wildflybldr-teameip2kdgbe.rhcloud.com</profile.baseUrl>
             </properties>
 
             <build>
