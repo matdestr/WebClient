@@ -22,7 +22,7 @@ System.register(['angular2/core'], function(exports_1) {
                 SignInComponent = __decorate([
                     core_1.Component({
                         selector: 'sign-in',
-                        template: "\n        <form name=\"sign-in\">\n            <label for=\"username\">username</label>\n            <input id=\"username\" type=\"text\" class=\"span2\" placeholder=\"username\">\n            <label for=\"password\">password</label>\n            <input id=\"password\" type=\"password\" class=\"span2\" placeholder=\"password\">\n            <input type=\"submit\" value=\"Sign in\" class=\"btn\"/>\n        </form>\n    "
+                        templateUrl: 'html/sign-in.html'
                     }), 
                     __metadata('design:paramtypes', [])
                 ], SignInComponent);
