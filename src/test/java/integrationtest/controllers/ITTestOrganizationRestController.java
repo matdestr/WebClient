@@ -106,7 +106,6 @@ public class ITTestOrganizationRestController {
         
         JSONObject jsonResponse = new JSONObject(response);
         
-        Assert.assertEquals("Karel de Grote", jsonResponse.getString("name"));
         Assert.assertTrue(jsonResponse.getInt("organizationId") > 0);
         
         String getUrl = String.format("/api/organizations/%d", jsonResponse.getInt("organizationId"));

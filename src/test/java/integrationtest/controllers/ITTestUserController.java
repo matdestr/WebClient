@@ -7,6 +7,7 @@ import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
 import be.kdg.kandoe.frontend.controller.resources.users.CreateUserResource;
+import be.kdg.kandoe.frontend.controller.resources.users.UpdateUserResource;
 import integrationtest.TokenProvider;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -24,15 +25,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.multipart.MultipartFile;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootContextConfig.class, WebContextConfig.class})
@@ -116,11 +114,52 @@ public class ITTestUserController {
 
     @Test
     public void testFileUpload() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "string".getBytes());
+        ClassLoader loader = getClass().getClassLoader();
+        MockMultipartFile file = new MockMultipartFile("file", loader.getResourceAsStream("profile.jpg"));
         mockMvc.perform(
                 fileUpload(String.format("/api/users/%s/photo", user.getUserId()))
                         .file(file)
                         .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword)))
         ).andDo(print()).andExpect(status().isOk());
+    }
+
+    @Test
+    public void testEmptyFileUpload() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("file", new byte[0]);
+        mockMvc.perform(
+                fileUpload(String.format("/api/users/%s/photo", user.getUserId()))
+                        .file(file)
+                        .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword)))
+        ).andDo(print()).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testFileUploadWithWrongUserId() throws Exception {
+        ClassLoader loader = getClass().getClassLoader();
+        MockMultipartFile file = new MockMultipartFile("file", loader.getResourceAsStream("profile.jpg"));
+        mockMvc.perform(
+                fileUpload(String.format("/api/users/%s/photo", user.getUserId() + 1))
+                        .file(file)
+                        .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword)))
+        ).andDo(print()).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void testChangeProfile() throws Exception {
+        UpdateUserResource userResource = new UpdateUserResource();
+        userResource.setUsername("new username");
+        userResource.setEmail("newemail@email.com");
+        userResource.setName("newname");
+        userResource.setSurname("newsurname");
+        userResource.setVerifyPassword(unencryptedPassword);
+
+        mockMvc.perform(put(String.format("/api/users/%s/", user.getUserId()))
+                .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword)))
+                .content(new JSONObject(userResource).toString())
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isOk())
+        .andExpect(jsonPath("$.username", is("new username")))
+        .andExpect(jsonPath("$.name", is("newname")))
+        .andExpect(jsonPath("$.surname", is("newsurname")));
     }
 }

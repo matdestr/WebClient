@@ -2,10 +2,8 @@ package be.kdg.kandoe.frontend.config;
 
 import be.kdg.kandoe.frontend.config.security.resolvers.OAuth2UserArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
 import org.springframework.validation.Validator;
@@ -22,6 +20,7 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@PropertySource("classpath:application.properties")
 @ComponentScan(basePackages = "be.kdg.kandoe.frontend", excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class)})
 public class WebContextConfig extends WebMvcConfigurerAdapter {
     @Autowired
@@ -64,9 +63,14 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("utf-8");
-        resolver.setMaxInMemorySize(20);
-        resolver.setMaxUploadSize(10);
+        resolver.setMaxInMemorySize(200000);
+        resolver.setMaxUploadSize(100000);
         return resolver;
+    }
+
+    @Bean
+    static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
     @Override

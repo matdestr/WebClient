@@ -12,6 +12,8 @@ import java.util.List;
 public class UserResource extends ResourceSupport {
     private int userId;
     private String username;
+    private String name;
+    private String surname;
     private String email;
     private List<RoleType> roleTypes;
 }
