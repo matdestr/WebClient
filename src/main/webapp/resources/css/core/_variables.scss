@@ -1,17 +1,24 @@
 // Colors
 // TODO: define application colors here
-$primary-color: rgb(0, 150, 136);
-$primary-color-dark: rgb(0, 121, 107);
-$primary-color-light: rgb(38, 166, 154);
-$color-accent: rgb(255, 196, 0);
+$primary-color: rgb(220, 53, 34);
+$primary-color-dark: rgb(141, 34, 22);
+$primary-color-light: rgb(230, 110, 96);
+$color-accent: rgb(42, 44, 43);
 
 $text-color-dark: rgb(79, 79, 79);
 $text-color-neutral: rgb(105, 105, 105);
-$text-color-light: rgb(255, 255, 255);
+$text-color-light: rgb(248, 248, 248);
 
+$background-color: rgb(245, 245, 245);
+$background-transparent-color: rgba(245, 245, 245, 0.85);
+$shadow: rgba(0,0,0,.3);
 
 
 // Dimensions
+$default-margin: 0.5em;
+$default-padding: 0.5em;
+
+$toolbar-height:  $navbar-height;
 $footer-height: 5em;
 
 // Media Breakpoints

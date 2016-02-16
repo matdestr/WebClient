@@ -1,0 +1,30 @@
+@import "../core/variables";
+@import "../core/fonts";
+
+footer {
+  position: absolute;
+  height: $footer-height;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-color: $color-accent;
+  color: $text-color-light;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    font-family: $font-stack;
+    text-align: center;
+  }
+
+  a {
+    color: $primary-color-light;
+  }
+
+  a:hover {
+    border-bottom: 1px solid $primary-color-dark;
+  }
+}

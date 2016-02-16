@@ -40,7 +40,7 @@ public class ATSignInUser {
         WebDriver driver = new ChromeDriver();
         driver.get(baseUrl);
 
-        WebElement registrationForm = driver.findElement(By.name("registration"));
+        WebElement registrationForm = driver.findElement(By.name("form-sign-up"));
         driver.switchTo().frame(registrationForm);
 
         driver.findElement(By.name("username")).sendKeys(DUMMY_USERNAME);
@@ -52,11 +52,11 @@ public class ATSignInUser {
 
         registrationForm.submit();
 
-        (new WebDriverWait(driver, DEFAULT_SLEEP_TIMEOUT)).until((WebDriver d) -> d.getCurrentUrl().equals(baseUrl + "/overview"));
+        (new WebDriverWait(driver, DEFAULT_SLEEP_TIMEOUT)).until((WebDriver d) -> d.getCurrentUrl().equals(baseUrl + "/dashboard"));
 
         driver.findElement(By.name("sign-out")).click();
 
-        (new WebDriverWait(driver, DEFAULT_SLEEP_TIMEOUT)).until((WebDriver d) -> d.getCurrentUrl().equals(baseUrl) && d.getTitle().equals("Login"));
+        (new WebDriverWait(driver, DEFAULT_SLEEP_TIMEOUT)).until((WebDriver d) -> d.getCurrentUrl().equals(baseUrl) && d.getTitle().equals("Welcome to CanDo"));
     }
 
      //@Test
@@ -64,7 +64,7 @@ public class ATSignInUser {
         val driver = new ChromeDriver();
         driver.get(baseUrl);
 
-        val loginForm = driver.findElementByName("sign-in");
+        val loginForm = driver.findElementByName("form-sign-in");
         driver.switchTo().frame(loginForm);
 
         driver.findElement(By.name(NAME_SIGN_IN_USERNAME)).sendKeys(DUMMY_USERNAME);

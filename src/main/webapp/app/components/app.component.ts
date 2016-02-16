@@ -1,23 +1,24 @@
-import {Component} from 'angular2/core';
-import {RegisterComponent} from "./authentication/register.component";
-import {ToolbarComponent} from "./toolbar.component";
+import {Component, OnInit} from "angular2/core";
+import {RouteConfig, ROUTER_DIRECTIVES} from "angular2/router";
+import {WelcomeComponent} from "./authentication/welcome.component";
+import {DashboardComponent} from "./dashboard/dashboard.component";
+
 
 @Component({
     selector: 'my-app',
     template: `
-        <header>
-            <toolbar></toolbar>
-        </header>
-
-        <div id="main-content">
-        <section id="register">
-            <register></register>
-        </section>
-        </div>
-
-        <footer></footer>
+        <router-outlet></router-outlet>
     `,
-    directives: [ToolbarComponent, RegisterComponent]
+    directives: [ROUTER_DIRECTIVES]
 })
-export class AppComponent {
+@RouteConfig([
+    {path: "/",             name: "Home",       component: WelcomeComponent},
+    {path: "/dashboard",    name: "Dashboard",   component: DashboardComponent}
+
+])
+export class AppComponent implements OnInit{
+
+    ngOnInit():any {
+        return null;
+    }
 }

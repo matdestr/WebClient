@@ -11,18 +11,24 @@
     <link rel="stylesheet" href="css/main.css">
 
     <!-- remark: IE required polyfills, in this exact order -->
-    <script src="js/es6-shim.min.js"></script>
-    <script src="js/system-polyfills.js"></script>
+    <script src="js/angular/es6-shim.min.js"></script>
+    <script src="js/angular/system-polyfills.js"></script>
 
-    <script src="js/angular2-polyfills.js"></script>
-    <script src="js/system.src.js"></script>
-    <script src="js/Rx.js"></script>
-    <script src="js/angular2.dev.js"></script>
+    <script src="js/angular/angular2-polyfills.js"></script>
+    <script src="js/angular/system.src.js"></script>
+    <script src="js/angular/Rx.js"></script>
+    <script src="js/angular/angular2.dev.js"></script>
+    <script src="js/angular/router.dev.js"></script>
+    <script src="js/angular/http.dev.js"></script>
 
     <script src="js/jquery-2.2.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
-   <script>
+    <!-- own scripts -->
+    <script src="js/cando/authentication.js"></script>
+
+
+    <script>
         System.config({
             packages: {
                 app: {

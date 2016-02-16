@@ -7,16 +7,27 @@
 @import "core/fonts";
 // Partials
 @import "partials/toolbar";
+@import "partials/footer";
+@import "partials/forms";
 
 body {
   position: relative;
   min-height: 100%;
+  overflow-x: hidden;
+  padding-bottom: $footer-height + $default-margin;
+
+  @include user-drag(none);
+  @include user-select(none);
+
+  color: $text-color-neutral;
 
   font-family: $font-stack;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-footer {
-  position: absolute;
+#authentication{
+  min-height: 100vh;
+  background: transparent url("../img/bg-kandoe.png") no-repeat !important;
+  background-size: cover !important;
 }
