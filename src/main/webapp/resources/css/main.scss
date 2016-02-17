@@ -1,14 +1,16 @@
 // Vendors
 @import "vendors/bootstrap-3.3.6/bootstrap";
 // Core
-@import "core/reset";
 @import "core/variables";
 @import "core/mixins";
 @import "core/fonts";
+@import "core/reset";
 // Partials
+@import "partials/containers";
 @import "partials/toolbar";
 @import "partials/footer";
 @import "partials/forms";
+@import "partials/spinners";
 
 body {
   position: relative;

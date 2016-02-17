@@ -26,9 +26,9 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../s
             }],
         execute: function() {
             SignInComponent = (function () {
-                function SignInComponent(signInService, router) {
-                    this.signInService = signInService;
-                    this.router = router;
+                function SignInComponent(_signInService, _router) {
+                    this._signInService = _signInService;
+                    this._router = _router;
                     this.invalidCredentials = false;
                 }
                 SignInComponent.prototype.onSubmit = function () {
@@ -37,12 +37,12 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../s
                         // TODO : Display error
                         console.log('username and password are required');
                     }
-                    this.signInService
+                    this._signInService
                         .signIn(this.username, this.password)
                         .subscribe(function (token) {
                         localStorage.setItem('token', JSON.stringify(token.access_token));
                         console.log(token); // TODO : Remove debug info
-                    }, function (error) { console.error(error); _this.invalidCredentials = true; }, function () { _this.router.navigate(['/Dashboard']); });
+                    }, function (error) { console.error(error); _this.invalidCredentials = true; }, function () { _this._router.navigate(['/Dashboard']); });
                 };
                 SignInComponent = __decorate([
                     core_1.Component({

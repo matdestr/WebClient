@@ -38,7 +38,7 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
                         directives: [router_1.ROUTER_DIRECTIVES]
                     }),
                     router_1.RouteConfig([
-                        { path: "/", name: "Home", component: welcome_component_1.WelcomeComponent },
+                        { path: "/", name: "Authentication", component: welcome_component_1.WelcomeComponent },
                         { path: "/dashboard", name: "Dashboard", component: dashboard_component_1.DashboardComponent }
                     ]), 
                     __metadata('design:paramtypes', [])

@@ -10,20 +10,20 @@ import {Token} from "../../entities/authenticatie/token";
     templateUrl: 'html/sign-in.html',
     directives: [NgForm]
 })
-export class SignInComponent {
+export class SignInComponent{
     private username : string;
     private password : string;
     private invalidCredentials : boolean = false;
-    
-    constructor(private signInService : SignInService, private router : Router) { }
-    
+
+    constructor(private _signInService : SignInService, private _router : Router) { }
+
     private onSubmit() {
         if (!this.username || !this.password) {
             // TODO : Display error
             console.log('username and password are required');
         }
         
-        this.signInService
+        this._signInService
             .signIn(this.username, this.password)
             // TODO : Fancy error
             .subscribe(
@@ -32,6 +32,6 @@ export class SignInComponent {
                     console.log(token); // TODO : Remove debug info
                 },
                 error => {console.error(error); this.invalidCredentials = true},
-                () => { this.router.navigate(['/Dashboard']); });
+                () => { this._router.navigate(['/Dashboard']); });
     }
 }

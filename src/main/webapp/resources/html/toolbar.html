@@ -1,7 +1,6 @@
 <header>
-    <nav class="toolbar navbar navbar-default navbar-inverse" role="navigation">
-        <div class="container-fluid">
-
+    <nav class="toolbar navbar navbar-default" role="navigation">
+        <div class="toolbar-container container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                         data-target="#bs-example-navbar-collapse-1">
@@ -14,44 +13,40 @@
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="toolbar-menu nav navbar-nav navbar-left">
+                    <li>
+                        <a>All Organisations</a>
+                    </li>
+                    <li>
+                        <a>Karel de Grote Hogeschool</a>
+                    </li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="toolbar-dropdown-toggle dropdown-toggle" data-toggle="dropdown"><b>Sign
-                            in</b> <span class="caret"></span></a>
+                    <li class="toolbar-dropdown dropdown">
+                        <a href="#" class="toolbar-dropdown-toggle dropdown-toggle" data-toggle="dropdown">
+
+                            <div class="toolbar-dropdown-toggle-container">
+                                <img class="toolbar-user" src="./img/arne.jpg">
+                                <b>Arne De Cock</b>
+                                <span class="caret"></span>
+                            </div>
+
+                        </a>
                         <ul class="toolbar-dropdown-menu dropdown-menu">
                             <li>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <p class="center-block">Sign in with</p>
-                                        <div>
-                                            <a href="#" class="btn">Facebook</a>
-                                        </div>
-                                        <p class="center-block">or</p>
-                                        <form class="form" name="sign-in" role="form" method="post"
-                                              accept-charset="UTF-8">
-                                            <div class="form-group">
-                                                <label class="sr-only" for="username">Username</label>
-                                                <input type="email" class="form-control" id="username"
-                                                       placeholder="username" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="sr-only" for="password">Password</label>
-                                                <input type="password" class="form-control" id="password"
-                                                       placeholder="Password" required>
-                                                <div class="help-block text-right"><a href="">Forgot your password?</a>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> keep me signed in
-                                                </label>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                                <a class="toolbar-dropdown-menu-item">profile</a>
+                                <!--TODO: set this when user is not signed in-->
+                                <!-- <sign-in></sign-in>-->
+                            </li>
+                            <li>
+                                <a class="toolbar-dropdown-menu-item">settings</a>
+                            </li>
+                            <li>
+                                <a class="toolbar-dropdown-menu-item">help</a>
+                            </li>
+                            <li>
+                                <sign-out class="toolbar-dropdown-menu-item-container"
+                                          [anchorSignOutClassName]="'toolbar-dropdown-menu-item'"></sign-out>
                             </li>
                         </ul>
                     </li>

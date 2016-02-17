@@ -3,7 +3,7 @@ import {Http, HTTP_PROVIDERS, Headers, BaseRequestOptions, Request, RequestOptio
 import {Observable} from 'rxjs/Observable';
 
 // Avoid TS error "cannot find name escape"
-declare var escape: any;
+declare var escape:any;
 
 export interface IAuthConfig {
     headerName: string;
@@ -19,17 +19,17 @@ export interface IAuthConfig {
 
 export class AuthConfig {
 
-    config: any;
-    headerName: string;
-    headerPrefix: string;
-    tokenName: string;
-    tokenGetter: any;
-    noJwtError: boolean;
+    config:any;
+    headerName:string;
+    headerPrefix:string;
+    tokenName:string;
+    tokenGetter:any;
+    noJwtError:boolean;
 
-    constructor(config?: any) {
+    constructor(config?:any) {
         this.config = config || {};
         this.headerName = this.config.headerName || 'Authorization';
-        if(this.config.headerPrefix) {
+        if (this.config.headerPrefix) {
             this.headerPrefix = this.config.headerPrefix + ' ';
         } else {
             this.headerPrefix = 'Bearer ';
@@ -58,32 +58,32 @@ export class AuthConfig {
 @Injectable()
 export class AuthHttp {
 
-    private _config: IAuthConfig;
-    public tokenStream: Observable<string>;
+    private _config:IAuthConfig;
+    public tokenStream:Observable<string>;
 
-    constructor(options: AuthConfig, private http: Http) {
+    constructor(options:AuthConfig, private http:Http) {
         this._config = options.getConfig();
 
-        this.tokenStream = new Observable((obs: any) => {
+        this.tokenStream = new Observable((obs:any) => {
             obs.next(this._config.tokenGetter())
         });
     }
 
-    _request(url: string | Request, options?: RequestOptionsArgs) : Observable<Response> {
+    _request(url:string | Request, options?:RequestOptionsArgs):Observable<Response> {
 
         let request:any;
 
-        if(!tokenNotExpired(null, this._config.tokenGetter())) {
-            if(!this._config.noJwtError) {
+        if (!tokenNotExpired(null, this._config.tokenGetter())) {
+            if (!this._config.noJwtError) {
                 throw 'Invalid JWT';
             } else {
                 request = this.http.request(url, options);
             }
 
-        } else if(typeof url === 'string') {
+        } else if (typeof url === 'string') {
             let reqOpts = options || {};
 
-            if(!reqOpts.headers) {
+            if (!reqOpts.headers) {
                 reqOpts.headers = new Headers();
             }
 
@@ -93,7 +93,7 @@ export class AuthHttp {
         } else {
             let req:Request = <Request>url;
 
-            if(!req.headers) {
+            if (!req.headers) {
                 req.headers = new Headers();
             }
 
@@ -104,38 +104,38 @@ export class AuthHttp {
         return request;
     }
 
-    private requestHelper(requestArgs: RequestOptionsArgs, additionalOptions: RequestOptionsArgs) : Observable<Response> {
+    private requestHelper(requestArgs:RequestOptionsArgs, additionalOptions:RequestOptionsArgs):Observable<Response> {
         let options = new RequestOptions(requestArgs);
 
-        if(additionalOptions) {
+        if (additionalOptions) {
             options = options.merge(additionalOptions)
         }
 
         return this._request(new Request(options))
     }
 
-    get(url: string, options?: RequestOptionsArgs) : Observable<Response> {
-        return this.requestHelper({ url:  url, method: RequestMethod.Get }, options);
+    get(url:string, options?:RequestOptionsArgs):Observable<Response> {
+        return this.requestHelper({url: url, method: RequestMethod.Get}, options);
     }
 
-    post(url: string, body: string, options?: RequestOptionsArgs) : Observable<Response> {
-        return this.requestHelper({ url:  url, body: body, method: RequestMethod.Post }, options);
+    post(url:string, body:string, options?:RequestOptionsArgs):Observable<Response> {
+        return this.requestHelper({url: url, body: body, method: RequestMethod.Post}, options);
     }
 
-    put(url: string, body: string, options ?: RequestOptionsArgs) : Observable<Response> {
-        return this.requestHelper({ url:  url, body: body, method: RequestMethod.Put }, options);
+    put(url:string, body:string, options ?:RequestOptionsArgs):Observable<Response> {
+        return this.requestHelper({url: url, body: body, method: RequestMethod.Put}, options);
     }
 
-    delete(url: string, options ?: RequestOptionsArgs) : Observable<Response> {
-        return this.requestHelper({ url:  url, method: RequestMethod.Delete }, options);
+    delete(url:string, options ?:RequestOptionsArgs):Observable<Response> {
+        return this.requestHelper({url: url, method: RequestMethod.Delete}, options);
     }
 
-    patch(url: string, body:string, options?: RequestOptionsArgs) : Observable<Response> {
-        return this.requestHelper({ url:  url, body: body, method: RequestMethod.Patch }, options);
+    patch(url:string, body:string, options?:RequestOptionsArgs):Observable<Response> {
+        return this.requestHelper({url: url, body: body, method: RequestMethod.Patch}, options);
     }
 
-    head(url: string, options?: RequestOptionsArgs) : Observable<Response> {
-        return this.requestHelper({ url:  url, method: RequestMethod.Head }, options);
+    head(url:string, options?:RequestOptionsArgs):Observable<Response> {
+        return this.requestHelper({url: url, method: RequestMethod.Head}, options);
     }
 
 }
@@ -149,10 +149,22 @@ export class JwtHelper {
     public urlBase64Decode(str:string) {
         var output = str.replace(/-/g, '+').replace(/_/g, '/');
         switch (output.length % 4) {
-            case 0: { break; }
-            case 2: { output += '=='; break; }
-            case 3: { output += '='; break; }
-            default: {
+            case 0:
+            {
+                break;
+            }
+            case 2:
+            {
+                output += '==';
+                break;
+            }
+            case 3:
+            {
+                output += '=';
+                break;
+            }
+            default:
+            {
                 throw 'Illegal base64url string!';
             }
         }
@@ -176,10 +188,10 @@ export class JwtHelper {
     }
 
     public getTokenExpirationDate(token:string) {
-        var decoded: any;
+        var decoded:any;
         decoded = this.decodeToken(token);
 
-        if(typeof decoded.exp === "undefined") {
+        if (typeof decoded.exp === "undefined") {
             return null;
         }
 
@@ -211,7 +223,7 @@ export function tokenNotExpired(tokenName?:string, jwt?:string) {
     var authToken:string = tokenName || 'id_token';
     var token:string;
 
-    if(jwt) {
+    if (jwt) {
         token = jwt;
     }
     else {
@@ -220,11 +232,22 @@ export function tokenNotExpired(tokenName?:string, jwt?:string) {
 
     var jwtHelper = new JwtHelper();
 
-    if(!token || jwtHelper.isTokenExpired(token, null)) {
+    if (!token || jwtHelper.isTokenExpired(token, null)) {
         return false;
     }
 
     else {
         return true;
     }
+}
+
+/**
+ * Returns the username
+ */
+
+export function getUsername(token:string):string {
+
+    var jwtHelper = new JwtHelper();
+
+    return jwtHelper.decodeToken(token).user_name;
 }

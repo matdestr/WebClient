@@ -1,6 +1,3 @@
-@import "../core/variables";
-@import "../core/mixins";
-
 .toolbar {
   box-shadow: 0 0.025em .75em #333;
   background-color: $primary-color;
@@ -68,8 +65,19 @@
         }
       }
 
+      .toolbar-dropdown-menu-item-container{
+        display: block;
+        clear: both;
+        font-weight: normal;
+        line-height: 1.42857;
+        white-space: nowrap;
+      }
+
       .toolbar-dropdown-menu-item {
         padding: 1em;
+        display: block;
+        text-decoration: none;
+
         @media screen and (min-width: $breakpoint-tablet) {
           padding: 1em 3em;
         }

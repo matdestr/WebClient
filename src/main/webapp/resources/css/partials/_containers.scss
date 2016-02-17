@@ -1,0 +1,25 @@
+.container-center-mid-screen{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-container {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  @include flex-direction(row);
+  @include flex-wrap(wrap);
+  @include flex-justify(center);
+  @include flex-align-content(center);
+  @include flex-align-item(center);
+}
+
+
+.flex-item:nth-child(1) {
+  @include flex-order(0);
+  @include flex-align-self(auto);
+}

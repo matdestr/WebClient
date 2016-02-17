@@ -32,6 +32,14 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
         }
     }
     exports_1("tokenNotExpired", tokenNotExpired);
+    /**
+     * Returns the username
+     */
+    function getUsername(token) {
+        var jwtHelper = new JwtHelper();
+        return jwtHelper.decodeToken(token).user_name;
+    }
+    exports_1("getUsername", getUsername);
     return {
         setters:[
             function (core_1_1) {
@@ -155,20 +163,24 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                 JwtHelper.prototype.urlBase64Decode = function (str) {
                     var output = str.replace(/-/g, '+').replace(/_/g, '/');
                     switch (output.length % 4) {
-                        case 0: {
-                            break;
-                        }
-                        case 2: {
-                            output += '==';
-                            break;
-                        }
-                        case 3: {
-                            output += '=';
-                            break;
-                        }
-                        default: {
-                            throw 'Illegal base64url string!';
-                        }
+                        case 0:
+                            {
+                                break;
+                            }
+                        case 2:
+                            {
+                                output += '==';
+                                break;
+                            }
+                        case 3:
+                            {
+                                output += '=';
+                                break;
+                            }
+                        default:
+                            {
+                                throw 'Illegal base64url string!';
+                            }
                     }
                     return decodeURIComponent(escape(window.atob(output))); //polifyll https://github.com/davidchambers/Base64.js
                 };
