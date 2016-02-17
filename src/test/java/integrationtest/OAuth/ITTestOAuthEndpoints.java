@@ -131,7 +131,7 @@ public class ITTestOAuthEndpoints {
         mvc.perform(get("/test/admin")
                 .header("Authorization", authorizationHeader)
                 .accept(MediaType.APPLICATION_JSON))
-                .andDo(MockMvcResultHandlers.print())
+                //.andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isForbidden());
     }
 

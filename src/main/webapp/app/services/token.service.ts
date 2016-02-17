@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class TokenService {
-    public static tokenEndpoint: string = "http://localhost:8080/kandoe/oauth/token";
+    public static tokenEndpoint: string = "./oauth/token";
     private static client_id: string = "webapp";
     private static client_secret: string = "secret";
 
@@ -20,13 +20,11 @@ export class TokenService {
         var username = credentials.username;
         var password = credentials.password;
 
-        var creds = "username="+username+"&password="+password+"&grant_type=password";
+        var creds = "username=" + username + "&password=" + password + "&grant_type=password";
 
         var headers = new Headers();
         headers.append('Authorization', 'Basic ' + btoa(TokenService.client_id + ":" + TokenService.client_secret));
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-        console.log(headers);
 
         return this._http.post(TokenService.tokenEndpoint, creds, {
                 headers: headers

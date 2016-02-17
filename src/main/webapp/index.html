@@ -20,21 +20,27 @@
     <script src="js/angular/angular2.dev.js"></script>
     <script src="js/angular/router.dev.js"></script>
     <script src="js/angular/http.dev.js"></script>
+    <!--<script src="js/angular/angular2-jwt.js"></script>-->
 
     <script src="js/jquery-2.2.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
     <!-- own scripts -->
     <script src="js/cando/authentication.js"></script>
-
-
+    
     <script>
         System.config({
             packages: {
                 app: {
                     format: 'register',
                     defaultExtension: 'js'
+                },
+                "/angular2-jwt": {
+                    "defaultExtension": "js"
                 }
+            },
+            map: {
+                "angular2-jwt": "/angular2-jwt/angular2-jwt"
             }
         });
         System.import('app/main')
@@ -45,7 +51,6 @@
 
 <body>
 <my-app>Loading...</my-app>
-
 </body>
 
 </html>

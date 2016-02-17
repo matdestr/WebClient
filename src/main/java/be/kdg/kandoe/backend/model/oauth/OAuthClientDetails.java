@@ -1,5 +1,6 @@
 package be.kdg.kandoe.backend.model.oauth;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
+@Data
 public class OAuthClientDetails implements ClientDetails {
     @Id
     @GeneratedValue

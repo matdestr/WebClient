@@ -59,7 +59,7 @@ public class ATSignInUser {
         (new WebDriverWait(driver, DEFAULT_SLEEP_TIMEOUT)).until((WebDriver d) -> d.getCurrentUrl().equals(baseUrl) && d.getTitle().equals("Welcome to CanDo"));
     }
 
-     //@Test
+    //@Test
     public void testUserLoginSuccess() {
         val driver = new ChromeDriver();
         driver.get(baseUrl);
@@ -82,7 +82,7 @@ public class ATSignInUser {
         WebDriver driver = new ChromeDriver();
         driver.get(baseUrl);
 
-        WebElement loginForm = driver.findElement(By.name("sign-in"));
+        WebElement loginForm = driver.findElement(By.name("form-sign-in"));
         driver.switchTo().frame(loginForm);
 
         driver.findElement(By.name(NAME_SIGN_IN_USERNAME)).sendKeys(DUMMY_USERNAME);

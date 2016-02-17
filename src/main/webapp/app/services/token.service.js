@@ -31,13 +31,12 @@ System.register(["angular2/core", "angular2/http", 'rxjs/add/operator/map'], fun
                     var headers = new http_1.Headers();
                     headers.append('Authorization', 'Basic ' + btoa(TokenService.client_id + ":" + TokenService.client_secret));
                     headers.append('Content-Type', 'application/x-www-form-urlencoded');
-                    console.log(headers);
                     return this._http.post(TokenService.tokenEndpoint, creds, {
                         headers: headers
                     })
                         .map(function (res) { return res.json(); });
                 };
-                TokenService.tokenEndpoint = "http://localhost:8080/kandoe/oauth/token";
+                TokenService.tokenEndpoint = "./oauth/token";
                 TokenService.client_id = "webapp";
                 TokenService.client_secret = "secret";
                 TokenService = __decorate([

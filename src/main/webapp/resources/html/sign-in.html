@@ -1,9 +1,18 @@
-<form id="form-sign-in" name="form-sign-in" method="post" role="form" style="display: block;">
+<p id="error" class="alert alert-danger" [hidden]="!invalidCredentials">
+    Wrong username or password.
+</p>
+
+<form id="form-sign-in" 
+      name="form-sign-in" 
+      method="post" role="form"
+      (ngSubmit)="onSubmit()"
+      style="display: block;">
 
     <div class="input-group forms-default">
 
         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-        <input name="username"
+        <input [(ngModel)]="username" 
+               name="username"
                type="text"
                class="form-control"
                id="username"
@@ -15,7 +24,8 @@
     <div class="input-group forms-default">
 
         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-        <input name="password"
+        <input [(ngModel)]="password" 
+               name="password"
                type="password"
                class="form-control"
                id="password"
@@ -23,7 +33,7 @@
                required>
 
     </div>
-
+    
     <input type="submit" value="Sign In"/>
 
     <div class="row">

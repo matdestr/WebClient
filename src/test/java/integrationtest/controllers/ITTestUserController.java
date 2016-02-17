@@ -106,7 +106,7 @@ public class ITTestUserController {
                 post("/api/users/")
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
+                //.andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.fieldErrors[0].field", is("valid")))
                 .andExpect(jsonPath("$.fieldErrors[0].message", is(notNullValue())));
@@ -120,7 +120,7 @@ public class ITTestUserController {
                 fileUpload(String.format("/api/users/%s/photo", user.getUserId()))
                         .file(file)
                         .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword)))
-        ).andDo(print()).andExpect(status().isOk());
+        )/*.andDo(print())*/.andExpect(status().isOk());
     }
 
     @Test
@@ -130,7 +130,7 @@ public class ITTestUserController {
                 fileUpload(String.format("/api/users/%s/photo", user.getUserId()))
                         .file(file)
                         .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword)))
-        ).andDo(print()).andExpect(status().isBadRequest());
+        )/*.andDo(print())*/.andExpect(status().isBadRequest());
     }
 
     @Test
@@ -141,7 +141,7 @@ public class ITTestUserController {
                 fileUpload(String.format("/api/users/%s/photo", user.getUserId() + 1))
                         .file(file)
                         .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword)))
-        ).andDo(print()).andExpect(status().isUnauthorized());
+        )/*.andDo(print())*/.andExpect(status().isUnauthorized());
     }
 
     @Test

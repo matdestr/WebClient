@@ -1,7 +1,8 @@
-export class Token{
-  acces_token: string;
-  token_type: string;
-  refresh_token: string;
-  scope: string;
-  jti: string;
+export class Token {
+    access_token : string;
+    expires_in : number;
+    token_type : string;
+    refresh_token : string;
+    scope : string;
+    jti : string;
 }
