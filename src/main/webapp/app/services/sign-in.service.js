@@ -27,15 +27,15 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', "./token.service",
             }],
         execute: function() {
             SignInService = (function () {
-                function SignInService(_http, tokenService) {
+                function SignInService(_http, _tokenService) {
                     this._http = _http;
-                    this.tokenService = tokenService;
+                    this._tokenService = _tokenService;
                 }
                 SignInService.prototype.signIn = function (username, password) {
                     var credentials = new credentials_1.CredentialsModel();
                     credentials.username = username;
                     credentials.password = password;
-                    return this.tokenService.authenticate(credentials);
+                    return this._tokenService.authenticate(credentials);
                 };
                 SignInService = __decorate([
                     core_1.Injectable(), 

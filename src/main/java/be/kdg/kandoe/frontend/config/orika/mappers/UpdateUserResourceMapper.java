@@ -16,6 +16,5 @@ public class UpdateUserResourceMapper extends CustomMapper<User, UpdateUserResou
 
     @Override
     public void mapBtoA(UpdateUserResource userResource, User user, MappingContext context) {
-
     }
 }

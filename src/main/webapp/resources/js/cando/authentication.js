@@ -12,6 +12,6 @@ function signUpClick(){
     $("#form-sign-in").fadeOut(100);
     $('#form-sign-in-link').removeClass('active');
     $('#form-sign-up-link').addClass('active');
-    preventDefault();
+    //preventDefault();
 }
 

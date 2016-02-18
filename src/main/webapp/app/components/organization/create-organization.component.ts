@@ -4,11 +4,11 @@ import {FORM_DIRECTIVES} from "angular2/common";
 import {NgModel} from "angular2/common";
 import {NgForm} from "angular2/common";
 import {CanActivate} from "angular2/router";
-import {tokenNotExpired} from "angular2-jwt/angular2-jwt";
 
 import {User} from "../../entities/user";
 import {OrganizationService} from "../../services/organization.service";
 import {Organization} from "../../entities/organization";
+import {tokenNotExpired} from "../../libraries/angular2-jwt";
 //import {ErrorDialogComponent} from "../error-dialog.component";
 
 @Component({

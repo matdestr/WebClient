@@ -4,6 +4,7 @@ import be.kdg.kandoe.frontend.config.security.resolvers.OAuth2UserArgumentResolv
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
 import org.springframework.validation.Validator;
@@ -54,8 +55,17 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
         // Create global validator bean for Hibernate Validation (JSR-303)
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         // pass MessageSource Bean so error messages have i18n support
-        // bean.setValidationMessageSource(messageSource());
+        bean.setValidationMessageSource(messageSource());
         return bean;
+    }
+
+    @Bean
+    public ReloadableResourceBundleMessageSource messageSource()
+    {
+        ReloadableResourceBundleMessageSource messageSource =
+                new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:bundles/messages");
+        return messageSource;
     }
 
     @Bean

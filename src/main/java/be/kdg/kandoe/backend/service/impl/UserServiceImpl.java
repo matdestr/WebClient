@@ -49,14 +49,28 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public void checkLogin(int userId, String password) {
+        User u = userRepository.findOne(userId);
+        if (u == null || !passwordEncoder.matches(password, u.getPassword())) {
+            throw new UserServiceException("Username or password isn't correct");
+        }
+    }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.getUserByUsername(username);
-
-        if (user == null)
-            throw new UsernameNotFoundException(String.format("No user with username %s found", username));
-
-        return user;
+    public void isUsernameAvailable(String username) {
+        User u = userRepository.findUserByUsername(username);
+        if (u != null)
+            throw new UserServiceException("Username is already taken.");
     }
-}
+
+    @Override
+        public UserDetails loadUserByUsername (String username)throws UsernameNotFoundException {
+            User user = this.getUserByUsername(username);
+
+            if (user == null)
+                throw new UsernameNotFoundException(String.format("No user with username %s found", username));
+
+            return user;
+        }
+    }

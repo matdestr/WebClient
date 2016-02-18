@@ -7,4 +7,6 @@ public interface UserService extends UserDetailsService {
     User addUser(User user);
     User getUserByUsername(String username);
     User updateUser(User user);
+    void checkLogin(int username, String verifyPassword);
+    void isUsernameAvailable(String username);
 }

@@ -36,7 +36,7 @@ public class ATSignInUser {
     //@Before
     public void setup() {
         baseUrl = System.getProperty("app.baseUrl");
-
+        System.out.println(baseUrl);
         WebDriver driver = new ChromeDriver();
         driver.get(baseUrl);
 

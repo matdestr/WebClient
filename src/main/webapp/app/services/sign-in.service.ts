@@ -10,13 +10,13 @@ import {Token} from "../entities/authenticatie/token";
 
 @Injectable()
 export class SignInService {
-    constructor(private _http : Http, private tokenService : TokenService) {}
+    constructor(private _http : Http, private _tokenService : TokenService) {}
     
     public signIn(username : string, password : string) : Observable<Token> {
         var credentials = new CredentialsModel();
         credentials.username = username;
         credentials.password = password;
         
-        return this.tokenService.authenticate(credentials);
+        return this._tokenService.authenticate(credentials);
     }
 }

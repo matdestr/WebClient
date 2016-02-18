@@ -1,4 +1,4 @@
-System.register(['angular2/core', "angular2/common", "angular2/router", "angular2-jwt/angular2-jwt", "../../entities/user", "../../services/organization.service", "../../entities/organization"], function(exports_1) {
+System.register(['angular2/core', "angular2/common", "angular2/router", "../../entities/user", "../../services/organization.service", "../../entities/organization", "../../libraries/angular2-jwt"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "angular
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, common_2, common_3, router_1, angular2_jwt_1, user_1, organization_service_1, organization_1;
+    var core_1, common_1, common_2, common_3, router_1, user_1, organization_service_1, organization_1, angular2_jwt_1;
     var CreateOrganizationComponent;
     return {
         setters:[
@@ -23,9 +23,6 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "angular
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (angular2_jwt_1_1) {
-                angular2_jwt_1 = angular2_jwt_1_1;
-            },
             function (user_1_1) {
                 user_1 = user_1_1;
             },
@@ -34,6 +31,9 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "angular
             },
             function (organization_1_1) {
                 organization_1 = organization_1_1;
+            },
+            function (angular2_jwt_1_1) {
+                angular2_jwt_1 = angular2_jwt_1_1;
             }],
         execute: function() {
             //import {ErrorDialogComponent} from "../error-dialog.component";

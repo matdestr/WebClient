@@ -1,5 +1,12 @@
-<form id="form-sign-up" name="form-sign-up" action="http://phpoll.com/register/process"
-      method="post" role="form" style="display: none;">
+<form (ngSubmit)="onSubmit()" id="form-sign-up" name="form-sign-up"  role="form" style="display: none;">
+
+    <div id="error" *ngIf="errors.length > 0" class="alert alert-danger">
+        <ul>
+            <li *ngFor="#error of errors; #i = index">
+                {{error}}
+            </li>
+        </ul>
+    </div>
 
     <div class="forms-input-group input-group forms-default">
         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -9,21 +16,27 @@
                class="form-control first"
                id="username-reg"
                placeholder="Username"
-               required>
+               required
+               [(ngModel)]="form.username"
+        >
 
         <input name="name"
                type="text"
                class="form-control"
                id="name"
                placeholder="Name"
-               required>
+               required
+               [(ngModel)]="form.name"
+        >
 
         <input name="surname"
                type="text"
                class="form-control"
                id="surname"
                placeholder="Surname"
-               required>
+               required
+               [(ngModel)]="form.surname"
+        >
 
     </div>
 
@@ -35,7 +48,9 @@
                class="form-control"
                id="email"
                placeholder="Email"
-               required>
+               required
+               [(ngModel)]="form.email"
+        >
     </div>
 
     <div class="input-group forms-default">
@@ -46,7 +61,9 @@
                class="form-control"
                id="password-reg"
                placeholder="Password"
-               required>
+               required
+               [(ngModel)]="form.password"
+        >
 
     </div>
 
@@ -57,7 +74,10 @@
                type="password"
                class="form-control"
                id="verify-password"
-               placeholder="Verify password" required>
+               placeholder="Verify password"
+               required
+               [(ngModel)]="form.verifyPassword"
+        >
 
     </div>
 

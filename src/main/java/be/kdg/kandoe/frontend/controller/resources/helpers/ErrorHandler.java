@@ -21,7 +21,7 @@ public class ErrorHandler {
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
 
-        return new ResponseEntity<>(processFieldErrors(fieldErrors), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(processFieldErrors(fieldErrors), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     private ValidationErrorResource processFieldErrors(List<FieldError> fieldErrors)

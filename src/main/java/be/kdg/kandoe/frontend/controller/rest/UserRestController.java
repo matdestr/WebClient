@@ -7,12 +7,12 @@ import be.kdg.kandoe.frontend.controller.resources.users.UpdateUserResource;
 import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
 import ma.glasnost.orika.MapperFacade;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,13 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.FileSystem;
 
 @RestController
 @RequestMapping("/api/users")
@@ -41,12 +37,13 @@ public class UserRestController {
     
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserResource> createUser(@Valid @RequestBody CreateUserResource createUserResource){
+        userService.isUsernameAvailable(createUserResource.getUsername());
         User userIn = mapper.map(createUserResource, User.class);
         User userOut = userService.addUser(userIn);
         return new ResponseEntity<UserResource>(mapper.map(userOut, UserResource.class), HttpStatus.CREATED);
     }
 
-    //TODO: file upload is image and not null
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{userId}/photo", method = RequestMethod.POST)
     public ResponseEntity uploadPhoto(@PathVariable int userId, @AuthenticationPrincipal User user, @RequestParam("file") MultipartFile uploadedFile, HttpServletRequest servletRequest) throws IOException {
         if (userId != user.getUserId()){
@@ -88,15 +85,17 @@ public class UserRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
     public ResponseEntity<UserResource> updateProfile(@PathVariable int userId, @AuthenticationPrincipal User user,@Valid @RequestBody UpdateUserResource resource) {
-
         if (userId != user.getUserId()){
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
-
+        userService.checkLogin(userId, resource.getVerifyPassword());
+        if (!user.getUsername().equals(resource.getUsername())){
+            userService.isUsernameAvailable(resource.getUsername());
+        }
         User updatedUser = userService.updateUser(mapper.map(resource, User.class));
-
         return new ResponseEntity(mapper.map(updatedUser, UserResource.class), HttpStatus.OK);
     }
 }

@@ -7,11 +7,12 @@ import {JwtHelper, AuthHttp, AuthConfig} from "./libraries/angular2-jwt";
 
 import {SignInService} from "./services/sign-in.service";
 import {TokenService} from "./services/token.service";
+import {SignUpService} from "./services/sing-up.service";
 
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
-    SignInService, TokenService,
+    SignInService, SignUpService, TokenService,
     JwtHelper,
     provide(AuthHttp, {
         useFactory: (http) => {

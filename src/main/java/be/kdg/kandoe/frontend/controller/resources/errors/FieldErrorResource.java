@@ -1,14 +1,15 @@
 package be.kdg.kandoe.frontend.controller.resources.errors;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
-public class FieldErrorResource
+public class FieldErrorResource extends ErrorResource
 {
     @Getter
     private final String field;
-    @Getter
-    private final String message;
+
+    public FieldErrorResource(String field, String message) {
+        super(message);
+        this.field = field;
+    }
 }
 

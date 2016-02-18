@@ -7,5 +7,5 @@ import lombok.Getter;
 public class ErrorResource
 {
     @Getter
-    private final String errorMessage;
+    private final String message;
 }
