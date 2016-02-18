@@ -192,7 +192,7 @@ public class ITTestUserController {
                 .andDo(print())
         .andExpect(jsonPath("$.username", is("new username")))
         .andExpect(jsonPath("$.name", is("newname")))
-        .andExpect(jsonPath("$.surname", is("newsurname")));
+        .andExpect(jsonPath("$.surname", is("newsurname")));;
     }
 
 
@@ -286,5 +286,22 @@ public class ITTestUserController {
                 .content(new JSONObject(updateUserResource).toString())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andDo(print()).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testGetExistingUser() throws Exception {
+        mockMvc.perform(
+                get(String.format("/api/users/%s", user.getUsername())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.email", is(user.getEmail())))
+                .andExpect(jsonPath("$.name", is(user.getName())))
+                .andExpect(jsonPath("$.surname", is(user.getSurname())));
+    }
+
+    @Test
+    public void testGetNotExistingUser() throws Exception {
+        mockMvc.perform(
+                get("/api/users/notExistingUser")).andExpect(status().isNotFound());
     }
 }

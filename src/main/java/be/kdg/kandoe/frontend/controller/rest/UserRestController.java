@@ -44,6 +44,17 @@ public class UserRestController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    public ResponseEntity<UserResource> getUserByName(@PathVariable String username) {
+
+        User user = userService.getUserByUsername(username);
+
+        if (user == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(mapper.map(user, UserResource.class), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{userId}/photo", method = RequestMethod.POST)
     public ResponseEntity uploadPhoto(@PathVariable int userId, @AuthenticationPrincipal User user, @RequestParam("file") MultipartFile uploadedFile, HttpServletRequest servletRequest) throws IOException {
         if (userId != user.getUserId()){

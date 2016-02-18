@@ -1,4 +1,3 @@
-import {Component} from 'angular2/core'
 import {Injectable, Inject} from 'angular2/core';
 import {Http, Headers} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';

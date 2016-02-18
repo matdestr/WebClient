@@ -123,8 +123,7 @@
             <version>1.3</version>
             <scope>test</scope>
         </dependency>
-
-
+        
         <!-- Spring dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -171,7 +170,6 @@
         </dependency>
 
         <!-- spring social -->
-
         <dependency>
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-core</artifactId>
@@ -241,8 +239,7 @@
             <artifactId>spring-security-jwt</artifactId>
             <version>1.0.3.RELEASE</version>
         </dependency>
-
-
+        
         <!--Jackson JSON mapper-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -292,18 +289,16 @@
     </dependencies>
 
     <profiles>
-
         <profile>
             <id>dev</id>
-
+            
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-
+            
             <properties>
                 <profile.baseUrl>http://localhost:8080/${artifactId}</profile.baseUrl>
             </properties>
-
         </profile>
 
         <profile>
@@ -342,7 +337,6 @@
                 </plugins>
             </build>
         </profile>
-
     </profiles>
 
     <build>
@@ -382,7 +376,6 @@
                         <phase>integration-test</phase>-->
                         <goals>
                             <goal>integration-test</goal>
-                            <!--<goal>verify</goal>-->
                         </goals>
                         <!--<configuration>
                             <includes>
@@ -394,7 +387,8 @@
                     <execution>
                         <id>acceptance-tests</id>
                         <!--<phase>post-integration-test</phase>-->
-                        <phase>install</phase>
+                        <!--<phase>install</phase>-->
+                        <phase>verify</phase>
                         <goals>
                             <goal>integration-test</goal>
                             <!--<goal>verify</goal>-->
