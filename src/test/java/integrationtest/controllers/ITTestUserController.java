@@ -29,7 +29,6 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,8 +54,7 @@ public class ITTestUserController {
     private MockMvc mockMvc;
 
     @Before
-    public void setup()
-    {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).addFilters(springSecurityFilterChain).build();
 
@@ -77,8 +75,8 @@ public class ITTestUserController {
         JSONObject jsonObject = new JSONObject(userResource);
         mockMvc.perform(
                 post("/api/users/")
-                .content(jsonObject.toString())
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.username", is("test")))
@@ -158,8 +156,25 @@ public class ITTestUserController {
                 .content(new JSONObject(userResource).toString())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(status().isOk())
-        .andExpect(jsonPath("$.username", is("new username")))
-        .andExpect(jsonPath("$.name", is("newname")))
-        .andExpect(jsonPath("$.surname", is("newsurname")));
+                .andExpect(jsonPath("$.username", is("new username")))
+                .andExpect(jsonPath("$.name", is("newname")))
+                .andExpect(jsonPath("$.surname", is("newsurname")));
+    }
+
+    @Test
+    public void testGetExistingUser() throws Exception {
+        mockMvc.perform(
+                get(String.format("/api/users/%s", user.getUserId())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.email", is(user.getEmail())))
+                .andExpect(jsonPath("$.name", is(user.getName())))
+                .andExpect(jsonPath("$.surname", is(user.getSurname())));
+    }
+
+    @Test
+    public void testGetNotExistingUser() throws Exception {
+        mockMvc.perform(
+                get("/api/users/notExistingUser")).andExpect(status().isNotFound());
     }
 }

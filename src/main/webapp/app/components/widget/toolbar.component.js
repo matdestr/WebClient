@@ -1,4 +1,4 @@
-System.register(['angular2/core', "../authentication/sign-out.component"], function(exports_1) {
+System.register(['angular2/core', "../authentication/sign-out.component", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/user"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', "../authentication/sign-out.component"], funct
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, sign_out_component_1;
+    var core_1, sign_out_component_1, user_service_1, angular2_jwt_1, user_1;
     var ToolbarComponent;
     return {
         setters:[
@@ -17,18 +17,42 @@ System.register(['angular2/core', "../authentication/sign-out.component"], funct
             },
             function (sign_out_component_1_1) {
                 sign_out_component_1 = sign_out_component_1_1;
+            },
+            function (user_service_1_1) {
+                user_service_1 = user_service_1_1;
+            },
+            function (angular2_jwt_1_1) {
+                angular2_jwt_1 = angular2_jwt_1_1;
+            },
+            function (user_1_1) {
+                user_1 = user_1_1;
             }],
         execute: function() {
             ToolbarComponent = (function () {
-                function ToolbarComponent() {
+                function ToolbarComponent(_userService) {
+                    var _this = this;
+                    this._userService = _userService;
+                    this.user = user_1.User.createEmptyUser();
+                    var token = localStorage.getItem('token');
+                    this._userService.getUser(angular2_jwt_1.getUsername(token)).subscribe(function (user) {
+                        _this.user = _this.user.deserialize(user);
+                    });
                 }
+                ToolbarComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    var token = localStorage.getItem('token');
+                    this._userService.getUser(angular2_jwt_1.getUsername(token)).subscribe(function (user) {
+                        _this.user = _this.user.deserialize(user);
+                    });
+                    return null;
+                };
                 ToolbarComponent = __decorate([
                     core_1.Component({
                         selector: 'toolbar',
                         templateUrl: 'html/toolbar.html',
                         directives: [sign_out_component_1.SignOutComponent]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [user_service_1.UserService])
                 ], ToolbarComponent);
                 return ToolbarComponent;
             })();

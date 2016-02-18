@@ -14,7 +14,5 @@ export class DashboardComponent implements OnInit{
 
     ngOnInit():any {
         var token = localStorage.getItem('token');
-
-        alert(getUsername(token));
     }
 }
