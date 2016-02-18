@@ -164,7 +164,7 @@ public class ITTestUserController {
     @Test
     public void testGetExistingUser() throws Exception {
         mockMvc.perform(
-                get(String.format("/api/users/%s", user.getUserId())))
+                get(String.format("/api/users/%s", user.getUsername())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.email", is(user.getEmail())))
