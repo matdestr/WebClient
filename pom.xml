@@ -347,6 +347,7 @@
 
     <build>
         <finalName>kandoe</finalName>
+        
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
@@ -402,6 +403,10 @@
                             <includes>
                                 <include>**/AT*.java</include>
                             </includes>
+
+                            <systemPropertyVariables>
+                                <app.baseUrl>${profile.baseUrl}</app.baseUrl>
+                            </systemPropertyVariables>
                         </configuration>
                     </execution>
                 </executions>
@@ -438,17 +443,6 @@
                     </execution>
                 </executions>
             </plugin>-->
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.12.4</version>
-                <configuration>
-                    <systemPropertyVariables>
-                        <app.baseUrl>${profile.baseUrl}</app.baseUrl>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 </project>

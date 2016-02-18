@@ -28,9 +28,8 @@ public class ATCreateOrganization {
     
     //@Test
     public void testCreateNewOrganization() {
-        //baseUrl = System.getProperty("app.baseUrl");
-        //System.out.println("BASE URL: " + baseUrl);
-        baseUrl = "http://localhost:8080/kandoe"; // TODO : Fix
+        baseUrl = System.getProperty("app.baseUrl");
+        System.out.println("BASE URL: " + baseUrl);
         
         WebDriver driver = new ChromeDriver();
         driver.get(baseUrl);
