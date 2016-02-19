@@ -1,4 +1,4 @@
-System.register(['angular2/core', "../authentication/sign-out.component", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/user"], function(exports_1) {
+System.register(['angular2/core', "../authentication/sign-out.component", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/user", "angular2/router"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', "../authentication/sign-out.component", "../..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, sign_out_component_1, user_service_1, angular2_jwt_1, user_1;
+    var core_1, sign_out_component_1, user_service_1, angular2_jwt_1, user_1, router_1;
     var ToolbarComponent;
     return {
         setters:[
@@ -26,12 +26,16 @@ System.register(['angular2/core', "../authentication/sign-out.component", "../..
             },
             function (user_1_1) {
                 user_1 = user_1_1;
+            },
+            function (router_1_1) {
+                router_1 = router_1_1;
             }],
         execute: function() {
             ToolbarComponent = (function () {
-                function ToolbarComponent(_userService) {
+                function ToolbarComponent(_userService, _router) {
                     var _this = this;
                     this._userService = _userService;
+                    this._router = _router;
                     this.user = user_1.User.createEmptyUser();
                     var token = localStorage.getItem('token');
                     this._userService.getUser(angular2_jwt_1.getUsername(token)).subscribe(function (user) {
@@ -46,13 +50,16 @@ System.register(['angular2/core', "../authentication/sign-out.component", "../..
                     });
                     return null;
                 };
+                ToolbarComponent.prototype.toProfile = function () {
+                    this._router.navigate(["/Profile", { username: this.user.username }]);
+                };
                 ToolbarComponent = __decorate([
                     core_1.Component({
                         selector: 'toolbar',
                         templateUrl: 'html/toolbar.html',
                         directives: [sign_out_component_1.SignOutComponent]
                     }), 
-                    __metadata('design:paramtypes', [user_service_1.UserService])
+                    __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])
                 ], ToolbarComponent);
                 return ToolbarComponent;
             })();

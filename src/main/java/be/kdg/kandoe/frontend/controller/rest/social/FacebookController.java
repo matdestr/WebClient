@@ -1,9 +1,16 @@
 package be.kdg.kandoe.frontend.controller.rest.social;
 
+import be.kdg.kandoe.backend.model.users.User;
+import be.kdg.kandoe.backend.model.users.roles.RoleType;
 import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.controller.resources.properties.FacebookProperties;
+import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
+import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.UserProfile;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.oauth2.AccessGrant;
@@ -25,9 +32,6 @@ public class FacebookController {
     @Autowired
     private FacebookProperties properties;
 
-    @Autowired
-    private UserService userService;
-
     private FacebookConnectionFactory connectionFactory;
 
     public FacebookController(){
@@ -41,6 +45,7 @@ public class FacebookController {
     private String getAuthorizeUrl(){
         OAuth2Operations operations = connectionFactory.getOAuthOperations();
         OAuth2Parameters parameters = new OAuth2Parameters();
+
         parameters.setRedirectUri("http://localhost:8080/kandoe/api/social/facebook/redirect");
         parameters.setScope("public_profile,email");
 
@@ -60,15 +65,12 @@ public class FacebookController {
         AccessGrant grant = oauthOperations.exchangeForAccess(authorizationCode, "http://localhost:8080/kandoe/api/social/facebook/redirect", null);
         Connection<Facebook> facebookConnection = connectionFactory.createConnection(grant);
 
-        String name = facebookConnection.getDisplayName();
-        String email = facebookConnection.fetchUserProfile().getEmail();
+        UserProfile profile = facebookConnection.fetchUserProfile();
+        User user = new User();
+        user.setName(profile.getFirstName());
+        user.setSurname(profile.getLastName());
+        user.setEmail(profile.getEmail());
 
-        if (email == null || email.isEmpty()){
-            //todo redirect to email page and register
-
-        } else {
-            //todo register
-            response.sendRedirect("http://localhost:8080/kandoe");
-        }
+        response.sendRedirect("http://localhost:8080/kandoe/#/?firstname=" + user.getName() + "&lastname=" + user.getSurname() + "&email=" + user.getEmail());
     }
 }

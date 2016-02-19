@@ -36,8 +36,7 @@ System.register(['angular2/platform/browser', './components/app.component', "ang
             browser_1.bootstrap(app_component_1.AppComponent, [
                 router_1.ROUTER_PROVIDERS,
                 http_1.HTTP_PROVIDERS,
-                sign_in_service_1.SignInService, sing_up_service_1.SignUpService, token_service_1.TokenService,
-                sign_in_service_1.SignInService, token_service_1.TokenService, user_service_1.UserService,
+                sign_in_service_1.SignInService, sing_up_service_1.SignUpService, token_service_1.TokenService, user_service_1.UserService,
                 angular2_jwt_1.JwtHelper,
                 core_1.provide(angular2_jwt_1.AuthHttp, {
                     useFactory: function (http) {

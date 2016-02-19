@@ -107,6 +107,6 @@ public class UserRestController {
             userService.isUsernameAvailable(resource.getUsername());
         }
         User updatedUser = userService.updateUser(mapper.map(resource, User.class));
-        return new ResponseEntity(mapper.map(updatedUser, UserResource.class), HttpStatus.OK);
+        return new ResponseEntity<UserResource>(mapper.map(updatedUser, UserResource.class), HttpStatus.OK);
     }
 }

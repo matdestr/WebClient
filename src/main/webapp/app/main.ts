@@ -13,8 +13,7 @@ import {UserService} from "./services/user.service";
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
-    SignInService, SignUpService, TokenService,
-    SignInService, TokenService, UserService,
+    SignInService, SignUpService, TokenService, UserService,
     JwtHelper,
     provide(AuthHttp, {
         useFactory: (http) => {
