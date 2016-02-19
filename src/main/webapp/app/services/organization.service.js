@@ -8,9 +8,6 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var __param = (this && this.__param) || function (paramIndex, decorator) {
-        return function (target, key) { decorator(target, key, paramIndex); }
-    };
     var core_1, http_1, angular2_jwt_1;
     var OrganizationService;
     return {
@@ -27,20 +24,23 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
             }],
         execute: function() {
             OrganizationService = (function () {
-                function OrganizationService(/*http : Http,*/ authHttp, path) {
+                function OrganizationService(/*http : Http,*/ authHttp) {
                     //this.http = http;
                     this.authHttp = authHttp;
-                    this.path = path;
                 }
                 OrganizationService.prototype.saveOrganization = function (organization) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
-                    return this.authHttp.post(this.path + 'organizations/', JSON.stringify(organization), { headers: headers }).retry(2);
+                    return this.authHttp.post('organizations/', JSON.stringify(organization), { headers: headers }).retry(2);
+                };
+                OrganizationService.prototype.getOrganizations = function (userId) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this.authHttp.get('organizations/' + userId).retry(2);
                 };
                 OrganizationService = __decorate([
-                    core_1.Injectable(),
-                    __param(1, core_1.Inject('backendPath')), 
-                    __metadata('design:paramtypes', [angular2_jwt_1.AuthHttp, String])
+                    core_1.Injectable(), 
+                    __metadata('design:paramtypes', [angular2_jwt_1.AuthHttp])
                 ], OrganizationService);
                 return OrganizationService;
             })();

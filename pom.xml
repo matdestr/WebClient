@@ -8,6 +8,14 @@
     <name>Kandoe</name>
     <url>http://maven.apache.org</url>
 
+
+    <!-- OpenShift auto generated -->
+    <!--<properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>-->
+
     <!-- Needed to resolve version of javax.el-api -->
     <dependencyManagement>
         <dependencies>
@@ -46,6 +54,14 @@
     </repositories>-->
 
     <dependencies>
+        <!-- OpenShift auto generated -->
+        <!--<dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>-->
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>

@@ -1,6 +1,8 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit, Inject} from 'angular2/core';
 import {SignInComponent} from "./sign-in.component";
 import {SignUpComponent} from "./sign-up.component";
+import {tokenNotExpired} from "../../libraries/angular2-jwt";
+import {Router} from "angular2/router";
 
 @Component({
     selector: 'authentication',
@@ -8,7 +10,14 @@ import {SignUpComponent} from "./sign-up.component";
     directives: [SignInComponent, SignUpComponent]
 })
 export class AuthenticationComponent implements OnInit{
-
+    constructor(@Inject('App.TokenName') tokenName : string, router : Router) {
+        //var token : string = localStorage.getItem(tokenName);
+        
+        if (tokenNotExpired(tokenName)) {
+            router.navigate(['/Dashboard']);
+        }
+    }
+    
     ngOnInit():any {
         return null;
     }

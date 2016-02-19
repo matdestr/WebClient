@@ -18,5 +18,5 @@
 # Log Files
 *.log
 
-#
+# Node JS
 /node_modules/

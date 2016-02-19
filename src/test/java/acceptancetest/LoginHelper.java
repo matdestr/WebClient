@@ -36,5 +36,15 @@ public class LoginHelper {
     
     public static void login(WebDriver driver, String username, String password, int timeout) {
         // TODO
+        String baseUrl = System.getProperty("app.baseUrl");
+        driver.get(baseUrl);
+
+        WebElement registrationForm = driver.findElement(By.name("form-sign-up"));
+        driver.switchTo().frame(registrationForm);
+
+        driver.findElement(By.name("username")).sendKeys(username);
+        driver.findElement(By.name("password")).sendKeys(password);
+        
+        registrationForm.submit();
     }
 }

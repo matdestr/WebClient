@@ -1,4 +1,5 @@
 import {Component, OnInit} from 'angular2/core';
+import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES} from 'angular2/router';
 import {SignOutComponent} from "../authentication/sign-out.component";
 import {UserService} from "../../services/user.service";
 import {getUsername} from "../../libraries/angular2-jwt";
@@ -7,7 +8,7 @@ import {User} from "../../entities/user";
 @Component({
     selector: 'toolbar',
     templateUrl: 'html/toolbar.html',
-    directives:[SignOutComponent]
+    directives:[SignOutComponent, ROUTER_DIRECTIVES]
 })
 export class ToolbarComponent implements OnInit{
 

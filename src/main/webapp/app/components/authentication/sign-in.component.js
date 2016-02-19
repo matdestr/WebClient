@@ -40,7 +40,7 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../s
                     this._signInService
                         .signIn(this.username, this.password)
                         .subscribe(function (token) {
-                        localStorage.setItem('token', JSON.stringify(token.access_token));
+                        localStorage.setItem('token', token.access_token);
                         console.log(token); // TODO : Remove debug info
                     }, function (error) { console.error(error); _this.invalidCredentials = true; }, function () { _this._router.navigate(['/Dashboard']); });
                 };

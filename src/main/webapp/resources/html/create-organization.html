@@ -1,11 +1,12 @@
 <error-dialog *ngIf="isError"></error-dialog>
 
-<form (ngSubmit)="onSubmit()">
+<form (ngSubmit)="onSubmit()" name="form-new-organization">
     <div>
         <label>Organization name</label>
         <input type="text" required #organizationName="ngForm"
             [(ngModel)]="organization.name"
-            ngControl="organizationName">
+            ngControl="organizationName"
+            name="organization-name">
         <div [hidden]="organizationName.valid" class="alert alert-danger">
             Organization name is required
         </div>
@@ -34,5 +35,5 @@
         </div>
     </fieldset>
     
-    <input type="submit" class="btn btn-default">
+    <input type="submit" name="add-organization" class="btn btn-default">
 </form>

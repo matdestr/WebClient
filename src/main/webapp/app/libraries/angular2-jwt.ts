@@ -16,7 +16,6 @@ export interface IAuthConfig {
 /**
  * Sets up the authentication configuration.
  */
-
 export class AuthConfig {
 
     config:any;

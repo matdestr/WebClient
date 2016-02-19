@@ -134,6 +134,6 @@ public class ITTestOrganizationRestController {
                     .header("Authorization", authorizationHeader)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(jsonObject.toString())
-        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+        ).andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
     }
 }

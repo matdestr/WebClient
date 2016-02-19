@@ -10,18 +10,23 @@ import {Organization} from "../entities/organization";
 export class OrganizationService {
     //private http : Http;
     private authHttp : AuthHttp;
-    private path : string;
     
-    constructor (/*http : Http,*/ authHttp: AuthHttp, @Inject('backendPath') path : string) {
+    constructor (/*http : Http,*/ authHttp: AuthHttp) {
         //this.http = http;
         this.authHttp = authHttp;
-        this.path = path;
     }
     
     public saveOrganization(organization : Organization) : Observable<Response> {
         var headers : Headers = new Headers();
         headers.append('Content-Type', 'application/json');
         
-        return this.authHttp.post(this.path + 'organizations/', JSON.stringify(organization), {headers: headers}).retry(2);
+        return this.authHttp.post('organizations/', JSON.stringify(organization), {headers: headers}).retry(2);
+    }
+    
+    public getOrganizations(userId : number) {
+        var headers : Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        
+        return this.authHttp.get('organizations/' + userId).retry(2);
     }
 }

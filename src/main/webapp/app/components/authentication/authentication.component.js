@@ -1,4 +1,4 @@
-System.register(['angular2/core', "./sign-in.component", "./sign-up.component"], function(exports_1) {
+System.register(['angular2/core', "./sign-in.component", "./sign-up.component", "../../libraries/angular2-jwt", "angular2/router"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,10 @@ System.register(['angular2/core', "./sign-in.component", "./sign-up.component"],
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, sign_in_component_1, sign_up_component_1;
+    var __param = (this && this.__param) || function (paramIndex, decorator) {
+        return function (target, key) { decorator(target, key, paramIndex); }
+    };
+    var core_1, sign_in_component_1, sign_up_component_1, angular2_jwt_1, router_1;
     var AuthenticationComponent;
     return {
         setters:[
@@ -20,10 +23,20 @@ System.register(['angular2/core', "./sign-in.component", "./sign-up.component"],
             },
             function (sign_up_component_1_1) {
                 sign_up_component_1 = sign_up_component_1_1;
+            },
+            function (angular2_jwt_1_1) {
+                angular2_jwt_1 = angular2_jwt_1_1;
+            },
+            function (router_1_1) {
+                router_1 = router_1_1;
             }],
         execute: function() {
             AuthenticationComponent = (function () {
-                function AuthenticationComponent() {
+                function AuthenticationComponent(tokenName, router) {
+                    //var token : string = localStorage.getItem(tokenName);
+                    if (angular2_jwt_1.tokenNotExpired(tokenName)) {
+                        router.navigate(['/Dashboard']);
+                    }
                 }
                 AuthenticationComponent.prototype.ngOnInit = function () {
                     return null;
@@ -33,8 +46,9 @@ System.register(['angular2/core', "./sign-in.component", "./sign-up.component"],
                         selector: 'authentication',
                         templateUrl: 'html/authentication.html',
                         directives: [sign_in_component_1.SignInComponent, sign_up_component_1.SignUpComponent]
-                    }), 
-                    __metadata('design:paramtypes', [])
+                    }),
+                    __param(0, core_1.Inject('App.TokenName')), 
+                    __metadata('design:paramtypes', [String, router_1.Router])
                 ], AuthenticationComponent);
                 return AuthenticationComponent;
             })();

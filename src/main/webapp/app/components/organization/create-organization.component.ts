@@ -16,7 +16,7 @@ import {tokenNotExpired} from "../../libraries/angular2-jwt";
     templateUrl: 'html/create-organization.html',
     directives: [/*ErrorDialogComponent,*/ NgFor, NgForm, FORM_DIRECTIVES]
 })
-@CanActivate(() => tokenNotExpired())
+//@CanActivate(() => tokenNotExpired())
 export class CreateOrganizationComponent {
     private organizationService : OrganizationService;
     
@@ -31,7 +31,7 @@ export class CreateOrganizationComponent {
         this.organization = new Organization();
         this.usersToInvite = [];
 
-        this.usersToInvite.push(new User());
+        this.usersToInvite.push(User.createEmptyUser());
         
         this.organizationCreated = false;
         this.isError = false;
@@ -56,7 +56,7 @@ export class CreateOrganizationComponent {
     }
     
     private addUserEntry() {
-        this.usersToInvite.push(new User());
+        this.usersToInvite.push(User.createEmptyUser());
     }
     
     private inviteUsers() {

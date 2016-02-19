@@ -1,6 +1,7 @@
 import {Component, OnInit} from 'angular2/core'
 import {ToolbarComponent} from "../widget/toolbar.component";
-import {getUsername, AuthConfig} from "../../libraries/angular2-jwt";
+import {getUsername, AuthConfig, tokenNotExpired} from "../../libraries/angular2-jwt";
+import {CanActivate} from "angular2/router";
 
 @Component({
     selector: 'dashboard',
@@ -9,6 +10,7 @@ import {getUsername, AuthConfig} from "../../libraries/angular2-jwt";
     `,
     directives: [ToolbarComponent]
 })
+@CanActivate(() => tokenNotExpired('token')) // TODO : Inject
 export class DashboardComponent implements OnInit{
 
 
