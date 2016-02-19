@@ -28,7 +28,7 @@ export class SignInComponent{
             // TODO : Fancy error
             .subscribe(
                 (token : Token) => {
-                    localStorage.setItem('token', JSON.stringify(token.access_token))
+                    localStorage.setItem('token', JSON.stringify(token.access_token));
                     console.log(token); // TODO : Remove debug info
                 },
                 error => {console.error(error); this.invalidCredentials = true},

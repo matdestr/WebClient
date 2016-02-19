@@ -13,7 +13,6 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
 @RouteConfig([
     {path: "/",             name: "Authentication",     component: WelcomeComponent},
     {path: "/dashboard",    name: "Dashboard",          component: DashboardComponent}
-
 ])
 export class AppComponent implements OnInit{
 

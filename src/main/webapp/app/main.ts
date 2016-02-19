@@ -23,7 +23,6 @@ bootstrap(AppComponent, [
         deps: [Http]
     }),
     AuthHttp,
-    provide('App.BackEndPath', {useValue: "http://localhost:3000/"}),
     provide(APP_BASE_HREF, {useValue: '/'}),
     provide(LocationStrategy, {useClass: HashLocationStrategy})
 ]);
