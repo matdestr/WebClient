@@ -30,6 +30,7 @@ export class CreateOrganizationComponent {
         this.organizationService = organizationService;
         this.organization = new Organization();
         this.usersToInvite = [];
+
         this.usersToInvite.push(new User());
         
         this.organizationCreated = false;

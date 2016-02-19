@@ -1,34 +1,32 @@
 package be.kdg.kandoe.frontend.controller.rest.social;
 
+import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.controller.resources.properties.FacebookProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.UserProfile;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.social.oauth2.OAuth2Operations;
 import org.springframework.social.oauth2.OAuth2Parameters;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.awt.image.RenderedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
-/**
- * Created by Wannes on 16/02/16.
- */
+
 @RestController()
 @RequestMapping(value = "/api/social/facebook")
 public class FacebookController {
     @Autowired
     private FacebookProperties properties;
+
+    @Autowired
+    private UserService userService;
 
     private FacebookConnectionFactory connectionFactory;
 
@@ -60,13 +58,17 @@ public class FacebookController {
         OAuth2Operations oauthOperations = connectionFactory.getOAuthOperations();
 
         AccessGrant grant = oauthOperations.exchangeForAccess(authorizationCode, "http://localhost:8080/kandoe/api/social/facebook/redirect", null);
-        System.out.println(grant.getScope());
         Connection<Facebook> facebookConnection = connectionFactory.createConnection(grant);
 
-        System.out.println("Received access to facebook profile of " + facebookConnection.getDisplayName());
-        System.out.println(facebookConnection.fetchUserProfile().getEmail());
+        String name = facebookConnection.getDisplayName();
+        String email = facebookConnection.fetchUserProfile().getEmail();
 
-        response.sendRedirect("http://localhost:8080/kandoe");
-        //todo send retrieved data to register page if no email address is received
+        if (email == null || email.isEmpty()){
+            //todo redirect to email page and register
+
+        } else {
+            //todo register
+            response.sendRedirect("http://localhost:8080/kandoe");
+        }
     }
 }
