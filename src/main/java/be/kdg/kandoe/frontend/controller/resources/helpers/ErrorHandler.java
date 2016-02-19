@@ -1,6 +1,6 @@
 package be.kdg.kandoe.frontend.controller.resources.helpers;
 
-import be.kdg.kandoe.backend.service.exceptions.KandoeServiceRuntimeException;
+import be.kdg.kandoe.backend.service.exceptions.CanDoServiceRuntimeException;
 import be.kdg.kandoe.frontend.controller.resources.errors.ErrorResource;
 import be.kdg.kandoe.frontend.controller.resources.errors.ValidationErrorResource;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ public class ErrorHandler {
     }
     
     //@ExceptionHandler(RuntimeException.class)
-    @ExceptionHandler(KandoeServiceRuntimeException.class)
+    @ExceptionHandler(CanDoServiceRuntimeException.class)
     public ResponseEntity<ErrorResource> processRuntimeException(RuntimeException e) {
         ErrorResource errorResource = new ErrorResource(e.getLocalizedMessage());
         return new ResponseEntity<ErrorResource>(errorResource, HttpStatus.BAD_REQUEST);

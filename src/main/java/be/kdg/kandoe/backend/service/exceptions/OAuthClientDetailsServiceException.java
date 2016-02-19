@@ -1,6 +1,6 @@
 package be.kdg.kandoe.backend.service.exceptions;
 
-public class OAuthClientDetailsServiceException extends KandoeServiceRuntimeException {
+public class OAuthClientDetailsServiceException extends CanDoServiceRuntimeException {
     public OAuthClientDetailsServiceException(String message) {
         super(message);
     }
