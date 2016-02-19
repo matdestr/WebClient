@@ -14,9 +14,9 @@ import {CreateOrganizationComponent} from "./organization/create-organization.co
 @RouteConfig([
     {path: "/",             name: "Authentication",     component: WelcomeComponent},
     {path: "/dashboard",    name: "Dashboard",          component: DashboardComponent},
+    {path: "/profile",      name: "Profile",            component: UserProfileComponent},
     {path: '/new-organization', name: 'NewOrganization', component: CreateOrganizationComponent},
     //{path: '/my-organizations', name: 'MyOrganizations'} // TODO : Component
-
 ])
 export class AppComponent implements OnInit{
 

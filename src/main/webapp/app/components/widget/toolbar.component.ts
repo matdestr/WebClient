@@ -5,6 +5,8 @@ import {UserService} from "../../services/user.service";
 import {getUsername} from "../../libraries/angular2-jwt";
 import {User} from "../../entities/user";
 
+import {Router} from "angular2/router";
+
 @Component({
     selector: 'toolbar',
     templateUrl: 'html/toolbar.html',
@@ -14,7 +16,7 @@ export class ToolbarComponent implements OnInit{
 
     private user: User = User.createEmptyUser();
 
-    constructor(private _userService: UserService){
+    constructor(private _userService: UserService, private _router:Router){
         var token = localStorage.getItem('token');
 
         this._userService.getUser(getUsername(token)).subscribe((user:User) => {
@@ -30,5 +32,9 @@ export class ToolbarComponent implements OnInit{
         });
 
         return null;
+    }
+
+    public toProfile():void {
+        this._router.navigate(["/Profile", { username: this.user.username }]);
     }
 }

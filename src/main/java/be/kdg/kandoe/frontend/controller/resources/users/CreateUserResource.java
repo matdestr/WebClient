@@ -28,7 +28,7 @@ public class CreateUserResource {
     private String verifyPassword;
 
     @NotNull (message = "{register.wrong.email}")
-    @Email(message = "register.wrong.email-verification")
+    @Email(message = "{register.wrong.email-verification}")
     private String email;
 
     public CreateUserResource(String username, String password, String verifyPassword, String email) {

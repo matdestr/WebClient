@@ -4,7 +4,8 @@ System.register([], function(exports_1) {
         setters:[],
         execute: function() {
             User = (function () {
-                function User(name, surname, email) {
+                function User(username, name, surname, email) {
+                    this.username = username;
                     this.name = name;
                     this.surname = surname;
                     this.email = email;
@@ -17,9 +18,11 @@ System.register([], function(exports_1) {
                     configurable: true
                 });
                 User.createEmptyUser = function () {
-                    return new User("", "", "");
+                    return new User("", "", "", "");
                 };
                 User.prototype.deserialize = function (object) {
+                    this.userId = object.userId;
+                    this.username = object.username;
                     this.name = object.name;
                     this.surname = object.surname;
                     this.email = object.email;

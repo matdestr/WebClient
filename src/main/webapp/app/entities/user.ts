@@ -1,12 +1,15 @@
 import {Serializable} from "../util/serializable";
 
 export class User implements Serializable<User> {
+    public userId:number;
+    public username:string;
     public name:string;
     public surname:string;
     public email:string;
 
 
-    constructor(name:string, surname:string, email:string) {
+    constructor(username:string, name:string, surname:string, email:string) {
+        this.username = username;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -17,10 +20,12 @@ export class User implements Serializable<User> {
     }
 
     public static createEmptyUser():User {
-        return new User("", "", "");
+        return new User("", "", "", "");
     }
 
     deserialize(object:User):User {
+        this.userId = object.userId;
+        this.username = object.username;
         this.name = object.name;
         this.surname = object.surname;
         this.email = object.email;

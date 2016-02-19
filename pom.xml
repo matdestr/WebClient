@@ -273,6 +273,7 @@
             <version>2.7.1</version>
         </dependency>
 
+
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -313,8 +314,10 @@
             </activation>
             
             <properties>
+                <profile.properties>src/main/resources/dev.properties</profile.properties>
                 <profile.baseUrl>http://localhost:8080/${artifactId}</profile.baseUrl>
             </properties>
+
         </profile>
 
         <profile>
@@ -350,6 +353,7 @@
                             <useIncrementalCompilation>false</useIncrementalCompilation>
                         </configuration>
                     </plugin>
+
                 </plugins>
             </build>
         </profile>
@@ -359,6 +363,25 @@
         <finalName>kandoe</finalName>
         
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${profile.properties}</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
@@ -421,6 +444,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <!--<plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
