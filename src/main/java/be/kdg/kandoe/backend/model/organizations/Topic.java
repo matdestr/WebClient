@@ -19,6 +19,19 @@ public class Topic {
     @Getter
     private int topicId;
 
+    @Getter
+    @Setter
+    private String name;
+
+    @Setter
+    @Getter
+    private String description;
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    @Getter
+    @Setter
+    private Category category;
+
     @OneToMany
     @Getter
     @Setter

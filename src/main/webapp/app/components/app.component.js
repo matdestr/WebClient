@@ -43,6 +43,7 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
                     router_1.RouteConfig([
                         { path: "/", name: "Authentication", component: welcome_component_1.WelcomeComponent },
                         { path: "/dashboard", name: "Dashboard", component: dashboard_component_1.DashboardComponent },
+                        { path: "/profile", name: "Profile", component: UserProfileComponent },
                         { path: '/new-organization', name: 'NewOrganization', component: create_organization_component_1.CreateOrganizationComponent },
                     ]), 
                     __metadata('design:paramtypes', [])

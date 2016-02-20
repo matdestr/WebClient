@@ -48,7 +48,7 @@ System.register(['angular2/platform/browser', './components/app.component', "ang
                     deps: [http_1.Http]
                 }),
                 //AuthHttp,
-                core_1.provide('App.BackEndPath', { useValue: "http://localhost:3000/" }),
+                //provide('App.BackEndPath', {useValue: "http://localhost:3000/"}),
                 core_1.provide('App.TokenName', { useValue: 'token' }),
                 core_1.provide(router_1.APP_BASE_HREF, { useValue: '/' }),
                 core_1.provide(router_1.LocationStrategy, { useClass: router_1.HashLocationStrategy })
