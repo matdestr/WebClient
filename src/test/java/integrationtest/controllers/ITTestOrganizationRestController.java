@@ -7,10 +7,7 @@ import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
 import be.kdg.kandoe.frontend.controller.resources.organizations.OrganizationResource;
-import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
 import integrationtest.TokenProvider;
-
-import org.hamcrest.core.IsNull;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,7 +21,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;

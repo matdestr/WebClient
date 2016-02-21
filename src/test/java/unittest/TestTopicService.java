@@ -58,14 +58,14 @@ public class TestTopicService {
         testCategory = new Category();
         testCategory.setName("test-category");
         testCategory.setDescription("This is a test category for test purposes only.");
-        testCategory.setOrganization(organizationService.getOrganizationByName(organization1.getName()));
-        categoryService.addCategory(testCategory);
+        organization1 = organizationService.getOrganizationByName(organization1.getName());
+        categoryService.addCategory(testCategory, organization1);
 
         testCategory2= new Category();
         testCategory.setName("test-category-2");
         testCategory.setDescription("This is a second test category for test purposes only.");
-        testCategory.setOrganization(organizationService.getOrganizationByName(organization2.getName()));
-        categoryService.addCategory(testCategory2);
+        organization2 = organizationService.getOrganizationByName(organization2.getName());
+        categoryService.addCategory(testCategory2, organization2);
 
         testTopic = new Topic();
         testTopic.setName("test-topic");

@@ -3,10 +3,7 @@ package be.kdg.kandoe.backend.model.users;
 import be.kdg.kandoe.backend.model.users.roles.Role;
 import be.kdg.kandoe.backend.model.users.roles.RoleType;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

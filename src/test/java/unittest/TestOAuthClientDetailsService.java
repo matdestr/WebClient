@@ -2,13 +2,9 @@ package unittest;
 
 import be.kdg.kandoe.backend.config.BackendContextConfig;
 import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
-import be.kdg.kandoe.backend.model.organizations.Organization;
-import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.OAuthClientDetailsService;
 import be.kdg.kandoe.backend.service.exceptions.OAuthClientDetailsServiceException;
-import be.kdg.kandoe.backend.service.exceptions.OrganizationServiceException;
 import be.kdg.kandoe.backend.service.exceptions.UserServiceException;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

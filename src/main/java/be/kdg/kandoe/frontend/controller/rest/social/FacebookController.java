@@ -1,14 +1,8 @@
 package be.kdg.kandoe.frontend.controller.rest.social;
 
 import be.kdg.kandoe.backend.model.users.User;
-import be.kdg.kandoe.backend.model.users.roles.RoleType;
-import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.controller.resources.properties.FacebookProperties;
-import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
-import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.UserProfile;
 import org.springframework.social.facebook.api.Facebook;

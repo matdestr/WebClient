@@ -8,7 +8,6 @@ import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
 import be.kdg.kandoe.frontend.controller.resources.users.CreateUserResource;
 import be.kdg.kandoe.frontend.controller.resources.users.UpdateUserResource;
-import be.kdg.kandoe.frontend.controller.rest.UserRestController;
 import integrationtest.TokenProvider;
 import org.json.JSONObject;
 import org.junit.Before;

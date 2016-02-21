@@ -1,17 +1,16 @@
 package be.kdg.kandoe.frontend.config.orika;
 
-import java.util.Map;
-
 import ma.glasnost.orika.Converter;
 import ma.glasnost.orika.Mapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.ConfigurableMapper;
-
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 /**
  * This class registers all converters and mappers with Orika's MapperFactory

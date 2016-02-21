@@ -1,6 +1,5 @@
 package be.kdg.kandoe.backend.config;
 
-import be.kdg.kandoe.backend.model.users.roles.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;

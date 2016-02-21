@@ -1,16 +1,15 @@
 package be.kdg.kandoe.frontend.controller.rest;
 
 import be.kdg.kandoe.backend.model.organizations.Organization;
+import be.kdg.kandoe.backend.model.users.User;
+import be.kdg.kandoe.backend.service.api.OrganizationService;
+import be.kdg.kandoe.frontend.controller.resources.organizations.OrganizationResource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import be.kdg.kandoe.backend.model.users.User;
-import be.kdg.kandoe.backend.service.api.OrganizationService;
-import be.kdg.kandoe.frontend.controller.resources.organizations.OrganizationResource;
 
 import javax.validation.Valid;
 
@@ -33,7 +32,7 @@ public class OrganizationRestController {
         //mapperFacade.map(organization, organizationResource);
         OrganizationResource resultResource = mapperFacade.map(organization, OrganizationResource.class);
         
-        return new ResponseEntity<OrganizationResource>(resultResource, HttpStatus.CREATED);
+        return new ResponseEntity<>(resultResource, HttpStatus.CREATED);
     }
     
     @RequestMapping(value = "/{organizationId}", method = RequestMethod.GET)
@@ -41,6 +40,6 @@ public class OrganizationRestController {
         Organization organization = organizationService.getOrganizationById(organizationId);
         OrganizationResource resource = mapperFacade.map(organization, OrganizationResource.class);
         
-        return new ResponseEntity<OrganizationResource>(resource, HttpStatus.OK);
+        return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 }

@@ -1,5 +1,7 @@
 package be.kdg.kandoe.frontend.config.security.resolvers;
 
+import be.kdg.kandoe.backend.model.users.User;
+import be.kdg.kandoe.backend.service.api.UserService;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,9 +11,6 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
-import be.kdg.kandoe.backend.model.users.User;
-import be.kdg.kandoe.backend.service.api.UserService;
 
 /**
  * This class enables the usage of @AuthenticationPrincipal for an OAuth2Authentication object.

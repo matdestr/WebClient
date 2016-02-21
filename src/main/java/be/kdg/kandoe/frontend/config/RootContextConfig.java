@@ -1,9 +1,9 @@
 package be.kdg.kandoe.frontend.config;
 
 import be.kdg.kandoe.backend.config.BackendContextConfig;
-import be.kdg.kandoe.frontend.config.security.OAuth2Config;
-import be.kdg.kandoe.frontend.config.security.ResourceServerConfig;
 import be.kdg.kandoe.frontend.config.security.SpringSecurityConfig;
+import be.kdg.kandoe.frontend.config.security.oauth.OAuth2Config;
+import be.kdg.kandoe.frontend.config.security.oauth.ResourceServerConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 

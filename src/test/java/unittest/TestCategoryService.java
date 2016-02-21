@@ -8,20 +8,15 @@ import be.kdg.kandoe.backend.service.api.CategoryService;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
 import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.backend.service.exceptions.CategoryServiceException;
-import be.kdg.kandoe.backend.service.exceptions.UserServiceException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { BackendContextConfig.class })
@@ -48,8 +43,8 @@ public class TestCategoryService {
         organization1 = new Organization("test-organization-1", userService.getUserByUsername(user.getUsername()));
         organization2 = new Organization("test-organization-2", userService.getUserByUsername(user.getUsername()));
 
-        organizationService.addOrganization(organization1);
-        organizationService.addOrganization(organization2);
+        organization1 = organizationService.addOrganization(organization1);
+        organization2 = organizationService.addOrganization(organization2);
 
         testCategory = new Category();
         testCategory.setName("test-category");
@@ -59,7 +54,7 @@ public class TestCategoryService {
 
     @Test
     public void testAddNewCategory() throws CategoryServiceException {
-        categoryService.addCategory(testCategory);
+        categoryService.addCategory(testCategory, organization1);
 
         Category fetchedCategory = categoryService.getCategoryByName(testCategory.getName(), testCategory.getOrganization());
 
@@ -68,7 +63,7 @@ public class TestCategoryService {
 
     @Test(expected = CategoryServiceException.class)
     public void testAddExistingCategoryInSameOrganization() throws CategoryServiceException {
-        categoryService.addCategory(testCategory);
+        categoryService.addCategory(testCategory, organization1);
         Category fetchedCategory = categoryService.getCategoryByName(testCategory.getName(), testCategory.getOrganization());
         assertEquals(testCategory, fetchedCategory);
 
@@ -76,12 +71,12 @@ public class TestCategoryService {
         newTestCategory.setName(fetchedCategory.getName());
         newTestCategory.setOrganization(fetchedCategory.getOrganization());
 
-        categoryService.addCategory(newTestCategory);
+        categoryService.addCategory(newTestCategory, organization1);
     }
 
     @Test
     public void testAddExistingCategoryInDifferentOrganization() throws CategoryServiceException {
-        categoryService.addCategory(testCategory);
+        categoryService.addCategory(testCategory, organization1);
         Category fetchedCategory = categoryService.getCategoryByName(testCategory.getName(), testCategory.getOrganization());
         assertEquals(testCategory, fetchedCategory);
 
@@ -89,7 +84,7 @@ public class TestCategoryService {
         newTestCategory.setName(fetchedCategory.getName());
         newTestCategory.setDescription(fetchedCategory.getDescription());
         newTestCategory.setOrganization(organizationService.getOrganizationByName(organization2.getName()));
-        categoryService.addCategory(newTestCategory);
+        categoryService.addCategory(newTestCategory, organization2);
 
         Category fetchedNewCategory = categoryService.getCategoryByName(newTestCategory.getName(), newTestCategory.getOrganization());
         assertEquals(newTestCategory, fetchedNewCategory);

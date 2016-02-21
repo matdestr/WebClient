@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created on 19/02/2016
  *
@@ -25,19 +27,30 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category addCategory(Category category) throws CategoryServiceException {
+    public Category addCategory(Category category, Organization organization) throws CategoryServiceException {
 
         Category fetchedCategory = getCategoryByName(category.getName(), category.getOrganization());
 
         if (fetchedCategory != null)
-            if (fetchedCategory.getOrganization().equals(category.getOrganization()))
+            if (fetchedCategory.getOrganization().equals(organization))
                 throw new CategoryServiceException(String.format(
                         "Category name '%s' already exists in organization '%s'.",
                         fetchedCategory.getName(), fetchedCategory.getOrganization().getName()));
 
+        category.setOrganization(organization);
         repository.save(category);
 
         return category;
+    }
+
+    @Override
+    public List<Category> getCategoriesByOrganizationId(int organizationId) {
+        return repository.findCategoriesByOrganizationOrganizationId(organizationId);
+    }
+
+    @Override
+    public Category getCategoryById(int catgoryId) {
+        return repository.findOne(catgoryId);
     }
 
     @Override

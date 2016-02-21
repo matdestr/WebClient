@@ -1,7 +1,6 @@
 package be.kdg.kandoe.backend.model.organizations;
 
 import be.kdg.kandoe.backend.model.users.User;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

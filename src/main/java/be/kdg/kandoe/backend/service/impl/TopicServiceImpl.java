@@ -4,7 +4,6 @@ import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.persistence.api.TopicRepository;
 import be.kdg.kandoe.backend.service.api.TopicService;
-import be.kdg.kandoe.backend.service.exceptions.CategoryServiceException;
 import be.kdg.kandoe.backend.service.exceptions.TopicServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
