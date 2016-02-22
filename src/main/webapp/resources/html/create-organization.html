@@ -1,39 +1,77 @@
-<error-dialog *ngIf="isError"></error-dialog>
+<toolbar></toolbar>
 
-<form (ngSubmit)="onSubmit()" name="form-new-organization">
-    <div>
-        <label>Organization name</label>
-        <input type="text" required #organizationName="ngForm"
-            [(ngModel)]="organization.name"
-            ngControl="organizationName"
-            name="organization-name">
-        <div [hidden]="organizationName.valid" class="alert alert-danger">
-            Organization name is required
-        </div>
+<h1 class="text-center">Create a new organization</h1>
+
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-md-offset-3">
+        <error-dialog *ngIf="isError"></error-dialog>
+
+        <form #organizationForm="ngForm"
+              (ngSubmit)="onSubmit(organizationForm)"
+              name="form-new-organization"
+              role="form">
+            <section class="form-section">
+                <h2>General information</h2>
+                
+                <div class="input-group forms-default"
+                     [class.has-error]="!organizationName.valid && !organizationName.pristine"
+                     title="Organization name">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-globe"></span>
+                    </span>
+                    <input id="organizationName"
+                           name="organization-name"
+                           class="form-control"
+                           type="text"
+                           placeholder="Organization name"
+                           required
+                           #organizationName="ngForm"
+                           [(ngModel)]="organization.name"
+                           (ngControl)="organizationName">
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h2>Organization members</h2>
+                <div *ngFor="#u of usersToInvite; #i = index"
+                     class="input-group forms-default"
+                     [class.has-error]="!userEmail.valid && !userEmail.pristine">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-envelope"></span>
+                        </span>
+
+                    <input class="form-control forms-input-small"
+                           type="email"
+                           placeholder="Invite user (email)"
+                           #userEmail="ngForm"
+                           [(ngModel)]="u.email"
+                           (ngControl)="userEmail">
+                    
+                    <span *ngIf="i != 0"
+                          class="input-group-addon forms-input-addon-remove" 
+                          (click)="removeUserFromUsersToInvite(i)">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </span>
+                </div>
+
+                <div class="forms-default">
+                    <button type="button"
+                            class="btn btn-default pull-right"
+                            (click)="addUserEntry()">
+                        <span class="glyphicon glyphicon-plus"></span> Add user
+                    </button>
+                </div>
+            </section>
+            
+            <section>
+                <div class="forms-default clear-both text-center">
+                    <button type="submit" 
+                            name="add-organization"
+                            class="btn-large-red">
+                        <span class="glyphicon glyphicon-send"></span>Create
+                    </button>
+                </div>
+            </section>
+        </form>
     </div>
-    
-    <fieldset>
-        <legend>Organization members</legend>
-        <button type="button" class="btn btn-default" (click)="addUserEntry()">
-            <span class="glyphicon glyphicon-plus"></span> Add user
-        </button>
-        
-        <div *ngFor="#u of usersToInvite; #i = index">
-            <label class="sr-only">User email</label>
-            <!--<input type="text" [(value)]="u">-->
-            <input type="text" 
-                   #userEmail="ngForm"
-                   required
-                   placeholder="User email" 
-                   [(ngModel)]="u.email">
-            <span class="glyphicon glyphicon-remove" 
-                  aria-hidden="true"
-                  (click)="removeUserFromUsersToInvite(i)"></span>
-            <div [hidden]="userEmail.valid" class="alert alert-danger">
-                User email is required
-            </div>
-        </div>
-    </fieldset>
-    
-    <input type="submit" name="add-organization" class="btn btn-default">
-</form>
+</div>

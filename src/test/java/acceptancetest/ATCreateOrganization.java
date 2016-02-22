@@ -56,7 +56,7 @@ public class ATCreateOrganization {
         form.findElement(By.name("organization-name")).sendKeys("Karel de Grote");
         form.findElement(By.name("add-organization")).click();
         
-        driver.get(baseUrl);
+        /*driver.get(baseUrl);
 
         (new WebDriverWait(driver, 5)).until(
                 (WebDriver d) -> d.findElement(By.name("my-organizations")) != null
@@ -64,11 +64,9 @@ public class ATCreateOrganization {
         
         driver.findElement(By.name("my-organizations")).click();
 
-        /*List<WebElement> organizationElements = driver.findElements(By.className("organization"));
+        List<WebElement> organizationElements = driver.findElements(By.className("organization"));
         
         Assert.assertEquals(1, organizationElements.size());
         Assert.assertEquals("Karel de Grote", organizationElements.get(0).getText());*/
-        
-        // TODO
     }
 }

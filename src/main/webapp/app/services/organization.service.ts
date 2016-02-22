@@ -20,13 +20,13 @@ export class OrganizationService {
         var headers : Headers = new Headers();
         headers.append('Content-Type', 'application/json');
         
-        return this.authHttp.post('organizations/', JSON.stringify(organization), {headers: headers}).retry(2);
+        return this.authHttp.post('api/organizations/', JSON.stringify(organization), {headers: headers}).retry(2);
     }
     
     public getOrganizations(userId : number) {
         var headers : Headers = new Headers();
         headers.append('Content-Type', 'application/json');
         
-        return this.authHttp.get('organizations/' + userId).retry(2);
+        return this.authHttp.get('api/organizations/' + userId).retry(2);
     }
 }

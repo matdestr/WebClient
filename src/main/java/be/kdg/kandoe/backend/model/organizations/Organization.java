@@ -15,15 +15,18 @@ public class Organization {
     @GeneratedValue
     @Getter
     private int organizationId;
+    
     @Column(unique = true)
     @Getter
     @Setter
     private String name;
-    @OneToOne
+    
+    @OneToOne(fetch = FetchType.EAGER)
     @Getter
     @Setter
     private User owner;
-    @OneToMany
+    
+    @OneToMany(fetch = FetchType.EAGER)
     @Getter
     private List<User> members;
 

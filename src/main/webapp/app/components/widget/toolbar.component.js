@@ -41,6 +41,8 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                     this._router = _router;
                     this.user = user_1.User.createEmptyUser();
                     var token = localStorage.getItem('token');
+                    if (token == null)
+                        return; // TODO : Show error page
                     this._userService.getUser(angular2_jwt_1.getUsername(token)).subscribe(function (user) {
                         _this.user = _this.user.deserialize(user);
                     });

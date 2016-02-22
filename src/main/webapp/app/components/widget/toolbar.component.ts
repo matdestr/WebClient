@@ -19,6 +19,9 @@ export class ToolbarComponent implements OnInit{
     constructor(private _userService: UserService, private _router:Router){
         var token = localStorage.getItem('token');
 
+        if (token == null)
+            return; // TODO : Show error page
+        
         this._userService.getUser(getUsername(token)).subscribe((user:User) => {
             this.user = this.user.deserialize(user);
         });

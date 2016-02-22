@@ -31,12 +31,12 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
                 OrganizationService.prototype.saveOrganization = function (organization) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
-                    return this.authHttp.post('organizations/', JSON.stringify(organization), { headers: headers }).retry(2);
+                    return this.authHttp.post('api/organizations/', JSON.stringify(organization), { headers: headers }).retry(2);
                 };
                 OrganizationService.prototype.getOrganizations = function (userId) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
-                    return this.authHttp.get('organizations/' + userId).retry(2);
+                    return this.authHttp.get('api/organizations/' + userId).retry(2);
                 };
                 OrganizationService = __decorate([
                     core_1.Injectable(), 

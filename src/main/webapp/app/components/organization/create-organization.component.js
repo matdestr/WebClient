@@ -1,4 +1,4 @@
-System.register(['angular2/core', "angular2/common", "../../entities/user", "../../services/organization.service", "../../entities/organization"], function(exports_1) {
+System.register(['angular2/core', "angular2/common", "../../entities/user", "../../services/organization.service", "../../entities/organization", "../widget/toolbar.component"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', "angular2/common", "../../entities/user", "../
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, common_2, common_3, user_1, organization_service_1, organization_1;
+    var core_1, common_1, common_2, common_3, user_1, organization_service_1, organization_1, toolbar_component_1;
     var CreateOrganizationComponent;
     return {
         setters:[
@@ -28,6 +28,9 @@ System.register(['angular2/core', "angular2/common", "../../entities/user", "../
             },
             function (organization_1_1) {
                 organization_1 = organization_1_1;
+            },
+            function (toolbar_component_1_1) {
+                toolbar_component_1 = toolbar_component_1_1;
             }],
         execute: function() {
             //import {ErrorDialogComponent} from "../error-dialog.component";
@@ -36,16 +39,20 @@ System.register(['angular2/core', "angular2/common", "../../entities/user", "../
                     this.organizationService = organizationService;
                     this.organization = new organization_1.Organization();
                     this.usersToInvite = [];
-                    this.usersToInvite.push(user_1.User.createEmptyUser());
+                    for (var i = 0; i < 3; i++) {
+                        this.usersToInvite.push(user_1.User.createEmptyUser());
+                    }
                     this.organizationCreated = false;
+                    this.showErrorOrganizationName = false;
                     this.isError = false;
                 }
-                CreateOrganizationComponent.prototype.onSubmit = function () {
+                CreateOrganizationComponent.prototype.onSubmit = function (form) {
                     var _this = this;
                     if (this.organization.name) {
                         this.organizationService.saveOrganization(this.organization)
                             .subscribe(null, function (error) {
                             _this.isError = true;
+                            console.log(error);
                         }, function () {
                             _this.organizationCreated = true;
                             _this.isError = false;
@@ -53,6 +60,9 @@ System.register(['angular2/core', "angular2/common", "../../entities/user", "../
                         });
                         this.inviteUsers();
                     }
+                };
+                CreateOrganizationComponent.prototype.setShowErrorOrganizationName = function (show) {
+                    this.showErrorOrganizationName = show;
                 };
                 CreateOrganizationComponent.prototype.addUserEntry = function () {
                     this.usersToInvite.push(user_1.User.createEmptyUser());
@@ -68,7 +78,7 @@ System.register(['angular2/core', "angular2/common", "../../entities/user", "../
                     core_1.Component({
                         selector: 'create-organization',
                         templateUrl: 'html/create-organization.html',
-                        directives: [common_1.NgFor, common_3.NgForm, common_2.FORM_DIRECTIVES]
+                        directives: [common_1.NgFor, common_3.NgForm, common_2.FORM_DIRECTIVES, toolbar_component_1.ToolbarComponent]
                     }), 
                     __metadata('design:paramtypes', [organization_service_1.OrganizationService])
                 ], CreateOrganizationComponent);
