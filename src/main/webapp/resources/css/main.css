@@ -6158,36 +6158,12 @@ button[type="submit"] {
 .organizations {
   padding: 2em; }
 
-.btn-large-red {
-  cursor: pointer;
-  padding: 0;
-  width: 60%;
-  height: 2.5em;
-  background: #dc3522;
-  border: 0;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  -moz-box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
-  -webkit-box-shadow: 0 15px 30px 0 inset;
-  box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
-  font-size: 16px;
-  font-weight: 400;
-  color: #f8f8f8;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  -o-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  -webkit-transition: all 0.2s ease;
-  -ms-transition: all 0.2s ease; }
-  .btn-large-red:hover {
-    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset;
-    -webkit-box-shadow: 0 -15px 30px 0 inset;
-    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset; }
-  .btn-large-red:active {
-    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
-    -webkit-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
-    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset; }
+.profile-button {
+  cursor: pointer; }
+
+.organizations-item {
+  padding-left: 1em;
+  padding-right: 1em; }
 
 body {
   position: relative;

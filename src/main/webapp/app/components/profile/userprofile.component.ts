@@ -1,5 +1,5 @@
 import {Component} from "angular2/core";
-import {NgIf, NgFor} from "angular2/common";
+import {NgIf, NgFor, NgSwitch, NgSwitchWhen} from "angular2/common";
 import {RouteParams} from "angular2/router";
 import {Response} from "angular2/http";
 import {User} from "../../entities/user";
@@ -30,9 +30,11 @@ export class UserProfileComponent {
         _userService.getUser(username).subscribe((user:User) => {
             this.user = this.user.deserialize(user);
 
-            this._organizationService.getOrganizations(this.user.userId).subscribe(
-                data => console.log(data),
-                error => this.organizations = []);
+            this._organizationService.getOrganizationsByUser(this.user.username).subscribe(
+                data => {
+                    this.organizations = data.json();
+                },
+                error => {console.log(error); this.organizations = []});
         });
 
     }

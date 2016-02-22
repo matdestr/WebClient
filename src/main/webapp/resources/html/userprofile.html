@@ -12,7 +12,8 @@
         </div>
 
         <div class="col-md-2">
-
+            <p class="profile-button"><span class="glyphicon glyphicon-edit"></span> EDIT PROFILE</p>
+            <p><span class="glyphicon"></span></p>
         </div>
     </div>
 
@@ -22,8 +23,18 @@
         <div *ngIf="organizations.length == 0">
             <p>{{ user.fullName }} is not part of any organization.</p>
         </div>
-        <div *ngIf="organizations.length > 0">
-
+        <div class="organizations-item" *ngIf="organizations.length > 0">
+            <div *ngFor="#organization of organizations">
+                <p>{{ organization.name }}</p>
+                <div [ngSwitch]="user == organization.owner">
+                    <div *ngSwitchWhen="true">
+                        <span>OWNER</span>
+                    </div>
+                    <div *ngSwitchWhen="false">
+                        <span>MEMBER</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
