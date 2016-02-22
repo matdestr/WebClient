@@ -6189,6 +6189,26 @@ button[type="submit"] {
     transform: scale(0); }
   40% {
     transform: scale(1); } }
+#userprofile-picture {
+  max-height: 100%;
+  max-width: 100%;
+  padding-top: 2em;
+  height: 180px;
+  width: 180px; }
+
+.userprofile-details {
+  padding-left: 1.5em; }
+
+#user-fullname {
+  color: #333333;
+  font-weight: 100; }
+
+#user-email {
+  color: #aaaaaa; }
+
+.organizations {
+  padding: 2em; }
+
 .btn-large-red {
   cursor: pointer;
   width: 60%;
