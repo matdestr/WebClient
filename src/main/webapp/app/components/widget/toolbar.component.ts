@@ -38,6 +38,7 @@ export class ToolbarComponent implements OnInit{
     }
 
     public toProfile():void {
+        console.log("Routing to profile");
         this._router.navigate(["/Profile", { username: this.user.username }]);
     }
 }

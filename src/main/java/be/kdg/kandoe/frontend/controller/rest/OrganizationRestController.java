@@ -46,7 +46,7 @@ public class OrganizationRestController {
     public ResponseEntity<OrganizationResource> findOrganization(@PathVariable("organizationId") int organizationId) {
         Organization organization = organizationService.getOrganizationById(organizationId);
         OrganizationResource resource = mapperFacade.map(organization, OrganizationResource.class);
-        
+
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
     

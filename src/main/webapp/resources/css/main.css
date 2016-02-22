@@ -5962,8 +5962,7 @@ footer {
 .forms-default {
   margin: 0.5em; }
 
-/* ----- Registration Form ----- */
-.authentication form {
+.forms form {
   padding: 20px 50px 40px 50px;
   background-color: rgba(248, 248, 248, 0.96);
   -moz-border-radius: 8px;
@@ -5973,7 +5972,7 @@ footer {
   -webkit-box-shadow: 0 1px 5px 0 outset;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.3) outset; }
 
-.authentication form h2 {
+.forms form h2 {
   margin-bottom: 25px;
   padding-bottom: 15px;
   border-bottom: 2px dotted #bbb;
@@ -5981,9 +5980,9 @@ footer {
   font-weight: 400;
   text-align: center; }
 
-.authentication form input {
+.forms form input {
   width: 95%;
-  height: 30px;
+  height: 2.5em;
   background: #fcfcfc;
   border: 1px solid #ddd;
   -moz-border-radius: 2px;
@@ -5998,30 +5997,23 @@ footer {
   margin-bottom: 0.5em;
   padding-left: 0.5em; }
 
-.authentication form input:focus {
+.forms form label {
+  margin: 7px 0 10px 5px;
+  font-size: 16px;
+  text-align: left; }
+
+.forms form label span {
+  font-style: italic; }
+
+.forms form input:-moz-placeholder, .forms form input:-ms-input-placeholder, .forms form input::-webkit-input-placeholder {
+  color: #aaa; }
+.forms form input:focus {
   border: 1px solid #ccc;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
   box-shadow: none; }
 
-.authentication form label {
-  margin: 7px 0 10px 5px;
-  font-size: 16px;
-  text-align: left; }
-
-.authentication form label span {
-  font-style: italic; }
-
-.authentication form input:-moz-placeholder {
-  color: #aaa; }
-
-.authentication form input:-ms-input-placeholder {
-  color: #aaa; }
-
-.authentication form input::-webkit-input-placeholder {
-  color: #aaa; }
-
-.authentication form input[type=submit] {
+.forms form input[type=submit] {
   cursor: pointer;
   width: 60%;
   height: 42px;
@@ -6040,121 +6032,78 @@ footer {
   font-weight: 400;
   color: #fff;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  -o-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  -webkit-transition: all 0.2s;
-  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
   text-align: center; }
+  .forms form input[type=submit]:hover {
+    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset;
+    -webkit-box-shadow: 0 -15px 30px 0 inset;
+    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset; }
+  .forms form input[type=submit]:active {
+    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
+    -webkit-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
+    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset; }
 
-.authentication form input[type=submit]:hover {
-  -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset;
-  -webkit-box-shadow: 0 -15px 30px 0 inset;
-  box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset; }
-
-.authentication form input[type=submit]:active {
-  -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
-  -webkit-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
-  box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset; }
-
-.flex-container {
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center; }
-
-.flex-item:nth-child(1) {
-  -webkit-order: 0;
-  -ms-flex-order: 0;
-  order: 0;
-  -webkit-align-self: auto;
-  -ms-flex-item-align: auto;
-  align-self: auto; }
-
-.authentication-panel {
+.forms-panel {
   border-color: #ccc; }
-
-.authentication-panel > .panel-heading {
-  color: #00415d;
-  border-color: #fff;
-  text-align: center; }
-
-.panel-heading h1 {
-  color: #404040;
-  padding-bottom: 0.5em;
-  border-bottom: dotted #a3a3a3 2px;
-  margin-bottom: 1em;
-  margin-left: 0.5em;
-  margin-right: 0.5em; }
-.panel-heading span {
-  color: #dc3522; }
-
-.authentication-panel > .panel-heading a {
-  text-decoration: none;
-  color: #666;
-  font-weight: bold;
-  font-size: 15px;
-  -webkit-transition: all 0.1s linear;
-  -moz-transition: all 0.1s linear;
-  transition: all 0.1s linear; }
-
-.authentication-panel > .panel-heading a.active {
-  color: #dc3522;
-  font-size: 22px; }
-
-.authentication-panel > .panel-heading hr {
-  margin-bottom: 0px;
-  clear: both;
-  border: 0;
-  height: 1px; }
-
-.authentication-panel input[type="text"], .authentication-panel input[type="email"], .authentication-panel input[type="password"] {
-  height: 45px;
-  border: 1px solid #ddd;
-  font-size: 16px;
-  -webkit-transition: all 0.1s linear;
-  -moz-transition: all 0.1s linear;
-  transition: all 0.1s linear; }
-
-.authentication-panel input:hover,
-.authentication-panel input:focus {
-  outline: none;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  border-color: #ccc; }
+  .forms-panel .panel-heading {
+    color: #00415d;
+    border-color: #fff;
+    text-align: center; }
+    .forms-panel .panel-heading h1 {
+      color: #404040;
+      padding-bottom: 0.5em;
+      border-bottom: dotted #a3a3a3 2px;
+      margin-bottom: 1em;
+      margin-left: 0.5em;
+      margin-right: 0.5em; }
+    .forms-panel .panel-heading span {
+      color: #dc3522; }
+    .forms-panel .panel-heading a {
+      text-decoration: none;
+      color: #666;
+      font-weight: bold;
+      font-size: 15px;
+      -webkit-transition: all 0.1s linear;
+      -moz-transition: all 0.1s linear;
+      transition: all 0.1s linear; }
+    .forms-panel .panel-heading a.active {
+      color: #dc3522;
+      font-size: 22px; }
+    .forms-panel .panel-heading hr {
+      margin-bottom: 0;
+      clear: both;
+      border: 0;
+      height: 1px; }
+  .forms-panel input[type="text"], .forms-panel input[type="email"], .forms-panel input[type="password"] {
+    border: 1px solid #ddd;
+    font-size: 16px;
+    -o-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -webkit-transition: all 0.1s linear;
+    -ms-transition: all 0.1s linear; }
+  .forms-panel input:hover, .forms-panel input:focus {
+    outline: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-color: #ccc; }
 
 .forgot-password {
   text-decoration: underline;
   color: #888; }
-
-.forgot-password:hover,
-.forgot-password:focus {
-  text-decoration: underline;
-  color: #666; }
+  .forgot-password:hover, .forgot-password:focus {
+    text-decoration: underline;
+    color: #666; }
 
 .forms-input-group * {
   margin: 0.5em 0; }
 
-.first {
+.input-first {
   margin-top: 0 !important; }
 
-/*.forms-input-small {
-  width: 75% !important;
-}*/
 .forms-input-addon-remove {
   cursor: pointer; }
 
@@ -6189,28 +6138,48 @@ button[type="submit"] {
     transform: scale(0); }
   40% {
     transform: scale(1); } }
+#userprofile-picture {
+  max-height: 100%;
+  max-width: 100%;
+  padding-top: 2em;
+  height: 180px;
+  width: 180px; }
+
+.userprofile-details {
+  padding-left: 1.5em; }
+
+#user-fullname {
+  color: #333333;
+  font-weight: 100; }
+
+#user-email {
+  color: #aaaaaa; }
+
+.organizations {
+  padding: 2em; }
+
 .btn-large-red {
   cursor: pointer;
+  padding: 0;
   width: 60%;
   height: 2.5em;
-  padding: 0;
   background: #dc3522;
+  border: 0;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-  border: 0;
   -moz-box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
   -webkit-box-shadow: 0 15px 30px 0 inset;
   box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
   font-size: 16px;
   font-weight: 400;
-  color: #fff;
+  color: #f8f8f8;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  -o-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  -webkit-transition: all 0.2s;
-  -ms-transition: all 0.2s;
-  text-align: center; }
+  text-align: center;
+  -o-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease; }
   .btn-large-red:hover {
     -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset;
     -webkit-box-shadow: 0 -15px 30px 0 inset;
