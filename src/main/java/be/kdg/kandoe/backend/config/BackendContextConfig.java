@@ -12,6 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
                 value = Configuration.class)}
 )
 @EnableJpaRepositories(basePackages = "be.kdg.kandoe.backend.persistence")
-@Import({DataSourceConfig.class, EntityTransactionManagerConfig.class})
+@Import({be.kdg.kandoe.backend.config.DataSourceConfig.class, be.kdg.kandoe.backend.config.EntityTransactionManagerConfig.class})
 public class BackendContextConfig {
 }
