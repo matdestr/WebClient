@@ -11,6 +11,7 @@
 @import "partials/footer";
 @import "partials/forms";
 @import "partials/spinners";
+@import "partials/controls";
 
 body {
   position: relative;
@@ -32,4 +33,8 @@ body {
   min-height: 100vh;
   background: transparent url("../img/bg-kandoe.png") no-repeat !important;
   background-size: cover !important;
+}
+
+.clear-both {
+  clear: both;
 }
