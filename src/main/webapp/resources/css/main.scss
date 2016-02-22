@@ -7,11 +7,13 @@
 @import "core/reset";
 // Partials
 @import "partials/containers";
+@import "partials/controls";
 @import "partials/toolbar";
 @import "partials/footer";
 @import "partials/forms";
 @import "partials/spinners";
 @import "partials/userprofile";
+@import "partials/spans";
 
 body {
   position: relative;
@@ -27,6 +29,10 @@ body {
   font-family: $font-stack;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+#main-content{
+  margin-top: 3em;
 }
 
 #authentication{

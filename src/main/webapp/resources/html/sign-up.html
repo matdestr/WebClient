@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit()" id="form-sign-up" name="form-sign-up"  role="form" style="display: none;">
+<form (ngSubmit)="onSubmit()" id="form-sign-up" name="form-sign-up" role="form" style="display: none;">
 
     <div id="error" *ngIf="errors.length > 0" class="alert alert-danger">
         <ul>
@@ -8,12 +8,12 @@
         </ul>
     </div>
 
-    <div class="forms-input-group input-group forms-default">
+    <div class="forms-input-group input-group forms-multi-input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 
         <input name="username"
                type="text"
-               class="form-control input-first"
+               class="form-control forms-input-first"
                id="username-reg"
                placeholder="Username"
                required
@@ -40,7 +40,7 @@
 
     </div>
 
-    <div class="input-group forms-default">
+    <div class="input-group forms-input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-send"></i></span>
 
         <input name="email"
@@ -53,7 +53,7 @@
         >
     </div>
 
-    <div class="input-group forms-default">
+    <div class="input-group forms-input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
 
         <input name="password"
@@ -67,7 +67,7 @@
 
     </div>
 
-    <div class="input-group forms-default">
+    <div class="input-group forms-input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-ok"></i></span>
 
         <input name="verify-password"
@@ -81,6 +81,8 @@
 
     </div>
 
-    <input type="submit" value="Sign Up"/>
+    <div class="forms-input-group clear-both text-center">
+        <input type="submit" value="Sign Up"/>
+    </div>
 
 </form>
