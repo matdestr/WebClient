@@ -187,3 +187,28 @@
 .first{
   margin-top: 0 !important;
 }
+
+/*.forms-input-small {
+  width: 75% !important;
+}*/
+
+.forms-input-addon-remove {
+  cursor: pointer;
+}
+
+.form-section {
+  margin: $default-margin $default-margin 2em 0;
+
+  h2 {
+    font-size: $text-size-form-subtitle;
+    margin-left: $default-margin;
+  }
+}
+
+button[type="submit"] {
+  margin-top: $margin-top-submit;
+  
+  span {
+    margin-right: 1em;
+  }
+}
