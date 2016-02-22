@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by thaneestevens on 20/02/16.
  */
@@ -41,5 +43,15 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Topic getTopicByName(String name, Category category) {
         return topicRepository.findTopicByNameAndCategory(name,category);
+    }
+
+    @Override
+    public List<Topic> getTopicsByCategoryId(int categoryId) {
+        return topicRepository.findTopicByCategoryCategoryId(categoryId);
+    }
+
+    @Override
+    public Topic getTopicByTopicId(int topicId) {
+        return topicRepository.findTopicByTopicId(topicId);
     }
 }
