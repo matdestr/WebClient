@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class ATCreateOrganization {
+public class ATOrganizations {
     private String baseUrl;
     private String username = "user";
     private String password = "pass";
