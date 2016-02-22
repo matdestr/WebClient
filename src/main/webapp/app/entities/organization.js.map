@@ -1,1 +1,1 @@
-{"version":3,"file":"organization.js","sourceRoot":"","sources":["organization.ts"],"names":["Organization","Organization.constructor"],"mappings":";;;;;YAAA;gBAAAA;gBAEAC,CAACA;gBAADD,mBAACA;YAADA,CAACA,AAFD,IAEC;YAFD,uCAEC,CAAA"}
+{"version":3,"file":"organization.js","sourceRoot":"","sources":["organization.ts"],"names":["Organization","Organization.constructor"],"mappings":";;;;;YACA;gBAAAA;gBAGAC,CAACA;gBAADD,mBAACA;YAADA,CAACA,AAHD,IAGC;YAHD,uCAGC,CAAA"}

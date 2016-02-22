@@ -56,6 +56,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                     return null;
                 };
                 ToolbarComponent.prototype.toProfile = function () {
+                    console.log("Routing to profile");
                     this._router.navigate(["/Profile", { username: this.user.username }]);
                 };
                 ToolbarComponent = __decorate([
