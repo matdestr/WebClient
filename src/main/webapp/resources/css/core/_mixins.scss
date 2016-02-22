@@ -36,11 +36,11 @@
   box-shadow: $h-shadow $v-shadow $blur $spread $color $set;
 }
 
-@mixin transition($transition-property, $transition-duration){
-  -o-transition: $transition-property $transition-duration;
-  -moz-transition: $transition-property $transition-duration;
-  -webkit-transition: $transition-property $transition-duration;
-  -ms-transition: $transition-property $transition-duration;
+@mixin transition($transition-property, $transition-duration, $transition-timing-function: ease){
+  -o-transition: $transition-property $transition-duration $transition-timing-function;
+  -moz-transition: $transition-property $transition-duration $transition-timing-function;
+  -webkit-transition: $transition-property $transition-duration $transition-timing-function;
+  -ms-transition: $transition-property $transition-duration $transition-timing-function;
 }
 
 @mixin flex-direction($flex-dir){
