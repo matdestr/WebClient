@@ -5875,6 +5875,37 @@ a {
   -ms-flex-item-align: auto;
   align-self: auto; }
 
+.btn-large-red {
+  cursor: pointer;
+  padding: 0;
+  width: 60%;
+  height: 3em;
+  background: #dc3522;
+  border: 0;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
+  -webkit-box-shadow: 0 15px 30px 0 inset;
+  box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
+  font-size: 16px;
+  font-weight: 400;
+  color: #f8f8f8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  -o-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease; }
+  .btn-large-red:hover {
+    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset;
+    -webkit-box-shadow: 0 -15px 30px 0 inset;
+    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset; }
+  .btn-large-red:active {
+    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
+    -webkit-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
+    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset; }
+
 .toolbar {
   box-shadow: 0 0.025em .75em #333;
   background-color: #dc3522;
@@ -5959,8 +5990,71 @@ footer {
   footer a:hover {
     border-bottom: 1px solid #8d2216; }
 
-.forms-default {
-  margin: 0.5em; }
+form input {
+  width: 95%;
+  height: 3em !important;
+  background: #fcfcfc;
+  border: 1px solid #ddd;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) inset;
+  -webkit-box-shadow: 0 1px 3px 0 inset;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) inset;
+  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+  color: #888;
+  font-size: 1.15em !important;
+  margin-bottom: 0.5em;
+  padding-left: 0.5em; }
+  form input:-moz-placeholder, form input:-ms-input-placeholder, form input::-webkit-input-placeholder {
+    color: #aaa; }
+  form input:hover, form input:focus {
+    border: 1px solid #ccc;
+    outline: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none; }
+
+form input[type="text"], input[type="email"], input[type="password"] {
+  border: 1px solid #ddd;
+  -o-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  -webkit-transition: all 0.1s linear;
+  -ms-transition: all 0.1s linear; }
+
+form input[type=submit], form button[type=submit] {
+  cursor: pointer;
+  margin-top: 1em;
+  padding: 0;
+  width: 60%;
+  height: 3em !important;
+  background: #dc3522;
+  border: 0;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
+  -webkit-box-shadow: 0 15px 30px 0 inset;
+  box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
+  font-size: 16px;
+  font-weight: 400;
+  color: #f8f8f8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  -o-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease; }
+  form input[type=submit]:hover, form button[type=submit]:hover {
+    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset;
+    -webkit-box-shadow: 0 -15px 30px 0 inset;
+    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset; }
+  form input[type=submit]:active, form button[type=submit]:active {
+    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
+    -webkit-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
+    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset; }
+  form input[type=submit] span, form button[type=submit] span {
+    margin-right: 1em; }
 
 .forms form {
   padding: 20px 50px 40px 50px;
@@ -5972,80 +6066,6 @@ footer {
   -webkit-box-shadow: 0 1px 5px 0 outset;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.3) outset; }
 
-.forms form h2 {
-  margin-bottom: 25px;
-  padding-bottom: 15px;
-  border-bottom: 2px dotted #bbb;
-  font-size: 30px;
-  font-weight: 400;
-  text-align: center; }
-
-.forms form input {
-  width: 95%;
-  height: 2.5em;
-  background: #fcfcfc;
-  border: 1px solid #ddd;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) inset;
-  -webkit-box-shadow: 0 1px 3px 0 inset;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) inset;
-  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
-  color: #888;
-  font-size: 16px;
-  margin-bottom: 0.5em;
-  padding-left: 0.5em; }
-
-.forms form label {
-  margin: 7px 0 10px 5px;
-  font-size: 16px;
-  text-align: left; }
-
-.forms form label span {
-  font-style: italic; }
-
-.forms form input:-moz-placeholder, .forms form input:-ms-input-placeholder, .forms form input::-webkit-input-placeholder {
-  color: #aaa; }
-.forms form input:focus {
-  border: 1px solid #ccc;
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-  box-shadow: none; }
-
-.forms form input[type=submit] {
-  cursor: pointer;
-  width: 60%;
-  height: 42px;
-  margin-top: 25px;
-  margin-left: 6em;
-  padding: 0;
-  background: #dc3522;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  border: 0;
-  -moz-box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
-  -webkit-box-shadow: 0 15px 30px 0 inset;
-  box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
-  font-size: 16px;
-  font-weight: 400;
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  -o-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  -webkit-transition: all 0.2s ease;
-  -ms-transition: all 0.2s ease;
-  text-align: center; }
-  .forms form input[type=submit]:hover {
-    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset;
-    -webkit-box-shadow: 0 -15px 30px 0 inset;
-    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset; }
-  .forms form input[type=submit]:active {
-    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
-    -webkit-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
-    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset; }
-
 .forms-panel {
   border-color: #ccc; }
   .forms-panel .panel-heading {
@@ -6053,14 +6073,13 @@ footer {
     border-color: #fff;
     text-align: center; }
     .forms-panel .panel-heading h1 {
-      color: #404040;
+      color: #4f4f4f;
       padding-bottom: 0.5em;
-      border-bottom: dotted #a3a3a3 2px;
       margin-bottom: 1em;
       margin-left: 0.5em;
       margin-right: 0.5em; }
-    .forms-panel .panel-heading span {
-      color: #dc3522; }
+      .forms-panel .panel-heading h1.separator-dotted {
+        border-bottom: dotted #a3a3a3 2px; }
     .forms-panel .panel-heading a {
       text-decoration: none;
       color: #666;
@@ -6075,21 +6094,7 @@ footer {
     .forms-panel .panel-heading hr {
       margin-bottom: 0;
       clear: both;
-      border: 0;
-      height: 1px; }
-  .forms-panel input[type="text"], .forms-panel input[type="email"], .forms-panel input[type="password"] {
-    border: 1px solid #ddd;
-    font-size: 16px;
-    -o-transition: all 0.1s linear;
-    -moz-transition: all 0.1s linear;
-    -webkit-transition: all 0.1s linear;
-    -ms-transition: all 0.1s linear; }
-  .forms-panel input:hover, .forms-panel input:focus {
-    outline: none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    border-color: #ccc; }
+      border: 0; }
 
 .forgot-password {
   text-decoration: underline;
@@ -6098,25 +6103,23 @@ footer {
     text-decoration: underline;
     color: #666; }
 
-.forms-input-group * {
+.forms-input-group {
+  margin: 1em 0; }
+
+.forms-multi-input-group * {
   margin: 0.5em 0; }
 
-.input-first {
+.forms-input-first {
   margin-top: 0 !important; }
 
 .forms-input-addon-remove {
   cursor: pointer; }
 
-.form-section {
-  margin: 0.5em 0.5em 2em 0; }
-  .form-section h2 {
-    font-size: 1.5em;
-    margin-left: 0.5em; }
-
-button[type="submit"] {
-  margin-top: 2em; }
-  button[type="submit"] span {
-    margin-right: 1em; }
+.forms-section {
+  margin-bottom: 2em; }
+  .forms-section h2 {
+    text-align: left;
+    font-size: 1.5em; }
 
 .spinner {
   width: 5.75em;
@@ -6158,36 +6161,12 @@ button[type="submit"] {
 .organizations {
   padding: 2em; }
 
-.btn-large-red {
-  cursor: pointer;
-  padding: 0;
-  width: 60%;
-  height: 2.5em;
-  background: #dc3522;
-  border: 0;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  -moz-box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
-  -webkit-box-shadow: 0 15px 30px 0 inset;
-  box-shadow: 0 15px 30px 0 rgba(255, 255, 255, 0.1) inset;
-  font-size: 16px;
-  font-weight: 400;
-  color: #f8f8f8;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  -o-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  -webkit-transition: all 0.2s ease;
-  -ms-transition: all 0.2s ease; }
-  .btn-large-red:hover {
-    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset;
-    -webkit-box-shadow: 0 -15px 30px 0 inset;
-    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset; }
-  .btn-large-red:active {
-    -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
-    -webkit-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
-    box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset; }
+span.primary {
+  color: #dc3522; }
+span.green {
+  color: #019b01; }
+span.red {
+  color: #8d2216; }
 
 body {
   position: relative;
@@ -6205,6 +6184,9 @@ body {
   font-family: "Myriad Pro", "WeblySleek UI", Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility; }
+
+#main-content {
+  margin-top: 3em; }
 
 #authentication {
   min-height: 100vh;
