@@ -10,9 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Created by Wannes on 2/11/2016.
- */
 @Service
 @Transactional
 public class OrganizationServiceImpl implements OrganizationService {
@@ -57,17 +54,14 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public List<Organization> getOrganizationsByOwner(String owner) throws OrganizationServiceException {
-        if (owner == null)
-            throw new OrganizationServiceException("owner cannot be null");
-
-        if (owner.isEmpty())
-            throw new OrganizationServiceException("owner cannot be empty");
-
+    public List<Organization> getOrganizationsByOwner(String ownerUsername) throws OrganizationServiceException {
+        if (ownerUsername == null || ownerUsername.isEmpty())
+            throw new OrganizationServiceException("owner username cannot be null or empty");
+        
         try {
-            return repository.findOrganizationsByOwnerUsername(owner);
+            return repository.findOrganizationsByOwnerUsername(ownerUsername);
         } catch (Exception e){
-            throw new OrganizationServiceException(String.format("Can't find organizations for owner %s", owner), e);
+            throw new OrganizationServiceException(String.format("can't find organizations for owner %s", ownerUsername), e);
         }
     }
 }

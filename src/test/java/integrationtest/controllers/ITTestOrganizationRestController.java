@@ -51,7 +51,7 @@ public class ITTestOrganizationRestController {
 
     private String unencryptedPassword;
     private User user;
-    
+
     private String token;
     private String authorizationHeader;
 
@@ -99,37 +99,57 @@ public class ITTestOrganizationRestController {
                 //.andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", is("Karel de Grote")))
                 .andReturn().getResponse().getContentAsString();
-        
+
         JSONObject jsonResponse = new JSONObject(response);
-        
+
         Assert.assertTrue(jsonResponse.getInt("organizationId") > 0);
-        
+
         String getUrl = String.format("/api/organizations/%d", jsonResponse.getInt("organizationId"));
-        
+
         mockMvc.perform(
                 MockMvcRequestBuilders.get(getUrl)
-                    .header("Authorization", authorizationHeader)
+                        .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-            .andExpect(jsonPath("$.organizationId").exists())
-            .andExpect(jsonPath("$.organizationId").isNotEmpty())
-            .andExpect(jsonPath("$.organizationId").isNumber())
-            .andExpect(jsonPath("$.name", is("Karel de Grote")))
-            .andExpect(jsonPath("$.owner").exists())
-            .andExpect(jsonPath("$.owner.userId").value(this.user.getUserId()));
+                .andExpect(jsonPath("$.organizationId").exists())
+                .andExpect(jsonPath("$.organizationId").isNotEmpty())
+                .andExpect(jsonPath("$.organizationId").isNumber())
+                .andExpect(jsonPath("$.name", is("Karel de Grote")))
+                .andExpect(jsonPath("$.owner").exists())
+                .andExpect(jsonPath("$.owner.userId").value(this.user.getUserId()));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/organizations")
+                        .param("owner", user.getUsername())
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                //.andExpect(jsonPath("$.organizations").exists())
+                //.andExpect(jsonPath("$.organizations[0].name", is("Karel de Grote")))
+                //.andExpect(jsonPath("$.organizations[0].owner.username", is(user.getUsername())));
+                .andExpect(jsonPath("$[0].name", is("Karel de Grote")))
+                .andExpect(jsonPath("$[0].owner.username", is(user.getUsername())));
     }
-    
+
     @Test
-    public void TestCreateOrganizationWithEmptyName() throws Exception {
+    public void testCreateOrganizationWithEmptyName() throws Exception {
         OrganizationResource organizationResource = new OrganizationResource();
         organizationResource.setName("");
 
         JSONObject jsonObject = new JSONObject(organizationResource);
-        
+
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/organizations")
-                    .header("Authorization", authorizationHeader)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(jsonObject.toString())
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonObject.toString())
         ).andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
+    }
+    
+    @Test
+    public void testGetOrganizationsOfNonExistingUser() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/organizations")
+                    .header("Authorization", authorizationHeader)
+                    .param("owner", "nonexistinguser")
+        ).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

@@ -3,6 +3,7 @@ package be.kdg.kandoe.frontend.controller.resources.helpers;
 import be.kdg.kandoe.backend.service.exceptions.CanDoServiceRuntimeException;
 import be.kdg.kandoe.frontend.controller.resources.errors.ErrorResource;
 import be.kdg.kandoe.frontend.controller.resources.errors.ValidationErrorResource;
+import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -36,5 +37,14 @@ public class ErrorHandler {
     public ResponseEntity<ErrorResource> processRuntimeException(RuntimeException e) {
         ErrorResource errorResource = new ErrorResource(e.getLocalizedMessage());
         return new ResponseEntity<ErrorResource>(errorResource, HttpStatus.BAD_REQUEST);
+    }
+    
+    @ExceptionHandler(CanDoControllerRuntimeException.class)
+    public ResponseEntity<ErrorResource> processControllerException(CanDoControllerRuntimeException e) {
+        ErrorResource errorResource = new ErrorResource(e.getLocalizedMessage());
+        return new ResponseEntity<ErrorResource>(
+                errorResource,
+                e.getHttpStatus() == null ? HttpStatus.BAD_REQUEST : e.getHttpStatus()
+        );
     }
 }
