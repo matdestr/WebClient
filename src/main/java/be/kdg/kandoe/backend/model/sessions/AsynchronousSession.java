@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 @Entity
 public class AsynchronousSession extends Session {
     //@todo TimeSpan maxAllowedTimeUntilNextMove
+    private int timeBetweenMoves;
 
     @Override
     public String getPublicUrl() {

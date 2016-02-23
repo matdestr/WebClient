@@ -1,6 +1,7 @@
 package be.kdg.kandoe.backend.model.sessions;
 
 
+import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.users.User;
 import lombok.Data;
@@ -19,11 +20,14 @@ public abstract class Session {
     private int sessionId;
     @OneToMany(targetEntity = ChatMessage.class, mappedBy = "session", fetch = FetchType.EAGER)
     private List<ChatMessage> chatMessages;
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     private User organizer;
     @OneToMany(targetEntity = User.class, fetch = FetchType.EAGER)
     private List<User> participants;
     @ManyToOne
     private Topic topic;
+    @ManyToOne
+    private Organization organization;
     public abstract String getPublicUrl();
     private boolean commentsAllowed;
     private boolean userCanAddCards;
