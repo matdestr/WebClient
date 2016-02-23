@@ -1,0 +1,40 @@
+<toolbar></toolbar>
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-3 ptop">
+            <img id="userprofile-picture" src="img/image.jpg">
+            <p id="change-avatar" class="profile-button">CHANGE AVATAR</p>
+        </div>
+
+        <div class="col-md-7 userprofile-details">
+            <div>
+                <input class="form-control profile-edit-name" id="user-fullname" [(ngModel)]="user.name">
+                <input class="form-control profile-edit-name" id="user-surname" [(ngModel)]="user.surname">
+            </div>
+            <input class="form-control profile-edit-email" id="user-email" [(ngModel)]="user.email">
+        </div>
+
+        <div class="col-md-2 ptop">
+            <p class="profile-button" (click)="saveChanges()"><span class="glyphicon glyphicon-save"></span> SAVE CHANGES</p>
+        </div>
+    </div>
+
+    <div class="row organizations">
+        <h2>Organizations</h2>
+
+        <div *ngIf="organizations.length == 0">
+            <p>{{ user.fullName }} is not part of any organizations.</p>
+        </div>
+        <table class="organizations-item" *ngIf="organizations.length > 0">
+            <tr *ngFor="#organization of organizations">
+                <td>{{ organization.name }}</td>
+                <td [ngSwitch]="user == organization.owner">
+                    <span *ngSwitchWhen="true">OWNER</span>
+                    <span *ngSwitchWhen="false">MEMBER</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
