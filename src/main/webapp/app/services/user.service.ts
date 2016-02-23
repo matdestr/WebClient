@@ -1,5 +1,5 @@
 import {Injectable, Inject} from 'angular2/core';
-import {Http, Response} from 'angular2/http';
+import {Http, Response, Headers} from 'angular2/http';
 import {AuthHttp} from '../libraries/angular2-jwt';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
@@ -8,13 +8,11 @@ import {User} from '../entities/user/user';
 import {RegisterModel} from '../entities/user/register'
 import {CredentialsModel} from "../entities/authenticatie/credentials";
 import {UpdateUserModel} from "../entities/user/edit";
-import {AuthHttp} from "../libraries/angular2-jwt";
 import {TokenService} from "./token.service";
 
 @Injectable()
 export class UserService {
-    public static endpoint: string = "./api/users"
-    public static si
+    public static endpoint: string = "./api/users";
 
     constructor(private _http : Http, private _authHttp: AuthHttp, private _tokenService: TokenService) {}
 

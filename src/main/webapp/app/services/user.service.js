@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', "../entities/authenticatie/credentials", "../libraries/angular2-jwt", "./token.service"], function(exports_1) {
+System.register(['angular2/core', 'angular2/http', '../libraries/angular2-jwt', 'rxjs/Rx', "../entities/authenticatie/credentials", "./token.service"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', "../entities/authe
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, credentials_1, angular2_jwt_1, token_service_1;
+    var core_1, http_1, angular2_jwt_1, credentials_1, token_service_1;
     var UserService;
     return {
         setters:[
@@ -18,12 +18,12 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', "../entities/authe
             function (http_1_1) {
                 http_1 = http_1_1;
             },
+            function (angular2_jwt_1_1) {
+                angular2_jwt_1 = angular2_jwt_1_1;
+            },
             function (_1) {},
             function (credentials_1_1) {
                 credentials_1 = credentials_1_1;
-            },
-            function (angular2_jwt_1_1) {
-                angular2_jwt_1 = angular2_jwt_1_1;
             },
             function (token_service_1_1) {
                 token_service_1 = token_service_1_1;
@@ -40,6 +40,9 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', "../entities/authe
                         console.log(res.json());
                         return res.json();
                     });
+                };
+                UserService.prototype.saveUser = function (user) {
+                    return this._authHttp.put("api/users/" + user.userId, JSON.stringify(user));
                 };
                 UserService.prototype.signUp = function (registerModel) {
                     console.log(UserService.endpoint);

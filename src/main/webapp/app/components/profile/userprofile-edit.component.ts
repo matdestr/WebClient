@@ -2,7 +2,7 @@ import {Component} from "angular2/core";
 import {NgIf, NgFor, NgSwitch, NgSwitchWhen} from "angular2/common";
 import {RouteParams} from "angular2/router";
 import {Response} from "angular2/http";
-import {User} from "../../entities/user";
+import {User} from "../../entities/user/user";
 import {Organization} from "../../entities/organization";
 import {UserService} from "../../services/user.service";
 import {OrganizationService} from "../../services/organization.service";
