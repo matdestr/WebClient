@@ -1,0 +1,34 @@
+<form (ngSubmit)="onSubmit()" name="form-edit-profile">
+
+    <div>
+        <label>Username</label>
+        <input type="text" required
+               [(ngModel)]="form.username"
+               name="profile-username">
+    </div>
+    <div>
+        <label>Name</label>
+        <input type="text" required
+               [(ngModel)]="form.name"
+               name="profile-name">
+    </div>
+    <div>
+        <label>Name</label>
+        <input type="text" required
+               [(ngModel)]="form.name"
+               name="profile-surname">
+    </div>
+    <div>
+        <label>Email</label>
+        <input type="email" required
+               [(ngModel)]="form.email"
+               name="profile-email">
+    </div>
+    <div>
+        <label>Password</label>
+        <input type="text" required
+               [(ngModel)]="form.verifyPassword"
+               name="profile-password">
+    </div>
+    <input type="submit" name="edit-profile" class="btn btn-default">
+</form>

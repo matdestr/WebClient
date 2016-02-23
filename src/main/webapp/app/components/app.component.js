@@ -1,4 +1,4 @@
-System.register(["angular2/core", "angular2/router", "./authentication/welcome.component", "./dashboard/dashboard.component", "./organization/create-organization.component", "./profile/userprofile.component"], function(exports_1) {
+System.register(["angular2/core", "angular2/router", "./authentication/welcome.component", "./dashboard/dashboard.component", "./organization/create-organization.component", "./profile/userprofile.component", "./profile/userprofile-edit.component"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, welcome_component_1, dashboard_component_1, create_organization_component_1, userprofile_component_1;
+    var core_1, router_1, welcome_component_1, dashboard_component_1, create_organization_component_1, userprofile_component_1, userprofile_edit_component_1;
     var AppComponent;
     return {
         setters:[
@@ -29,6 +29,9 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
             },
             function (userprofile_component_1_1) {
                 userprofile_component_1 = userprofile_component_1_1;
+            },
+            function (userprofile_edit_component_1_1) {
+                userprofile_edit_component_1 = userprofile_edit_component_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
@@ -47,6 +50,7 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
                         { path: "/", name: "Authentication", component: welcome_component_1.WelcomeComponent },
                         { path: "/dashboard", name: "Dashboard", component: dashboard_component_1.DashboardComponent },
                         { path: "/profile", name: "Profile", component: userprofile_component_1.UserProfileComponent },
+                        { path: "/profile/edit", name: "EditProfile", component: userprofile_edit_component_1.UserProfileEditComponent },
                         { path: '/new-organization', name: 'NewOrganization', component: create_organization_component_1.CreateOrganizationComponent },
                     ]), 
                     __metadata('design:paramtypes', [])

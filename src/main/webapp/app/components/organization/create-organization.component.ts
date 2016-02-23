@@ -2,7 +2,7 @@ import {Component, OnInit} from 'angular2/core';
 import {FORM_DIRECTIVES, NgFor, NgModel, NgForm} from "angular2/common";
 import {Router, CanActivate} from "angular2/router";
 
-import {User} from "../../entities/user";
+import {User} from "../../entities/user/user";
 import {OrganizationService} from "../../services/organization.service";
 import {Organization} from "../../entities/organization";
 import {tokenNotExpired} from "../../libraries/angular2-jwt";

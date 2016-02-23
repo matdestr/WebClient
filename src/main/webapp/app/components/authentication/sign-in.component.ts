@@ -2,7 +2,7 @@ import {Component} from 'angular2/core';
 import {NgForm} from "angular2/common";
 import {Router} from "angular2/router";
 
-import {SignInService} from "../../services/sign-in.service";
+import {UserService} from "../../services/user.service";
 import {Token} from "../../entities/authenticatie/token";
 
 @Component({
@@ -13,25 +13,27 @@ import {Token} from "../../entities/authenticatie/token";
 export class SignInComponent{
     private username : string;
     private password : string;
-    private invalidCredentials : boolean = false;
+    private errors: Array<String> = new Array();
 
-    constructor(private _signInService : SignInService, private _router : Router) { }
+    constructor(private _signInService : UserService, private _router : Router) { }
 
     private onSubmit() {
         if (!this.username || !this.password) {
-            // TODO : Display error
-            console.log('username and password are required');
+            this.errors.push('username and password are required');
         }
-        
+
         this._signInService
             .signIn(this.username, this.password)
-            // TODO : Fancy error
             .subscribe(
                 (token : Token) => {
                     localStorage.setItem('token', token.access_token);
-                    console.log(token); // TODO : Remove debug info
                 },
-                error => {console.error(error); this.invalidCredentials = true},
+                error => {
+                    if (error.status == 400){
+                        this.errors.push('Username and/or password are wrong')
+                    }
+
+                },
                 () => { this._router.navigate(['/Dashboard']); });
     }
 }

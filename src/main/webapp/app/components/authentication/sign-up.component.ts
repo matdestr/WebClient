@@ -3,10 +3,10 @@ import {NgForm} from "angular2/common";
 import {Response} from "angular2/http";
 import {Router} from "angular2/router";
 
-import {RegisterModel} from "../../entities/register/register";
+import {RegisterModel} from "../../entities/user/register";
 import {Token} from "../../entities/authenticatie/token"
-import {SignUpService} from "../../services/sing-up.service";
-import {SignInService} from "../../services/sign-in.service";
+import {UserService} from "../../services/user.service"
+import {User} from "../../entities/user/user";
 
 @Component({
     selector: 'sign-up',
@@ -16,12 +16,12 @@ export class SignUpComponent {
     private form: RegisterModel = new RegisterModel;
     private errors: Array<String> = new Array();
 
-    constructor(private _signUpService: SignUpService, private _signInService: SignInService, private _router: Router){
+    constructor(private _userService: UserService, private _router: Router){
 
     }
 
     public onSubmit(){
-        this._signUpService.signUp(this.form).subscribe(
+        this._userService.signUp(this.form).subscribe(
             data => this.handleData(data),
             error => this.handleErrors(error),
             () => this._router.navigate(['/Authentication'])
@@ -30,7 +30,7 @@ export class SignUpComponent {
 
     public handleData(data: Response){
         if (data.status == 201){
-            this._signInService
+            this._userService
                 .signIn(this.form.username, this.form.password)
                 // TODO : Fancy error
                 .subscribe(

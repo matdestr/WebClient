@@ -11,11 +11,11 @@ import {Router} from "angular2/router";
 
 @Component({
     selector: 'profile',
-    templateUrl: 'html/userprofile.html',
+    templateUrl: 'html/userprofile-edit.html',
     directives: [ToolbarComponent]
 })
 
-export class UserProfileComponent {
+export class UserProfileEditComponent {
     public organizations:Organization[] = [];
     public user:User = User.createEmptyUser();
 
@@ -39,7 +39,15 @@ export class UserProfileComponent {
 
     }
 
-    public editProfile():void {
-        this._router.navigate(["/EditProfile", { username: this.user.username }]);
+    public saveChanges():void {
+        this._userService.saveUser(this.user).subscribe((res:Response) =>
+            (data) => {
+                console.log("User updated.");
+            this._router.navigate(["/Profile", { username: this.user.username }])
+            },
+            (error) => {
+                console.log(error);
+                //todo show error dialog?
+            });
     }
 }

@@ -1,4 +1,4 @@
-System.register(['angular2/core', "angular2/router", "../../entities/register/register", "../../services/sing-up.service", "../../services/sign-in.service"], function(exports_1) {
+System.register(['angular2/core', "angular2/router", "../../entities/user/register", "../../services/user.service"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', "angular2/router", "../../entities/register/re
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, register_1, sing_up_service_1, sign_in_service_1;
+    var core_1, router_1, register_1, user_service_1;
     var SignUpComponent;
     return {
         setters:[
@@ -21,29 +21,25 @@ System.register(['angular2/core', "angular2/router", "../../entities/register/re
             function (register_1_1) {
                 register_1 = register_1_1;
             },
-            function (sing_up_service_1_1) {
-                sing_up_service_1 = sing_up_service_1_1;
-            },
-            function (sign_in_service_1_1) {
-                sign_in_service_1 = sign_in_service_1_1;
+            function (user_service_1_1) {
+                user_service_1 = user_service_1_1;
             }],
         execute: function() {
             SignUpComponent = (function () {
-                function SignUpComponent(_signUpService, _signInService, _router) {
-                    this._signUpService = _signUpService;
-                    this._signInService = _signInService;
+                function SignUpComponent(_userService, _router) {
+                    this._userService = _userService;
                     this._router = _router;
                     this.form = new register_1.RegisterModel;
                     this.errors = new Array();
                 }
                 SignUpComponent.prototype.onSubmit = function () {
                     var _this = this;
-                    this._signUpService.signUp(this.form).subscribe(function (data) { return _this.handleData(data); }, function (error) { return _this.handleErrors(error); }, function () { return _this._router.navigate(['/Authentication']); });
+                    this._userService.signUp(this.form).subscribe(function (data) { return _this.handleData(data); }, function (error) { return _this.handleErrors(error); }, function () { return _this._router.navigate(['/Authentication']); });
                 };
                 SignUpComponent.prototype.handleData = function (data) {
                     var _this = this;
                     if (data.status == 201) {
-                        this._signInService
+                        this._userService
                             .signIn(this.form.username, this.form.password)
                             .subscribe(function (token) {
                             localStorage.setItem('token', JSON.stringify(token.access_token));
@@ -74,7 +70,7 @@ System.register(['angular2/core', "angular2/router", "../../entities/register/re
                         selector: 'sign-up',
                         templateUrl: 'html/sign-up.html'
                     }), 
-                    __metadata('design:paramtypes', [sing_up_service_1.SignUpService, sign_in_service_1.SignInService, router_1.Router])
+                    __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])
                 ], SignUpComponent);
                 return SignUpComponent;
             })();

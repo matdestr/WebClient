@@ -1,9 +1,11 @@
 package be.kdg.kandoe.backend.persistence;
 
 import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
+import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.model.users.roles.RoleType;
 import be.kdg.kandoe.backend.persistence.api.OAuthClientDetailsRepository;
+import be.kdg.kandoe.backend.persistence.api.OrganizationRepository;
 import be.kdg.kandoe.backend.persistence.api.UserRepository;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class DatabaseSeeder {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OrganizationRepository organizationRepository;
 
     @PostConstruct
     private void seed(){
@@ -58,6 +63,20 @@ public class DatabaseSeeder {
 
         users.add(admin);
 
+        val harold = new User();
+        harold.setUsername("Harold");
+        harold.setPassword(passwordEncoder.encode("harold"));
+        harold.setName("Harold");
+        harold.setSurname("Hidethepain");
+        harold.setEmail("harold@hidethepain.com");
+        harold.addRole(RoleType.ROLE_CLIENT);
+
+        users.add(harold);
+
         userRepository.save(users);
+
+
+        val organisation = new Organization("Organisation 1", admin);
+        organizationRepository.save(organisation);
     }
 }
