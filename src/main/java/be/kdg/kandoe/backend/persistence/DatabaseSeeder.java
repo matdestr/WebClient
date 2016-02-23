@@ -40,6 +40,16 @@ public class DatabaseSeeder {
         clientDetails.setAccessTokenValiditySeconds(60 * 60);
         
         clientDetailsRepository.save(clientDetails);
+        
+        OAuthClientDetails clientDetailsAndroid = new OAuthClientDetails("android");
+        
+        clientDetailsAndroid.setAuthorizedGrandTypes("password", "refresh_token");
+        clientDetailsAndroid.setAuthorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT");
+        clientDetailsAndroid.setScopes("read", "write", "trust");
+        clientDetailsAndroid.setSecret("secret");
+        clientDetailsAndroid.setAccessTokenValiditySeconds(60 * 60);
+        
+        clientDetailsRepository.save(clientDetailsAndroid);
 
         val users = new ArrayList<User>();
 
