@@ -22,11 +22,20 @@
                         <a [routerLink]="['/MyOrganizations']" name="my-organizations">My organizations</a>
 -->
                     </li>
-                    <li>
-                        <a>All Organisations</a>
-                    </li>
-                    <li>
-                        <a>Karel de Grote Hogeschool</a>
+                    <li class="toolbar-dropdown dropdown">
+                        <a href="#" class="toolbar-dropdown-toggle dropdown-toggle" data-toggle="dropdown">
+
+                            <div class="toolbar-dropdown-toggle-container">
+                                My organizations
+                                <span class="caret"></span>
+                            </div>
+
+                        </a>
+                        <ul class="toolbar-dropdown-menu dropdown-menu">
+                            <li *ngFor="#org of organizations">
+                                <a class="toolbar-dropdown-menu-item"> {{org.name}}</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

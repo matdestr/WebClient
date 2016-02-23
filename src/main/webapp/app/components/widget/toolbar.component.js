@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', "../authentication/sign-out.component", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/user/user", "angular2/router"], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', "../authentication/sign-out.component", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/user/user", "../../services/organization.service"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, sign_out_component_1, user_service_1, angular2_jwt_1, user_1, router_2;
+    var core_1, router_1, sign_out_component_1, user_service_1, angular2_jwt_1, user_1, organization_service_1;
     var ToolbarComponent;
     return {
         setters:[
@@ -30,16 +30,18 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
             function (user_1_1) {
                 user_1 = user_1_1;
             },
-            function (router_2_1) {
-                router_2 = router_2_1;
+            function (organization_service_1_1) {
+                organization_service_1 = organization_service_1_1;
             }],
         execute: function() {
             ToolbarComponent = (function () {
-                function ToolbarComponent(_userService, _router) {
+                function ToolbarComponent(_userService, _router, _organizationService) {
                     var _this = this;
                     this._userService = _userService;
                     this._router = _router;
+                    this._organizationService = _organizationService;
                     this.user = user_1.User.createEmptyUser();
+                    this.organizations = [];
                     var token = localStorage.getItem('token');
                     if (token == null)
                         return; // TODO : Show error page
@@ -52,8 +54,15 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                     var token = localStorage.getItem('token');
                     this._userService.getUser(angular2_jwt_1.getUsername(token)).subscribe(function (user) {
                         _this.user = _this.user.deserialize(user);
+                        _this.getOrganizations();
                     });
                     return null;
+                };
+                ToolbarComponent.prototype.getOrganizations = function () {
+                    var _this = this;
+                    this._organizationService.getOrganizationsByUser(this.user.username).subscribe(function (data) {
+                        _this.organizations = data.json();
+                    }, function (error) { console.log(error); _this.organizations = []; });
                 };
                 ToolbarComponent.prototype.toProfile = function () {
                     console.log("Routing to profile");
@@ -65,7 +74,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                         templateUrl: 'html/toolbar.html',
                         directives: [sign_out_component_1.SignOutComponent, router_1.ROUTER_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [user_service_1.UserService, router_2.Router])
+                    __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router, organization_service_1.OrganizationService])
                 ], ToolbarComponent);
                 return ToolbarComponent;
             })();

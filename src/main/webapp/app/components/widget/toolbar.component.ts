@@ -1,11 +1,11 @@
 import {Component, OnInit} from 'angular2/core';
-import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES} from 'angular2/router';
+import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Router} from 'angular2/router';
 import {SignOutComponent} from "../authentication/sign-out.component";
 import {UserService} from "../../services/user.service";
 import {getUsername} from "../../libraries/angular2-jwt";
 import {User} from "../../entities/user/user";
-
-import {Router} from "angular2/router";
+import {OrganizationService} from "../../services/organization.service";
+import {Organization} from "../../entities/organization";
 
 @Component({
     selector: 'toolbar',
@@ -15,8 +15,9 @@ import {Router} from "angular2/router";
 export class ToolbarComponent implements OnInit{
 
     private user: User = User.createEmptyUser();
+    private organizations : Organization[] = [];
 
-    constructor(private _userService: UserService, private _router:Router){
+    constructor(private _userService: UserService, private _router:Router, private _organizationService : OrganizationService){
         var token = localStorage.getItem('token');
 
         if (token == null)
@@ -31,10 +32,17 @@ export class ToolbarComponent implements OnInit{
         var token = localStorage.getItem('token');
 
         this._userService.getUser(getUsername(token)).subscribe((user:User) => {
-                this.user = this.user.deserialize(user);
+            this.user = this.user.deserialize(user);
+            this.getOrganizations();
         });
-
         return null;
+    }
+
+    public getOrganizations(){
+        this._organizationService.getOrganizationsByUser(this.user.username).subscribe(
+            data => {
+                this.organizations = data.json();
+            }, error => {console.log(error); this.organizations = []});
     }
 
     public toProfile():void {

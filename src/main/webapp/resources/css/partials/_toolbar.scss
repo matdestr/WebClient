@@ -37,6 +37,7 @@
         .toolbar-dropdown-toggle-container {
           padding: 0 $default-padding;
         }
+
       }
 
       .toolbar-dropdown-toggle:hover {
@@ -77,6 +78,8 @@
         padding: 1em;
         display: block;
         text-decoration: none;
+
+        color: $text-color-neutral;
 
         @media screen and (min-width: $breakpoint-tablet) {
           padding: 1em 3em;
