@@ -3,7 +3,7 @@ import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES} from 'angular2/router';
 import {SignOutComponent} from "../authentication/sign-out.component";
 import {UserService} from "../../services/user.service";
 import {getUsername} from "../../libraries/angular2-jwt";
-import {User} from "../../entities/user";
+import {User} from "../../entities/user/user";
 
 import {Router} from "angular2/router";
 

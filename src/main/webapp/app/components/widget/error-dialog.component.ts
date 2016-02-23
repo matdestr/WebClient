@@ -3,9 +3,7 @@ import {Component} from "angular2/core";
 @Component({
     selector: 'error-dialog',
     template: `
-        <div class="error-dialog">
-            <p>{{message}}</p>
-        </div>
+        <p class="alert alert-danger">{{message}}</p>
     `
 })
 export class ErrorDialogComponent {

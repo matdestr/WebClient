@@ -23,7 +23,7 @@ System.register(["angular2/core"], function(exports_1) {
                 ErrorDialogComponent = __decorate([
                     core_1.Component({
                         selector: 'error-dialog',
-                        template: "\n        <div class=\"error-dialog\">\n            <p>{{message}}</p>\n        </div>\n    "
+                        template: "\n        <p class=\"alert alert-danger\">{{message}}</p>\n    "
                     }), 
                     __metadata('design:paramtypes', [])
                 ], ErrorDialogComponent);

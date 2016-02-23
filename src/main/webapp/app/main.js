@@ -1,5 +1,5 @@
-System.register(['angular2/platform/browser', './components/app.component', "angular2/router", "angular2/http", "angular2/core", "./libraries/angular2-jwt", "./services/sign-in.service", "./services/token.service", "./services/sing-up.service", "./services/user.service", "./services/organization.service"], function(exports_1) {
-    var browser_1, app_component_1, router_1, http_1, core_1, angular2_jwt_1, sign_in_service_1, token_service_1, sing_up_service_1, user_service_1, organization_service_1;
+System.register(['angular2/platform/browser', './components/app.component', "angular2/router", "angular2/http", "angular2/core", "./libraries/angular2-jwt", "./services/token.service", "./services/user.service", "./services/organization.service"], function(exports_1) {
+    var browser_1, app_component_1, router_1, http_1, core_1, angular2_jwt_1, token_service_1, user_service_1, organization_service_1;
     return {
         setters:[
             function (browser_1_1) {
@@ -20,14 +20,8 @@ System.register(['angular2/platform/browser', './components/app.component', "ang
             function (angular2_jwt_1_1) {
                 angular2_jwt_1 = angular2_jwt_1_1;
             },
-            function (sign_in_service_1_1) {
-                sign_in_service_1 = sign_in_service_1_1;
-            },
             function (token_service_1_1) {
                 token_service_1 = token_service_1_1;
-            },
-            function (sing_up_service_1_1) {
-                sing_up_service_1 = sing_up_service_1_1;
             },
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
@@ -39,7 +33,7 @@ System.register(['angular2/platform/browser', './components/app.component', "ang
             browser_1.bootstrap(app_component_1.AppComponent, [
                 router_1.ROUTER_PROVIDERS,
                 http_1.HTTP_PROVIDERS,
-                sign_in_service_1.SignInService, sing_up_service_1.SignUpService, token_service_1.TokenService, user_service_1.UserService, organization_service_1.OrganizationService,
+                token_service_1.TokenService, user_service_1.UserService, organization_service_1.OrganizationService,
                 //JwtHelper,
                 core_1.provide(angular2_jwt_1.AuthHttp, {
                     useFactory: function (http) {

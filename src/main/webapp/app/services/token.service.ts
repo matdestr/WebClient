@@ -6,6 +6,7 @@ import {CredentialsModel} from "../entities/authenticatie/credentials";
 import {Token} from "../entities/authenticatie/token";
 
 import 'rxjs/add/operator/map';
+import {Response} from "angular2/http";
 
 @Injectable()
 export class TokenService {
@@ -16,7 +17,7 @@ export class TokenService {
     constructor(private _http: Http){
     }
 
-    public authenticate(credentials: CredentialsModel): Observable<Token> {
+    public authenticate(credentials: CredentialsModel): Observable<Response> {
         var username = credentials.username;
         var password = credentials.password;
 

@@ -13,7 +13,7 @@ public class ATCreateCategory {
     private String username = "user";
     private String password = "pass";
 
-    @Test
+    //@Test
     public void testCreateNewOrganization() {
 
         baseUrl = System.getProperty("app.baseUrl");
