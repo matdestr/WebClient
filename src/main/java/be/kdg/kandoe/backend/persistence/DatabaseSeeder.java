@@ -63,7 +63,18 @@ public class DatabaseSeeder {
 
         users.add(admin);
 
+        val harold = new User();
+        harold.setUsername("Harold");
+        harold.setPassword(passwordEncoder.encode("harold"));
+        harold.setName("Harold");
+        harold.setSurname("Hidethepain");
+        harold.setEmail("harold@hidethepain.com");
+        harold.addRole(RoleType.ROLE_CLIENT);
+
+        users.add(harold);
+
         userRepository.save(users);
+
 
         val organisation = new Organization("Organisation 1", admin);
         organizationRepository.save(organisation);

@@ -38,4 +38,8 @@ export class UserProfileComponent {
         });
 
     }
+
+    public editProfile():void {
+        this._router.navigate(["/EditProfile", { username: this.user.username }]);
+    }
 }

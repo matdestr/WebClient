@@ -2,18 +2,18 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3 ptop">
             <img id="userprofile-picture" src="img/image.jpg">
         </div>
 
-        <div class="col-md-8 userprofile-details">
+        <div class="col-md-7 userprofile-details">
             <h1 id="user-fullname">{{ user.fullName }}</h1>
             <h3 id="user-email">{{ user.email }}</h3>
         </div>
 
-        <div class="col-md-2">
-            <p class="profile-button"><span class="glyphicon glyphicon-edit"></span> EDIT PROFILE</p>
-            <p><span class="glyphicon"></span></p>
+        <div class="col-md-2 ptop">
+            <p class="profile-button" (click)="editProfile()"><span class="glyphicon glyphicon-edit"></span> EDIT PROFILE</p>
+            <p class="profile-button" ><span class="glyphicon glyphicon-lock"></span> EDIT PASSWORD</p>
         </div>
     </div>
 
@@ -21,21 +21,17 @@
         <h2>Organizations</h2>
 
         <div *ngIf="organizations.length == 0">
-            <p>{{ user.fullName }} is not part of any organization.</p>
+            <p>{{ user.fullName }} is not part of any organizations.</p>
         </div>
-        <div class="organizations-item" *ngIf="organizations.length > 0">
-            <div *ngFor="#organization of organizations">
-                <p>{{ organization.name }}</p>
-                <div [ngSwitch]="user == organization.owner">
-                    <div *ngSwitchWhen="true">
-                        <span>OWNER</span>
-                    </div>
-                    <div *ngSwitchWhen="false">
-                        <span>MEMBER</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <table class="organizations-item" *ngIf="organizations.length > 0">
+            <tr *ngFor="#organization of organizations">
+                <td>{{ organization.name }}</td>
+                <td [ngSwitch]="user == organization.owner">
+                    <span *ngSwitchWhen="true">OWNER</span>
+                    <span *ngSwitchWhen="false">MEMBER</span>
+                </td>
+            </tr>
+        </table>
     </div>
 
 </div>

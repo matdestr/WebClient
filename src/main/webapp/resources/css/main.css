@@ -6143,23 +6143,53 @@ form input[type=submit], form button[type=submit] {
     transform: scale(1); } }
 #userprofile-picture {
   max-height: 100%;
-  max-width: 100%;
-  padding-top: 2em;
-  height: 180px;
-  width: 180px; }
+  max-width: 100%; }
 
 .userprofile-details {
-  padding-left: 1.5em; }
+  padding-left: 1em; }
 
 #user-fullname {
   color: #333333;
-  font-weight: 100; }
+  font-weight: 100;
+  margin-bottom: 0; }
 
 #user-email {
-  color: #aaaaaa; }
+  color: #aaaaaa;
+  margin: 0; }
 
 .organizations {
-  padding: 2em; }
+  padding: 1em; }
+
+.profile-button {
+  cursor: pointer; }
+  .profile-button span {
+    margin-right: 1em; }
+
+.organizations-item {
+  padding-left: 1em;
+  padding-right: 1em; }
+
+table.organizations-item {
+  width: 98%;
+  margin: 0 auto; }
+  table.organizations-item td {
+    width: 50%; }
+
+.ptop {
+  margin-top: 20px; }
+
+.profile-edit-name {
+  margin-top: 20px;
+  width: 49%;
+  display: inline; }
+
+.profile-edit-email {
+  color: #333333 !important;
+  margin-top: 0.3em !important;
+  width: 98.5%; }
+
+#change-avatar {
+  margin-top: 0.5em; }
 
 span.primary {
   color: #dc3522; }
