@@ -59,6 +59,7 @@ public class DatabaseSeeder {
         test.setName("Test");
         test.setSurname("User");
         test.setEmail("test@user.com");
+        test.setProfilePictureUrl("profilepictures/default.png");
         test.addRole(RoleType.ROLE_CLIENT);
 
         users.add(test);
@@ -69,6 +70,7 @@ public class DatabaseSeeder {
         admin.setName("Admin");
         admin.setSurname("User");
         admin.setEmail("admin@user.com");
+        admin.setProfilePictureUrl("profilepictures/default.png");
         admin.addRole(RoleType.ROLE_ADMIN, RoleType.ROLE_CLIENT);
 
         users.add(admin);
@@ -79,6 +81,7 @@ public class DatabaseSeeder {
         harold.setName("Harold");
         harold.setSurname("Hidethepain");
         harold.setEmail("harold@hidethepain.com");
+        harold.setProfilePictureUrl("profilepictures/default.png");
         harold.addRole(RoleType.ROLE_CLIENT);
 
         users.add(harold);

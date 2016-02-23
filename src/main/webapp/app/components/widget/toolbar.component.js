@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', "../authentication/sign-out.component", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/user/user", "../../services/organization.service"], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', "../authentication/sign-out.component", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/user/user", "angular2/router"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, sign_out_component_1, user_service_1, angular2_jwt_1, user_1, organization_service_1;
+    var core_1, router_1, sign_out_component_1, user_service_1, angular2_jwt_1, user_1, router_2;
     var ToolbarComponent;
     return {
         setters:[
@@ -30,8 +30,8 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
             function (user_1_1) {
                 user_1 = user_1_1;
             },
-            function (organization_service_1_1) {
-                organization_service_1 = organization_service_1_1;
+            function (router_2_1) {
+                router_2 = router_2_1;
             }],
         execute: function() {
             ToolbarComponent = (function () {
@@ -40,8 +40,8 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                     this._userService = _userService;
                     this._router = _router;
                     this._organizationService = _organizationService;
-                    this.user = user_1.User.createEmptyUser();
                     this.organizations = [];
+                    this.user = user_1.User.createEmptyUser();
                     var token = localStorage.getItem('token');
                     if (token == null)
                         return; // TODO : Show error page
@@ -74,7 +74,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                         templateUrl: 'html/toolbar.html',
                         directives: [sign_out_component_1.SignOutComponent, router_1.ROUTER_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router, organization_service_1.OrganizationService])
+                    __metadata('design:paramtypes', [user_service_1.UserService, router_2.Router, Object])
                 ], ToolbarComponent);
                 return ToolbarComponent;
             })();

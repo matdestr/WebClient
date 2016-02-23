@@ -38,7 +38,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
                     headers.append('Content-Type', 'application/json');
                     return this.authHttp.get('api/organizations/' + organizationId);
                 };
-                OrganizationService.prototype.getOrganizationsByUser = function (username) {
+                OrganizationService.prototype.getOrganizationsByOwner = function (username) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     return this.authHttp.get("api/organizations?owner=" + username);

@@ -8,6 +8,7 @@ import {JwtHelper, AuthHttp, AuthConfig} from "./libraries/angular2-jwt";
 import {TokenService} from "./services/token.service";
 import {UserService} from "./services/user.service";
 import {OrganizationService} from "./services/organization.service";
+import {ToolbarComponent} from "./components/widget/toolbar.component";
 
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,

@@ -6,13 +6,15 @@ export class User implements Serializable<User> {
     public name:string;
     public surname:string;
     public email:string;
+    public profilePictureUrl:string;
 
 
-    constructor(username:string, name:string, surname:string, email:string) {
+    constructor(username:string, name:string, surname:string, email:string, profilePictureUrl:string = "profilepictures/default.png") {
         this.username = username;
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.profilePictureUrl = profilePictureUrl;
     }
 
     public get fullName():string {
@@ -29,6 +31,7 @@ export class User implements Serializable<User> {
         this.name = object.name;
         this.surname = object.surname;
         this.email = object.email;
+        this.profilePictureUrl = object.profilePictureUrl;
 
         return this;
     }

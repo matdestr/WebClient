@@ -18,13 +18,8 @@ export class UserService {
 
     public getUser(username:string): Observable<User>{
         return this._http.get("api/users/" + username).map((res:Response) => {
-            console.log(res.json());
             return res.json()
         });
-    }
-
-    public saveUser(user:User): Observable<Response> {
-        return this._authHttp.put("api/users/" + user.userId, JSON.stringify(user));
     }
 
     public signUp(registerModel:RegisterModel): Observable<Response> {
@@ -48,11 +43,31 @@ export class UserService {
         return this._tokenService.authenticate(credentials);
     }
 
-    public updateUser(updateUser: UpdateUserModel): Observable<Response> {
+    public updateUser(userId:number, updateUser: UpdateUserModel): Observable<Response> {
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        return this._authHttp.put(UserService.endpoint, JSON.stringify(updateUser), ({
+        return this._authHttp.put(UserService.endpoint + "/" + userId, JSON.stringify(updateUser), ({
             headers: headers
         }))
+    }
+
+    public uploadPhoto(userId:number, file:File, onprog) : void {
+        var formData = new FormData();
+        var request = new XMLHttpRequest();
+
+        formData.append("file", file, file.name);
+
+        request.onerror = (e) => {
+            console.log(e);
+        };
+
+        if (onprog)
+            request.onprogress = onprog;
+
+        var token = localStorage.getItem("token");
+        request.open('POST', UserService.endpoint + "/" + userId + "/photo", true);
+        request.setRequestHeader("Authorization", "Bearer " + token);
+        request.send(formData);
+
     }
 }

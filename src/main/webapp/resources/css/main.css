@@ -6184,13 +6184,21 @@ table.organizations-item {
   width: 49%;
   display: inline; }
 
-.profile-edit-email {
+div.profile-edit-name {
+  display: inline-block;
+  margin-bottom: 0.5em; }
+
+.profile-edit {
   color: #333333 !important;
-  margin-top: 0.3em !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.5em !important;
   width: 98.5%; }
 
-#change-avatar {
+.change-avatar {
   margin-top: 0.5em; }
+
+.fullwidth {
+  width: 100%; }
 
 span.primary {
   color: #dc3522; }

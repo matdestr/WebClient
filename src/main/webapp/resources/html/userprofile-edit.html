@@ -3,20 +3,36 @@
 
     <div class="row">
         <div class="col-md-3 ptop">
-            <img id="userprofile-picture" src="img/image.jpg">
-            <p id="change-avatar" class="profile-button">CHANGE AVATAR</p>
+            <img id="userprofile-picture" src="{{ user.profilePictureUrl }}">
+            <div class="fullwidth">
+                <label for="change-avatar" class="change-avatar" id="change-avatar-label">Change avatar</label>
+                <input id="change-avatar" class="profile-button" type="file" accept="image/*" (change)="onFileChanged($event)">
+            </div>
         </div>
 
         <div class="col-md-7 userprofile-details">
             <div>
-                <input class="form-control profile-edit-name" id="user-fullname" [(ngModel)]="user.name">
-                <input class="form-control profile-edit-name" id="user-surname" [(ngModel)]="user.surname">
+                <div class="profile-edit-name">
+                    <label for="name">First name</label>
+                    <input id="name" class="form-control" id="user-fullname" [(ngModel)]="updateModel.name">
+                </div>
+
+                <div class="profile-edit-name">
+                    <label for="surname">Last name</label>
+                    <input id="surname" class="form-control" id="user-surname" [(ngModel)]="updateModel.surname">
+                </div>
+
+                <label for="user-email">Email</label>
+                <input class="form-control profile-edit" id="user-email" type="email" [(ngModel)]="updateModel.email">
+
+                <label for="verifypass">Verify password</label>
+                <input id="verifypass" class="form-control profile-edit" type="password" [(ngModel)]="updateModel.verifyPassword">
             </div>
-            <input class="form-control profile-edit-email" id="user-email" [(ngModel)]="user.email">
         </div>
 
         <div class="col-md-2 ptop">
-            <p class="profile-button" (click)="saveChanges()"><span class="glyphicon glyphicon-save"></span> SAVE CHANGES</p>
+            <p class="profile-button" (click)="saveChanges()"><span class="glyphicon glyphicon-ok"></span> SAVE CHANGES</p>
+            <p class="profile-button" (click)="returnToProfile()"><span class="glyphicon glyphicon-remove"></span> DISCARD CHANGES</p>
         </div>
     </div>
 

@@ -37,12 +37,8 @@ System.register(['angular2/core', 'angular2/http', '../libraries/angular2-jwt', 
                 }
                 UserService.prototype.getUser = function (username) {
                     return this._http.get("api/users/" + username).map(function (res) {
-                        console.log(res.json());
                         return res.json();
                     });
-                };
-                UserService.prototype.saveUser = function (user) {
-                    return this._authHttp.put("api/users/" + user.userId, JSON.stringify(user));
                 };
                 UserService.prototype.signUp = function (registerModel) {
                     console.log(UserService.endpoint);
@@ -59,12 +55,26 @@ System.register(['angular2/core', 'angular2/http', '../libraries/angular2-jwt', 
                     credentials.password = password;
                     return this._tokenService.authenticate(credentials);
                 };
-                UserService.prototype.updateUser = function (updateUser) {
+                UserService.prototype.updateUser = function (userId, updateUser) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
-                    return this._authHttp.put(UserService.endpoint, JSON.stringify(updateUser), ({
+                    return this._authHttp.put(UserService.endpoint + "/" + userId, JSON.stringify(updateUser), ({
                         headers: headers
                     }));
+                };
+                UserService.prototype.uploadPhoto = function (userId, file, onprog) {
+                    var formData = new FormData();
+                    var request = new XMLHttpRequest();
+                    formData.append("file", file, file.name);
+                    request.onerror = function (e) {
+                        console.log(e);
+                    };
+                    if (onprog)
+                        request.onprogress = onprog;
+                    var token = localStorage.getItem("token");
+                    request.open('POST', UserService.endpoint + "/" + userId + "/photo", true);
+                    request.setRequestHeader("Authorization", "Bearer " + token);
+                    request.send(formData);
                 };
                 UserService.endpoint = "./api/users";
                 UserService = __decorate([

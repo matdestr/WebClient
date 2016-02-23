@@ -51,6 +51,8 @@ public class UserRestController {
         if (user == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+        System.out.println(user.getUsername() + "'s url: " + user.getProfilePictureUrl());
+
         return new ResponseEntity<>(mapper.map(user, UserResource.class), HttpStatus.OK);
     }
 
@@ -65,11 +67,13 @@ public class UserRestController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
+
         if (!uploadedFile.isEmpty()) {
             try {
                 String fileSeperator = File.separator;
-                String path = servletRequest.getSession().getServletContext().getRealPath("/") + fileSeperator + "profilepictures" + fileSeperator + userId + fileSeperator + uploadedFile.getName();
-                System.out.println(String.format("Path to save file: %s", path));
+                String extension = FilenameUtils.getExtension(uploadedFile.getOriginalFilename());
+
+                String path = servletRequest.getSession().getServletContext().getRealPath("/") + fileSeperator + "profilepictures" + fileSeperator + userId + "." + extension;
                 File saveFile = new File(path);
                 if (!saveFile.getParentFile().exists()){
                     saveFile.getParentFile().mkdirs();
@@ -84,9 +88,11 @@ public class UserRestController {
                     return new ResponseEntity(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
                 }
 
-                String extension = FilenameUtils.getExtension(saveFile.getPath());
                 ImageIO.write(image, extension, saveFile);
 
+                user.setProfilePictureUrl("profilepictures" + fileSeperator + userId + "." + extension);
+                user = userService.updateUser(user);
+                System.out.println(user.getUsername() +"'s url: " +user.getProfilePictureUrl());
             } catch (Exception e) {
                 throw e;
             }

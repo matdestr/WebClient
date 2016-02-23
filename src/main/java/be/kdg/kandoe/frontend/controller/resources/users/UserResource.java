@@ -15,5 +15,6 @@ public class UserResource extends ResourceSupport {
     private String name;
     private String surname;
     private String email;
+    private String profilePictureUrl;
     private List<RoleType> roleTypes;
 }

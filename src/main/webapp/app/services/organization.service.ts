@@ -30,7 +30,7 @@ export class OrganizationService {
         return this.authHttp.get('api/organizations/' + organizationId);
     }
 
-    public getOrganizationsByUser(username:string) : Observable<Response> {
+    public getOrganizationsByOwner(username:string) : Observable<Response> {
         var headers : Headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
