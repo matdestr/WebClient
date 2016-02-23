@@ -7,9 +7,10 @@
             <div class="panel-heading">
                 <h1 class="separator-dotted">Create a new organization</h1>
 
-                <div class="col-sm-12 col-md-6 col-md-offset-3">
+                <error-dialog *ngIf="isError"></error-dialog>
+                <!--<div class="col-sm-12 col-md-6 col-md-offset-3">
                     <error-dialog *ngIf="isError"></error-dialog>
-                </div>
+                </div>-->
             </div>
             <div class="panel-body">
                 <form #organizationForm="ngForm"

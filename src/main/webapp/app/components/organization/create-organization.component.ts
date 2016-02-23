@@ -1,25 +1,21 @@
-import {Component} from 'angular2/core';
-import {NgFor} from "angular2/common";
-import {FORM_DIRECTIVES} from "angular2/common";
-import {NgModel, NgForm} from "angular2/common";
-import {CanActivate} from "angular2/router";
+import {Component, OnInit} from 'angular2/core';
+import {FORM_DIRECTIVES, NgFor, NgModel, NgForm} from "angular2/common";
+import {Router, CanActivate} from "angular2/router";
 
 import {User} from "../../entities/user";
 import {OrganizationService} from "../../services/organization.service";
 import {Organization} from "../../entities/organization";
 import {tokenNotExpired} from "../../libraries/angular2-jwt";
 import {ToolbarComponent} from "../widget/toolbar.component";
-//import {ErrorDialogComponent} from "../error-dialog.component";
+import {ErrorDialogComponent} from "../widget/error-dialog.component";
 
 @Component({
     selector: 'create-organization',
     templateUrl: 'html/create-organization.html',
-    directives: [/*ErrorDialogComponent,*/ NgFor, NgForm, FORM_DIRECTIVES, ToolbarComponent]
+    directives: [ErrorDialogComponent, NgFor, NgForm, FORM_DIRECTIVES, ToolbarComponent]
 })
 //@CanActivate(() => tokenNotExpired())
-export class CreateOrganizationComponent {
-    private organizationService : OrganizationService;
-    
+export class CreateOrganizationComponent implements OnInit {
     private organization : Organization;
     private usersToInvite : User[];
     
@@ -27,23 +23,24 @@ export class CreateOrganizationComponent {
     private showErrorOrganizationName : boolean;
     private isError : boolean;
     
-    constructor (organizationService : OrganizationService) {
-        this.organizationService = organizationService;
+    constructor (private _organizationService : OrganizationService, private _router : Router) { }
+    
+    ngOnInit() : any {
         this.organization = new Organization();
         this.usersToInvite = [];
-        
-        for (var i = 0; i < 3; i++) {
+
+        for (let i = 0; i < 3; i++) {
             this.usersToInvite.push(User.createEmptyUser());
         }
-        
+
         this.organizationCreated = false;
         this.showErrorOrganizationName = false;
         this.isError = false;
     }
-    
+
     private onSubmit(form) {
         if (this.organization.name) {
-            this.organizationService.saveOrganization(this.organization)
+            this._organizationService.saveOrganization(this.organization)
                 .subscribe(null,
                     error => {
                         this.isError = true;
@@ -56,7 +53,7 @@ export class CreateOrganizationComponent {
                     });
 
             this.inviteUsers();
-            // TODO : Route to other component
+            this._router.navigate(['/Dashboard']);
         }
     }
     
