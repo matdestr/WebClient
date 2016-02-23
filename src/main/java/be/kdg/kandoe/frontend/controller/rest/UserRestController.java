@@ -105,8 +105,12 @@ public class UserRestController {
         userService.checkLogin(userId, resource.getVerifyPassword());
         if (!user.getUsername().equals(resource.getUsername())){
             userService.isUsernameAvailable(resource.getUsername());
+            user.setUsername(resource.getUsername());
         }
-        User updatedUser = userService.updateUser(mapper.map(resource, User.class));
+        user.setEmail(resource.getEmail());
+        user.setName(resource.getName());
+        user.setSurname(resource.getSurname());
+        User updatedUser = userService.updateUser(user);
         return new ResponseEntity<UserResource>(mapper.map(updatedUser, UserResource.class), HttpStatus.OK);
     }
 }

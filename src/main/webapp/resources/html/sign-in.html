@@ -1,7 +1,10 @@
-<p id="error" class="alert alert-danger" [hidden]="!invalidCredentials">
-    Wrong username or password.
-</p>
-
+<div id="error" *ngIf="errors.length > 0" class="alert alert-danger">
+    <ul>
+        <li *ngFor="#error of errors; #i = index">
+            {{error}}
+        </li>
+    </ul>
+</div>
 <form id="form-sign-in"
       name="form-sign-in"
       method="post" role="form"

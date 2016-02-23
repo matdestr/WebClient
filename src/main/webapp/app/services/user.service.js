@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', "../entities/authenticatie/credentials", "../libraries/angular2-jwt", "./token.service"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1;
+    var core_1, http_1, credentials_1, angular2_jwt_1, token_service_1;
     var UserService;
     return {
         setters:[
@@ -18,11 +18,22 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
             function (http_1_1) {
                 http_1 = http_1_1;
             },
-            function (_1) {}],
+            function (_1) {},
+            function (credentials_1_1) {
+                credentials_1 = credentials_1_1;
+            },
+            function (angular2_jwt_1_1) {
+                angular2_jwt_1 = angular2_jwt_1_1;
+            },
+            function (token_service_1_1) {
+                token_service_1 = token_service_1_1;
+            }],
         execute: function() {
             UserService = (function () {
-                function UserService(_http) {
+                function UserService(_http, _authHttp, _tokenService) {
                     this._http = _http;
+                    this._authHttp = _authHttp;
+                    this._tokenService = _tokenService;
                 }
                 UserService.prototype.getUser = function (username) {
                     return this._http.get("api/users/" + username).map(function (res) {
@@ -30,9 +41,32 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx'], function(exports_
                         return res.json();
                     });
                 };
+                UserService.prototype.signUp = function (registerModel) {
+                    console.log(UserService.endpoint);
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this._http
+                        .post(UserService.endpoint, JSON.stringify(registerModel), {
+                        headers: headers
+                    });
+                };
+                UserService.prototype.signIn = function (username, password) {
+                    var credentials = new credentials_1.CredentialsModel();
+                    credentials.username = username;
+                    credentials.password = password;
+                    return this._tokenService.authenticate(credentials);
+                };
+                UserService.prototype.updateUser = function (updateUser) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this._authHttp.put(UserService.endpoint, JSON.stringify(updateUser), ({
+                        headers: headers
+                    }));
+                };
+                UserService.endpoint = "./api/users";
                 UserService = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [http_1.Http])
+                    __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp, token_service_1.TokenService])
                 ], UserService);
                 return UserService;
             })();

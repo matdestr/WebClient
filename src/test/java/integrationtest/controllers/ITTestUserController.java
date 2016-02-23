@@ -228,11 +228,11 @@ public class ITTestUserController {
         ).andExpect(status().isUnauthorized());
     }
 
-    /*
+
     @Test
     public void testChangeUsername() throws Exception {
         UpdateUserResource updateUserResource = new UpdateUserResource();
-        //updateUserResource.setUsername(userResource.getUsername());
+        updateUserResource.setUsername("newusername");
         updateUserResource.setEmail("newemail@email.com");
         updateUserResource.setName("newname");
         updateUserResource.setSurname("newsurname");
@@ -242,7 +242,7 @@ public class ITTestUserController {
                 .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword )))
                 .content(new JSONObject(updateUserResource).toString())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-        ).andDo(print()).andExpect(status().isBadRequest());
+        ).andDo(print()).andExpect(status().isOk());
     }
 
 
@@ -263,7 +263,7 @@ public class ITTestUserController {
                 .andExpect(jsonPath("$.name", is("newname")))
                 .andExpect(jsonPath("$.surname", is("newsurname")));
     }
-    */
+
     @Test
     public void testChangeUsernameWithNonUniqueUsername() throws Exception {
         CreateUserResource userResource = new CreateUserResource("testusername", "pass", "pass", "test@email.com");

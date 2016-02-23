@@ -5,16 +5,14 @@ import {Http, HTTP_PROVIDERS} from "angular2/http";
 import {provide} from "angular2/core";
 import {JwtHelper, AuthHttp, AuthConfig} from "./libraries/angular2-jwt";
 
-import {SignInService} from "./services/sign-in.service";
 import {TokenService} from "./services/token.service";
-import {SignUpService} from "./services/sing-up.service";
 import {UserService} from "./services/user.service";
 import {OrganizationService} from "./services/organization.service";
 
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
-    SignInService, SignUpService, TokenService, UserService, OrganizationService,
+    TokenService, UserService, OrganizationService,
     //JwtHelper,
     provide(AuthHttp, {
         useFactory: (http) => {
