@@ -6,7 +6,7 @@ import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.sessions.AsynchronousSession;
 import be.kdg.kandoe.backend.model.sessions.Session;
-import be.kdg.kandoe.backend.model.sessions.SychronusSession;
+import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.*;
 import org.junit.Before;
@@ -70,7 +70,7 @@ public class TestSessionService {
 
     @Test
     public void testCreateSychronusSession(){
-        SychronusSession session = new SychronusSession();
+        SynchronousSession session = new SynchronousSession();
 
         Session savedSession = sessionService.addSession(session);
         assertEquals(session.getSessionId(), savedSession.getSessionId());
@@ -87,7 +87,7 @@ public class TestSessionService {
     @Test
     public void testFetchSessionsOfDifferentTypes(){
         Session asynchronousSession = new AsynchronousSession();
-        Session synchronousSession = new SychronusSession();
+        Session synchronousSession = new SynchronousSession();
 
         Session savedAsynchronousSession = sessionService.addSession(asynchronousSession);
         Session savendSynchronousSession = sessionService.addSession(synchronousSession);
@@ -96,12 +96,12 @@ public class TestSessionService {
         Session fetchedSynchronousSession = sessionService.getSessionById(savendSynchronousSession.getSessionId());
 
         assertThat(fetchedAsynchronousSession, instanceOf(AsynchronousSession.class));
-        assertThat(fetchedSynchronousSession, instanceOf(SychronusSession.class));
+        assertThat(fetchedSynchronousSession, instanceOf(SynchronousSession.class));
     }
 
     @Test
     public void testAddTopicToSession(){
-        Session session = new SychronusSession();
+        Session session = new SynchronousSession();
 
         session.setTopic(this.topic);
 

@@ -1,10 +1,14 @@
 package be.kdg.kandoe.backend.model.sessions;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 
 @Entity
 public class AsynchronousSession extends Session {
-    //@todo TimeSpan maxAllowedTimeUntilNextMove
+    @Getter
+    @Setter
     private int timeBetweenMoves;
 
     @Override
@@ -14,7 +18,6 @@ public class AsynchronousSession extends Session {
 
     @Override
     public void endSession() {
-
     }
 
     @Override

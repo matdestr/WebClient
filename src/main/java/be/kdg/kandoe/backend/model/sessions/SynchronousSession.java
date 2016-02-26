@@ -1,11 +1,15 @@
 package be.kdg.kandoe.backend.model.sessions;
 
-import javax.persistence.DiscriminatorValue;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
 @Entity
-public class SychronusSession extends Session {
+public class SynchronousSession extends Session {
+    @Getter
+    @Setter
     private LocalDateTime startDateTime;
 
     @Override

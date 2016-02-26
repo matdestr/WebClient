@@ -8,7 +8,8 @@ import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
-import be.kdg.kandoe.frontend.controller.resources.sessions.CreateAsynchronousSessionResource;
+import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateAsynchronousSessionResource;
+import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateSynchronousSessionResource;
 import integrationtest.TokenProvider;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -26,6 +27,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -122,7 +124,7 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
 
         mockMvc.perform(
-                post(baseApiUrl)
+                post(baseApiUrl + "/asynchronous")
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -130,6 +132,59 @@ public class ITTestSessionRestController {
                 .andDo(print())
         .andExpect(jsonPath("$.sessionId").exists())
         .andExpect(jsonPath("$.sessionId").isNotEmpty());
+    }
+
+    @Test
+    public void testCreateSynchronousSession() throws Exception {
+        CreateSynchronousSessionResource createSynchronousSessionResource = new CreateSynchronousSessionResource();
+        createSynchronousSessionResource.setOrganizationId(organization.getOrganizationId());
+        createSynchronousSessionResource.setMinNumberOfCards(5);
+        createSynchronousSessionResource.setMaxNumberOfCards(10);
+
+        JSONObject jsonObject = new JSONObject(createSynchronousSessionResource);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/synchronous")
+                        .header("Authorization", authorizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print()).andExpect(status().isCreated())
+                .andExpect(jsonPath("$.sessionId").exists())
+                .andExpect(jsonPath("$.sessionId").isNotEmpty());
+    }
+
+    @Test
+    public void testCreateSynchronousSessionWithLessMaxThanMinCards() throws Exception {
+        CreateSynchronousSessionResource createSynchronousSessionResource = new CreateSynchronousSessionResource();
+        createSynchronousSessionResource.setOrganizationId(organization.getOrganizationId());
+        createSynchronousSessionResource.setMinNumberOfCards(10);
+        createSynchronousSessionResource.setMaxNumberOfCards(2);
+
+        JSONObject jsonObject = new JSONObject(createSynchronousSessionResource);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/asynchronous")
+                        .header("Authorization", authorizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void testCreateAsynchronousSessionWithLessMaxThanMinCards() throws Exception {
+        CreateAsynchronousSessionResource createAsynchSessionResource = new CreateAsynchronousSessionResource();
+        createAsynchSessionResource.setOrganizationId(organization.getOrganizationId());
+        createAsynchSessionResource.setMaxNumberOfCards(5);
+        createAsynchSessionResource.setMinNumberOfCards(10);
+        createAsynchSessionResource.setCommentsAllowed(true);
+        JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/asynchronous")
+                        .header("Authorization", authorizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -147,5 +202,48 @@ public class ITTestSessionRestController {
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void testCreateSynchronousSessionWithTopic() throws Exception {
+        CreateSynchronousSessionResource createSynchronousSessionResource = new CreateSynchronousSessionResource();
+        createSynchronousSessionResource.setOrganizationId(organization.getOrganizationId());
+        createSynchronousSessionResource.setMinNumberOfCards(5);
+        createSynchronousSessionResource.setMaxNumberOfCards(10);
+        createSynchronousSessionResource.setTopicId(topic.getTopicId());
+
+        JSONObject jsonObject = new JSONObject(createSynchronousSessionResource);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/synchronous")
+                        .header("Authorization", authorizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print()).andExpect(status().isCreated())
+                .andExpect(jsonPath("$.sessionId").exists())
+                .andExpect(jsonPath("$.sessionId").isNotEmpty())
+                .andExpect(jsonPath("$.topicId", is(topic.getTopicId())));
+    }
+
+    @Test
+    public void testCreateAsynchronousSessionWithTopic() throws Exception {
+        CreateAsynchronousSessionResource createAsynchSessionResource = new CreateAsynchronousSessionResource();
+        createAsynchSessionResource.setOrganizationId(organization.getOrganizationId());
+        createAsynchSessionResource.setMaxNumberOfCards(10);
+        createAsynchSessionResource.setMinNumberOfCards(5);
+        createAsynchSessionResource.setCommentsAllowed(true);
+        createAsynchSessionResource.setTopicId(topic.getTopicId());
+        JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/asynchronous")
+                        .header("Authorization", authorizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andDo(print())
+                .andExpect(jsonPath("$.sessionId").exists())
+                .andExpect(jsonPath("$.sessionId").isNotEmpty())
+                .andExpect(jsonPath("$.topicId", is(topic.getTopicId())));
     }
 }
