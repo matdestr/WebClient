@@ -45,7 +45,6 @@ public class SessionRestController {
     @Autowired
     private MapperFacade mapper;
 
-
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/asynchronous", method = RequestMethod.POST)
     public ResponseEntity createSession(@AuthenticationPrincipal User user, @Valid @RequestBody CreateAsynchronousSessionResource createAsynchronousSessionResource) {
@@ -71,7 +70,6 @@ public class SessionRestController {
                 if (resource instanceof CreateSynchronousSessionResource) {
                     modelClass = SynchronousSession.class;
                     returnResourceClass = SynchronousSessionResource.class;
-
                 } else if (resource instanceof CreateAsynchronousSessionResource) {
                     modelClass = AsynchronousSession.class;
                     returnResourceClass = AsynchronousSessionResource.class;
@@ -79,7 +77,7 @@ public class SessionRestController {
                     throw new CanDoControllerRuntimeException(String.format("Resource is not a known type of Session."), HttpStatus.UNPROCESSABLE_ENTITY);
                 }
 
-                Session session = (Session) mapper.map(resource, modelClass.getDeclaringClass());
+                Session session = (Session) mapper.map(resource, modelClass);
                 if (resource.getTopicId() != null) {
                     Topic topic = topicService.getTopicByTopicId(resource.getTopicId());
                     session.setTopic(topic);
@@ -87,7 +85,7 @@ public class SessionRestController {
                 session.setOrganization(organization);
                 session.setOrganizer(user);
                 Session savedSession = sessionService.addSession(session);
-                SessionResource returnSessionResource = (SessionResource) mapper.map(savedSession, returnResourceClass.getDeclaringClass());
+                SessionResource returnSessionResource = (SessionResource) mapper.map(savedSession, returnResourceClass);
                 return new ResponseEntity<SessionResource>(returnSessionResource, HttpStatus.CREATED);
             }
         }

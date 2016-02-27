@@ -1,4 +1,4 @@
-package be.kdg.kandoe.frontend.config.orika.mappers;
+package be.kdg.kandoe.frontend.config.orika.mappers.users;
 
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.frontend.controller.resources.users.UserResource;

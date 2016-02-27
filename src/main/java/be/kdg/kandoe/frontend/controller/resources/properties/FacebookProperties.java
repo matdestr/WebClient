@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by Wannes on 16/02/16.
- */
 @Component
+@lombok.Value
 public class FacebookProperties {
     private final String appId;
     private final String secret;
@@ -18,13 +16,5 @@ public class FacebookProperties {
 
         this.appId = appId;
         this.secret = secret;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public String getSecret() {
-        return secret;
     }
 }

@@ -10,6 +10,7 @@ import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
 import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateAsynchronousSessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateSynchronousSessionResource;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import integrationtest.TokenProvider;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -130,8 +131,8 @@ public class ITTestSessionRestController {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated())
                 .andDo(print())
-        .andExpect(jsonPath("$.sessionId").exists())
-        .andExpect(jsonPath("$.sessionId").isNotEmpty());
+                .andExpect(jsonPath("$.sessionId").exists())
+                .andExpect(jsonPath("$.sessionId").isNotEmpty());
     }
 
     @Test
@@ -233,6 +234,7 @@ public class ITTestSessionRestController {
         createAsynchSessionResource.setMinNumberOfCards(5);
         createAsynchSessionResource.setCommentsAllowed(true);
         createAsynchSessionResource.setTopicId(topic.getTopicId());
+        createAsynchSessionResource.setType("async");
         JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
 
         mockMvc.perform(
@@ -240,8 +242,7 @@ public class ITTestSessionRestController {
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated())
-                .andDo(print())
+        ).andDo(print()).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.sessionId").exists())
                 .andExpect(jsonPath("$.sessionId").isNotEmpty())
                 .andExpect(jsonPath("$.topicId", is(topic.getTopicId())));
