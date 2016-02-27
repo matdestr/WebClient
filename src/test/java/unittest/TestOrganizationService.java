@@ -21,6 +21,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BackendContextConfig.class })
 @Transactional
@@ -70,6 +71,22 @@ public class TestOrganizationService {
     }
 
     @Test
+    public void getUnexistingOrganizationByName() {
+        Organization existing = organizationService.getOrganizationByName("Organization 2");
+        assertNull(existing);
+    }
+
+    @Test(expected = OrganizationServiceException.class)
+    public void getUnexistingOrganizationByNull() {
+        organizationService.getOrganizationByName(null);
+    }
+
+    @Test(expected = OrganizationServiceException.class)
+    public void getUnexistingOrganisationByEmptyName(){
+        organizationService.getOrganizationByName("");
+    }
+
+    @Test
     public void getOrganizationsByExistingOwner() throws UserServiceException {
         String organizationOne = "Organization 1";
         String organizationTwo = "Organization 2";
@@ -87,24 +104,29 @@ public class TestOrganizationService {
 
     @Test
     public void getOrganizationsByUnexistingOwner() throws UserServiceException {
-        List<Organization> unexisting = organizationService.getOrganizationsByOwner("unexsisting");
+        List<Organization> unexisting = organizationService.getOrganizationsByOwner("unexisting");
 
         assertEquals("list should be empty", 0, unexisting.size());
     }
 
-    @Test
-    public void getUnexistingOrganizationByName() {
-        Organization existing = organizationService.getOrganizationByName("Organization 2");
-        assertNull(existing);
+    @Test(expected = OrganizationServiceException.class)
+    public void getOrganizationsByNullOwner() throws UserServiceException {
+        organizationService.getOrganizationsByOwner(null);
     }
 
     @Test(expected = OrganizationServiceException.class)
-    public void getUnextistingOrganizationByNull() {
-        organizationService.getOrganizationByName(null);
+    public void getOrganizationsByEmptyOwner()  {
+        organizationService.getOrganizationsByOwner("");
     }
 
     @Test(expected = OrganizationServiceException.class)
-    public void getUnextistingOrganisationByEmptyName(){
-        organizationService.getOrganizationByName("");
+    public void getOrganizationsByNullUser() {
+        organizationService.getOrganizationsByUser(null);
     }
+
+    @Test(expected = OrganizationServiceException.class)
+    public void getOrganizationsByEmptyUser() {
+        organizationService.getOrganizationsByUser("");
+    }
+
 }

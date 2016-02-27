@@ -70,10 +70,9 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                         selector: 'sign-up',
                         templateUrl: 'html/sign-up.html'
                     }), 
-                    __metadata('design:paramtypes', [user_service_1.UserService, (typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object])
+                    __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])
                 ], SignUpComponent);
                 return SignUpComponent;
-                var _a;
             })();
             exports_1("SignUpComponent", SignUpComponent);
         }

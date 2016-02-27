@@ -35,4 +35,17 @@ public abstract class Session {
     private int maxNumberOfCards;
     public abstract void endSession();
     public abstract boolean isFinished();
+
+    public boolean isUserParticipant(int userId){
+        return participants.stream().anyMatch(u -> u.getUserId() == userId);
+    }
+
+    public boolean addParticipant(User user){
+        if (isUserParticipant(user.getUserId())){
+            return false;
+        }
+
+        this.participants.add(user);
+        return true;
+    }
 }

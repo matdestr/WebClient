@@ -13,7 +13,7 @@ import {ToolbarComponent} from "./components/widget/toolbar.component";
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
-    TokenService, UserService, OrganizationService,
+    TokenService, UserService, OrganizationService, ToolbarComponent,
     //JwtHelper,
     provide(AuthHttp, {
         useFactory: (http) => {

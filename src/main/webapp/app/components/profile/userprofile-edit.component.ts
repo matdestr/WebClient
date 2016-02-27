@@ -79,10 +79,15 @@ export class UserProfileEditComponent {
         var ext = this.file.name.substring(this.file.name.lastIndexOf("."));
 
         if (this.file != null) {
-            this._userService.uploadPhoto(this.user.userId, this.file);
+            this._userService.uploadPhoto(this.user.userId, this.file, this.onFileUploadStatusChanged);
             setTimeout(() => {
                 this.user.profilePictureUrl = "profilepictures/" + this.user.userId + ext;
             }, 1000);
         }
+    }
+
+    public onFileUploadStatusChanged(e){
+        if (e)
+            console.log("Progress: " + e);
     }
 }

@@ -39,6 +39,7 @@ public class UserRestController {
     public ResponseEntity<UserResource> createUser(@Valid @RequestBody CreateUserResource createUserResource){
         userService.isUsernameAvailable(createUserResource.getUsername());
         User userIn = mapper.map(createUserResource, User.class);
+        userIn.setProfilePictureUrl("profilepictures/default.png");
         User userOut = userService.addUser(userIn);
         return new ResponseEntity<UserResource>(mapper.map(userOut, UserResource.class), HttpStatus.CREATED);
     }

@@ -32,17 +32,10 @@ export class ToolbarComponent implements OnInit{
 
     ngOnInit():any {
         var token = localStorage.getItem('token');
-
-        this._userService.getUser(getUsername(token)).subscribe((user:User) => {
-            this.user = this.user.deserialize(user);
-            this.getOrganizations();
-        });
-
-        return null;
     }
 
     public getOrganizations(){
-        this._organizationService.getOrganizationsByOwner(this.user.username).subscribe(
+        this._organizationService.getOrganizationsByUser(this.user.username).subscribe(
             data => {
                 this.organizations = data.json();
             }, error => {console.log(error); this.organizations = []});

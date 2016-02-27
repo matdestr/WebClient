@@ -41,7 +41,12 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
                 OrganizationService.prototype.getOrganizationsByOwner = function (username) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
-                    return this.authHttp.get("api/organizations?owner=" + username);
+                    return this.authHttp.get("api/organizations/owner/" + username);
+                };
+                OrganizationService.prototype.getOrganizationsByUser = function (username) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this.authHttp.get("api/organizations/user/" + username);
                 };
                 OrganizationService = __decorate([
                     core_1.Injectable(), 

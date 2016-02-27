@@ -53,17 +53,11 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                     });
                 }
                 ToolbarComponent.prototype.ngOnInit = function () {
-                    var _this = this;
                     var token = localStorage.getItem('token');
-                    this._userService.getUser(angular2_jwt_1.getUsername(token)).subscribe(function (user) {
-                        _this.user = _this.user.deserialize(user);
-                        _this.getOrganizations();
-                    });
-                    return null;
                 };
                 ToolbarComponent.prototype.getOrganizations = function () {
                     var _this = this;
-                    this._organizationService.getOrganizationsByOwner(this.user.username).subscribe(function (data) {
+                    this._organizationService.getOrganizationsByUser(this.user.username).subscribe(function (data) {
                         _this.organizations = data.json();
                     }, function (error) { console.log(error); _this.organizations = []; });
                 };
@@ -77,10 +71,9 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                         templateUrl: 'html/toolbar.html',
                         directives: [sign_out_component_1.SignOutComponent, router_1.ROUTER_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [user_service_1.UserService, (typeof (_a = typeof router_2.Router !== 'undefined' && router_2.Router) === 'function' && _a) || Object, organization_service_1.OrganizationService])
+                    __metadata('design:paramtypes', [user_service_1.UserService, router_2.Router, organization_service_1.OrganizationService])
                 ], ToolbarComponent);
                 return ToolbarComponent;
-                var _a;
             })();
             exports_1("ToolbarComponent", ToolbarComponent);
         }
