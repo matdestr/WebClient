@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', "../authentication/sign-out.component", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/user/user", "angular2/router"], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', "../authentication/sign-out.component", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/user/user", "../../services/organization.service", "angular2/router"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, sign_out_component_1, user_service_1, angular2_jwt_1, user_1, router_2;
+    var core_1, router_1, sign_out_component_1, user_service_1, angular2_jwt_1, user_1, organization_service_1, router_2;
     var ToolbarComponent;
     return {
         setters:[
@@ -29,6 +29,9 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
             },
             function (user_1_1) {
                 user_1 = user_1_1;
+            },
+            function (organization_service_1_1) {
+                organization_service_1 = organization_service_1_1;
             },
             function (router_2_1) {
                 router_2 = router_2_1;
@@ -60,7 +63,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                 };
                 ToolbarComponent.prototype.getOrganizations = function () {
                     var _this = this;
-                    this._organizationService.getOrganizationsByUser(this.user.username).subscribe(function (data) {
+                    this._organizationService.getOrganizationsByOwner(this.user.username).subscribe(function (data) {
                         _this.organizations = data.json();
                     }, function (error) { console.log(error); _this.organizations = []; });
                 };
@@ -74,7 +77,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                         templateUrl: 'html/toolbar.html',
                         directives: [sign_out_component_1.SignOutComponent, router_1.ROUTER_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [user_service_1.UserService, (typeof (_a = typeof router_2.Router !== 'undefined' && router_2.Router) === 'function' && _a) || Object, Object])
+                    __metadata('design:paramtypes', [user_service_1.UserService, (typeof (_a = typeof router_2.Router !== 'undefined' && router_2.Router) === 'function' && _a) || Object, organization_service_1.OrganizationService])
                 ], ToolbarComponent);
                 return ToolbarComponent;
                 var _a;

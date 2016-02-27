@@ -4,6 +4,8 @@ import {SignOutComponent} from "../authentication/sign-out.component";
 import {UserService} from "../../services/user.service";
 import {getUsername} from "../../libraries/angular2-jwt";
 import {User} from "../../entities/user/user";
+import {Organization} from "../../entities/organization";
+import {OrganizationService} from "../../services/organization.service";
 
 import {Router} from "angular2/router";
 
@@ -40,7 +42,7 @@ export class ToolbarComponent implements OnInit{
     }
 
     public getOrganizations(){
-        this._organizationService.getOrganizationsByUser(this.user.username).subscribe(
+        this._organizationService.getOrganizationsByOwner(this.user.username).subscribe(
             data => {
                 this.organizations = data.json();
             }, error => {console.log(error); this.organizations = []});
