@@ -87,9 +87,10 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../e
                         templateUrl: 'html/create-organization.html',
                         directives: [error_dialog_component_1.ErrorDialogComponent, common_1.NgFor, common_1.NgForm, common_1.FORM_DIRECTIVES, toolbar_component_1.ToolbarComponent]
                     }), 
-                    __metadata('design:paramtypes', [organization_service_1.OrganizationService, router_1.Router])
+                    __metadata('design:paramtypes', [organization_service_1.OrganizationService, (typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object])
                 ], CreateOrganizationComponent);
                 return CreateOrganizationComponent;
+                var _a;
             })();
             exports_1("CreateOrganizationComponent", CreateOrganizationComponent);
         }

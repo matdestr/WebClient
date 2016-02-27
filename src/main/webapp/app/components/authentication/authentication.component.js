@@ -48,9 +48,10 @@ System.register(['angular2/core', "./sign-in.component", "./sign-up.component", 
                         directives: [sign_in_component_1.SignInComponent, sign_up_component_1.SignUpComponent]
                     }),
                     __param(0, core_1.Inject('App.TokenName')), 
-                    __metadata('design:paramtypes', [String, router_1.Router])
+                    __metadata('design:paramtypes', [String, (typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object])
                 ], AuthenticationComponent);
                 return AuthenticationComponent;
+                var _a;
             })();
             exports_1("AuthenticationComponent", AuthenticationComponent);
         }

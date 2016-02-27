@@ -36,9 +36,10 @@ System.register(['angular2/core', "angular2/router"], function(exports_1) {
                         selector: 'sign-out',
                         template: '<a [className]="anchorSignOutClassName" (click)="onSignOut()">Sign out</a>'
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router])
+                    __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object])
                 ], SignOutComponent);
                 return SignOutComponent;
+                var _a;
             })();
             exports_1("SignOutComponent", SignOutComponent);
         }

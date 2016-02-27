@@ -74,9 +74,10 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                         templateUrl: 'html/toolbar.html',
                         directives: [sign_out_component_1.SignOutComponent, router_1.ROUTER_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [user_service_1.UserService, router_2.Router, Object])
+                    __metadata('design:paramtypes', [user_service_1.UserService, (typeof (_a = typeof router_2.Router !== 'undefined' && router_2.Router) === 'function' && _a) || Object, Object])
                 ], ToolbarComponent);
                 return ToolbarComponent;
+                var _a;
             })();
             exports_1("ToolbarComponent", ToolbarComponent);
         }

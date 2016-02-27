@@ -234,7 +234,6 @@ public class ITTestSessionRestController {
         createAsynchSessionResource.setMinNumberOfCards(5);
         createAsynchSessionResource.setCommentsAllowed(true);
         createAsynchSessionResource.setTopicId(topic.getTopicId());
-        createAsynchSessionResource.setType("async");
         JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
 
         mockMvc.perform(

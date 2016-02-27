@@ -79,9 +79,10 @@ System.register(['angular2/core', 'angular2/http', '../libraries/angular2-jwt', 
                 UserService.endpoint = "./api/users";
                 UserService = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp, token_service_1.TokenService])
+                    __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object, angular2_jwt_1.AuthHttp, token_service_1.TokenService])
                 ], UserService);
                 return UserService;
+                var _a;
             })();
             exports_1("UserService", UserService);
         }
