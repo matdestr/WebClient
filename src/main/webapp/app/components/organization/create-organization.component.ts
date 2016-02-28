@@ -28,11 +28,7 @@ export class CreateOrganizationComponent implements OnInit {
     ngOnInit() : any {
         this.organization = new Organization();
         this.usersToInvite = [];
-
-        for (let i = 0; i < 3; i++) {
-            this.usersToInvite.push(User.createEmptyUser());
-        }
-
+        this.usersToInvite.push(User.createEmptyUser());
         this.organizationCreated = false;
         this.showErrorOrganizationName = false;
         this.isError = false;

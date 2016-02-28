@@ -53,27 +53,27 @@ public class DatabaseSeeder {
 
         val users = new ArrayList<User>();
 
-        val test = new User();
-        test.setUsername("user");
-        test.setPassword(passwordEncoder.encode("pass"));
-        test.setName("Test");
-        test.setSurname("User");
-        test.setEmail("test@user.com");
-        test.setProfilePictureUrl("profilepictures/default.png");
-        test.addRole(RoleType.ROLE_CLIENT);
+        val testUser = new User();
+        testUser.setUsername("user");
+        testUser.setPassword(passwordEncoder.encode("pass"));
+        testUser.setName("Test");
+        testUser.setSurname("User");
+        testUser.setEmail("test@user.com");
+        testUser.setProfilePictureUrl("profilepictures/default.png");
+        testUser.addRole(RoleType.ROLE_CLIENT);
 
-        users.add(test);
+        users.add(testUser);
 
-        val admin = new User();
-        admin.setUsername("admin");
-        admin.setPassword(passwordEncoder.encode("admin"));
-        admin.setName("Admin");
-        admin.setSurname("User");
-        admin.setEmail("admin@user.com");
-        admin.setProfilePictureUrl("profilepictures/default.png");
-        admin.addRole(RoleType.ROLE_ADMIN, RoleType.ROLE_CLIENT);
+        val adminUser = new User();
+        adminUser.setUsername("admin");
+        adminUser.setPassword(passwordEncoder.encode("admin"));
+        adminUser.setName("Admin");
+        adminUser.setSurname("User");
+        adminUser.setEmail("admin@user.com");
+        adminUser.setProfilePictureUrl("profilepictures/default.png");
+        adminUser.addRole(RoleType.ROLE_ADMIN, RoleType.ROLE_CLIENT);
 
-        users.add(admin);
+        users.add(adminUser);
 
         val harold = new User();
         harold.setUsername("Harold");
@@ -89,7 +89,8 @@ public class DatabaseSeeder {
         userRepository.save(users);
 
 
-        val organisation = new Organization("Organisation 1", admin);
+        val organisation = new Organization("Organisation 1", adminUser);
+        organisation.addMember(testUser);
         organizationRepository.save(organisation);
     }
 }

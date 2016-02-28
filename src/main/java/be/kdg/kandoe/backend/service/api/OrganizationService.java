@@ -10,5 +10,6 @@ public interface OrganizationService {
     Organization getOrganizationById(int id) throws OrganizationServiceException;
     Organization getOrganizationByName(String name) throws OrganizationServiceException;
     List<Organization> getOrganizationsByOwner(String owner) throws OrganizationServiceException;
-    List<Organization> getOrganizationsByUser(String username) throws OrganizationServiceException;
+    List<Organization> getOrganizationsOfMember(String username) throws OrganizationServiceException;
+    void updateOrganization(Organization organization);
 }

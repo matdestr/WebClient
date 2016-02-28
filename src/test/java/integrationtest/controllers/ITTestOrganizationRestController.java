@@ -27,7 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.core.Is.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootContextConfig.class, WebContextConfig.class})
@@ -95,7 +97,7 @@ public class ITTestOrganizationRestController {
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(MockMvcResultMatchers.status().isCreated())
+        ).andExpect(status().isCreated())
                 //.andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", is("Karel de Grote")))
                 .andReturn().getResponse().getContentAsString();
@@ -109,7 +111,7 @@ public class ITTestOrganizationRestController {
         mockMvc.perform(
                 MockMvcRequestBuilders.get(getUrl)
                         .header("Authorization", authorizationHeader)
-        ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+        ).andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.organizationId").exists())
                 .andExpect(jsonPath("$.organizationId").isNotEmpty())
                 .andExpect(jsonPath("$.organizationId").isNumber())
@@ -119,14 +121,15 @@ public class ITTestOrganizationRestController {
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/organizations")
-                        .param("owner", user.getUsername())
-                        .header("Authorization", authorizationHeader)
-        ).andExpect(MockMvcResultMatchers.status().isOk())
+                        .param("user", user.getUsername())
+                        .param("owner", String.valueOf(true))
+        ).andExpect(status().isOk())
                 //.andExpect(jsonPath("$.organizations").exists())
                 //.andExpect(jsonPath("$.organizations[0].name", is("Karel de Grote")))
                 //.andExpect(jsonPath("$.organizations[0].owner.username", is(user.getUsername())));
                 .andExpect(jsonPath("$[0].name", is("Karel de Grote")))
-                .andExpect(jsonPath("$[0].owner.username", is(user.getUsername())));
+                .andExpect(jsonPath("$[0].owner.username", is(user.getUsername())))
+                .andExpect(jsonPath("$[1]").doesNotExist());
     }
 
     @Test
@@ -141,15 +144,23 @@ public class ITTestOrganizationRestController {
                         .header("Authorization", authorizationHeader)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonObject.toString())
-        ).andExpect(MockMvcResultMatchers.status().isUnprocessableEntity());
+        ).andExpect(status().isUnprocessableEntity());
     }
     
     @Test
     public void testGetOrganizationsOfNonExistingUser() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/organizations")
-                    .header("Authorization", authorizationHeader)
-                    .param("owner", "nonexistinguser")
-        ).andExpect(MockMvcResultMatchers.status().isNotFound());
+                    .param("user", "nonexistinguser")
+        ).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void testGetOrganizationsOfUser() throws Exception {
+        //TODO fixme owners organisation waar je owner van bent moeten hier ook bij zitten
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/organizations")
+                        .param("user", user.getUsername())
+        ).andDo(print()).andExpect(status().isOk());
     }
 }

@@ -45,9 +45,7 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../e
                 CreateOrganizationComponent.prototype.ngOnInit = function () {
                     this.organization = new organization_1.Organization();
                     this.usersToInvite = [];
-                    for (var i = 0; i < 3; i++) {
-                        this.usersToInvite.push(user_1.User.createEmptyUser());
-                    }
+                    this.usersToInvite.push(user_1.User.createEmptyUser());
                     this.organizationCreated = false;
                     this.showErrorOrganizationName = false;
                     this.isError = false;

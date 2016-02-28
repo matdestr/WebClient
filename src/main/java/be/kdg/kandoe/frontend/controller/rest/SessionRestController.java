@@ -94,8 +94,7 @@ public class SessionRestController {
             if (organization.getOwner().getUserId() != user.getUserId()) {
                 throw new CanDoControllerRuntimeException(String.format("User (%s) is not the owner of the organization (%d)", user.getUsername(), resource.getOrganizationId()), HttpStatus.BAD_REQUEST);
             } else {
-                /*
-                //TODO: refactor doesn't need class logic anymore with jackson json inheritance
+                //TODO mooier manier voor vinden?
                 Class modelClass = null;
                 Class returnResourceClass = null;
                 if (resource instanceof CreateSynchronousSessionResource) {
@@ -107,9 +106,8 @@ public class SessionRestController {
                 } else {
                     throw new CanDoControllerRuntimeException(String.format("Resource is not a known type of Session (%s).", resource.getClass().getSimpleName()), HttpStatus.UNPROCESSABLE_ENTITY);
                 }
-                */
 
-                Session session = (Session) mapper.map(resource, Session.class);
+                Session session = (Session) mapper.map(resource, modelClass);
                 if (resource.getTopicId() != null) {
                     Topic topic = topicService.getTopicByTopicId(resource.getTopicId());
                     session.setTopic(topic);
@@ -117,7 +115,7 @@ public class SessionRestController {
                 session.setOrganization(organization);
                 session.setOrganizer(user);
                 Session savedSession = sessionService.addSession(session);
-                SessionResource returnSessionResource = (SessionResource) mapper.map(savedSession, SessionResource.class);
+                SessionResource returnSessionResource = (SessionResource) mapper.map(savedSession, returnResourceClass);
                 return new ResponseEntity<SessionResource>(returnSessionResource, HttpStatus.CREATED);
             }
         }

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angular2-jwt'], function(exports_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angular2-jwt', "angular2/http"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, angular2_jwt_1;
+    var core_1, http_1, angular2_jwt_1, http_2, http_3;
     var OrganizationService;
     return {
         setters:[
@@ -21,36 +21,45 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
             function (_1) {},
             function (angular2_jwt_1_1) {
                 angular2_jwt_1 = angular2_jwt_1_1;
+            },
+            function (http_2_1) {
+                http_2 = http_2_1;
+                http_3 = http_2_1;
             }],
         execute: function() {
             OrganizationService = (function () {
-                function OrganizationService(/*http : Http,*/ authHttp) {
-                    //this.http = http;
-                    this.authHttp = authHttp;
+                function OrganizationService(_http, _authHttp) {
+                    this._http = _http;
+                    this._authHttp = _authHttp;
                 }
                 OrganizationService.prototype.saveOrganization = function (organization) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
-                    return this.authHttp.post('organizations/', JSON.stringify(organization), { headers: headers }).retry(2);
+                    return this._authHttp.post('organizations/', JSON.stringify(organization), { headers: headers }).retry(2);
                 };
                 OrganizationService.prototype.getOrganizations = function (organizationId) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
-                    return this.authHttp.get('api/organizations/' + organizationId);
+                    return this._authHttp.get('api/organizations/' + organizationId);
                 };
                 OrganizationService.prototype.getOrganizationsByOwner = function (username) {
-                    var headers = new http_1.Headers();
-                    headers.append('Content-Type', 'application/json');
-                    return this.authHttp.get("api/organizations/owner/" + username);
+                    var searchParams = new http_3.URLSearchParams();
+                    searchParams.append("user", username);
+                    searchParams.append("owner", "" + true);
+                    var options = new http_2.RequestOptions();
+                    options.search = searchParams;
+                    return this._authHttp.get("api/organizations", options);
                 };
                 OrganizationService.prototype.getOrganizationsByUser = function (username) {
-                    var headers = new http_1.Headers();
-                    headers.append('Content-Type', 'application/json');
-                    return this.authHttp.get("api/organizations/user/" + username);
+                    var searchParams = new http_3.URLSearchParams();
+                    searchParams.append("user", username);
+                    var options = new http_2.RequestOptions();
+                    options.search = searchParams;
+                    return this._http.get("api/organizations", options);
                 };
                 OrganizationService = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [angular2_jwt_1.AuthHttp])
+                    __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
                 ], OrganizationService);
                 return OrganizationService;
             })();

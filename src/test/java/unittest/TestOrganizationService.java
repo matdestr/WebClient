@@ -119,14 +119,32 @@ public class TestOrganizationService {
         organizationService.getOrganizationsByOwner("");
     }
 
+    @Test
+    public void getOrganizationsByUser(){
+        User organizationUser = new User("user-in-organisation", "password");
+        userService.addUser(organizationUser);
+
+        Organization organization = new Organization("Organization 1", organizationUser);
+        Organization saved = organizationService.addOrganization(organization);
+
+        saved.addMember(organizationUser);
+
+        organizationService.updateOrganization(saved);
+
+        List<Organization> organizations = organizationService.getOrganizationsOfMember(organizationUser.getUsername());
+        assertEquals(organizations.size(), 1);
+    }
+
     @Test(expected = OrganizationServiceException.class)
     public void getOrganizationsByNullUser() {
-        organizationService.getOrganizationsByUser(null);
+        organizationService.getOrganizationsOfMember(null);
     }
 
     @Test(expected = OrganizationServiceException.class)
     public void getOrganizationsByEmptyUser() {
-        organizationService.getOrganizationsByUser("");
+        organizationService.getOrganizationsOfMember("");
     }
+
+
 
 }

@@ -30,7 +30,7 @@ export class UserProfileComponent {
         _userService.getUser(username).subscribe((user:User) => {
             this.user = this.user.deserialize(user);
 
-            this._organizationService.getOrganizationsByOwner(this.user.username).subscribe(
+            this._organizationService.getOrganizationsByUser(this.user.username).subscribe(
                 data => {
                     this.organizations = data.json();
                 },
