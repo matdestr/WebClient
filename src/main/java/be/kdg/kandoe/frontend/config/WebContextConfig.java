@@ -1,7 +1,10 @@
 package be.kdg.kandoe.frontend.config;
 
 import be.kdg.kandoe.frontend.config.security.resolvers.OAuth2UserArgumentResolver;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -43,10 +46,6 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
 
         registry.addResourceHandler("/js/**")
                 .addResourceLocations("/resources/js/");
-        /*
-        registry.addResourceHandler("/app/**").addResourceLocations("/app/");
-        */
-
     }
 
     @Override
@@ -90,4 +89,5 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(oAuth2UserArgumentResolver);
     }
+
 }

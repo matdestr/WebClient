@@ -108,4 +108,17 @@ public class TestSessionService {
         Session savedSession = sessionService.addSession(session);
         assertEquals(savedSession.getTopic().getName(), topic.getName());
     }
+
+    @Test
+    public void testSetOrganizerOfSession(){
+        Session session = new SynchronousSession();
+        Session savedSession = sessionService.addSession(session);
+
+        savedSession.setOrganizer(this.user);
+        sessionService.updateSession(savedSession);
+
+        Session fetchedSession = sessionService.getSessionById(savedSession.getSessionId());
+
+        assertEquals(fetchedSession.getOrganizer().getUserId(), this.user.getUserId());
+    }
 }

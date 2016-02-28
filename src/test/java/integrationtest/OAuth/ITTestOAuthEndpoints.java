@@ -1,4 +1,4 @@
-package integrationtest.OAuth;
+package integrationtest.oauth;
 
 import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
 import be.kdg.kandoe.backend.model.users.User;

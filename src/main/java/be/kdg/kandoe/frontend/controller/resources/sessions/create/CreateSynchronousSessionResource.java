@@ -4,9 +4,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
-@NoArgsConstructor
 @Data
 public class CreateSynchronousSessionResource extends CreateSessionResource {
+    public static final String TYPE = "SYNCH";
+
     @Range(min = 0)
     private int timeBetweenMoves;
+
+    public CreateSynchronousSessionResource() {
+        super(CreateSynchronousSessionResource.TYPE);
+    }
 }

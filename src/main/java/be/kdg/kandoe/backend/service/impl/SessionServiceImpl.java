@@ -31,4 +31,9 @@ public class SessionServiceImpl implements SessionService {
         }
         return session;
     }
+
+    @Override
+    public void updateSession(Session session) {
+        sessionRepository.save(session);
+    }
 }

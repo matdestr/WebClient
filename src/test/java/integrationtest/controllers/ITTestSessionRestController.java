@@ -129,7 +129,7 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
 
         mockMvc.perform(
-                post(baseApiUrl + "/asynchronous")
+                post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -149,7 +149,7 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(createSynchronousSessionResource);
 
         mockMvc.perform(
-                post(baseApiUrl + "/synchronous")
+                post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -168,7 +168,7 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(createSynchronousSessionResource);
 
         mockMvc.perform(
-                post(baseApiUrl + "/asynchronous")
+                post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -185,7 +185,7 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
 
         mockMvc.perform(
-                post(baseApiUrl + "/asynchronous")
+                post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -203,7 +203,7 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
 
         mockMvc.perform(
-                post(baseApiUrl + "/asynchronous")
+                post(baseApiUrl)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isUnauthorized());
@@ -220,7 +220,7 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(createSynchronousSessionResource);
 
         mockMvc.perform(
-                post(baseApiUrl + "/synchronous")
+                post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -241,7 +241,7 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
 
         mockMvc.perform(
-                post(baseApiUrl + "/asynchronous")
+                post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -265,7 +265,7 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(resource);
 
         MvcResult result = mockMvc.perform(
-                post(baseApiUrl + "/synchronous")
+                post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -287,7 +287,7 @@ public class ITTestSessionRestController {
         User userToAdd = new User("add", "pass");
         userToAdd = userService.addUser(userToAdd);
 
-        CreateSynchronousSessionResource resource = new CreateSynchronousSessionResource();
+        CreateAsynchronousSessionResource resource = new CreateAsynchronousSessionResource();
         resource.setOrganizationId(organization.getOrganizationId());
         resource.setMinNumberOfCards(5);
         resource.setMaxNumberOfCards(10);
@@ -296,7 +296,7 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(resource);
 
         MvcResult result = mockMvc.perform(
-                post(baseApiUrl + "/asynchronous")
+                post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -323,7 +323,7 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(resource);
 
         MvcResult result = mockMvc.perform(
-                post(baseApiUrl + "/synchronous")
+                post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)

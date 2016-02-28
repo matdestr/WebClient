@@ -18,5 +18,7 @@ public class SessionResourceMapper extends CustomMapper<Session, SessionResource
         if (session.getTopic() != null){
             sessionResource.setTopicId(session.getTopic().getTopicId());
         }
+        sessionResource.setOrganizerId(session.getOrganizer().getUserId());
+        sessionResource.setUrl(session.getPublicUrl());
     }
 }
