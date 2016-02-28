@@ -52,10 +52,9 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../s
                         templateUrl: 'html/sign-in.html',
                         directives: [common_1.NgForm]
                     }), 
-                    __metadata('design:paramtypes', [user_service_1.UserService, (typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object])
+                    __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])
                 ], SignInComponent);
                 return SignInComponent;
-                var _a;
             })();
             exports_1("SignInComponent", SignInComponent);
         }

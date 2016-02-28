@@ -50,21 +50,37 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
     
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<OrganizationResource>> findOrganizationsByUsername(@RequestParam("owner") String owner) {
-        List<Organization> organizations = organizationService.getOrganizationsByOwner(owner);
-
+    @RequestMapping(value = "/owner/{owner}", method = RequestMethod.GET)
+    public ResponseEntity<List<OrganizationResource>> findOrganizationsByOwner(@PathVariable("owner") String owner) {
         if (userService.getUserByUsername(owner) == null)
             throw new CanDoControllerRuntimeException(
                     String.format("User with username %s does not exist", owner),
                     HttpStatus.NOT_FOUND
             );
-        
+
+        List<Organization> organizations = organizationService.getOrganizationsByOwner(owner);
         List<OrganizationResource> resources = 
                 organizations.stream()
                     .map(o -> mapperFacade.map(o, OrganizationResource.class))
                     .collect(Collectors.toList());
         
+        return new ResponseEntity<>(resources, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/user/{user}", method = RequestMethod.GET)
+    public ResponseEntity<List<OrganizationResource>> findOrganizationsByUser(@PathVariable("user") String username) {
+        User user = userService.getUserByUsername(username);
+        if (user == null){
+            throw new CanDoControllerRuntimeException(
+                    String.format("User with username %s does not exist", username),
+                    HttpStatus.NOT_FOUND);
+        }
+
+        List<Organization> organizations = organizationService.getOrganizationsByUser(username);
+        List<OrganizationResource> resources =  organizations.stream()
+                .map(o -> mapperFacade.map(o, OrganizationResource.class))
+                .collect(Collectors.toList());
+
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 }

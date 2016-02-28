@@ -4,6 +4,7 @@ import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
+import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.frontend.config.RootContextConfig;
@@ -24,6 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
@@ -245,5 +247,34 @@ public class ITTestSessionRestController {
                 .andExpect(jsonPath("$.sessionId").exists())
                 .andExpect(jsonPath("$.sessionId").isNotEmpty())
                 .andExpect(jsonPath("$.topicId", is(topic.getTopicId())));
+    }
+
+    @Test
+    public void testAddUserToSynchronousSession() throws Exception {
+        User userToAdd = new User("add", "pass");
+        userToAdd = userService.addUser(userToAdd);
+
+        CreateSynchronousSessionResource resource = new CreateSynchronousSessionResource();
+        resource.setOrganizationId(organization.getOrganizationId());
+        resource.setMinNumberOfCards(5);
+        resource.setMaxNumberOfCards(10);
+        resource.setTopicId(topic.getTopicId());
+
+        JSONObject jsonObject = new JSONObject(resource);
+
+        MvcResult result = mockMvc.perform(
+                post(baseApiUrl + "/asynchronous")
+                        .header("Authorization", authorizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated()).andReturn();
+
+        String jsonResponseString = result.getResponse().getContentAsString();
+        JSONObject jsonResponse = new JSONObject(jsonResponseString);
+        int sessionId = (int) jsonResponse.get("sessionId");
+
+        String url = String.format("/add/%d/%d", sessionId, userToAdd.getUserId());
+
+        mockMvc.perform(post(url)).andExpect(status().isOk());
     }
 }

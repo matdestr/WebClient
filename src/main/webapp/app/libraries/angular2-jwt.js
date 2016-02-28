@@ -149,10 +149,9 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                 };
                 AuthHttp = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [AuthConfig, (typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+                    __metadata('design:paramtypes', [AuthConfig, http_1.Http])
                 ], AuthHttp);
                 return AuthHttp;
-                var _a;
             })();
             exports_1("AuthHttp", AuthHttp);
             /**

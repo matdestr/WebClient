@@ -1,6 +1,7 @@
 package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.organizations.Organization;
+import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.persistence.api.OrganizationRepository;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
 import be.kdg.kandoe.backend.service.exceptions.OrganizationServiceException;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,5 +65,25 @@ public class OrganizationServiceImpl implements OrganizationService {
         } catch (Exception e){
             throw new OrganizationServiceException(String.format("can't find organizations for owner %s", ownerUsername), e);
         }
+    }
+
+    @Override
+    public List<Organization> getOrganizationsByUser(String username) throws OrganizationServiceException {
+        //TODO replace with more performant method
+        if (username == null || username.isEmpty()) {
+            throw new OrganizationServiceException("username cannot be null");
+        }
+
+        List<Organization> organizations = repository.findAll();
+        List<Organization> userOrganizations = new ArrayList<>();
+
+        for (Organization organization : organizations) {
+            organization.getMembers()
+                    .stream()
+                    .filter(user -> user.getName().equals(username))
+                    .forEach(user -> userOrganizations.add(organization));
+        }
+
+        return userOrganizations;
     }
 }

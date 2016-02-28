@@ -34,6 +34,13 @@ export class OrganizationService {
         var headers : Headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
-        return this.authHttp.get("api/organizations?owner=" + username);
+        return this.authHttp.get("api/organizations/owner/" + username);
+    }
+
+    public getOrganizationsByUser(username:string) : Observable<Response> {
+        var headers : Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        return this.authHttp.get("api/organizations/user/" + username);
     }
 }
