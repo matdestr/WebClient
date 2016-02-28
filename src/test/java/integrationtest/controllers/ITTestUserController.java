@@ -103,8 +103,8 @@ public class ITTestUserController {
                 post("/api/users/")
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andDo(print());
+                .andExpect(status().isBadRequest());
+                //.andDo(print());
     }
 
     @Test
@@ -190,7 +190,7 @@ public class ITTestUserController {
                 .content(new JSONObject(userResource).toString())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(status().isOk())
-                .andDo(print())
+                //.andDo(print())
         .andExpect(jsonPath("$.username", is("new username")))
         .andExpect(jsonPath("$.name", is("newname")))
         .andExpect(jsonPath("$.surname", is("newsurname")));;
@@ -210,7 +210,7 @@ public class ITTestUserController {
                 .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword)))
                 .content(new JSONObject(userResource).toString())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-        ).andDo(print()).andExpect(status().isBadRequest());
+        )/*.andDo(print())*/.andExpect(status().isBadRequest());
     }
 
     @Test
@@ -242,7 +242,7 @@ public class ITTestUserController {
                 .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword )))
                 .content(new JSONObject(updateUserResource).toString())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-        ).andDo(print()).andExpect(status().isOk());
+        )/*.andDo(print())*/.andExpect(status().isOk());
     }
 
 
@@ -286,7 +286,7 @@ public class ITTestUserController {
                 .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword )))
                 .content(new JSONObject(updateUserResource).toString())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-        ).andDo(print()).andExpect(status().isBadRequest());
+        )/*.andDo(print())*/.andExpect(status().isBadRequest());
     }
 
     @Test

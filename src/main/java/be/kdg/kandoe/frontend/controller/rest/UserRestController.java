@@ -45,13 +45,10 @@ public class UserRestController {
 
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public ResponseEntity<UserResource> getUserByName(@PathVariable String username) {
-
         User user = userService.getUserByUsername(username);
 
         if (user == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        System.out.println(user.getUsername() + "'s url: " + user.getProfilePictureUrl());
 
         return new ResponseEntity<>(mapper.map(user, UserResource.class), HttpStatus.OK);
     }
@@ -92,7 +89,6 @@ public class UserRestController {
 
                 user.setProfilePictureUrl("profilepictures" + fileSeperator + userId + "." + extension);
                 user = userService.updateUser(user);
-                System.out.println(user.getUsername() +"'s url: " +user.getProfilePictureUrl());
             } catch (Exception e) {
                 throw e;
             }

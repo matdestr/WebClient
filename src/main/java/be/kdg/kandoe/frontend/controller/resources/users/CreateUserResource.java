@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -21,10 +22,12 @@ public class CreateUserResource {
     @Length(min = 0, max = 100,message = "{register.wrong.surname}")
     private String surname;
 
-    @NotNull(message = "{register.wrong.password}")
+    //@NotNull(message = "{register.wrong.password}")
+    @NotEmpty(message = "{register.wrong.password}")
     private String password;
 
-    @NotNull(message = "{register.wrong.verifypassword}")
+    //@NotNull(message = "{register.wrong.verifypassword}")
+    @NotEmpty(message = "{register.wrong.verifypassword}")
     private String verifyPassword;
 
     @NotNull (message = "{register.wrong.email}")
@@ -40,6 +43,14 @@ public class CreateUserResource {
 
     @AssertTrue(message = "{register.wrong.password-verification}")
     private boolean isValid() {
+        // Workaround: this is called before @NotNull checks (for some reason)
+        // TODO : Search better fix
+        if (this.password == null || this.verifyPassword == null)
+            return false;
+        
+        if (this.password.isEmpty() || this.verifyPassword.isEmpty())
+            return false;
+        
         return this.password.equals(this.verifyPassword);
     }
 }

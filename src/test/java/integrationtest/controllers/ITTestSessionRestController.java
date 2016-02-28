@@ -130,7 +130,7 @@ public class ITTestSessionRestController {
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated())
-                .andDo(print())
+                //.andDo(print())
                 .andExpect(jsonPath("$.sessionId").exists())
                 .andExpect(jsonPath("$.sessionId").isNotEmpty());
     }
@@ -149,7 +149,7 @@ public class ITTestSessionRestController {
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andDo(print()).andExpect(status().isCreated())
+        )/*.andDo(print())*/.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.sessionId").exists())
                 .andExpect(jsonPath("$.sessionId").isNotEmpty());
     }
@@ -220,7 +220,7 @@ public class ITTestSessionRestController {
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andDo(print()).andExpect(status().isCreated())
+        )/*.andDo(print())*/.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.sessionId").exists())
                 .andExpect(jsonPath("$.sessionId").isNotEmpty())
                 .andExpect(jsonPath("$.topicId", is(topic.getTopicId())));
@@ -241,7 +241,7 @@ public class ITTestSessionRestController {
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andDo(print()).andExpect(status().isCreated())
+        )/*.andDo(print())*/.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.sessionId").exists())
                 .andExpect(jsonPath("$.sessionId").isNotEmpty())
                 .andExpect(jsonPath("$.topicId", is(topic.getTopicId())));
