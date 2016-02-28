@@ -27,6 +27,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 import java.util.List;
 
 @RestController
@@ -60,20 +61,27 @@ public class SessionRestController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/add/{sessionId}/{userId}", method = RequestMethod.POST)
-    public ResponseEntity addUserToSession(@AuthenticationPrincipal User user, @PathVariable int userId, @PathVariable int sessionId){
+    @RequestMapping(value = "/add/{sessionId}", method = RequestMethod.POST)
+    public ResponseEntity addUserToSession(@AuthenticationPrincipal User user, @RequestParam int userId, @PathVariable int sessionId){
+        //TODO fix because logic isn't correct
         Session session = sessionService.getSessionById(sessionId);
         User userToAdd = userService.getUserByUserId(userId);
 
         if (session == null)
             throw new CanDoControllerRuntimeException(String.format("No session with id %d", sessionId));
 
-        if (! session.isUserParticipant(user.getUserId())){
-            throw new CanDoControllerRuntimeException("User isn't part of session and as such cannot add another user", HttpStatus.BAD_REQUEST);
-        }
-
-        if (userToAdd == null){
+        if (userToAdd == null)
             throw new CanDoControllerRuntimeException(String.format("No user with id %d", userId));
+
+        Organization organization = session.getOrganization();
+        User sessionOwner = organization.getOwner();
+
+        boolean isOwner = sessionOwner.equals(user);
+        boolean isParticipant = session.isUserParticipant(user.getUserId());
+
+        //Stop if the user that is adding someone isn't owner or isn't a participant
+        if( ! (isOwner || isParticipant)){
+            throw new CanDoControllerRuntimeException("User isn't part of session and as such cannot add another user", HttpStatus.BAD_REQUEST);
         }
 
         if (session.addParticipant(userToAdd)){

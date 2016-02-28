@@ -5,12 +5,14 @@ import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.sessions.Session;
+import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
 import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateAsynchronousSessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateSynchronousSessionResource;
+import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import integrationtest.TokenProvider;
 import org.json.JSONObject;
@@ -263,6 +265,37 @@ public class ITTestSessionRestController {
         JSONObject jsonObject = new JSONObject(resource);
 
         MvcResult result = mockMvc.perform(
+                post(baseApiUrl + "/synchronous")
+                        .header("Authorization", authorizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated()).andReturn();
+
+        String jsonResponseString = result.getResponse().getContentAsString();
+        JSONObject jsonResponse = new JSONObject(jsonResponseString);
+        int sessionId = (int) jsonResponse.get("sessionId");
+
+        String url = String.format(baseApiUrl + "/add/%d?userId=%d", sessionId, userToAdd.getUserId());
+
+        mockMvc.perform(post(url).header("Authorization", authorizationHeader)).andExpect(status().isOk());
+    }
+
+
+
+    @Test
+    public void testAddUserToAsynchronousSession() throws Exception {
+        User userToAdd = new User("add", "pass");
+        userToAdd = userService.addUser(userToAdd);
+
+        CreateSynchronousSessionResource resource = new CreateSynchronousSessionResource();
+        resource.setOrganizationId(organization.getOrganizationId());
+        resource.setMinNumberOfCards(5);
+        resource.setMaxNumberOfCards(10);
+        resource.setTopicId(topic.getTopicId());
+
+        JSONObject jsonObject = new JSONObject(resource);
+
+        MvcResult result = mockMvc.perform(
                 post(baseApiUrl + "/asynchronous")
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
@@ -273,8 +306,36 @@ public class ITTestSessionRestController {
         JSONObject jsonResponse = new JSONObject(jsonResponseString);
         int sessionId = (int) jsonResponse.get("sessionId");
 
-        String url = String.format("/add/%d/%d", sessionId, userToAdd.getUserId());
+        String url = String.format(baseApiUrl + "/add/%d?userId=%d", sessionId, userToAdd.getUserId());
 
-        mockMvc.perform(post(url)).andExpect(status().isOk());
+        mockMvc.perform(post(url).header("Authorization", authorizationHeader)).andExpect(status().isOk());
     }
+
+    @Test
+    public void testAddUserWithInvalidIdToAsynchronousSession() throws Exception {
+        CreateSynchronousSessionResource resource = new CreateSynchronousSessionResource();
+        resource.setOrganizationId(organization.getOrganizationId());
+        resource.setMinNumberOfCards(5);
+        resource.setMaxNumberOfCards(10);
+        resource.setTopicId(topic.getTopicId());
+
+
+        JSONObject jsonObject = new JSONObject(resource);
+
+        MvcResult result = mockMvc.perform(
+                post(baseApiUrl + "/synchronous")
+                        .header("Authorization", authorizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated()).andReturn();
+
+        String jsonResponseString = result.getResponse().getContentAsString();
+        JSONObject jsonResponse = new JSONObject(jsonResponseString);
+        int sessionId = (int) jsonResponse.get("sessionId");
+
+        String url = String.format(baseApiUrl + "/add/%d?userId=%d", sessionId, -1);
+
+        mockMvc.perform(post(url).header("Authorization", authorizationHeader)).andExpect(status().isBadRequest());
+    }
+
 }

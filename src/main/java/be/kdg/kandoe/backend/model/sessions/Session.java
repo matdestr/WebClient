@@ -8,10 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Session {
@@ -36,11 +36,20 @@ public abstract class Session {
     public abstract void endSession();
     public abstract boolean isFinished();
 
+    public Session(){
+        this.participants = new ArrayList<>();
+        this.chatMessages = new ArrayList<>();
+    }
+
     public boolean isUserParticipant(int userId){
         return participants.stream().anyMatch(u -> u.getUserId() == userId);
     }
 
     public boolean addParticipant(User user){
+        if (user == null){
+            throw new NullPointerException("user cannot be null");
+        }
+
         if (isUserParticipant(user.getUserId())){
             return false;
         }
