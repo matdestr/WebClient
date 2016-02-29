@@ -1,15 +1,21 @@
 <toolbar></toolbar>
 
+
 <div id="main-content">
     <div class="container-fluid">
+        <div id="organization-detail">
 
         <h1>{{organization.name}}</h1>
 
         <h2>Members</h2>
         <ul>
-            <li *ngFor="#member of members">
-                {{member.name}}
-            </li>
+            <table style="width:100%" id="memberTable">
+                <tr *ngFor="#member of members">
+                    <td class="imageTable"><img class="memberprofile-picture" src="{{ member.profilePictureUrl }}"></td>
+                    <td class="nameTable">{{member.name}}</td>
+                    <td>{{member.email}}</td>
+                </tr>
+            </table>
         </ul>
 
         <h2>Categories</h2>
@@ -20,6 +26,7 @@
         </ul>
 
 
-        <a (click)="toAddNewCategory(organization.organizationId)">Add new Category</a>
+        <a id="newCategoryButton" (click)="toAddNewCategory(organization.organizationId)">Add new Category</a>
+        </div>
     </div>
 </div>

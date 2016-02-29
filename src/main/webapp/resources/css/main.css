@@ -5993,7 +5993,6 @@ footer {
 
 form input {
   width: 95%;
-  height: 2.5em !important;
   background: #fcfcfc;
   border: 1px solid #ddd;
   -moz-border-radius: 2px;
@@ -6005,8 +6004,7 @@ form input {
   font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   color: #888;
   font-size: 1.15em !important;
-  margin-bottom: 0.5em;
-  padding-left: 0.5em; }
+  margin-bottom: 0.5em; }
   form input:-moz-placeholder, form input:-ms-input-placeholder, form input::-webkit-input-placeholder {
     color: #aaa; }
   form input:hover, form input:focus {
@@ -6018,6 +6016,8 @@ form input {
 
 form input[type="text"], input[type="email"], input[type="password"] {
   border: 1px solid #ddd;
+  height: 2.5em !important;
+  padding-left: 0.5em;
   -o-transition: all 0.1s linear;
   -moz-transition: all 0.1s linear;
   -webkit-transition: all 0.1s linear;
@@ -6125,6 +6125,11 @@ form input[type=submit], form button[type=submit] {
 #categoryDescription {
   height: 5em !important; }
 
+input[type="radio"], input[type="checkbox"] {
+  margin: 0 !important;
+  height: 1em;
+  padding: 0 !important; }
+
 .spinner {
   width: 5.75em;
   padding: 0.5em; }
@@ -6209,6 +6214,29 @@ span.green {
   color: #019b01; }
 span.red {
   color: #8d2216; }
+
+.memberprofile-picture {
+  width: 30px;
+  height: 30px; }
+
+.imageTable {
+  width: 50px; }
+
+.nameTable {
+  width: 100px; }
+
+#memberTable {
+  font-size: 15px; }
+
+h2 {
+  margin-top: 2em;
+  margin-bottom: 1em; }
+
+#organization-detail {
+  margin-left: 2em; }
+
+#newCategoryButton {
+  font-size: 20px; }
 
 body {
   position: relative;
