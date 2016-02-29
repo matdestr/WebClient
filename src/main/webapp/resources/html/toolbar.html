@@ -18,9 +18,7 @@
                         <a [routerLink]="['/NewOrganization']" name="new-organization">New organization</a>
                     </li>
                     <li>
-<!--
-                        <a [routerLink]="['/MyOrganizations']" name="my-organizations">My organizations</a>
--->
+
                     </li>
                     <li class="toolbar-dropdown dropdown">
                         <a href="#" class="toolbar-dropdown-toggle dropdown-toggle" data-toggle="dropdown">
@@ -33,7 +31,7 @@
                         </a>
                         <ul class="toolbar-dropdown-menu dropdown-menu">
                             <li *ngFor="#org of organizations">
-                                <a class="toolbar-dropdown-menu-item"> {{org.name}}</a>
+                                <a class="toolbar-dropdown-menu-item" (click)="toOrganization(org.organizationId)"> {{org.name}}</a>
                             </li>
                         </ul>
                     </li>

@@ -1,0 +1,25 @@
+<toolbar></toolbar>
+
+<div id="main-content">
+    <div class="container-fluid">
+
+        <h1>{{organization.name}}</h1>
+
+        <h2>Members</h2>
+        <ul>
+            <li *ngFor="#member of members">
+                {{member.name}}
+            </li>
+        </ul>
+
+        <h2>Categories</h2>
+        <ul>
+            <li *ngFor="#category of categories">
+                {{category.name}}
+            </li>
+        </ul>
+
+
+        <a (click)="toAddNewCategory(organization.organizationId)">Add new Category</a>
+    </div>
+</div>
