@@ -65,6 +65,10 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                     console.log("Routing to profile");
                     this._router.navigate(["/Profile", { username: this.user.username }]);
                 };
+                ToolbarComponent.prototype.toOrganization = function (organizationId) {
+                    console.log("Routing to Organization");
+                    this._router.navigate(["/OrganizationDetail", { organizationId: organizationId }]);
+                };
                 ToolbarComponent = __decorate([
                     core_1.Component({
                         selector: 'toolbar',

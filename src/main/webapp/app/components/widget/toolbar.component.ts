@@ -45,4 +45,9 @@ export class ToolbarComponent implements OnInit{
         console.log("Routing to profile");
         this._router.navigate(["/Profile", { username: this.user.username }]);
     }
+
+    public toOrganization(organizationId: number):void{
+        console.log("Routing to Organization");
+        this._router.navigate(["/OrganizationDetail", { organizationId : organizationId }]);
+    }
 }

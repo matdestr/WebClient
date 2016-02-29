@@ -1,0 +1,88 @@
+<toolbar></toolbar>
+
+<div id="main-content">
+    <div class="forms container-fluid flex-container">
+        <div class="forms-panel panel col-sm-6 flex-item">
+
+            <div class="panel-heading">
+                <h1 class="separator-dotted">Create a new category</h1>
+
+                <error-dialog *ngIf="isError"></error-dialog>
+            </div>
+            <div class="panel-body">
+                <form #organizationForm="ngForm"
+                      (ngSubmit)="onSubmit(organizationForm)"
+                      name="form-new-category"
+                      role="form">
+                    <section class="forms-section">
+                        <h2>General information</h2>
+
+                        <div class="input-group forms-input-group"
+                             [class.has-error]="!categoryName.valid && !categoryName.pristine"
+                             title="Category name">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                            <input id="categoryName"
+                                   name="category-name"
+                                   class="form-control"
+                                   type="text"
+                                   placeholder="Category name"
+                                   required
+                                   #categoryName="ngForm"
+                                   [(ngModel)]="category.name"
+                                   (ngControl)="categoryName"> </div>
+                        <div class="input-group forms-input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-ok"></i></span>
+                            <textarea  id="categoryDescription"
+                                    name="category-description"
+                                    class="form-control"
+                                    type="text"
+                                    placeholder="Description for this category..."
+                                    required
+                                    #categoryDescription="ngForm"
+                                    [(ngModel)]="category.description"
+                                    (ngControl)="categoryDescription"></textarea>
+                        </div>
+
+                    </section>
+
+
+
+                    <section class="forms-section">
+                        <h2>Tags</h2>
+                        <div class="input-group forms-input-group">
+                            <input type="text" class="form-control" name="tagSearch" placeholder="Search for tags...">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                        </div>
+                        <div class="well" style="max-height: 300px;overflow: auto;">
+                            <ul class="list-group checked-list-box">
+                                <li class="list-group-item"><input type="checkbox"> Cras justo odio</li>
+                                <li class="list-group-item" data-checked="true">Dapibus ac facilisis in</li>
+                                <li class="list-group-item">Morbi leo risus</li>
+                                <li class="list-group-item">Porta ac consectetur ac</li>
+                                <li class="list-group-item">Vestibulum at eros</li>
+                                <li class="list-group-item">Cras justo odio</li>
+                                <li class="list-group-item">Dapibus ac facilisis in</li>
+                                <li class="list-group-item">Morbi leo risus</li>
+                                <li class="list-group-item">Porta ac consectetur ac</li>
+                                <li class="list-group-item">Vestibulum at eros</li>
+                            </ul>
+                        </div>
+
+
+
+                    </section>
+
+
+                    <section>
+                        <div class="forms-input-group clear-both text-center">
+                            <button type="submit"
+                                    name="add-organization">
+                                <i class="glyphicon glyphicon-floppy-disk"></i> Create
+                            </button>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </div>
+        </div>
+</div>
