@@ -10,6 +10,22 @@ System.register(["angular2/core", "angular2/http", 'rxjs/add/operator/map'], fun
     };
     var core_1, http_1;
     var TokenService;
+    function isTokenExpired() {
+        var expireDate = localStorage.getItem('token-expire-date');
+        var token = localStorage.getItem('token');
+        if (token) {
+            console.log("token found");
+        }
+        else {
+            console.log("no token found");
+        }
+        if (expireDate) {
+            console.log("calculating expire date");
+            return Date.parse(expireDate) < Date.now();
+        }
+        return true;
+    }
+    exports_1("isTokenExpired", isTokenExpired);
     return {
         setters:[
             function (core_1_1) {
@@ -24,6 +40,12 @@ System.register(["angular2/core", "angular2/http", 'rxjs/add/operator/map'], fun
                 function TokenService(_http) {
                     this._http = _http;
                 }
+                TokenService.prototype.saveToken = function (token) {
+                    //Save token for authHttp
+                    localStorage.setItem('token', token.access_token);
+                    localStorage.setItem('token-expire-date', "" + (token.expires_in * 1000 + Date.now()));
+                    console.log(token);
+                };
                 TokenService.prototype.authenticate = function (credentials) {
                     var username = credentials.username;
                     var password = credentials.password;

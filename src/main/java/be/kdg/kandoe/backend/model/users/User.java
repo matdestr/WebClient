@@ -45,7 +45,8 @@ public class User implements Serializable, UserDetails {
     private boolean enabled = true;
     private boolean credentialsNonExpired = true;
 
-    @OneToMany(targetEntity = Role.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles")
     private List<Role> roles = new ArrayList<>();
 
     public User(String username, String password) {

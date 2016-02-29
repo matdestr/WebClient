@@ -7,6 +7,7 @@ import {RegisterModel} from "../../entities/user/register";
 import {Token} from "../../entities/authenticatie/token"
 import {UserService} from "../../services/user.service"
 import {User} from "../../entities/user/user";
+import {TokenService} from "../../services/token.service";
 
 @Component({
     selector: 'sign-up',
@@ -16,7 +17,7 @@ export class SignUpComponent {
     private form: RegisterModel = new RegisterModel;
     private errors: Array<String> = new Array();
 
-    constructor(private _userService: UserService, private _router: Router){
+    constructor(private _userService: UserService, private _tokenService: TokenService, private _router: Router){
 
     }
 
@@ -32,11 +33,9 @@ export class SignUpComponent {
         if (data.status == 201){
             this._userService
                 .signIn(this.form.username, this.form.password)
-                // TODO : Fancy error
                 .subscribe(
                     (token : Token) => {
-                        localStorage.setItem('token', JSON.stringify(token.access_token));
-                        console.log(token); // TODO : Remove debug info
+                        this._tokenService.saveToken(token);
                     },
                     error => { console.log(error); },
                     () => { this._router.navigate(['/Dashboard']); });
@@ -50,9 +49,8 @@ export class SignUpComponent {
             let json = error.json();
             json.fieldErrors.forEach(e => this.errors.push(e.message));
         } else {
-            //todo better handling
             console.log(error);
-            //this.errors.push(error);
+            this.errors.push("Oops. Something went wrong!");
         }
     }
 

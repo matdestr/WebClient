@@ -17,7 +17,7 @@ public class Topic {
     @Column(nullable = false)
     private String name;
     private String description;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
     @OneToMany
     private List<Card> cards;

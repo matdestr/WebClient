@@ -24,9 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -116,11 +119,46 @@ public class ITTestOAuthEndpoints {
     public void testProtectedMethodAsAuthorized() throws Exception{
         String token = getToken();
         String authorizationHeader = String.format("Bearer %s", token);
+
         mvc.perform(get("/test/auth")
                 .header("Authorization", authorizationHeader)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("test"));
+    }
+
+    @Test
+    public void testTokenIsValid() throws Exception {
+        String token = getToken();
+        String base64authorizationString = new String(Base64Utils.encode(String.format("%s:%s", clientDetails.getClientId(), clientDetails.getClientSecret()).getBytes()));
+        String authorizationHeader = String.format("Basic %s", base64authorizationString);
+
+        mvc.perform(
+                post("/oauth/check_token")
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("token", token)
+        )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.user_name", is(user.getUsername())))
+                .andExpect(jsonPath("$.client_id", is(clientDetails.getClientId())));
+    }
+
+    @Test
+    public void testInvalidToken() throws Exception {
+        String token = "invalid-token-format";
+        String base64authorizationString = new String(Base64Utils.encode(String.format("%s:%s", clientDetails.getClientId(), clientDetails.getClientSecret()).getBytes()));
+        String authorizationHeader = String.format("Basic %s", base64authorizationString);
+
+        mvc.perform(
+                post("/oauth/check_token")
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("token", token)
+        )
+                /*.andDo(print())*/
+                .andExpect(status().isBadRequest());
     }
 
     @Test
