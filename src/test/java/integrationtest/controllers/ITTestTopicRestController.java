@@ -109,13 +109,13 @@ public class ITTestTopicRestController {
             category1.setName("test-category-1");
             category1.setOrganization(organization1);
 
-            this.category1 = categoryService.addCategory(category1,organization1);
+            this.category1 = categoryService.addCategory(category1);
 
             category2 = new Category();
             category2.setName("test-category-2");
             category2.setOrganization(organization1);
 
-            this.category2 = categoryService.addCategory(category2,organization1);
+            this.category2 = categoryService.addCategory(category2);
 
         }
 

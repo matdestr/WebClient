@@ -54,10 +54,10 @@ public class SessionRestController {
         return createSessionHelperMethod(user, createSynchronousSessionResource);
     }
 
+
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/add/{sessionId}", method = RequestMethod.POST)
     public ResponseEntity addUserToSession(@AuthenticationPrincipal User user, @RequestParam int userId, @PathVariable int sessionId){
-        //TODO fix because logic isn't correct
         Session session = sessionService.getSessionById(sessionId);
         User userToAdd = userService.getUserByUserId(userId);
 

@@ -11,9 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Created by thaneestevens on 20/02/16.
- */
 @Service
 @Transactional
 public class TopicServiceImpl implements TopicService {

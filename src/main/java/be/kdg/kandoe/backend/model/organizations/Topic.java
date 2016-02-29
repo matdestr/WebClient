@@ -1,39 +1,24 @@
 package be.kdg.kandoe.backend.model.organizations;
 
 import be.kdg.kandoe.backend.model.cards.Card;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * Created by Vincent on 7/02/2016.
- */
 @Entity
+@Data
 @NoArgsConstructor
 public class Topic {
     @Id
     @GeneratedValue
-    @Getter
+    @Setter(AccessLevel.NONE)
     private int topicId;
-
-    @Getter
-    @Setter
+    @Column(nullable = false)
     private String name;
-
-    @Setter
-    @Getter
     private String description;
-
-    @ManyToOne(cascade=CascadeType.ALL)
-    @Getter
-    @Setter
+    @ManyToOne
     private Category category;
-
     @OneToMany
-    @Getter
-    @Setter
     private List<Card> cards;
 }

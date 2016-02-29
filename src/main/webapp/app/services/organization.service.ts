@@ -11,7 +11,7 @@ import {URLSearchParams} from "angular2/http";
 
 @Injectable()
 export class OrganizationService {
-
+    public static endPoint:string = "./api/organizations/";
     
     constructor (private _http : Http, private _authHttp: AuthHttp) {
     }
@@ -20,36 +20,26 @@ export class OrganizationService {
         var headers : Headers = new Headers();
         headers.append('Content-Type', 'application/json');
         
-        return this._authHttp.post('organizations/', JSON.stringify(organization), {headers: headers}).retry(2);
+        return this._authHttp.post(OrganizationService.endPoint, JSON.stringify(organization), {headers: headers}).retry(2);
     }
     
     public getOrganizations(organizationId : number) : Observable<Response> {
-        var headers : Headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-
-        return this._authHttp.get('api/organizations/' + organizationId);
+        return this._authHttp.get(OrganizationService.endPoint + organizationId);
     }
 
     public getOrganizationsByOwner(username:string) : Observable<Response> {
         var searchParams: URLSearchParams = new URLSearchParams();
-        searchParams.append("user", username);
         searchParams.append("owner", "" + true);
 
 
         var options: RequestOptions = new RequestOptions();
         options.search = searchParams;
 
-        return this._authHttp.get("api/organizations", options);
+        return this._authHttp.get(OrganizationService.endPoint + "/user/" + username, options);
     }
 
     public getOrganizationsByUser(username:string) : Observable<Response> {
-        var searchParams: URLSearchParams = new URLSearchParams();
-        searchParams.append("user", username);
-
-        var options: RequestOptions = new RequestOptions();
-        options.search = searchParams;
-
-        return this._http.get("api/organizations", options);
+        return this._http.get(OrganizationService.endPoint + "/user/" + username);
     }
 
 }

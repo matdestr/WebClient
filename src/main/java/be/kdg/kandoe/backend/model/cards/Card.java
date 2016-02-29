@@ -1,29 +1,34 @@
 package be.kdg.kandoe.backend.model.cards;
 
+import be.kdg.kandoe.backend.model.organizations.Category;
+import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.users.User;
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Card {
     @Id
     @GeneratedValue
-    @Getter
+    @Setter(AccessLevel.NONE)
     private int cardId;
-    @Getter
-    @Setter
-    private int priority;
-    @OneToOne
-    @Getter
-    @Setter
+    /*
+    @OneToMany
+    private CardPosition cardPosition;
+    */
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
     private CardDetails cardDetails;
-    @OneToOne
-    @Getter
-    @Setter
+    @OneToOne(optional = false)
+    private Category category;
+    @OneToMany
+    private List<Topic> topics;
+    @OneToOne(optional = false)
     private User user;
 }

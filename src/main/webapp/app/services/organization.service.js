@@ -35,28 +35,22 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
                 OrganizationService.prototype.saveOrganization = function (organization) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
-                    return this._authHttp.post('organizations/', JSON.stringify(organization), { headers: headers }).retry(2);
+                    return this._authHttp.post(OrganizationService.endPoint, JSON.stringify(organization), { headers: headers }).retry(2);
                 };
                 OrganizationService.prototype.getOrganizations = function (organizationId) {
-                    var headers = new http_1.Headers();
-                    headers.append('Content-Type', 'application/json');
-                    return this._authHttp.get('api/organizations/' + organizationId);
+                    return this._authHttp.get(OrganizationService.endPoint + organizationId);
                 };
                 OrganizationService.prototype.getOrganizationsByOwner = function (username) {
                     var searchParams = new http_3.URLSearchParams();
-                    searchParams.append("user", username);
                     searchParams.append("owner", "" + true);
                     var options = new http_2.RequestOptions();
                     options.search = searchParams;
-                    return this._authHttp.get("api/organizations", options);
+                    return this._authHttp.get(OrganizationService.endPoint + "/user/" + username, options);
                 };
                 OrganizationService.prototype.getOrganizationsByUser = function (username) {
-                    var searchParams = new http_3.URLSearchParams();
-                    searchParams.append("user", username);
-                    var options = new http_2.RequestOptions();
-                    options.search = searchParams;
-                    return this._http.get("api/organizations", options);
+                    return this._http.get(OrganizationService.endPoint + "/user/" + username);
                 };
+                OrganizationService.endPoint = "./api/organizations/";
                 OrganizationService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])

@@ -1,30 +1,21 @@
 package be.kdg.kandoe.backend.model.cards;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Data
 @NoArgsConstructor
 public class CardDetails {
     @Id
     @GeneratedValue
-    @Getter
+    @Setter(AccessLevel.NONE)
     private int cardDetailsId;
-    @Getter
-    @Setter
     private String imageUrl;
-    @Getter
-    @Setter
+    @Column(nullable = false)
     private String text;
     @OneToMany
-    @Getter
-    @Setter
     private List<Comment> comments;
 }

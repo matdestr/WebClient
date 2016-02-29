@@ -120,8 +120,7 @@ public class ITTestOrganizationRestController {
                 .andExpect(jsonPath("$.owner.userId").value(this.user.getUserId()));
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/organizations")
-                        .param("user", user.getUsername())
+                MockMvcRequestBuilders.get("/api/organizations/user/" + user.getUsername())
                         .param("owner", String.valueOf(true))
         ).andExpect(status().isOk())
                 //.andExpect(jsonPath("$.organizations").exists())
@@ -150,17 +149,14 @@ public class ITTestOrganizationRestController {
     @Test
     public void testGetOrganizationsOfNonExistingUser() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/organizations")
-                    .param("user", "nonexistinguser")
+                MockMvcRequestBuilders.get("/api/organizations/user/" + "notexistinguser")
         ).andExpect(status().isNotFound());
     }
 
     @Test
     public void testGetOrganizationsOfUser() throws Exception {
-        //TODO fixme owners organisation waar je owner van bent moeten hier ook bij zitten
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/organizations")
-                        .param("user", user.getUsername())
+                MockMvcRequestBuilders.get("/api/organizations/user/" + user.getUsername())
         ).andDo(print()).andExpect(status().isOk());
     }
 }

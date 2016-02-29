@@ -16,7 +16,7 @@ public class Organization {
     @Setter(AccessLevel.NONE)
     private int organizationId;
     
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String name;
     
     @OneToOne(fetch = FetchType.EAGER)

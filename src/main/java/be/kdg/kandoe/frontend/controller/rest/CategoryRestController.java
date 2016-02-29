@@ -16,11 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * Created on 20/02/2016
- *
- * @author Arne De Cock
- */
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryRestController {
@@ -45,8 +40,8 @@ public class CategoryRestController {
                                                                  @Valid @RequestBody CreateCategoryResource categoryResource) {
         Organization organization = organizationService.getOrganizationById(organizationId);
         Category category = mapper.map(categoryResource, Category.class);
-        category = categoryService.addCategory(category, organization);
-
+        category.setOrganization(organization);
+        category = categoryService.addCategory(category);
         return new ResponseEntity<>(mapper.map(category, CategoryResource.class), HttpStatus.CREATED);
     }
 
@@ -54,7 +49,6 @@ public class CategoryRestController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<CategoryResource>> getCategories(@RequestParam("organizationId") int organizationId) {
         List<Category> categories = categoryService.getCategoriesByOrganizationId(organizationId);
-
         return new ResponseEntity<>(mapper.mapAsList(categories, CategoryResource.class), HttpStatus.OK);
     }
 
@@ -62,7 +56,6 @@ public class CategoryRestController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CategoryResource> getCategory(@PathVariable("categoryId") int categoryId) {
         Category category = categoryService.getCategoryById(categoryId);
-
         return new ResponseEntity<>(mapper.map(category, CategoryResource.class), HttpStatus.OK);
     }
 }

@@ -115,7 +115,7 @@ public class ITTestSessionRestController {
         topic.setCategory(category);
 
         organizationService.addOrganization(organization);
-        categoryService.addCategory(category, organization);
+        categoryService.addCategory(category);
         topicService.addTopic(topic);
     }
 

@@ -51,8 +51,8 @@ public class OrganizationRestController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<OrganizationResource>> findOrganizationsByUser(@RequestParam("user") String username, @RequestParam(value = "owner", defaultValue = "false", required = false) boolean isOwner) {
+    @RequestMapping(value = "/user/{user}", method = RequestMethod.GET)
+    public ResponseEntity<List<OrganizationResource>> findOrganizationsByUser(@PathVariable("user") String username, @RequestParam(value = "owner", defaultValue = "false", required = false) boolean isOwner) {
         User user = userService.getUserByUsername(username);
         if (user == null){
             throw new CanDoControllerRuntimeException(

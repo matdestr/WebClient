@@ -64,7 +64,7 @@ public class TestSessionService {
 
         userService.addUser(user);
         organizationService.addOrganization(organization);
-        categoryService.addCategory(category, organization);
+        categoryService.addCategory(category);
         topicService.addTopic(topic);
     }
 

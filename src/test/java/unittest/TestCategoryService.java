@@ -54,16 +54,18 @@ public class TestCategoryService {
 
     @Test
     public void testAddNewCategory() throws CategoryServiceException {
-        categoryService.addCategory(testCategory, organization1);
+        categoryService.addCategory(testCategory);
 
         Category fetchedCategory = categoryService.getCategoryByName(testCategory.getName(), testCategory.getOrganization());
 
-        assertEquals(testCategory, fetchedCategory);
+        assertEquals(testCategory.getCategoryId(), fetchedCategory.getCategoryId());
+        assertEquals(testCategory.getOrganization().getOrganizationId(), fetchedCategory.getOrganization().getOrganizationId());
     }
+
 
     @Test(expected = CategoryServiceException.class)
     public void testAddExistingCategoryInSameOrganization() throws CategoryServiceException {
-        categoryService.addCategory(testCategory, organization1);
+        categoryService.addCategory(testCategory);
         Category fetchedCategory = categoryService.getCategoryByName(testCategory.getName(), testCategory.getOrganization());
         assertEquals(testCategory, fetchedCategory);
 
@@ -71,12 +73,13 @@ public class TestCategoryService {
         newTestCategory.setName(fetchedCategory.getName());
         newTestCategory.setOrganization(fetchedCategory.getOrganization());
 
-        categoryService.addCategory(newTestCategory, organization1);
+        categoryService.addCategory(newTestCategory);
     }
+
 
     @Test
     public void testAddExistingCategoryInDifferentOrganization() throws CategoryServiceException {
-        categoryService.addCategory(testCategory, organization1);
+        categoryService.addCategory(testCategory);
         Category fetchedCategory = categoryService.getCategoryByName(testCategory.getName(), testCategory.getOrganization());
         assertEquals(testCategory, fetchedCategory);
 
@@ -84,9 +87,10 @@ public class TestCategoryService {
         newTestCategory.setName(fetchedCategory.getName());
         newTestCategory.setDescription(fetchedCategory.getDescription());
         newTestCategory.setOrganization(organizationService.getOrganizationByName(organization2.getName()));
-        categoryService.addCategory(newTestCategory, organization2);
+        categoryService.addCategory(newTestCategory);
 
         Category fetchedNewCategory = categoryService.getCategoryByName(newTestCategory.getName(), newTestCategory.getOrganization());
         assertEquals(newTestCategory, fetchedNewCategory);
     }
+
 }

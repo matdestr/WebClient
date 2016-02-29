@@ -22,17 +22,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category addCategory(Category category, Organization organization) throws CategoryServiceException {
+    public Category addCategory(Category category) throws CategoryServiceException {
 
         Category fetchedCategory = getCategoryByName(category.getName(), category.getOrganization());
 
         if (fetchedCategory != null)
-            if (fetchedCategory.getOrganization().equals(organization))
+            if (fetchedCategory.getOrganization().equals(category.getOrganization()))
                 throw new CategoryServiceException(String.format(
                         "Category name '%s' already exists in organization '%s'.",
                         fetchedCategory.getName(), fetchedCategory.getOrganization().getName()));
 
-        category.setOrganization(organization);
         repository.save(category);
 
         return category;

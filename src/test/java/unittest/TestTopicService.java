@@ -20,11 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by thaneestevens on 20/02/16.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { BackendContextConfig.class })
+@ContextConfiguration(classes = {BackendContextConfig.class})
 @Transactional // Automatically rollbacks after each test
 public class TestTopicService {
     @Autowired
@@ -39,14 +36,14 @@ public class TestTopicService {
     @Autowired
     private UserService userService;
 
-    private Organization organization1,organization2;
+    private Organization organization1, organization2;
 
     private Category testCategory, testCategory2;
 
     private Topic testTopic;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         User user = new User("test-user", "test-password");
         userService.addUser(user);
 
@@ -59,13 +56,15 @@ public class TestTopicService {
         testCategory.setName("test-category");
         testCategory.setDescription("This is a test category for test purposes only.");
         organization1 = organizationService.getOrganizationByName(organization1.getName());
-        categoryService.addCategory(testCategory, organization1);
+        testCategory.setOrganization(organization1);
+        categoryService.addCategory(testCategory);
 
-        testCategory2= new Category();
-        testCategory.setName("test-category-2");
-        testCategory.setDescription("This is a second test category for test purposes only.");
+        testCategory2 = new Category();
+        testCategory2.setName("test-category-2");
+        testCategory2.setDescription("This is a second test category for test purposes only.");
         organization2 = organizationService.getOrganizationByName(organization2.getName());
-        categoryService.addCategory(testCategory2, organization2);
+        testCategory2.setOrganization(organization2);
+        categoryService.addCategory(testCategory2);
 
         testTopic = new Topic();
         testTopic.setName("test-topic");
@@ -74,14 +73,14 @@ public class TestTopicService {
     }
 
     @Test
-    public void testAddNewTopic(){
+    public void testAddNewTopic() {
         topicService.addTopic(testTopic);
-        Topic fetchedTopic = topicService.getTopicByName(testTopic.getName(),testTopic.getCategory());
+        Topic fetchedTopic = topicService.getTopicByName(testTopic.getName(), testTopic.getCategory());
         assertEquals(testTopic, fetchedTopic);
     }
 
-    @Test (expected = TopicServiceException.class)
-    public void testAddExistingTopicInSameCategory() throws TopicServiceException{
+    @Test(expected = TopicServiceException.class)
+    public void testAddExistingTopicInSameCategory() throws TopicServiceException {
         topicService.addTopic(testTopic);
         Topic fetchedTopic = topicService.getTopicByName(testTopic.getName(), testTopic.getCategory());
         assertEquals(testTopic, fetchedTopic);
@@ -102,7 +101,8 @@ public class TestTopicService {
         Topic newTestTopic = new Topic();
         newTestTopic.setName(fetchedTopic.getName());
         newTestTopic.setDescription(fetchedTopic.getDescription());
-        newTestTopic.setCategory(categoryService.getCategoryByName(testCategory2.getName(),organization2));
+        Category fetchedCategory = categoryService.getCategoryByName(testCategory2.getName(), organization2);
+        newTestTopic.setCategory(fetchedCategory);
         topicService.addTopic(newTestTopic);
 
         Topic fetchedNewTopic = topicService.getTopicByName(newTestTopic.getName(), newTestTopic.getCategory());
