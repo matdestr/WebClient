@@ -7,6 +7,7 @@ import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.controller.resources.organizations.OrganizationResource;
 import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import ma.glasnost.orika.MapperFacade;
+import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,11 @@ public class OrganizationRestController {
         OrganizationResource resultResource = mapperFacade.map(organization, OrganizationResource.class);
         
         return new ResponseEntity<>(resultResource, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public List<OrganizationResource> getOrganizations(){
+        return mapperFacade.mapAsList(organizationService.getOrganizations(), OrganizationResource.class);
     }
     
     @RequestMapping(value = "/{organizationId}", method = RequestMethod.GET)

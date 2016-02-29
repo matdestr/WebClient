@@ -50,6 +50,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                         return; // TODO : Show error page
                     this._userService.getUser(angular2_jwt_1.getUsername(token)).subscribe(function (user) {
                         _this.user = _this.user.deserialize(user);
+                        _this.getOrganizations();
                     });
                 }
                 ToolbarComponent.prototype.ngOnInit = function () {
@@ -57,7 +58,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                 };
                 ToolbarComponent.prototype.getOrganizations = function () {
                     var _this = this;
-                    this._organizationService.getOrganizationsByUser(this.user.username).subscribe(function (data) {
+                    this._organizationService.getOrganizationsByOwner(this.user.username).subscribe(function (data) {
                         _this.organizations = data.json();
                     }, function (error) { console.log(error); _this.organizations = []; });
                 };

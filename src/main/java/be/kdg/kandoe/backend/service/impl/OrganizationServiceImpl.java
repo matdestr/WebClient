@@ -58,6 +58,11 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
+    public List<Organization> getOrganizations() {
+        return organizationRepository.findAll();
+    }
+
+    @Override
     public List<Organization> getOrganizationsByOwner(String ownerUsername) throws OrganizationServiceException {
         if (ownerUsername == null || ownerUsername.isEmpty())
             throw new OrganizationServiceException("owner username cannot be null or empty");

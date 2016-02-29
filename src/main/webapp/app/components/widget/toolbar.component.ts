@@ -14,7 +14,7 @@ import {Router} from "angular2/router";
     templateUrl: 'html/toolbar.html',
     directives:[SignOutComponent, ROUTER_DIRECTIVES]
 })
-export class ToolbarComponent implements OnInit{
+export class ToolbarComponent {
 
     private organizations : Organization[] = [];
     public user: User = User.createEmptyUser();
@@ -27,7 +27,9 @@ export class ToolbarComponent implements OnInit{
         
         this._userService.getUser(getUsername(token)).subscribe((user:User) => {
             this.user = this.user.deserialize(user);
+            this.getOrganizations();
         });
+
     }
 
     ngOnInit():any {
@@ -35,7 +37,7 @@ export class ToolbarComponent implements OnInit{
     }
 
     public getOrganizations(){
-        this._organizationService.getOrganizationsByUser(this.user.username).subscribe(
+        this._organizationService.getOrganizationsByOwner(this.user.username).subscribe(
             data => {
                 this.organizations = data.json();
             }, error => {console.log(error); this.organizations = []});

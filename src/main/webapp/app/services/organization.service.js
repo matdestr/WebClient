@@ -45,10 +45,10 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
                     searchParams.append("owner", "" + true);
                     var options = new http_2.RequestOptions();
                     options.search = searchParams;
-                    return this._authHttp.get(OrganizationService.endPoint + "/user/" + username, options);
+                    return this._authHttp.get(OrganizationService.endPoint + "user/" + username, options);
                 };
                 OrganizationService.prototype.getOrganizationsByUser = function (username) {
-                    return this._http.get(OrganizationService.endPoint + "/user/" + username);
+                    return this._http.get(OrganizationService.endPoint + "user/" + username);
                 };
                 OrganizationService.endPoint = "./api/organizations/";
                 OrganizationService = __decorate([

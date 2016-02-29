@@ -35,11 +35,11 @@ export class OrganizationService {
         var options: RequestOptions = new RequestOptions();
         options.search = searchParams;
 
-        return this._authHttp.get(OrganizationService.endPoint + "/user/" + username, options);
+        return this._authHttp.get(OrganizationService.endPoint + "user/" + username, options);
     }
 
     public getOrganizationsByUser(username:string) : Observable<Response> {
-        return this._http.get(OrganizationService.endPoint + "/user/" + username);
+        return this._http.get(OrganizationService.endPoint + "user/" + username);
     }
 
 }
