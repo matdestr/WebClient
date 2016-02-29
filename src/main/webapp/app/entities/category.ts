@@ -10,7 +10,7 @@ export class Category implements Serializable<Category>{
     }
 
 
-    public static createEmptyTopic():Category {
+    public static createEmptyCategory():Category {
         return new Category("","");
     }
 

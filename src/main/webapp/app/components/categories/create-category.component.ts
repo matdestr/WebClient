@@ -22,7 +22,7 @@ export class CreateCategoryComponent {
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
                 private _organizationService:OrganizationService) {
-        this.category = new Category();
+        this.category = Category.createEmptyCategory();
         this.organizationService = _organizationService;
     }
 
