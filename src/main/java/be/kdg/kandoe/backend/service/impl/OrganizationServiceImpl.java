@@ -4,12 +4,15 @@ import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.persistence.api.OrganizationRepository;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
 import be.kdg.kandoe.backend.service.exceptions.OrganizationServiceException;
+import org.apache.xpath.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -73,7 +76,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 
         try {
-            return organizationRepository.findOrganizationsByMembersUsername(username);
+            return organizationRepository.findOrganizationsByMembersUsernameOrOwnerUsername(username, username);
         } catch (Exception e){
             throw new OrganizationServiceException(String.format("can't find organizations for owner %s", username), e);
         }

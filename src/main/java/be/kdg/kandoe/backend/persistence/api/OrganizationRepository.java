@@ -10,4 +10,5 @@ public interface OrganizationRepository extends JpaRepository<Organization, Inte
     Organization findOrganizationByName(String name);
     List<Organization> findOrganizationsByOwnerUsername(String owner);
     List<Organization> findOrganizationsByMembersUsername(String username);
+    List<Organization> findOrganizationsByMembersUsernameOrOwnerUsername(String memberName, String ownerName);
 }
