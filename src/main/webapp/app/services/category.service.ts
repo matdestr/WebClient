@@ -1,6 +1,6 @@
 import {Injectable, Inject} from 'angular2/core';
 import {Http, Headers, Response} from 'angular2/http';
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Rx'
 import 'rxjs/Rx';
 import {AuthHttp} from '../libraries/angular2-jwt';
 
@@ -13,7 +13,7 @@ import {CreateCategoryModel} from "../entities/category/createCategoryForm";
 
 @Injectable()
 export class CategoryService {
-    public static endPoint: string = "./api/categories/"
+    public static endPoint: string = "./api/categories/";
 
     constructor(private _authHttp: AuthHttp){
 

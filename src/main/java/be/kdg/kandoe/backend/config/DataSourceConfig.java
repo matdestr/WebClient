@@ -19,7 +19,7 @@ public class DataSourceConfig {
         dataSource.setUrl("jdbc:h2:mem:kandoedb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
 
         // datasource file
-        //dataSource.setUrl("jdbc:h2:file:./filename;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
+        //dataSource.setUrl("jdbc:h2:file:./kandoedb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE");
 
         // datasource remote tcp server
         // in this case:also start H2 server from commandline with: java -cp h2*.jar org.h2.tools.Server

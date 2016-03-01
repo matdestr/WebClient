@@ -1,13 +1,14 @@
 package be.kdg.kandoe.backend.model.organizations;
 
+import be.kdg.kandoe.backend.model.cards.Card;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Data
 @Entity
 @NoArgsConstructor
-@Data
 public class Category {
     @Id
     @GeneratedValue
@@ -22,5 +23,4 @@ public class Category {
     private List<Tag> tags;
     @OneToMany
     private List<Topic> topics;
-
 }

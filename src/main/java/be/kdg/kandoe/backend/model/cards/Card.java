@@ -25,10 +25,10 @@ public class Card {
     */
     @OneToOne(optional = false, cascade = CascadeType.ALL)
     private CardDetails cardDetails;
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private Category category;
     @OneToMany
     private List<Topic> topics;
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private User user;
 }
