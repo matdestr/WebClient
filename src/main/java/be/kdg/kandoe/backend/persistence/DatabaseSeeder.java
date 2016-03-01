@@ -1,5 +1,6 @@
 package be.kdg.kandoe.backend.persistence;
 
+import be.kdg.kandoe.backend.Utils.InputStreamParser;
 import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Tag;
@@ -107,7 +108,7 @@ public class DatabaseSeeder {
 
         Scanner s = null;
         try {
-            s = new Scanner(getResourceAsFile("listoftags.rtf"));
+            s = new Scanner(InputStreamParser.getResourceAsFile("listoftags.rtf"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -126,28 +127,5 @@ public class DatabaseSeeder {
 
     }
 
-    public static File getResourceAsFile(String resourcePath) {
-        try {
-            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(resourcePath);
-            if (in == null) {
-                return null;
-            }
 
-            File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".tmp");
-            tempFile.deleteOnExit();
-
-            try (FileOutputStream out = new FileOutputStream(tempFile)) {
-                //copy stream
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, bytesRead);
-                }
-            }
-            return tempFile;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
