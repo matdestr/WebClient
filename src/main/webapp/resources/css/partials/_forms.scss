@@ -1,9 +1,6 @@
 form input {
   width: 95%;
   background: #fcfcfc;
-  border: 1px solid #ddd;
-  @include border-radius(2px);
-  @include box-shadow(0, 1px, 3px, 0, rgba(0, 0, 0, .1), inset);
   font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   color: #888;
   font-size: $forms-input-font-size !important;
@@ -27,8 +24,12 @@ form input[type="text"], input[type="email"], input[type="password"] {
   border: 1px solid #ddd;
   height: $forms-input-height !important;
   padding-left: 0.5em;
-
-  @include transition(all, 0.1s, linear)
+  @include transition(all, 0.1s, linear);
+  @include border-radius(2px);
+  @include box-shadow(0, 1px, 3px, 0, rgba(0, 0, 0, .1), inset);
+}
+input[type="checkbox"]{
+  height: 1em;
 }
 
 form input[type=submit], form button[type=submit] {
@@ -155,11 +156,12 @@ form input[type=submit], form button[type=submit] {
   height: 5em !important;
 }
 
-
-
-input[type="radio"], input[type="checkbox"]{
-  margin: 0 !important;
-  height: 1em ;
-  padding: 0 !important;
+.tagList{
+  max-height: 300px;
+  overflow: auto;
+  font-size: 18px;
 }
 
+.tagCheckbox{
+  margin-bottom: 0.5em;
+}

@@ -1,5 +1,5 @@
-System.register(['angular2/platform/browser', './components/app.component', "angular2/router", "angular2/http", "angular2/core", "./libraries/angular2-jwt", "./services/token.service", "./services/user.service", "./services/organization.service", "./components/widget/toolbar.component"], function(exports_1) {
-    var browser_1, app_component_1, router_1, http_1, core_1, angular2_jwt_1, token_service_1, user_service_1, organization_service_1, toolbar_component_1;
+System.register(['angular2/platform/browser', './components/app.component', "angular2/router", "angular2/http", "angular2/core", "./libraries/angular2-jwt", "./services/token.service", "./services/user.service", "./services/category.service", "./services/organization.service", "./components/widget/toolbar.component"], function(exports_1) {
+    var browser_1, app_component_1, router_1, http_1, core_1, angular2_jwt_1, token_service_1, user_service_1, category_service_1, organization_service_1, toolbar_component_1;
     return {
         setters:[
             function (browser_1_1) {
@@ -26,6 +26,9 @@ System.register(['angular2/platform/browser', './components/app.component', "ang
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
             },
+            function (category_service_1_1) {
+                category_service_1 = category_service_1_1;
+            },
             function (organization_service_1_1) {
                 organization_service_1 = organization_service_1_1;
             },
@@ -36,16 +39,14 @@ System.register(['angular2/platform/browser', './components/app.component', "ang
             browser_1.bootstrap(app_component_1.AppComponent, [
                 router_1.ROUTER_PROVIDERS,
                 http_1.HTTP_PROVIDERS,
-                token_service_1.TokenService, user_service_1.UserService, organization_service_1.OrganizationService, toolbar_component_1.ToolbarComponent,
-                //JwtHelper,
+                token_service_1.TokenService, user_service_1.UserService, organization_service_1.OrganizationService, category_service_1.CategoryService,
+                toolbar_component_1.ToolbarComponent,
                 core_1.provide(angular2_jwt_1.AuthHttp, {
                     useFactory: function (http) {
                         return new angular2_jwt_1.AuthHttp(new angular2_jwt_1.AuthConfig({ tokenName: 'token' }), http);
                     },
                     deps: [http_1.Http]
                 }),
-                //AuthHttp,
-                //provide('App.BackEndPath', {useValue: "http://localhost:3000/"}),
                 core_1.provide('App.TokenName', { useValue: 'token' }),
                 core_1.provide(router_1.APP_BASE_HREF, { useValue: '/' }),
                 core_1.provide(router_1.LocationStrategy, { useClass: router_1.HashLocationStrategy })

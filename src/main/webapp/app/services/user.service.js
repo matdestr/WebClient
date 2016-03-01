@@ -36,7 +36,7 @@ System.register(['angular2/core', 'angular2/http', '../libraries/angular2-jwt', 
                     this._tokenService = _tokenService;
                 }
                 UserService.prototype.getUser = function (username) {
-                    return this._http.get("api/users/" + username).map(function (res) {
+                    return this._http.get(UserService.endpoint + "/" + username).map(function (res) {
                         return res.json();
                     });
                 };
@@ -62,19 +62,18 @@ System.register(['angular2/core', 'angular2/http', '../libraries/angular2-jwt', 
                         headers: headers
                     }));
                 };
-                UserService.prototype.uploadPhoto = function (userId, file, onprog) {
+                UserService.prototype.uploadPhoto = function (userId, file) {
                     var formData = new FormData();
                     var request = new XMLHttpRequest();
                     formData.append("file", file, file.name);
                     request.onerror = function (e) {
                         console.log(e);
                     };
-                    if (onprog)
-                        request.onprogress = onprog;
                     var token = localStorage.getItem("token");
                     request.open('POST', UserService.endpoint + "/" + userId + "/photo", true);
                     request.setRequestHeader("Authorization", "Bearer " + token);
                     request.send(formData);
+                    return request;
                 };
                 UserService.endpoint = "./api/users";
                 UserService = __decorate([

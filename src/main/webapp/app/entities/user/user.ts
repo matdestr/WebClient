@@ -7,6 +7,7 @@ export class User implements Serializable<User> {
     public surname:string;
     public email:string;
     public profilePictureUrl:string;
+    public roleTypes:Array<any>;
 
 
     constructor(username:string, name:string, surname:string, email:string, profilePictureUrl:string = "profilepictures/default.png") {
@@ -32,6 +33,7 @@ export class User implements Serializable<User> {
         this.surname = object.surname;
         this.email = object.email;
         this.profilePictureUrl = object.profilePictureUrl;
+        this.roleTypes = object.roleTypes;
 
         return this;
     }

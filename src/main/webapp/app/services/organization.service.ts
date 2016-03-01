@@ -5,6 +5,7 @@ import 'rxjs/Rx';
 import {AuthHttp} from '../libraries/angular2-jwt';
 
 import {Organization} from "../entities/organization";
+import {CreateOrganization} from "../entities/organization";
 import {RequestOptionsArgs} from "angular2/http";
 import {RequestOptions} from "angular2/http";
 import {URLSearchParams} from "angular2/http";
@@ -19,8 +20,13 @@ export class OrganizationService {
     public saveOrganization(organization : Organization) : Observable<Response> {
         var headers : Headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        
-        return this._authHttp.post(OrganizationService.endPoint, JSON.stringify(organization), {headers: headers}).retry(2);
+        return this._authHttp.put(OrganizationService.endPoint + "save", JSON.stringify(organization), {headers: headers});
+    }
+
+    public createOrganization(organization : CreateOrganization) : Observable<Response> {
+        var headers : Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this._authHttp.post(OrganizationService.endPoint + "create", JSON.stringify(organization), {headers: headers});
     }
     
     public getOrganizations(organizationId : number) : Observable<Response> {
@@ -30,7 +36,6 @@ export class OrganizationService {
     public getOrganizationsByOwner(username:string) : Observable<Response> {
         var searchParams: URLSearchParams = new URLSearchParams();
         searchParams.append("owner", "" + true);
-
 
         var options: RequestOptions = new RequestOptions();
         options.search = searchParams;

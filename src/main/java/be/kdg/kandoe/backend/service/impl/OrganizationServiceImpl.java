@@ -1,9 +1,12 @@
 package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.organizations.Organization;
+import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.persistence.api.OrganizationRepository;
+import be.kdg.kandoe.backend.service.api.EmailService;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
 import be.kdg.kandoe.backend.service.exceptions.OrganizationServiceException;
+import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import org.apache.xpath.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +61,11 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
+    public boolean organizationExists(String name) {
+        return organizationRepository.findOrganizationByName(name) != null;
+    }
+
+    @Override
     public List<Organization> getOrganizations() {
         return organizationRepository.findAll();
     }
@@ -88,7 +96,12 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public void updateOrganization(Organization organization) {
-        organizationRepository.save(organization);
+    public void updateOrganization(Organization organization) throws OrganizationServiceException {
+        try {
+            organizationRepository.save(organization);
+        } catch (Exception e){
+            throw new OrganizationServiceException("Couldn't save organization", e);
+        }
     }
+
 }

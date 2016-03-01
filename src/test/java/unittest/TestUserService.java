@@ -2,6 +2,7 @@ package unittest;
 
 import be.kdg.kandoe.backend.config.BackendContextConfig;
 import be.kdg.kandoe.backend.model.users.User;
+import be.kdg.kandoe.backend.model.users.roles.RoleType;
 import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.backend.service.exceptions.UserServiceException;
 import org.junit.Test;
@@ -53,5 +54,17 @@ public class TestUserService {
         userService.updateUser(fetchedUser);
         fetchedUser = userService.getUserByUsername("username");
         assertThat(fetchedUser.getEmail(), equalTo(email));
+    }
+
+    @Test
+    public void testAddRoleToUser() throws Exception {
+        User user = new User("username", "password");
+        user.addRole(RoleType.ROLE_ADMIN);
+
+        User savedUser = userService.addUser(user);
+        User fetchedUser = userService.getUserByUserId(savedUser.getUserId());
+
+        assertEquals(savedUser.getRoles().size(), fetchedUser.getRoles().size());
+
     }
 }

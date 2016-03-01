@@ -12,6 +12,11 @@
 
         <div class="col-md-7 userprofile-details">
             <div>
+                <div>
+                    <label for="username">Username</label>
+                    <input id="username" class="form-control" id="user-username" [(ngModel)]="updateModel.username">
+                </div>
+
                 <div class="profile-edit-name">
                     <label for="name">First name</label>
                     <input id="name" class="form-control" id="user-fullname" [(ngModel)]="updateModel.name">

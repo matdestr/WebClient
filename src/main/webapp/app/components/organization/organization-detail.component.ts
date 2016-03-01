@@ -5,7 +5,8 @@ import {ToolbarComponent} from "../widget/toolbar.component";
 import {Router} from "angular2/router";
 import {RouteParams} from "angular2/router";
 import {User} from "../../entities/user/user";
-import {Category} from "../../entities/category";
+import {Category} from "../../entities/category/category";
+import {CategoryService} from "../../services/category.service";
 
 
 @Component({
@@ -16,31 +17,37 @@ import {Category} from "../../entities/category";
 export class OrganizationDetailComponent {
     @Input()
 
-    private organizationService : OrganizationService;
-    private organization:Organization;
+    private organization:Organization = new Organization();
     private members: User[]=[];
     private categories: Category[]=[];
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
-                private _organizationService:OrganizationService) {
-        this.organization = new Organization();
-        this.organizationService = _organizationService;
-        var organizationId:number = +_routeArgs.get("organizationId");
+                private _organizationService:OrganizationService,
+                private _categoryService: CategoryService) {
+        var organizationId:number = +_routeArgs.params["organizationId"];
 
         this._organizationService.getOrganizations(organizationId).subscribe(
             data => {
                 this.organization = data.json();
                 this.members = this.organization.members;
-                this.categories = this.organization.categories;
             });
+        this._categoryService.getCategoriesFromOrganization(organizationId)
+            .subscribe(
+                data => this.categories = data.json(),
+                error => console.log(error),
+                () => console.log("Categories fetched")
+            );
 
     }
 
     public toAddNewCategory(organizationId:number){
-        this._router.navigate(["/CreateCategory"], {organisationId:organizationId})
+        this._router.navigate(["/CreateCategory", {organizationId:organizationId}])
     }
 
+    public toCategory(categoryId:number){
+        this._router.navigate(["/CategoryDetail",{categoryId:categoryId}])
+    }
 
 }
 

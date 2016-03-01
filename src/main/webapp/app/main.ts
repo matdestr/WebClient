@@ -7,22 +7,21 @@ import {JwtHelper, AuthHttp, AuthConfig} from "./libraries/angular2-jwt";
 
 import {TokenService} from "./services/token.service";
 import {UserService} from "./services/user.service";
+import {CategoryService} from "./services/category.service"
 import {OrganizationService} from "./services/organization.service";
 import {ToolbarComponent} from "./components/widget/toolbar.component";
 
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
-    TokenService, UserService, OrganizationService, ToolbarComponent,
-    //JwtHelper,
+    TokenService, UserService, OrganizationService, CategoryService,
+    ToolbarComponent,
     provide(AuthHttp, {
         useFactory: (http) => {
             return new AuthHttp(new AuthConfig({tokenName : 'token'}), http);
         },
         deps: [Http]
     }),
-    //AuthHttp,
-    //provide('App.BackEndPath', {useValue: "http://localhost:3000/"}),
     provide('App.TokenName', {useValue: 'token'}),
     provide(APP_BASE_HREF, {useValue: '/'}),
     provide(LocationStrategy, {useClass: HashLocationStrategy})

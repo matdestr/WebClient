@@ -7,6 +7,10 @@ import {UserProfileComponent} from "./profile/userprofile.component";
 import {UserProfileEditComponent} from "./profile/userprofile-edit.component";
 import {OrganizationDetailComponent} from "./organization/organization-detail.component";
 import {CreateCategoryComponent} from "./categories/create-category.component";
+import {TokenService} from "../services/token.service";
+import {Router} from "angular2/router";
+import {CategoryDetailComponent} from "./categories/category-detail.component";
+import {CreateTopicComponent} from "./topic/create-topic.component";
 
 @Component({
     selector: 'my-app',
@@ -20,14 +24,12 @@ import {CreateCategoryComponent} from "./categories/create-category.component";
     {path: "/dashboard",        name: "Dashboard",           component: DashboardComponent},
     {path: "/profile",          name: "Profile",             component: UserProfileComponent},
     {path: "/profile/edit",     name: "EditProfile",    component: UserProfileEditComponent},
-    {path: '/new-organization', name: 'NewOrganization', component: CreateOrganizationComponent},
-    {path: '/organization-detail', name:'OrganizationDetail', component: OrganizationDetailComponent},
-    {path: '/create-category',  name: 'CreateCategory',     component: CreateCategoryComponent},
-    //{path: '/my-organizations', name: 'MyOrganizations'} // TODO : Component
+    {path: '/organization/create', name: 'NewOrganization', component: CreateOrganizationComponent},
+    {path: '/organization/:organizationId/detail', name:'OrganizationDetail', component: OrganizationDetailComponent},
+    {path: '/organization/:organizationId/category/create',  name: 'CreateCategory',     component: CreateCategoryComponent},
+    {path: '/categories/:categoryId/detail', name:'CategoryDetail',component:CategoryDetailComponent},
+    {path: '/topic/create', name:'CreateTopic', component:CreateTopicComponent},
 ])
-export class AppComponent implements OnInit{
+export class AppComponent {
 
-    ngOnInit():any {
-        return null;
-    }
 }
