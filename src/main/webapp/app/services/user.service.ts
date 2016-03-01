@@ -17,7 +17,7 @@ export class UserService {
     constructor(private _http : Http, private _authHttp: AuthHttp, private _tokenService: TokenService) {}
 
     public getUser(username:string): Observable<User>{
-        return this._http.get("api/users/" + username).map((res:Response) => {
+        return this._http.get(UserService.endpoint + "/" + username).map((res:Response) => {
             return res.json()
         });
     }
@@ -51,7 +51,7 @@ export class UserService {
         }))
     }
 
-    public uploadPhoto(userId:number, file:File, onprog) : void {
+    public uploadPhoto(userId:number, file:File) : XMLHttpRequest {
         var formData = new FormData();
         var request = new XMLHttpRequest();
 
@@ -61,13 +61,10 @@ export class UserService {
             console.log(e);
         };
 
-        if (onprog)
-            request.onprogress = onprog;
-
         var token = localStorage.getItem("token");
         request.open('POST', UserService.endpoint + "/" + userId + "/photo", true);
         request.setRequestHeader("Authorization", "Bearer " + token);
         request.send(formData);
-
+        return request;
     }
 }

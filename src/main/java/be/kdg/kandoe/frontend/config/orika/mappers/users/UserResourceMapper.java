@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class UserResourceMapper extends CustomMapper<User, UserResource> {
     @Override
     public void mapAtoB(User user, UserResource userResource, MappingContext context) {
-
+        userResource.setRoleTypes(user.getRoleTypes());
     }
 
     @Override

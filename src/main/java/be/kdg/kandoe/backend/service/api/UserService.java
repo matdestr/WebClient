@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
     User addUser(User user);
     User getUserByUsername(String username);
+    User getUserByEmail(String email);
     User getUserByUserId(int userId);
     User updateUser(User user);
     void checkLogin(int username, String verifyPassword);

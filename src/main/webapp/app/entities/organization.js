@@ -1,5 +1,5 @@
 System.register([], function(exports_1) {
-    var Organization;
+    var Organization, CreateOrganization;
     return {
         setters:[],
         execute: function() {
@@ -9,6 +9,12 @@ System.register([], function(exports_1) {
                 return Organization;
             })();
             exports_1("Organization", Organization);
+            CreateOrganization = (function () {
+                function CreateOrganization() {
+                }
+                return CreateOrganization;
+            })();
+            exports_1("CreateOrganization", CreateOrganization);
         }
     }
 });

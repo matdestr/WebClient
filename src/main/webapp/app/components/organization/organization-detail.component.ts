@@ -38,7 +38,7 @@ export class OrganizationDetailComponent {
     }
 
     public toAddNewCategory(organizationId:number){
-        this._router.navigate(["/CreateCategory"], {organisationId:organizationId})
+        //this._router.navigate(["/CreateCategory"], {organisationId:organizationId})
     }
 
 

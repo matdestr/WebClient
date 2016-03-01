@@ -86,10 +86,10 @@ public class UserRestController {
                     return new ResponseEntity(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
                 }
 
-                ImageIO.write(image, extension, saveFile);
+                ImageIO.write(image, "jpg", saveFile);
 
                 user.setProfilePictureUrl("profilepictures" + fileSeperator + userId + "." + extension);
-                user = userService.updateUser(user);
+                userService.updateUser(user);
             } catch (Exception e) {
                 throw e;
             }

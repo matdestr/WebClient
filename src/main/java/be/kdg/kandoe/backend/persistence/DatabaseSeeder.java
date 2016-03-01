@@ -81,7 +81,7 @@ public class DatabaseSeeder {
         harold.setName("Harold");
         harold.setSurname("Hidethepain");
         harold.setEmail("harold@hidethepain.com");
-        harold.setProfilePictureUrl("profilepictures/default.png");
+        harold.setProfilePictureUrl("profilepictures/harold.jpg");
         harold.addRole(RoleType.ROLE_CLIENT);
 
         users.add(harold);

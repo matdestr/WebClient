@@ -1,4 +1,4 @@
-System.register(['angular2/core', "angular2/common", "angular2/router", "../../entities/user/user", "../../services/organization.service", "../../entities/organization", "../widget/toolbar.component", "../widget/error-dialog.component"], function(exports_1) {
+System.register(['angular2/core', "angular2/common", "angular2/router", "../../entities/user/email", "../../services/organization.service", "../../entities/organization", "../widget/toolbar.component", "../widget/error-dialog.component"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../e
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_1, user_1, organization_service_1, organization_1, toolbar_component_1, error_dialog_component_1;
+    var core_1, common_1, router_1, email_1, organization_service_1, organization_1, toolbar_component_1, error_dialog_component_1;
     var CreateOrganizationComponent;
     return {
         setters:[
@@ -21,8 +21,8 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../e
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (user_1_1) {
-                user_1 = user_1_1;
+            function (email_1_1) {
+                email_1 = email_1_1;
             },
             function (organization_service_1_1) {
                 organization_service_1 = organization_service_1_1;
@@ -43,9 +43,9 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../e
                     this._router = _router;
                 }
                 CreateOrganizationComponent.prototype.ngOnInit = function () {
-                    this.organization = new organization_1.Organization();
+                    this.organization = new organization_1.CreateOrganization();
                     this.usersToInvite = [];
-                    this.usersToInvite.push(user_1.User.createEmptyUser());
+                    this.usersToInvite.push(new email_1.Email());
                     this.organizationCreated = false;
                     this.showErrorOrganizationName = false;
                     this.isError = false;
@@ -53,28 +53,27 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../e
                 CreateOrganizationComponent.prototype.onSubmit = function (form) {
                     var _this = this;
                     if (this.organization.name) {
-                        this._organizationService.saveOrganization(this.organization)
+                        this.organization.emails = this.filterEmails();
+                        console.log("Creating organization");
+                        this._organizationService.createOrganization(this.organization)
                             .subscribe(null, function (error) {
                             _this.isError = true;
                             console.log(error);
                         }, function () {
                             _this.organizationCreated = true;
                             _this.isError = false;
-                            _this.inviteUsers();
+                            _this._router.navigate(['/Dashboard']);
                         });
-                        this.inviteUsers();
-                        this._router.navigate(['/Dashboard']);
                     }
                 };
                 CreateOrganizationComponent.prototype.setShowErrorOrganizationName = function (show) {
                     this.showErrorOrganizationName = show;
                 };
                 CreateOrganizationComponent.prototype.addUserEntry = function () {
-                    this.usersToInvite.push(user_1.User.createEmptyUser());
+                    this.usersToInvite.push(new email_1.Email());
                 };
-                CreateOrganizationComponent.prototype.inviteUsers = function () {
-                    var nonEmptyUsers = this.usersToInvite.filter(function (u) { return u.email && u.email.length > 0; });
-                    console.log(nonEmptyUsers);
+                CreateOrganizationComponent.prototype.filterEmails = function () {
+                    return this.usersToInvite.filter(function (u) { return u && u.email.length > 0; });
                 };
                 CreateOrganizationComponent.prototype.removeUserFromUsersToInvite = function (index) {
                     this.usersToInvite.splice(index, 1);

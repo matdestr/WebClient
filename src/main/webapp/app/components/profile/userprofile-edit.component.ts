@@ -17,6 +17,7 @@ import {UpdateUserModel} from "../../entities/user/edit";
 })
 
 export class UserProfileEditComponent {
+    private fileChanged:boolean = false;
     private file:File = null;
     public organizations:Organization[] = [];
     public user:User = User.createEmptyUser();
@@ -52,7 +53,21 @@ export class UserProfileEditComponent {
 
     public saveChanges():void {
         if (this.updateModel.verifyPassword != "")
-            this.updateUser();
+            if (this.fileChanged){
+                console.log("Image changed, uploading image...");
+                var request = this._userService.uploadPhoto(this.user.userId, this.file);
+
+                request.onreadystatechange = (e) => {
+                    if (e.srcElement.status == 200){
+                        if (e.srcElement.readyState == 4){
+                            this.updateUser();
+                        }
+                    }
+                }
+            } else {
+                console.log("Image didn't change");
+                this.updateUser();
+            }
     }
 
     public updateUser() {
@@ -75,19 +90,8 @@ export class UserProfileEditComponent {
 
     public onFileChanged(event):void {
         this.file = event.srcElement.files[0];
+        this.fileChanged = true;
 
-        var ext = this.file.name.substring(this.file.name.lastIndexOf("."));
-
-        if (this.file != null) {
-            this._userService.uploadPhoto(this.user.userId, this.file, this.onFileUploadStatusChanged);
-            setTimeout(() => {
-                this.user.profilePictureUrl = "profilepictures/" + this.user.userId + ext;
-            }, 1000);
-        }
     }
 
-    public onFileUploadStatusChanged(e){
-        if (e)
-            console.log("Progress: " + e);
-    }
 }
