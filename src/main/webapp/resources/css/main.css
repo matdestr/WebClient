@@ -5994,13 +5994,6 @@ footer {
 form input {
   width: 95%;
   background: #fcfcfc;
-  border: 1px solid #ddd;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) inset;
-  -webkit-box-shadow: 0 1px 3px 0 inset;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) inset;
   font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   color: #888;
   font-size: 1.15em !important;
@@ -6021,7 +6014,16 @@ form input[type="text"], input[type="email"], input[type="password"] {
   -o-transition: all 0.1s linear;
   -moz-transition: all 0.1s linear;
   -webkit-transition: all 0.1s linear;
-  -ms-transition: all 0.1s linear; }
+  -ms-transition: all 0.1s linear;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) inset;
+  -webkit-box-shadow: 0 1px 3px 0 inset;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) inset; }
+
+input[type="checkbox"] {
+  height: 1em; }
 
 form input[type=submit], form button[type=submit] {
   cursor: pointer;
@@ -6125,10 +6127,13 @@ form input[type=submit], form button[type=submit] {
 #categoryDescription {
   height: 5em !important; }
 
-input[type="radio"], input[type="checkbox"] {
-  margin: 0 !important;
-  height: 1em;
-  padding: 0 !important; }
+.tagList {
+  max-height: 300px;
+  overflow: auto;
+  font-size: 18px; }
+
+.tagCheckbox {
+  margin-bottom: 0.5em; }
 
 .spinner {
   width: 5.75em;

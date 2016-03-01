@@ -26,4 +26,6 @@ export class CreateCategoryComponent {
         this.organizationService = _organizationService;
     }
 
+    //TODO Angular pipeline voor tags search box
+
 }
