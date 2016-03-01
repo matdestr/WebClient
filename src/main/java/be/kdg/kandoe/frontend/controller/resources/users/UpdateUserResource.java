@@ -9,14 +9,15 @@ import org.springframework.hateoas.ResourceSupport;
 @NoArgsConstructor
 @Data
 public class UpdateUserResource extends ResourceSupport {
-    @NotEmpty
+    @NotEmpty(message = "{user.update.wrong.username}")
     private String username;
-    @NotEmpty
+    @NotEmpty(message = "{user.update.wrong.name}")
     private String name;
-    @NotEmpty
+    @NotEmpty(message = "{user.update.wrong.surname}")
     private String surname;
-    @Email
+    @NotEmpty(message = "{user.update.wrong.email}")
+    @Email(message = "{user.update.wrong.email-verification}")
     private String email;
-    @NotEmpty
+    @NotEmpty(message = "{user.update.wrong.password-verification}")
     private String verifyPassword;
 }

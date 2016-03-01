@@ -8,23 +8,28 @@ import {Token} from "../../entities/authenticatie/token"
 import {UserService} from "../../services/user.service"
 import {User} from "../../entities/user/user";
 import {TokenService} from "../../services/token.service";
+import {ErrorDialogComponent} from "../widget/error-dialog.component";
 
 @Component({
     selector: 'sign-up',
-    templateUrl: 'html/sign-up.html'
+    templateUrl: 'html/sign-up.html',
+    directives: [ErrorDialogComponent]
 })
 export class SignUpComponent {
+    private errorMessages:string[] = new Array();
     private form: RegisterModel = new RegisterModel;
-    private errors: Array<String> = new Array();
 
     constructor(private _userService: UserService, private _tokenService: TokenService, private _router: Router){
 
     }
 
     public onSubmit(){
+        this.onError(null);
         this._userService.signUp(this.form).subscribe(
-            data => this.handleData(data),
-            error => this.handleErrors(error),
+            (data) => this.handleData(data),
+            (error) => {
+                this.handleErrors(error)
+            },
             () => this._router.navigate(['/Authentication'])
         );
     }
@@ -37,26 +42,34 @@ export class SignUpComponent {
                     (token : Token) => {
                         this._tokenService.saveToken(token);
                     },
-                    error => { console.log(error); },
+                    (error) => { console.log(error); },
                     () => { this._router.navigate(['/Dashboard']); });
             this.resetForm();
         }
     }
 
     public handleErrors(error: Response): void {
-        this.resetForm();
-        if(error.status == 422){
-            let json = error.json();
-            json.fieldErrors.forEach(e => this.errors.push(e.message));
+        var obj = JSON.parse(error.text());
+        console.log(obj);
+        if (obj.fieldErrors){
+            obj.fieldErrors.forEach(e => this.onError(e.message));
         } else {
-            console.log(error);
-            this.errors.push("Oops. Something went wrong!");
+            this.onError(obj.message);
         }
+
+        this.resetForm();
     }
 
     public resetForm(): void {
-        this.errors = new Array();
         this.form.password = "";
         this.form.verifyPassword = "";
+    }
+
+    private onError(message:string){
+        if (message) {
+            this.errorMessages.push(message);
+        } else {
+            this.errorMessages = new Array();
+        }
     }
 }

@@ -5,9 +5,17 @@
   height: 200px;
 }
 
+h2 {
+  color: $primary-color;
+}
+
 .userprofile-details {
   padding-left: 1em;
 
+}
+
+#user-username {
+  color: $primary-color;
 }
 
 #user-fullname {
@@ -49,6 +57,7 @@ table.organizations-item {
 
 .ptop {
   margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .profile-edit-name {
@@ -75,4 +84,8 @@ div.profile-edit-name {
 
 .fullwidth {
   width: 100%;
+}
+
+.profile-organization-item {
+  margin-right: 1em;
 }

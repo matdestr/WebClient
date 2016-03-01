@@ -5,6 +5,7 @@ import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.controller.resources.users.CreateUserResource;
 import be.kdg.kandoe.frontend.controller.resources.users.UpdateUserResource;
 import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
+import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import ma.glasnost.orika.MapperFacade;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -56,7 +58,7 @@ public class UserRestController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{userId}/photo", method = RequestMethod.POST)
-    public ResponseEntity uploadPhoto(@PathVariable int userId, @AuthenticationPrincipal User user, @RequestParam("file") MultipartFile uploadedFile, HttpServletRequest servletRequest) throws IOException {
+    public ResponseEntity uploadPhoto(@PathVariable int userId, @AuthenticationPrincipal User user, @RequestParam("file") MultipartFile uploadedFile, HttpServletRequest servletRequest) throws IOException, MaxUploadSizeExceededException {
         if (userId != user.getUserId()){
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }

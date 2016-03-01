@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 public class CreateUserResource {
-    @NotNull(message = "{register.wrong.username}")
+    @NotEmpty(message = "{register.wrong.username}")
     @Length(min = 4, max = 25, message = "{register.wrong.length.username}")
     private String username;
 
@@ -22,11 +22,9 @@ public class CreateUserResource {
     @Length(min = 0, max = 100,message = "{register.wrong.surname}")
     private String surname;
 
-    //@NotNull(message = "{register.wrong.password}")
     @NotEmpty(message = "{register.wrong.password}")
     private String password;
 
-    //@NotNull(message = "{register.wrong.verifypassword}")
     @NotEmpty(message = "{register.wrong.verifypassword}")
     private String verifyPassword;
 

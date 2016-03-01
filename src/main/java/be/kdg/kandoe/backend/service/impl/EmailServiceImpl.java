@@ -39,17 +39,14 @@ public class EmailServiceImpl implements EmailService {
                 email.setFromAddress("CanDo Team E", mailProperties.getUsername());
                 email.setSubject("CanDo: Invitation to join organization " + organization.getName());
                 email.addRecipient("", emailAddress, Message.RecipientType.TO);
-
-                email.setText("Hi,\n\nYou have been invited to join the CanDo organization " + organization.getName() + " by " + requester.getName() + " " + requester.getSurname() + "\n\nRegards,\nTeam Cando");
+                email.setTextHTML("<body style=\"font-family: Arial;\">Hi,<br><br>You have been invited to join the CanDo organization <b>" + organization.getName() + "</b> by <b>" + requester.getName() + " " + requester.getSurname() + ".</b><br><br>Regards,<br>Team Cando</body>");
                 mailer.sendMail(email);
             }
         }
-
     }
 
     @Override
     public void inviteUsersToOrganization(Organization organization, User requester, List<User> users) {
-
         for (User user : users) {
             String emailAddress = user.getEmail();
 
@@ -57,7 +54,7 @@ public class EmailServiceImpl implements EmailService {
                 Email email = new Email();
                 email.setFromAddress("CanDo Team E", mailProperties.getUsername());
                 email.setSubject("CanDo: Invitation to join organization " + organization.getName());
-                email.setText("Hi,\n\nYou have been invited to join " + organization.getName() + " by " + requester.getName() + " " + requester.getSurname() + "\n\nRegards,\nTeam Cando");
+                email.setTextHTML("<body style=\"font-family: Arial;\">Hi,<br><br>You have been invited to join the CanDo organization <b>" + organization.getName() + "</b> by <b>" + requester.getName() + " " + requester.getSurname() + ".</b><br>You can join by clicking the following link: <br><br>Regards,<br>Team Cando</body>");
                 email.addRecipient("", emailAddress, Message.RecipientType.TO);
 
                 mailer.sendMail(email);
