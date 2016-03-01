@@ -9,6 +9,7 @@ import {OrganizationDetailComponent} from "./organization/organization-detail.co
 import {CreateCategoryComponent} from "./categories/create-category.component";
 import {TokenService} from "../services/token.service";
 import {Router} from "angular2/router";
+import {AuthenticatedRouterOutlet} from "../util/authenticated-router-outlet";
 import {CategoryDetailComponent} from "./categories/category-detail.component";
 import {CreateTopicComponent} from "./topic/create-topic.component";
 import {AddTagComponent} from "./topic/add-tags.component";
@@ -19,7 +20,8 @@ import {TopicDetailComponent} from "./topic/topic-detail.component";
     template: `
         <router-outlet></router-outlet>
     `,
-    directives: [ROUTER_DIRECTIVES]
+    //directives: [ROUTER_DIRECTIVES]
+    directives: [AuthenticatedRouterOutlet]
 })
 @RouteConfig([
     {path: "/",                 name: "Authentication",      component: WelcomeComponent},
@@ -35,4 +37,5 @@ import {TopicDetailComponent} from "./topic/topic-detail.component";
     {path: '/topic/:topicId/detail',name:'TopicDetail',component:TopicDetailComponent},
 ])
 export class AppComponent {
+
 }

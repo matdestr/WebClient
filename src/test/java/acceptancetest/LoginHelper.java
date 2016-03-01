@@ -39,12 +39,11 @@ public class LoginHelper {
         String baseUrl = System.getProperty("app.baseUrl");
         driver.get(baseUrl);
 
-        WebElement registrationForm = driver.findElement(By.name("form-sign-up"));
-        driver.switchTo().frame(registrationForm);
+        WebElement loginForm = driver.findElement(By.name("form-sign-in"));
 
-        driver.findElement(By.name("username")).sendKeys(username);
-        driver.findElement(By.name("password")).sendKeys(password);
-        
-        registrationForm.submit();
+        loginForm.findElement(By.name("username")).sendKeys(username);
+        loginForm.findElement(By.name("password")).sendKeys(password);
+
+        loginForm.submit();
     }
 }

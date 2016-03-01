@@ -36,7 +36,7 @@ public class OrganizationRestController {
     @Autowired
     private MapperFacade mapperFacade;
     
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     //@PreAuthorize("hasAnyRole('ROLE_CLIENT')")
     public ResponseEntity createOrganization(@AuthenticationPrincipal User user,
                                              @Valid @RequestBody CreateOrganizationResource organizationResource) {
@@ -82,7 +82,7 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resultResource, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity updateOrganization(@AuthenticationPrincipal User user,
                                              @Valid @RequestBody OrganizationResource resource){
         Organization organization = mapperFacade.map(resource, Organization.class);
