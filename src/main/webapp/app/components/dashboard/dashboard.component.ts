@@ -11,7 +11,7 @@ import {isTokenExpired} from "../../services/token.service";
     `,
     directives: [ToolbarComponent]
 })
-@CanActivate(() => isTokenExpired())
+//@CanActivate(() => isTokenExpired())
 export class DashboardComponent implements OnInit{
 
 
