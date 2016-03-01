@@ -4,6 +4,8 @@ import be.kdg.kandoe.frontend.controller.resources.organizations.OrganizationRes
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import java.util.List;
+
 /**
  * Created on 20/02/2016
  *
@@ -16,4 +18,5 @@ public class CategoryResource {
     private String name;
     private String description;
     private OrganizationResource organization;
+    private List<TagResource> tagResources;
 }
