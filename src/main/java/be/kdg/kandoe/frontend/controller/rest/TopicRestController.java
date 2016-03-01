@@ -20,9 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-/**
- * Created by thaneestevens on 22/02/16.
- */
 @RestController
 @RequestMapping("/api/topics")
 public class TopicRestController

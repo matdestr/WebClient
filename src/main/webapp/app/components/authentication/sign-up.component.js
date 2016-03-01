@@ -1,4 +1,4 @@
-System.register(['angular2/core', "angular2/router", "../../entities/user/register", "../../services/user.service"], function(exports_1) {
+System.register(['angular2/core', "angular2/router", "../../entities/user/register", "../../services/user.service", "../../services/token.service"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, register_1, user_service_1;
+    var core_1, router_1, register_1, user_service_1, token_service_1;
     var SignUpComponent;
     return {
         setters:[
@@ -23,11 +23,15 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
             },
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
+            },
+            function (token_service_1_1) {
+                token_service_1 = token_service_1_1;
             }],
         execute: function() {
             SignUpComponent = (function () {
-                function SignUpComponent(_userService, _router) {
+                function SignUpComponent(_userService, _tokenService, _router) {
                     this._userService = _userService;
+                    this._tokenService = _tokenService;
                     this._router = _router;
                     this.form = new register_1.RegisterModel;
                     this.errors = new Array();
@@ -42,8 +46,7 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                         this._userService
                             .signIn(this.form.username, this.form.password)
                             .subscribe(function (token) {
-                            localStorage.setItem('token', JSON.stringify(token.access_token));
-                            console.log(token); // TODO : Remove debug info
+                            _this._tokenService.saveToken(token);
                         }, function (error) { console.log(error); }, function () { _this._router.navigate(['/Dashboard']); });
                         this.resetForm();
                     }
@@ -56,8 +59,8 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                         json.fieldErrors.forEach(function (e) { return _this.errors.push(e.message); });
                     }
                     else {
-                        //todo better handling
                         console.log(error);
+                        this.errors.push("Oops. Something went wrong!");
                     }
                 };
                 SignUpComponent.prototype.resetForm = function () {
@@ -70,7 +73,7 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                         selector: 'sign-up',
                         templateUrl: 'html/sign-up.html'
                     }), 
-                    __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router])
+                    __metadata('design:paramtypes', [user_service_1.UserService, token_service_1.TokenService, router_1.Router])
                 ], SignUpComponent);
                 return SignUpComponent;
             })();

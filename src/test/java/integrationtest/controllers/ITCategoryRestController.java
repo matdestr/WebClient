@@ -141,8 +141,7 @@ public class ITCategoryRestController {
                 .andExpect(jsonPath("$.categoryId").isNumber())
                 .andExpect(jsonPath("$.name", is("test-category")))
                 .andExpect(jsonPath("$.description", is("This is a test category for test purposes only.")))
-                .andExpect(jsonPath("$.organization.organizationId", is(organization1.getOrganizationId())))
-                .andExpect(jsonPath("$.organization.name", is(organization1.getName())));
+                .andExpect(jsonPath("$.organizationId", is(organization1.getOrganizationId())));
     }
 
     @Test
