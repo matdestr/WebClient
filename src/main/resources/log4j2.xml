@@ -31,7 +31,7 @@
         <Logger name="be.kdg.kandoe.error" additivity="true" level="error">
             <AppenderRef ref="FILE_ERROR"/>
         </Logger>-->
-        
+
         <Root level="warn">
             <AppenderRef ref="FILE_WARN"/>
             <AppenderRef ref="FILE_ERROR" level="ERROR"/>

@@ -4,8 +4,8 @@ import {SignOutComponent} from "../authentication/sign-out.component";
 import {UserService} from "../../services/user.service";
 import {getUsername} from "../../libraries/angular2-jwt";
 import {User} from "../../entities/user/user";
-import {Organization} from "../../entities/organization";
 import {OrganizationService} from "../../services/organization.service";
+import {Organization} from "../../entities/organization";
 
 import {Router} from "angular2/router";
 

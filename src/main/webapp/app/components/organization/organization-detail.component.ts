@@ -8,6 +8,7 @@ import {User} from "../../entities/user/user";
 import {Category} from "../../entities/category/category";
 import {CategoryService} from "../../services/category.service";
 
+
 @Component({
     selector: 'organization-detail',
     templateUrl: 'html/organization-detail.html',

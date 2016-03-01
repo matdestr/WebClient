@@ -3,8 +3,10 @@ import {FORM_DIRECTIVES, NgFor, NgModel, NgForm} from "angular2/common";
 import {Router, CanActivate} from "angular2/router";
 
 import {User} from "../../entities/user/user";
+import {Email} from "../../entities/user/email";
 import {OrganizationService} from "../../services/organization.service";
-import {Organization} from "../../entities/organization";
+import {UserService} from "../../services/user.service";
+import {CreateOrganization} from "../../entities/organization";
 import {tokenNotExpired} from "../../libraries/angular2-jwt";
 import {ToolbarComponent} from "../widget/toolbar.component";
 import {ErrorDialogComponent} from "../widget/error-dialog.component";
@@ -16,19 +18,21 @@ import {ErrorDialogComponent} from "../widget/error-dialog.component";
 })
 //@CanActivate(() => tokenNotExpired())
 export class CreateOrganizationComponent implements OnInit {
-    private organization : Organization;
-    private usersToInvite : User[];
+    private organization : CreateOrganization;
+    private usersToInvite : Email[];
     
     private organizationCreated : boolean;
     private showErrorOrganizationName : boolean;
     private isError : boolean;
     
-    constructor (private _organizationService : OrganizationService, private _router : Router) { }
+    constructor (private _organizationService : OrganizationService, private _router : Router) {
+
+    }
     
     ngOnInit() : any {
-        this.organization = new Organization();
+        this.organization = new CreateOrganization();
         this.usersToInvite = [];
-        this.usersToInvite.push(User.createEmptyUser());
+        this.usersToInvite.push(new Email());
         this.organizationCreated = false;
         this.showErrorOrganizationName = false;
         this.isError = false;
@@ -36,7 +40,10 @@ export class CreateOrganizationComponent implements OnInit {
 
     private onSubmit(form) {
         if (this.organization.name) {
-            this._organizationService.saveOrganization(this.organization)
+            this.organization.emails = this.filterEmails();
+
+            console.log("Creating organization");
+            this._organizationService.createOrganization(this.organization)
                 .subscribe(null,
                     error => {
                         this.isError = true;
@@ -45,11 +52,9 @@ export class CreateOrganizationComponent implements OnInit {
                     () => {
                         this.organizationCreated = true;
                         this.isError = false;
-                        this.inviteUsers();
+                        this._router.navigate(['/Dashboard']);
                     });
 
-            this.inviteUsers();
-            this._router.navigate(['/Dashboard']);
         }
     }
     
@@ -58,12 +63,11 @@ export class CreateOrganizationComponent implements OnInit {
     }
     
     private addUserEntry() {
-        this.usersToInvite.push(User.createEmptyUser());
+        this.usersToInvite.push(new Email());
     }
     
-    private inviteUsers() {
-        var nonEmptyUsers : User[] = this.usersToInvite.filter(u => {return u.email && u.email.length > 0});
-        console.log(nonEmptyUsers);
+    private filterEmails() {
+        return this.usersToInvite.filter(u => {return u && u.email.length > 0});
     }
     
     private removeUserFromUsersToInvite(index : number) {
