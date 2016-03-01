@@ -1,4 +1,4 @@
-System.register(["angular2/core", "angular2/router", "./authentication/welcome.component", "./dashboard/dashboard.component", "./organization/create-organization.component", "./profile/userprofile.component", "./profile/userprofile-edit.component", "./organization/organization-detail.component", "./categories/create-category.component"], function(exports_1) {
+System.register(["angular2/core", "angular2/router", "./authentication/welcome.component", "./dashboard/dashboard.component", "./organization/create-organization.component", "./profile/userprofile.component", "./profile/userprofile-edit.component", "./organization/organization-detail.component", "./categories/create-category.component", "../util/authenticated-router-outlet"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, welcome_component_1, dashboard_component_1, create_organization_component_1, userprofile_component_1, userprofile_edit_component_1, organization_detail_component_1, create_category_component_1;
+    var core_1, router_1, welcome_component_1, dashboard_component_1, create_organization_component_1, userprofile_component_1, userprofile_edit_component_1, organization_detail_component_1, create_category_component_1, authenticated_router_outlet_1;
     var AppComponent;
     return {
         setters:[
@@ -38,6 +38,9 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
             },
             function (create_category_component_1_1) {
                 create_category_component_1 = create_category_component_1_1;
+            },
+            function (authenticated_router_outlet_1_1) {
+                authenticated_router_outlet_1 = authenticated_router_outlet_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
@@ -47,7 +50,8 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
                     core_1.Component({
                         selector: 'my-app',
                         template: "\n        <router-outlet></router-outlet>\n    ",
-                        directives: [router_1.ROUTER_DIRECTIVES]
+                        //directives: [ROUTER_DIRECTIVES]
+                        directives: [authenticated_router_outlet_1.AuthenticatedRouterOutlet]
                     }),
                     router_1.RouteConfig([
                         { path: "/", name: "Authentication", component: welcome_component_1.WelcomeComponent },

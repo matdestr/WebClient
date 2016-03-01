@@ -35,12 +35,12 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
                 OrganizationService.prototype.saveOrganization = function (organization) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
-                    return this._authHttp.put(OrganizationService.endPoint + "save", JSON.stringify(organization), { headers: headers });
+                    return this._authHttp.put(OrganizationService.endPoint, JSON.stringify(organization), { headers: headers });
                 };
                 OrganizationService.prototype.createOrganization = function (organization) {
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
-                    return this._authHttp.post(OrganizationService.endPoint + "create", JSON.stringify(organization), { headers: headers });
+                    return this._authHttp.post(OrganizationService.endPoint, JSON.stringify(organization), { headers: headers });
                 };
                 OrganizationService.prototype.getOrganizations = function (organizationId) {
                     return this._authHttp.get(OrganizationService.endPoint + organizationId);

@@ -9,13 +9,15 @@ import {OrganizationDetailComponent} from "./organization/organization-detail.co
 import {CreateCategoryComponent} from "./categories/create-category.component";
 import {TokenService} from "../services/token.service";
 import {Router} from "angular2/router";
+import {AuthenticatedRouterOutlet} from "../util/authenticated-router-outlet";
 
 @Component({
     selector: 'my-app',
     template: `
         <router-outlet></router-outlet>
     `,
-    directives: [ROUTER_DIRECTIVES]
+    //directives: [ROUTER_DIRECTIVES]
+    directives: [AuthenticatedRouterOutlet]
 })
 @RouteConfig([
     {path: "/",                 name: "Authentication",      component: WelcomeComponent},

@@ -20,13 +20,13 @@ export class OrganizationService {
     public saveOrganization(organization : Organization) : Observable<Response> {
         var headers : Headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        return this._authHttp.put(OrganizationService.endPoint + "save", JSON.stringify(organization), {headers: headers});
+        return this._authHttp.put(OrganizationService.endPoint, JSON.stringify(organization), {headers: headers});
     }
 
     public createOrganization(organization : CreateOrganization) : Observable<Response> {
         var headers : Headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        return this._authHttp.post(OrganizationService.endPoint + "create", JSON.stringify(organization), {headers: headers});
+        return this._authHttp.post(OrganizationService.endPoint, JSON.stringify(organization), {headers: headers});
     }
     
     public getOrganizations(organizationId : number) : Observable<Response> {
