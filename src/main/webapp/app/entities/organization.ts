@@ -1,5 +1,5 @@
 import {User} from "../entities/user/user";
-import {Category} from "../entities/category"
+import {Category} from "../entities/category/category"
 
 import {Email} from "../entities/user/email";
 

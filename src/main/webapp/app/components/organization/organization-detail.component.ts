@@ -5,7 +5,8 @@ import {ToolbarComponent} from "../widget/toolbar.component";
 import {Router} from "angular2/router";
 import {RouteParams} from "angular2/router";
 import {User} from "../../entities/user/user";
-import {Category} from "../../entities/category";
+import {Category} from "../../entities/category/category";
+import {CategoryService} from "../../services/category.service";
 
 
 @Component({
@@ -41,7 +42,7 @@ export class OrganizationDetailComponent {
     }
 
     public toAddNewCategory(organizationId:number){
-        this._router.navigate(["/CreateCategory"], {organisationId:organizationId})
+        this._router.navigate(["/CreateCategory", {organizationId:organizationId}])
     }
 
 
