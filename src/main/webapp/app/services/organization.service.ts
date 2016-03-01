@@ -37,7 +37,6 @@ export class OrganizationService {
         var searchParams: URLSearchParams = new URLSearchParams();
         searchParams.append("owner", "" + true);
 
-
         var options: RequestOptions = new RequestOptions();
         options.search = searchParams;
 

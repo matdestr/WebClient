@@ -34,13 +34,11 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.core.Is.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-/**
- * Created by thaneestevens on 22/02/16.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootContextConfig.class, WebContextConfig.class})
 @WebAppConfiguration
@@ -147,14 +145,14 @@ public class ITTestTopicRestController {
 
             mockMvc.perform(MockMvcRequestBuilders.get(getUrl)
                     .header("Authorization", authorizationHeader))
+                    .andDo(print())
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(jsonPath("$.topicId").exists())
                     .andExpect(jsonPath("$.topicId").isNotEmpty())
                     .andExpect(jsonPath("$.topicId").isNumber())
                     .andExpect(jsonPath("$.name", is("test-topic")))
                     .andExpect(jsonPath("$.description", is("This is a test topic for test purposes only.")))
-                    .andExpect(jsonPath("$.category.categoryId", is(category1.getCategoryId())))
-                    .andExpect(jsonPath("$.category.name", is(category1.getName())));
+                    .andExpect(jsonPath("$.categoryId", is(category1.getCategoryId())));
         }
 
         @Test

@@ -43,9 +43,6 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
             AppComponent = (function () {
                 function AppComponent() {
                 }
-                AppComponent.prototype.ngOnInit = function () {
-                    return null;
-                };
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
@@ -57,9 +54,9 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
                         { path: "/dashboard", name: "Dashboard", component: dashboard_component_1.DashboardComponent },
                         { path: "/profile", name: "Profile", component: userprofile_component_1.UserProfileComponent },
                         { path: "/profile/edit", name: "EditProfile", component: userprofile_edit_component_1.UserProfileEditComponent },
-                        { path: '/new-organization', name: 'NewOrganization', component: create_organization_component_1.CreateOrganizationComponent },
-                        { path: '/organization-detail', name: 'OrganizationDetail', component: organization_detail_component_1.OrganizationDetailComponent },
-                        { path: '/create-category', name: 'CreateCategory', component: create_category_component_1.CreateCategoryComponent },
+                        { path: '/organization/create', name: 'NewOrganization', component: create_organization_component_1.CreateOrganizationComponent },
+                        { path: '/organization/:organizationId/detail', name: 'OrganizationDetail', component: organization_detail_component_1.OrganizationDetailComponent },
+                        { path: '/organization/:organizationId/category/create', name: 'CreateCategory', component: create_category_component_1.CreateCategoryComponent },
                     ]), 
                     __metadata('design:paramtypes', [])
                 ], AppComponent);

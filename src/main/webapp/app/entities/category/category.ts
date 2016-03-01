@@ -1,6 +1,7 @@
-import {Serializable} from "../util/serializable";
+import {Serializable} from "../../util/serializable";
 
 export class Category implements Serializable<Category>{
+    public categoryId: number;
     public name : string;
     public description: string;
 
@@ -17,7 +18,7 @@ export class Category implements Serializable<Category>{
     deserialize(object:Category):Category {
         this.name = object.name;
         this.description = object.description;
-
+        this.categoryId = object.categoryId;
         return this;
     }
 }

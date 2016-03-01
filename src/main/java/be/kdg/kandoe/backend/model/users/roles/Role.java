@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 
 @Entity
@@ -16,10 +17,10 @@ import java.util.Collection;
 public abstract class Role {
     @Id
     @GeneratedValue
-    @Column(name = "RoleId", nullable = false)
+    @Column(nullable = false)
     private Integer roleId;
-    @ManyToOne(targetEntity = User.class)
-    private User user;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "roles")
+    private List<User> user;
 
     public abstract Collection<? extends GrantedAuthority> getAuthorities();
     public abstract RoleType getRoleType();
