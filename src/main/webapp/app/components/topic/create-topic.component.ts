@@ -10,6 +10,8 @@ import {Topic} from "../../entities/topic";
 import {CategoryService} from "../../services/category.service"
 import {Category} from "../../entities/category/category"
 import {CreateCategoryModel} from "../../entities/category/createCategoryForm";
+import {CreateTopicModel} from "../../entities/createTopicForm";
+import {TopicService} from "../../services/topic.service";
 
 @Component({
     selector: 'create-topic',
@@ -18,14 +20,50 @@ import {CreateCategoryModel} from "../../entities/category/createCategoryForm";
 })
 export class CreateTopicComponent {
     private categoryId: number;
-    private form: CreateCategoryModel = new CreateCategoryModel();
+    private form: CreateTopicModel = new CreateTopicModel();
     private errors: Array<string> = new Array();
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
-                private _categoryService: CategoryService) {
+                private _topicService: TopicService) {
 
         this.categoryId = +this._routeArgs.params["categoryId"];
+    }
+
+    public onSubmit(): void {
+        this.form.categoryId = this.categoryId;
+        this._topicService.saveTopic(this.form)
+            .subscribe(
+                data => this.handleData(data),
+                error => this.handleErrors(error)
+            )
+    }
+
+    public handleData(data: Response): void {
+        if (data.status == 201){;
+            console.log("topic created");
+            this._router.navigate(["/CategoryDetail", {categoryId:this.categoryId }])
+        }
+    }
+
+
+    public handleErrors(error: Response): void {
+        this.resetForm();
+        console.log(error);
+        /*let json = error.json();
+        if (error.status == 422) {
+            json.fieldErrors.forEach(e => this.errors.push(e.message));
+        } else if(error.status == 400) {
+            this.errors.push(json.message);
+        } else {
+            console.log(error);
+            this.errors.push("Oops. Something went wrong!");
+        }    */
+    }
+
+    public resetForm(): void {
+        this.errors = [];
+        this.form = new CreateTopicModel();
     }
 
 }

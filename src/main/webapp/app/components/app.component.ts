@@ -11,6 +11,8 @@ import {TokenService} from "../services/token.service";
 import {Router} from "angular2/router";
 import {CategoryDetailComponent} from "./categories/category-detail.component";
 import {CreateTopicComponent} from "./topic/create-topic.component";
+import {AddTagComponent} from "./topic/add-tags.component";
+import {TopicDetailComponent} from "./topic/topic-detail.component";
 
 @Component({
     selector: 'my-app',
@@ -29,7 +31,8 @@ import {CreateTopicComponent} from "./topic/create-topic.component";
     {path: '/organization/:organizationId/category/create',  name: 'CreateCategory',     component: CreateCategoryComponent},
     {path: '/categories/:categoryId/detail', name:'CategoryDetail',component:CategoryDetailComponent},
     {path: '/topic/create', name:'CreateTopic', component:CreateTopicComponent},
+    {path: '/categories/:categoryId/addtags', name:'AddTag', component:AddTagComponent} ,
+    {path: '/topic/:topicId/detail',name:'TopicDetail',component:TopicDetailComponent},
 ])
 export class AppComponent {
-
 }

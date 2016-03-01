@@ -6,6 +6,7 @@ import {User} from "../../entities/user/user";
 import {Category} from "../../entities/category/category";
 import {CategoryService} from "../../services/category.service";
 import {Topic} from "../../entities/topic";
+import {TopicService} from "../../services/topic.service";
 
 @Component({
     selector: 'category-detail',
@@ -20,17 +21,21 @@ export class CategoryDetailComponent {
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
-                private _categoryService: CategoryService) {
+                private _categoryService: CategoryService,
+                private _topicService:TopicService) {
         this.category = new Category("","");
-
         var categoryId:number = +_routeArgs.params["categoryId"];
-
         this._categoryService.getCategory(categoryId).subscribe(
             data => {
                 this.category = data.json();
-                this.topics = this.category.topics;
             }
         );
+        this._topicService.getTopicsFromCategory(categoryId)
+            .subscribe(
+                data => this.topics = data.json(),
+                error => console.log(error),
+                () => console.log("Topics fetched")
+            );
     }
 
     public toAddNewTopic(categoryId:number){
@@ -40,4 +45,5 @@ export class CategoryDetailComponent {
     public toTopic(topicId:number){
         this._router.navigate(["/TopicDetail",{topicId:topicId}])
     }
+
 }

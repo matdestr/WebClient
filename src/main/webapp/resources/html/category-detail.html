@@ -7,22 +7,43 @@
             <h1>{{category.name}}</h1>
             <p class="description">{{category.description}}</p>
 
-            <h2>Topics</h2>
+            <h2 style="padding-top: 1em">Topics</h2>
             <ul>
                 <table style="width:100%">
-                    <tr *ngFor="#topic of topics">
-                        <td style="width: 80px"><a (click)="toTopic(topic.topicId)">{{topic.name}}</a></td>
-                        <td>{{topic.description}}</td>
+                    <tr class="spaceUnder" *ngFor="#topic of topics">
+                        <td class="categoryName" (click)="toTopic(topic.topicId)" >{{topic.name}}</td>
+                        <td class="description" style="margin-left: 3em">{{topic.description}}</td>
                     </tr>
                 </table>
             </ul>
 
-            <button class="addNewButton" (click)="toAddNewTopic(category.categoryId)"><i class="glyphicon glyphicon-plus"></i>Add new Topic</button>
+            <button class="addNewButton" (click)="toAddNewTopic(category.categoryId)"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add new Topic</button>
 
 
             <h2>Tags</h2>
 
-            <button class="addNewButton" (click)="toAddNewTag(category.categoryId)"><i class="glyphicon glyphicon-plus"></i>Add new Tag</button>
+            <button class="addNewButton" data-toggle="modal" data-target="#myModal" ><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add More Tags</button>
+
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Add more tags</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Some text in the modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>

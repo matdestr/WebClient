@@ -1,5 +1,5 @@
 import {Serializable} from "../../util/serializable";
-import {Topic} from "../entities/topic"
+import {Topic} from "../../entities/topic"
 
 export class Category implements Serializable<Category>{
     public categoryId: number;
@@ -21,6 +21,7 @@ export class Category implements Serializable<Category>{
         this.name = object.name;
         this.description = object.description;
         this.categoryId = object.categoryId;
+        this.topics = object.topics;
         return this;
     }
 }
