@@ -1,6 +1,5 @@
 package be.kdg.kandoe.backend.persistence;
 
-import be.kdg.kandoe.backend.Utils.InputStreamParser;
 import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Tag;
@@ -11,7 +10,6 @@ import be.kdg.kandoe.backend.persistence.api.OrganizationRepository;
 import be.kdg.kandoe.backend.persistence.api.TagRepository;
 import be.kdg.kandoe.backend.persistence.api.UserRepository;
 import lombok.val;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -21,13 +19,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 @Component
 public class DatabaseSeeder {
     @Autowired
     private OAuthClientDetailsRepository clientDetailsRepository;
-    
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -41,27 +38,26 @@ public class DatabaseSeeder {
     private TagRepository tagRepository;
 
 
-
     @PostConstruct
-    private void seed(){
+    private void seed() {
         OAuthClientDetails clientDetails = new OAuthClientDetails("webapp");
-        
+
         clientDetails.setAuthorizedGrandTypes("password", "authorization_code", "refresh_token", "client_credentials");
         clientDetails.setAuthorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT");
         clientDetails.setScopes("read", "write", "trust");
         clientDetails.setSecret("secret");
         clientDetails.setAccessTokenValiditySeconds(60 * 60);
-        
+
         clientDetailsRepository.save(clientDetails);
-        
+
         OAuthClientDetails clientDetailsAndroid = new OAuthClientDetails("android");
-        
+
         clientDetailsAndroid.setAuthorizedGrandTypes("password", "refresh_token");
         clientDetailsAndroid.setAuthorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT");
         clientDetailsAndroid.setScopes("read", "write", "trust");
         clientDetailsAndroid.setSecret("secret");
         clientDetailsAndroid.setAccessTokenValiditySeconds(60 * 60);
-        
+
         clientDetailsRepository.save(clientDetailsAndroid);
 
         val users = new ArrayList<User>();
@@ -106,26 +102,43 @@ public class DatabaseSeeder {
         organisation.addMember(testUser);
         organizationRepository.save(organisation);
 
-        Scanner s = null;
-        try {
-            s = new Scanner(InputStreamParser.getResourceAsFile("listoftags.rtf"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         List<Tag> tagList = new ArrayList<Tag>();
-        while (s.hasNextLine()){
-            Tag tag = new Tag();
-            tag.setName(s.nextLine());
-            tagList.add(tag);
-        }
-        s.close();
+        Tag tag1 = new Tag();
+        tagList.add(tag1);
+        tag1.setName("General");
+        Tag tag2 = new Tag();
+        tagList.add(tag2);
+        tag2.setName("Legals");
+        Tag tag3 = new Tag();
+        tagList.add(tag3);
+        tag3.setName("Medical");
+        Tag tag4 = new Tag();
+        tagList.add(tag4);
+        tag4.setName("Music");
+        Tag tag5 = new Tag();
+        tagList.add(tag5);
+        tag5.setName("Business");
+        Tag tag6 = new Tag();
+        tagList.add(tag6);
+        tag6.setName("Games");
+        Tag tag7 = new Tag();
+        tagList.add(tag7);
+        tag7.setName("Kids");
+        Tag tag8 = new Tag();
+        tagList.add(tag8);
+        tag8.setName("Health");
+        Tag tag9 = new Tag();
+        tagList.add(tag9);
+        tag9.setName("Finance");
+        Tag tag10 = new Tag();
+        tagList.add(tag10);
+        tag10.setName("Food");
+
+
+
         tagRepository.save(tagList);
 
 
-
-
-
     }
-
 
 }
