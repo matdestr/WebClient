@@ -6,29 +6,42 @@ import {Router, RouteParams} from "angular2/router";
 import {Http, Headers, Response} from 'angular2/http';
 
 import {User} from "../../entities/user/user";
-import {Topic} from "../../entities/topic";
 import {CategoryService} from "../../services/category.service"
 import {Category} from "../../entities/category/category"
 import {CreateCategoryModel} from "../../entities/category/createCategoryForm";
+import {Tag} from "../../entities/tag";
+import {TagService} from "../../services/tag.service";
 
 @Component({
-    selector: 'organization-detail',
+    selector: 'create-category',
     templateUrl: 'html/create-category.html',
     directives: [ToolbarComponent]
 })
 export class CreateCategoryComponent {
-    private organizationId: number;
-    private form: CreateCategoryModel = new CreateCategoryModel();
-    private errors: Array<string> = new Array();
+    private organizationId:number;
+    private form:CreateCategoryModel = new CreateCategoryModel();
+    private errors:Array<string> = new Array();
+    private tags:Tag[] = [];
+
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
-                private _categoryService: CategoryService) {
+                private _categoryService:CategoryService, private _tagService:TagService) {
 
-                this.organizationId = +this._routeArgs.params["organizationId"];
+        this.organizationId = +this._routeArgs.params["organizationId"];
+        this._tagService.getTags().subscribe(data => {
+            let tags: Array<Tag> = data.json();
+            for(let tag of tags )
+                this.tags.push(Tag.createEmptyTag().deserialize(tag));
+
+
+
+        });
     }
 
-    public onSubmit(): void {
+    //TODO Angular pipeline voor tags search box
+
+    public onSubmit():void {
         this.form.organizationId = this.organizationId;
         this._categoryService.saveCategory(this.form)
             .subscribe(
@@ -37,20 +50,21 @@ export class CreateCategoryComponent {
             )
     }
 
-    public handleData(data: Response): void {
-        if (data.status == 201){;
+    public handleData(data:Response):void {
+        if (data.status == 201) {
+            ;
             console.log("category created");
             this._router.navigate(["/OrganizationDetail", {organizationId: this.organizationId}])
         }
     }
 
 
-    public handleErrors(error: Response): void {
+    public handleErrors(error:Response):void {
         this.resetForm();
         let json = error.json();
         if (error.status == 422) {
             json.fieldErrors.forEach(e => this.errors.push(e.message));
-        } else if(error.status == 400) {
+        } else if (error.status == 400) {
             this.errors.push(json.message);
         } else {
             console.log(error);
@@ -58,7 +72,7 @@ export class CreateCategoryComponent {
         }
     }
 
-    public resetForm(): void {
+    public resetForm():void {
         this.errors = [];
         this.form = new CreateCategoryModel();
     }

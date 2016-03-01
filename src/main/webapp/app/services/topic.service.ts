@@ -9,19 +9,20 @@ import {RequestOptions} from "angular2/http";
 import {URLSearchParams} from "angular2/http";
 
 
-import {CreateCategoryModel} from "../entities/category/createCategoryForm";
+import {CreateTopicModel} from "../entities/createTopicForm";
+
 
 @Injectable()
-export class CategoryService {
-    public static endPoint: string = "./api/categories/"
+export class TopicService {
+    public static endPoint: string = "./api/topics/"
 
     constructor(private _authHttp: AuthHttp){
 
     }
 
-    public saveCategory(category: CreateCategoryModel) : Observable<Response> {
+    public saveTopic(topic: CreateTopicModel) : Observable<Response> {
         var searchParams: URLSearchParams = new URLSearchParams();
-        searchParams.append("organizationId", "" + category.organizationId);
+        searchParams.append("categoryId", "" + topic.categoryId);
 
         var headers: Headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -30,20 +31,21 @@ export class CategoryService {
         options.search = searchParams;
         options.headers = headers;
 
-        return this._authHttp.post(CategoryService.endPoint, JSON.stringify(category), options).retry(2);
+        return this._authHttp.post(TopicService.endPoint, JSON.stringify(topic), options).retry(2);
     }
 
-    public getCategoriesFromOrganization(organizationId: number): Observable<Response>{
+    public getTopicsFromCategory(categoryId: number): Observable<Response>{
         var searchParams: URLSearchParams = new URLSearchParams();
-        searchParams.append("organizationId", "" + organizationId);
+        searchParams.append("categoryId", "" + categoryId);
 
         var options: RequestOptions = new RequestOptions();
         options.search = searchParams;
 
-        return this._authHttp.get(CategoryService.endPoint, options);
+        return this._authHttp.get(TopicService.endPoint, options);
     }
 
-    public getCategory(categoryId : number) : Observable<Response> {
-        return this._authHttp.get(CategoryService.endPoint + categoryId);
+    public getTopic(topicId : number) : Observable<Response> {
+        return this._authHttp.get(TopicService.endPoint + topicId);
     }
+
 }

@@ -45,6 +45,9 @@ export class OrganizationDetailComponent {
         this._router.navigate(["/CreateCategory", {organizationId:organizationId}])
     }
 
+    public toCategory(categoryId:number){
+        this._router.navigate(["/CategoryDetail",{categoryId:categoryId}])
+    }
 
 }
 

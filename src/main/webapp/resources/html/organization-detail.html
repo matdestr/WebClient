@@ -10,7 +10,7 @@
         <h2>Members</h2>
         <ul>
             <table style="width:100%" id="memberTable">
-                <tr *ngFor="#member of members">
+                <tr class="spaceUnder" *ngFor="#member of members">
                     <td class="imageTable"><img class="memberprofile-picture" src="{{ member.profilePictureUrl }}"></td>
                     <td class="nameTable">{{member.name}}</td>
                     <td>{{member.email}}</td>
@@ -20,13 +20,17 @@
 
         <h2>Categories</h2>
         <ul>
-            <li *ngFor="#category of categories">
-                {{category.name}}
-            </li>
+            <table style="width:100%" id="categoryTable">
+            <tr class="spaceUnder" *ngFor="#category of categories">
+                    <td class="categoryName" (click)="toCategory(category.categoryId)">{{category.name}}</td>
+                    <td class="description" style="margin-left: 3em">{{category.description}}</td>
+            </tr>
+            </table>
+
         </ul>
 
 
-        <a id="newCategoryButton" (click)="toAddNewCategory(organization.organizationId)">Add new Category</a>
+        <button class="addNewButton" (click)="toAddNewCategory(organization.organizationId)"><i class="glyphicon glyphicon-plus"></i>Add new Category</button>
         </div>
     </div>
 </div>
