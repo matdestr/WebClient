@@ -58,13 +58,13 @@
 
                         <div class="tagList well">
                                     <form role="form">
-                                        <div class="checkbox">
+                                        <div *ngFor="#tag of tags" class="checkbox">
                                             <label class="tagCheckbox">
-                                                <input type="checkbox"> Training 1
+                                                <input type="checkbox">{{tag.name}}
                                             </label>
                                         </div>
 
-                                        <div class="checkbox">
+                                       <!-- <div class="checkbox">
                                             <label>
                                                 <input type="checkbox"> Training 2
                                             </label>
@@ -110,7 +110,7 @@
                                             <label>
                                                 <input type="checkbox"> Training 5
                                             </label>
-                                        </div>
+                                        </div>-->
                                     </form>
                         </div>
                     </section>
