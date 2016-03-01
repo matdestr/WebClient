@@ -1,9 +1,11 @@
 import {Serializable} from "../../util/serializable";
+import {Topic} from "../entities/topic"
 
 export class Category implements Serializable<Category>{
     public categoryId: number;
     public name : string;
     public description: string;
+    public topics: Topic[];
 
     constructor(name:string, description:string) {
         this.name = name;

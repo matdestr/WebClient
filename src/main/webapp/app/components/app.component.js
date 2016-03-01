@@ -1,4 +1,4 @@
-System.register(["angular2/core", "angular2/router", "./authentication/welcome.component", "./dashboard/dashboard.component", "./organization/create-organization.component", "./profile/userprofile.component", "./profile/userprofile-edit.component", "./organization/organization-detail.component", "./categories/create-category.component"], function(exports_1) {
+System.register(["angular2/core", "angular2/router", "./authentication/welcome.component", "./dashboard/dashboard.component", "./organization/create-organization.component", "./profile/userprofile.component", "./profile/userprofile-edit.component", "./organization/organization-detail.component", "./categories/create-category.component", "./categories/category-detail.component", "./topic/create-topic.component"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, welcome_component_1, dashboard_component_1, create_organization_component_1, userprofile_component_1, userprofile_edit_component_1, organization_detail_component_1, create_category_component_1;
+    var core_1, router_1, welcome_component_1, dashboard_component_1, create_organization_component_1, userprofile_component_1, userprofile_edit_component_1, organization_detail_component_1, create_category_component_1, category_detail_component_1, create_topic_component_1;
     var AppComponent;
     return {
         setters:[
@@ -38,6 +38,12 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
             },
             function (create_category_component_1_1) {
                 create_category_component_1 = create_category_component_1_1;
+            },
+            function (category_detail_component_1_1) {
+                category_detail_component_1 = category_detail_component_1_1;
+            },
+            function (create_topic_component_1_1) {
+                create_topic_component_1 = create_topic_component_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
@@ -57,6 +63,8 @@ System.register(["angular2/core", "angular2/router", "./authentication/welcome.c
                         { path: '/organization/create', name: 'NewOrganization', component: create_organization_component_1.CreateOrganizationComponent },
                         { path: '/organization/:organizationId/detail', name: 'OrganizationDetail', component: organization_detail_component_1.OrganizationDetailComponent },
                         { path: '/organization/:organizationId/category/create', name: 'CreateCategory', component: create_category_component_1.CreateCategoryComponent },
+                        { path: '/categories/:categoryId/detail', name: 'CategoryDetail', component: category_detail_component_1.CategoryDetailComponent },
+                        { path: '/topic/create', name: 'CreateTopic', component: create_topic_component_1.CreateTopicComponent },
                     ]), 
                     __metadata('design:paramtypes', [])
                 ], AppComponent);

@@ -1,0 +1,61 @@
+<toolbar></toolbar>
+
+<div id="main-content">
+    <div class="forms container-fluid flex-container">
+        <div class="forms-panel panel col-sm-6 flex-item">
+
+            <div class="panel-heading">
+                <h1 class="separator-dotted">Create a new topic</h1>
+
+                <div id="error" *ngIf="errors.length > 0" class="alert alert-danger">
+                    <ul>
+                        <li *ngFor="#error of errors; #i = index">
+                            {{error}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form #organizationForm="ngForm"
+                      (ngSubmit)="onSubmit(organizationForm)"
+                      name="form-new-topic"
+                      role="form">
+                    <section class="forms-section">
+                        <h2>General information</h2>
+
+                        <div class="input-group forms-input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-globe"></i></span>
+                            <input id="topicName"
+                                   name="topic-name"
+                                   class="form-control"
+                                   type="text"
+                                   placeholder="Topic name"
+                                   required
+                                   #categoryName="ngForm"
+                                   [(ngModel)]="form.name"> </div>
+                        <div class="input-group forms-input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                            <textarea  id="topicDescription"
+                                       name="topic-description"
+                                       class="form-control"
+                                       type="text"
+                                       placeholder="Description for this topic..."
+                                       #categoryDescription="ngForm"
+                                       [(ngModel)]="form.description"></textarea>
+                        </div>
+
+                    </section>
+
+                    <section>
+                        <div class="forms-input-group clear-both text-center">
+                            <button type="submit"
+                                    name="add-topic">
+                                <i class="glyphicon glyphicon-floppy-disk"></i> Create
+                            </button>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

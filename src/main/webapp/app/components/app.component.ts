@@ -9,6 +9,8 @@ import {OrganizationDetailComponent} from "./organization/organization-detail.co
 import {CreateCategoryComponent} from "./categories/create-category.component";
 import {TokenService} from "../services/token.service";
 import {Router} from "angular2/router";
+import {CategoryDetailComponent} from "./categories/category-detail.component";
+import {CreateTopicComponent} from "./topic/create-topic.component";
 
 @Component({
     selector: 'my-app',
@@ -25,7 +27,8 @@ import {Router} from "angular2/router";
     {path: '/organization/create', name: 'NewOrganization', component: CreateOrganizationComponent},
     {path: '/organization/:organizationId/detail', name:'OrganizationDetail', component: OrganizationDetailComponent},
     {path: '/organization/:organizationId/category/create',  name: 'CreateCategory',     component: CreateCategoryComponent},
-    //{path: '/my-organizations', name: 'MyOrganizations'} // TODO : Component
+    {path: '/categories/:categoryId/detail', name:'CategoryDetail',component:CategoryDetailComponent},
+    {path: '/topic/create', name:'CreateTopic', component:CreateTopicComponent},
 ])
 export class AppComponent {
 

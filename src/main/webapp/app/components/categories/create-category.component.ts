@@ -12,7 +12,7 @@ import {Category} from "../../entities/category/category"
 import {CreateCategoryModel} from "../../entities/category/createCategoryForm";
 
 @Component({
-    selector: 'organization-detail',
+    selector: 'create-category',
     templateUrl: 'html/create-category.html',
     directives: [ToolbarComponent]
 })
