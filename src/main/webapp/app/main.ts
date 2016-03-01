@@ -10,12 +10,12 @@ import {UserService} from "./services/user.service";
 import {CategoryService} from "./services/category.service"
 import {OrganizationService} from "./services/organization.service";
 import {ToolbarComponent} from "./components/widget/toolbar.component";
-import {TopicService} from "./services/topic.service";
+import {TagService} from "./services/tag.service";
 
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
-    TokenService, UserService, OrganizationService, CategoryService, TopicService,
+    TokenService, UserService, OrganizationService, CategoryService,TagService, TopicService,
     ToolbarComponent,
     provide(AuthHttp, {
         useFactory: (http) => {
