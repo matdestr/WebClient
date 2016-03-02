@@ -98,8 +98,8 @@ public class DatabaseSeeder {
         harold.setUsername("Harold");
         harold.setPassword(passwordEncoder.encode("harold"));
         harold.setName("Harold");
-        harold.setSurname("Hidethepain");
-        harold.setEmail("harold@hidethepain.com");
+        harold.setSurname("Painhider");
+        harold.setEmail("wannesvr@hotmail.com");
         harold.setProfilePictureUrl("profilepictures/harold.jpg");
         harold.addRole(RoleType.ROLE_CLIENT);
 

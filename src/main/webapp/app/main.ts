@@ -12,11 +12,12 @@ import {OrganizationService} from "./services/organization.service";
 import {ToolbarComponent} from "./components/widget/toolbar.component";
 import {TagService} from "./services/tag.service";
 import {TopicService} from "./services/topic.service";
+import {InvitationService} from "./services/invitation.service";
 
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
-    TokenService, UserService, OrganizationService, CategoryService,TagService,TopicService,
+    TokenService, UserService, OrganizationService, CategoryService,TagService,TopicService, InvitationService,
     ToolbarComponent,
     provide(AuthHttp, {
         useFactory: (http) => {

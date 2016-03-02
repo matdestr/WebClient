@@ -69,13 +69,10 @@ public class OrganizationRestController {
             }
         }
 
-        if (! users.isEmpty())
-            organization.setMembers(users);
-
         organization = organizationService.addOrganization(organization);
 
         emailService.inviteUsersToOrganization(organization, user, users);
-        emailService.inviteUnexistingUsersToOrganization(organization, user, emails);
+        //emailService.inviteUnexistingUsersToOrganization(organization, user, emails);
 
         OrganizationResource resultResource = mapperFacade.map(organization, OrganizationResource.class);
         
