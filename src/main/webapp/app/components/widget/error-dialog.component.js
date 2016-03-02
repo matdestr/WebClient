@@ -27,7 +27,7 @@ System.register(["angular2/core"], function(exports_1) {
                 ErrorDialogComponent = __decorate([
                     core_1.Component({
                         selector: 'error-dialog',
-                        template: "\n    <div class=\"alert alert-danger\">\n        <ul class=\"error-list\" *ngFor=\"#message of messages; #i = index\">\n            <li>{{ messages[i] }}</li>\n        </ul>\n    </div>\n    "
+                        template: "\n    <div *ngIf=\"messages.length > 0\" class=\"alert alert-danger\">\n        <ul class=\"error-list\" *ngFor=\"#message of messages; #i = index\">\n            <li>{{ messages[i] }}</li>\n        </ul>\n    </div>\n    "
                     }), 
                     __metadata('design:paramtypes', [])
                 ], ErrorDialogComponent);

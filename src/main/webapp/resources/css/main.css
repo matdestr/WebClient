@@ -6298,6 +6298,27 @@ tr.spaceUnder > td {
   margin-left: 2em !important;
   text-align: left; }
 
+.decline-button {
+  background-color: dimgray !important; }
+
+input.invitation-button-accept {
+  display: inline-block;
+  width: 40% !important; }
+
+input.invitation-button-decline {
+  display: inline-block;
+  width: 40% !important;
+  background-color: dimgray !important; }
+
+h4.invitation-organization-title {
+  width: 49% !important;
+  padding-left: 1em;
+  display: inline-block; }
+
+form.invitation-accept-form {
+  display: inline-block;
+  width: 49%; }
+
 body {
   position: relative;
   min-height: 100%;
@@ -6325,5 +6346,8 @@ body {
 
 .clear-both {
   clear: both; }
+
+.top-buffer-100 {
+  margin-top: 100px; }
 
 /*# sourceMappingURL=main.css.map */

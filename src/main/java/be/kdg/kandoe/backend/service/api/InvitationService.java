@@ -13,5 +13,5 @@ public interface InvitationService {
     Invitation saveInvitation(Invitation invitation);
     List<Invitation> getInvitationsByUserId(int userId);
     Invitation getInvitationByAcceptId(String acceptId);
-    void invitationAccepted(Invitation invitation);
+    void invalidateInvitation(Invitation invitation);
 }

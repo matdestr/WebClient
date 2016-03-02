@@ -11,7 +11,7 @@ System.register(['angular2/core', "./sign-in.component", "./sign-up.component", 
     var __param = (this && this.__param) || function (paramIndex, decorator) {
         return function (target, key) { decorator(target, key, paramIndex); }
     };
-    var core_1, sign_in_component_1, sign_up_component_1, angular2_jwt_1, router_1;
+    var core_1, sign_in_component_1, sign_up_component_1, angular2_jwt_1, router_1, router_2;
     var AuthenticationComponent;
     return {
         setters:[
@@ -29,13 +29,19 @@ System.register(['angular2/core', "./sign-in.component", "./sign-up.component", 
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+                router_2 = router_1_1;
             }],
         execute: function() {
             AuthenticationComponent = (function () {
-                function AuthenticationComponent(tokenName, router) {
+                function AuthenticationComponent(tokenName, router, routeParams) {
                     //var token : string = localStorage.getItem(tokenName);
                     if (angular2_jwt_1.tokenNotExpired(tokenName)) {
                         router.navigate(['/Dashboard']);
+                    }
+                    else {
+                        var goToSignIn = routeParams.get("signIn");
+                        if (goToSignIn == "true") {
+                        }
                     }
                 }
                 AuthenticationComponent.prototype.ngOnInit = function () {
@@ -48,7 +54,7 @@ System.register(['angular2/core', "./sign-in.component", "./sign-up.component", 
                         directives: [sign_in_component_1.SignInComponent, sign_up_component_1.SignUpComponent]
                     }),
                     __param(0, core_1.Inject('App.TokenName')), 
-                    __metadata('design:paramtypes', [String, router_1.Router])
+                    __metadata('design:paramtypes', [String, router_1.Router, router_2.RouteParams])
                 ], AuthenticationComponent);
                 return AuthenticationComponent;
             })();
