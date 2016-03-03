@@ -1,48 +1,60 @@
 package be.kdg.kandoe.frontend.config;
 
-import be.kdg.kandoe.frontend.controller.websockets.WebSocketController;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import be.kdg.kandoe.frontend.config.security.interceptors.JwtHandshakeInterceptor;
+import be.kdg.kandoe.frontend.config.security.resolvers.OAuth2UserArgumentResolver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.handler.invocation.HandlerMethodArgumentResolver;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
+import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;
+import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer implements ApplicationContextAware{
+public class WebSocketConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
+    @Autowired
+    private JwtAccessTokenConverter accessTokenConverter;
 
-    private ApplicationContext applicationContext;
-    private StompEndpointRegistry registry;
+    @Autowired
+    private OAuth2UserArgumentResolver oAuth2UserArgumentResolver;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
+    }
 
+    @Override
+    protected boolean sameOriginDisabled() {
+        return true;
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        this.registry = registry;
-        init();
-    }
-
-    private void init() {
-        List<WebSocketController> webSocketHandlers = new ArrayList<>(applicationContext.getBeansOfType(WebSocketController.class).values());
-        webSocketHandlers.forEach(w -> registerWebSocket(w));
-    }
-
-    private void registerWebSocket(WebSocketController ws) {
-        registry.addEndpoint(ws.getEndpoints()).withSockJS();
+        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS().setInterceptors(jwtHandshakeInterceptor());
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
+        messages.anyMessage().permitAll();
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(oAuth2UserArgumentResolver);
+        super.addArgumentResolvers(argumentResolvers);
+    }
+
+
+    @Bean
+    public JwtHandshakeInterceptor jwtHandshakeInterceptor(){
+        return new JwtHandshakeInterceptor(accessTokenConverter);
     }
 }
+
