@@ -6,9 +6,9 @@ import org.hibernate.validator.constraints.Range;
 
 @Data
 public class CreateSynchronousSessionResource extends CreateSessionResource {
-    public static final String TYPE = "SYNCH";
+    public static final String TYPE = "sync";
 
-    @Range(min = 0)
+    @Range(min = 0, message = "{session.wrong.timebetweenmoves}")
     private int timeBetweenMoves;
 
     public CreateSynchronousSessionResource() {

@@ -1,4 +1,4 @@
-package integrationtest.oauth;
+package integrationtest.OAuth;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

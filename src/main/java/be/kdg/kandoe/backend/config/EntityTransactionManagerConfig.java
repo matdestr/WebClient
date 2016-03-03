@@ -13,9 +13,6 @@ import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Vincent on 5-2-2016.
- */
 @Configuration
 @EnableTransactionManagement
 public class EntityTransactionManagerConfig

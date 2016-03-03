@@ -1,6 +1,6 @@
 <toolbar></toolbar>
 <div class="container">
-
+    <error-dialog *ngIf="errorMessages.length > 0" [messages]="errorMessages"></error-dialog>
     <div class="row">
         <div class="col-md-3 ptop">
             <img id="userprofile-picture" src="{{ user.profilePictureUrl }}">
@@ -40,22 +40,4 @@
             <p class="profile-button" (click)="returnToProfile()"><span class="glyphicon glyphicon-remove"></span> DISCARD CHANGES</p>
         </div>
     </div>
-
-    <div class="row organizations">
-        <h2>Organizations</h2>
-
-        <div *ngIf="organizations.length == 0">
-            <p>{{ user.fullName }} is not part of any organizations.</p>
-        </div>
-        <table class="organizations-item" *ngIf="organizations.length > 0">
-            <tr *ngFor="#organization of organizations">
-                <td>{{ organization.name }}</td>
-                <td [ngSwitch]="user == organization.owner">
-                    <span *ngSwitchWhen="true">OWNER</span>
-                    <span *ngSwitchWhen="false">MEMBER</span>
-                </td>
-            </tr>
-        </table>
-    </div>
-
 </div>

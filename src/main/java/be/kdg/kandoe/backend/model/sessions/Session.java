@@ -1,6 +1,7 @@
 package be.kdg.kandoe.backend.model.sessions;
 
 
+import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.users.User;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +22,15 @@ public abstract class Session {
     private int sessionId;
     @OneToMany(targetEntity = ChatMessage.class, mappedBy = "session", fetch = FetchType.EAGER)
     private List<ChatMessage> chatMessages;
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(nullable = false, referencedColumnName = "userId")
     private User organizer;
     @OneToMany(targetEntity = User.class, fetch = FetchType.EAGER)
     private List<User> participants;
     @ManyToOne
+    @JoinColumn(nullable = false)
+    private Category category;
+    @ManyToOne(optional = true)
     private Topic topic;
     @ManyToOne
     private Organization organization;

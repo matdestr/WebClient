@@ -7,6 +7,7 @@ import be.kdg.kandoe.backend.service.api.OAuthClientDetailsService;
 import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
+import integrationtest.OAuth.OAuth2TestConfig;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;

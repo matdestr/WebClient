@@ -41,6 +41,7 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../e
                 function CreateOrganizationComponent(_organizationService, _router) {
                     this._organizationService = _organizationService;
                     this._router = _router;
+                    this.errorMessages = new Array();
                 }
                 CreateOrganizationComponent.prototype.ngOnInit = function () {
                     this.organization = new organization_1.CreateOrganization();
@@ -48,22 +49,39 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../e
                     this.usersToInvite.push(new email_1.Email());
                     this.organizationCreated = false;
                     this.showErrorOrganizationName = false;
-                    this.isError = false;
                 };
                 CreateOrganizationComponent.prototype.onSubmit = function (form) {
                     var _this = this;
+                    var self = this;
                     if (this.organization.name) {
                         this.organization.emails = this.filterEmails();
                         console.log("Creating organization");
                         this._organizationService.createOrganization(this.organization)
-                            .subscribe(null, function (error) {
-                            _this.isError = true;
-                            console.log(error);
+                            .subscribe(function (data) { console.log(data); }, function (error) {
+                            self.handleError(error);
                         }, function () {
                             _this.organizationCreated = true;
-                            _this.isError = false;
                             _this._router.navigate(['/Dashboard']);
                         });
+                    }
+                };
+                CreateOrganizationComponent.prototype.handleError = function (error) {
+                    var _this = this;
+                    var obj = JSON.parse(error.text());
+                    console.log(obj);
+                    if (obj.fieldErrors) {
+                        obj.fieldErrors.forEach(function (e) { return _this.onError(e.message); });
+                    }
+                    else {
+                        this.onError(obj.message);
+                    }
+                };
+                CreateOrganizationComponent.prototype.onError = function (message) {
+                    if (message) {
+                        this.errorMessages.push(message);
+                    }
+                    else {
+                        this.errorMessages = new Array();
                     }
                 };
                 CreateOrganizationComponent.prototype.setShowErrorOrganizationName = function (show) {

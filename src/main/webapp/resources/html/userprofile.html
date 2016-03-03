@@ -1,6 +1,8 @@
 <toolbar></toolbar>
 <div class="container">
 
+    <error-dialog [messages]="errorMessages"></error-dialog>
+
     <div class="row">
         <div class="col-md-3 ptop">
             <img id="userprofile-picture" src="{{ user.profilePictureUrl }}">
@@ -13,8 +15,18 @@
         </div>
 
         <div class="col-md-2 ptop">
-            <p class="profile-button" (click)="editProfile()"><span class="glyphicon glyphicon-edit"></span> EDIT PROFILE</p>
-            <p class="profile-button" ><span class="glyphicon glyphicon-lock"></span> EDIT PASSWORD</p>
+            <p *ngIf="canEdit" class="profile-button" (click)="editProfile()"><span class="glyphicon glyphicon-edit"></span> EDIT PROFILE</p>
+        </div>
+    </div>
+
+    <div class="row organizations">
+        <div *ngIf="invitations.length > 0">
+            <h2>Invitations</h2>
+            <p *ngIf="invitations.length == 1">You have 1 open invitation.</p>
+            <p *ngIf="invitations.length != 1">You have {{ invitations.length }} open invitations.</p>
+
+            <invitations [invitations]="invitations"></invitations>
+
         </div>
     </div>
 
@@ -24,12 +36,19 @@
         <div *ngIf="organizations.length == 0">
             <p>{{ user.fullName }} is not part of any organizations.</p>
         </div>
-        <table class="organizations-item" *ngIf="organizations.length > 0">
+        <div *ngIf="organizations.length > 0">
+            <p>{{ user.fullName }} is part of {{ organizations.length }} organization(s).</p>
+        </div>
+        <table class="organizations-item table table-striped" *ngIf="organizations.length > 0">
+            <tr>
+                <th>Organization</th>
+                <th>Membertype</th>
+            </tr>
             <tr *ngFor="#organization of organizations">
                 <td>{{ organization.name }}</td>
                 <td [ngSwitch]="user.userId == organization.owner.userId">
-                    <span *ngSwitchWhen="true">OWNER</span>
-                    <span *ngSwitchWhen="false">MEMBER</span>
+                    <span *ngSwitchWhen="true"><span class="glyphicon glyphicon glyphicon-star profile-organization-item"></span>OWNER</span>
+                    <span *ngSwitchWhen="false"><span class="glyphicon glyphicon-user profile-organization-item"></span>MEMBER</span>
                 </td>
             </tr>
         </table>

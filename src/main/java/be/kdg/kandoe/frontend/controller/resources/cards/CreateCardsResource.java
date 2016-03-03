@@ -5,9 +5,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
 
 public class CreateCardsResource {
-    @NotEmpty
+    @NotEmpty(message = "{card.wrong.name}")
     private String name;
-    @NotEmpty
+    @NotEmpty(message = "{card.wrong.url}")
     @URL
     private String imageUrl;
 }

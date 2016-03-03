@@ -1,4 +1,4 @@
-System.register(['angular2/core', "angular2/router", "../../entities/user/register", "../../services/user.service", "../../services/token.service"], function(exports_1) {
+System.register(['angular2/core', "angular2/router", "../../entities/user/register", "../../services/user.service", "../../services/token.service", "../widget/error-dialog.component"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,7 +8,7 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, register_1, user_service_1, token_service_1;
+    var core_1, router_1, register_1, user_service_1, token_service_1, error_dialog_component_1;
     var SignUpComponent;
     return {
         setters:[
@@ -26,6 +26,9 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
             },
             function (token_service_1_1) {
                 token_service_1 = token_service_1_1;
+            },
+            function (error_dialog_component_1_1) {
+                error_dialog_component_1 = error_dialog_component_1_1;
             }],
         execute: function() {
             SignUpComponent = (function () {
@@ -33,12 +36,15 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                     this._userService = _userService;
                     this._tokenService = _tokenService;
                     this._router = _router;
+                    this.errorMessages = new Array();
                     this.form = new register_1.RegisterModel;
-                    this.errors = new Array();
                 }
                 SignUpComponent.prototype.onSubmit = function () {
                     var _this = this;
-                    this._userService.signUp(this.form).subscribe(function (data) { return _this.handleData(data); }, function (error) { return _this.handleErrors(error); }, function () { return _this._router.navigate(['/Authentication']); });
+                    this.onError(null);
+                    this._userService.signUp(this.form).subscribe(function (data) { return _this.handleData(data); }, function (error) {
+                        _this.handleErrors(error);
+                    }, function () { return _this._router.navigate(['/Authentication']); });
                 };
                 SignUpComponent.prototype.handleData = function (data) {
                     var _this = this;
@@ -53,25 +59,33 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                 };
                 SignUpComponent.prototype.handleErrors = function (error) {
                     var _this = this;
-                    this.resetForm();
-                    if (error.status == 422) {
-                        var json = error.json();
-                        json.fieldErrors.forEach(function (e) { return _this.errors.push(e.message); });
+                    var obj = JSON.parse(error.text());
+                    console.log(obj);
+                    if (obj.fieldErrors) {
+                        obj.fieldErrors.forEach(function (e) { return _this.onError(e.message); });
                     }
                     else {
-                        console.log(error);
-                        this.errors.push("Oops. Something went wrong!");
+                        this.onError(obj.message);
                     }
+                    this.resetForm();
                 };
                 SignUpComponent.prototype.resetForm = function () {
-                    this.errors = new Array();
                     this.form.password = "";
                     this.form.verifyPassword = "";
+                };
+                SignUpComponent.prototype.onError = function (message) {
+                    if (message) {
+                        this.errorMessages.push(message);
+                    }
+                    else {
+                        this.errorMessages = new Array();
+                    }
                 };
                 SignUpComponent = __decorate([
                     core_1.Component({
                         selector: 'sign-up',
-                        templateUrl: 'html/sign-up.html'
+                        templateUrl: 'html/sign-up.html',
+                        directives: [error_dialog_component_1.ErrorDialogComponent]
                     }), 
                     __metadata('design:paramtypes', [user_service_1.UserService, token_service_1.TokenService, router_1.Router])
                 ], SignUpComponent);

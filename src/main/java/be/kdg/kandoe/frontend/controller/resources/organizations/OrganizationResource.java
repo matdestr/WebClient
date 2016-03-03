@@ -10,7 +10,6 @@ import java.util.List;
 public class OrganizationResource {
     private int organizationId;
 
-    @NotEmpty
     private String name;
     
     private UserResource owner;

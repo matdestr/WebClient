@@ -29,7 +29,7 @@ export class OrganizationService {
         return this._authHttp.post(OrganizationService.endPoint, JSON.stringify(organization), {headers: headers});
     }
     
-    public getOrganizations(organizationId : number) : Observable<Response> {
+    public getOrganization(organizationId : number) : Observable<Response> {
         return this._authHttp.get(OrganizationService.endPoint + organizationId);
     }
 

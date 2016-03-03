@@ -1,15 +1,20 @@
-import {Component} from "angular2/core";
+import {Component, Input} from "angular2/core";
+import {NgFor, NgIf} from "angular2/common";
 
 @Component({
     selector: 'error-dialog',
     template: `
-        <p class="alert alert-danger">{{message}}</p>
+    <div *ngIf="messages.length > 0" class="alert alert-danger">
+        <ul class="error-list" *ngFor="#message of messages; #i = index">
+            <li>{{ messages[i] }}</li>
+        </ul>
+    </div>
     `
 })
 export class ErrorDialogComponent {
-    public message : string;
+    @Input() public messages : string[];
     
     constructor() {
-        this.message = 'Could not connect to the server. Please check your internet connection or try again later.';
+        this.messages = new Array();
     }
 }

@@ -13,13 +13,13 @@ import javax.validation.constraints.AssertTrue;
         CreateAsynchronousSessionResource.class, name = CreateAsynchronousSessionResource.TYPE), @JsonSubTypes.Type(value = CreateSynchronousSessionResource.class, name = CreateSynchronousSessionResource.TYPE) })
 public abstract class CreateSessionResource {
     private Integer topicId;
-    @Range(min = 1)
+    @Range(min = 1, message = "{session.wrong.organization-id}")
     private int organizationId;
     private boolean commentsAllowed;
     private boolean userCanAddCards;
-    @Range(min = 1, max = 100)
+    @Range(min = 1, max = 100, message = "{session.wrong.min-cardnumber}")
     private int minNumberOfCards;
-    @Range(min = 1, max = 100)
+    @Range(min = 1, max = 100, message = "{session.wrong.max-cardnumber}")
     private int maxNumberOfCards;
 
     private final String type;
@@ -28,7 +28,7 @@ public abstract class CreateSessionResource {
         this.type = type;
     }
 
-    @AssertTrue(message = "Min number of cards should be lower than the max numbers of cards")
+    @AssertTrue(message = "{session.wrong.invalid-cardnumber}")
     private boolean isValid() {
         return minNumberOfCards <= maxNumberOfCards;
     }

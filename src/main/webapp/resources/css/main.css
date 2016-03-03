@@ -5972,6 +5972,10 @@ a {
       max-height: 33.33333px;
       margin: 0 0.5em; }
 
+.navbar-inverse .navbar-toggle {
+  margin-right: 30px !important;
+  border: none !important; }
+
 footer {
   position: absolute;
   height: 5em;
@@ -6161,8 +6165,14 @@ form input[type=submit], form button[type=submit] {
   width: 200px;
   height: 200px; }
 
+h2 {
+  color: #dc3522; }
+
 .userprofile-details {
   padding-left: 1em; }
+
+#user-username {
+  color: #dc3522; }
 
 #user-fullname {
   color: #333333;
@@ -6192,7 +6202,8 @@ table.organizations-item {
     width: 50%; }
 
 .ptop {
-  margin-top: 20px; }
+  margin-top: 20px;
+  margin-bottom: 10px; }
 
 .profile-edit-name {
   margin-top: 20px;
@@ -6215,6 +6226,9 @@ div.profile-edit-name {
 .fullwidth {
   width: 100%; }
 
+.profile-organization-item {
+  margin-right: 1em; }
+
 span.primary {
   color: #dc3522; }
 span.green {
@@ -6236,8 +6250,8 @@ span.red {
   font-size: 15px; }
 
 h2 {
-  margin-top: 2em;
-  margin-bottom: 1em; }
+  margin-top: 0em;
+  margin-bottom: 0.5em; }
 
 #organization-detail {
   margin-left: 2em; }
@@ -6279,6 +6293,32 @@ h2 {
 tr.spaceUnder > td {
   padding-bottom: 2em; }
 
+.error-list > li {
+  list-style-type: disc !important;
+  margin-left: 2em !important;
+  text-align: left; }
+
+.decline-button {
+  background-color: dimgray !important; }
+
+input.invitation-button-accept {
+  display: inline-block;
+  width: 40% !important; }
+
+input.invitation-button-decline {
+  display: inline-block;
+  width: 40% !important;
+  background-color: dimgray !important; }
+
+h4.invitation-organization-title {
+  width: 49% !important;
+  padding-left: 1em;
+  display: inline-block; }
+
+form.invitation-accept-form {
+  display: inline-block;
+  width: 49%; }
+
 body {
   position: relative;
   min-height: 100%;
@@ -6306,5 +6346,8 @@ body {
 
 .clear-both {
   clear: both; }
+
+.top-buffer-100 {
+  margin-top: 100px; }
 
 /*# sourceMappingURL=main.css.map */

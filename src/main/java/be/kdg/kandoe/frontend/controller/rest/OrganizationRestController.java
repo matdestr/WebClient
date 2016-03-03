@@ -6,7 +6,7 @@ import be.kdg.kandoe.backend.service.api.EmailService;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
 import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.controller.resources.organizations.CreateOrganizationResource;
-import be.kdg.kandoe.frontend.controller.resources.organizations.Email;
+import be.kdg.kandoe.frontend.controller.resources.organizations.EmailResource;
 import be.kdg.kandoe.frontend.controller.resources.organizations.OrganizationResource;
 import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import ma.glasnost.orika.MapperFacade;
@@ -51,11 +51,11 @@ public class OrganizationRestController {
         List<String> emails = new ArrayList<>();
         List<User> users = new ArrayList<>();
 
-        List<Email> resourceMailList = organizationResource.getEmails();
+        List<EmailResource> resourceMailList = organizationResource.getEmails();
 
         if (resourceMailList != null && ! resourceMailList.isEmpty()) {
             //Retrieve existing users
-            for (Email mailObject : resourceMailList) {
+            for (EmailResource mailObject : resourceMailList) {
                 String email = mailObject.getEmail();
 
                 if (email != null) {
@@ -69,13 +69,10 @@ public class OrganizationRestController {
             }
         }
 
-        if (! users.isEmpty())
-            organization.setMembers(users);
-
         organization = organizationService.addOrganization(organization);
 
         emailService.inviteUsersToOrganization(organization, user, users);
-        emailService.inviteUnexistingUsersToOrganization(organization, user, emails);
+        //emailService.inviteUnexistingUsersToOrganization(organization, user, emails);
 
         OrganizationResource resultResource = mapperFacade.map(organization, OrganizationResource.class);
         

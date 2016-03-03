@@ -10,6 +10,7 @@ import {CreateOrganization} from "../../entities/organization";
 import {tokenNotExpired} from "../../libraries/angular2-jwt";
 import {ToolbarComponent} from "../widget/toolbar.component";
 import {ErrorDialogComponent} from "../widget/error-dialog.component";
+import {Response} from "angular2/http";
 
 @Component({
     selector: 'create-organization',
@@ -23,8 +24,8 @@ export class CreateOrganizationComponent implements OnInit {
     
     private organizationCreated : boolean;
     private showErrorOrganizationName : boolean;
-    private isError : boolean;
-    
+    private errorMessages:string[] = new Array();
+
     constructor (private _organizationService : OrganizationService, private _router : Router) {
 
     }
@@ -35,26 +36,42 @@ export class CreateOrganizationComponent implements OnInit {
         this.usersToInvite.push(new Email());
         this.organizationCreated = false;
         this.showErrorOrganizationName = false;
-        this.isError = false;
     }
 
     private onSubmit(form) {
+        var self = this;
         if (this.organization.name) {
             this.organization.emails = this.filterEmails();
 
             console.log("Creating organization");
             this._organizationService.createOrganization(this.organization)
-                .subscribe(null,
-                    error => {
-                        this.isError = true;
-                        console.log(error);
+                .subscribe((data) => { console.log(data); },
+                    (error) => {
+                        self.handleError(error);
                     },
                     () => {
                         this.organizationCreated = true;
-                        this.isError = false;
                         this._router.navigate(['/Dashboard']);
                     });
 
+        }
+    }
+
+    private handleError(error:Response){
+        var obj = JSON.parse(error.text());
+        console.log(obj);
+        if (obj.fieldErrors){
+            obj.fieldErrors.forEach(e => this.onError(e.message));
+        } else {
+            this.onError(obj.message);
+        }
+    }
+
+    private onError(message:string){
+        if (message) {
+            this.errorMessages.push(message);
+        } else {
+            this.errorMessages = new Array();
         }
     }
     

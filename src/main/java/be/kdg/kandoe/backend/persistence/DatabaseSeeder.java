@@ -1,30 +1,31 @@
 package be.kdg.kandoe.backend.persistence;
 
+import be.kdg.kandoe.backend.model.cards.Card;
+import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
+import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Tag;
+import be.kdg.kandoe.backend.model.organizations.Topic;
+import be.kdg.kandoe.backend.model.sessions.Session;
+import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.model.users.roles.RoleType;
-import be.kdg.kandoe.backend.persistence.api.OAuthClientDetailsRepository;
-import be.kdg.kandoe.backend.persistence.api.OrganizationRepository;
-import be.kdg.kandoe.backend.persistence.api.TagRepository;
-import be.kdg.kandoe.backend.persistence.api.UserRepository;
+import be.kdg.kandoe.backend.persistence.api.*;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 @Component
 public class DatabaseSeeder {
     @Autowired
     private OAuthClientDetailsRepository clientDetailsRepository;
-
+    
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -35,29 +36,38 @@ public class DatabaseSeeder {
     private OrganizationRepository organizationRepository;
 
     @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private TopicRepository topicRepository;
+
+    @Autowired
+    private CardRepository cardRepository;
+
+    @Autowired
     private TagRepository tagRepository;
 
 
     @PostConstruct
-    private void seed() {
+    private void seed(){
         OAuthClientDetails clientDetails = new OAuthClientDetails("webapp");
-
+        
         clientDetails.setAuthorizedGrandTypes("password", "authorization_code", "refresh_token", "client_credentials");
         clientDetails.setAuthorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT");
         clientDetails.setScopes("read", "write", "trust");
         clientDetails.setSecret("secret");
         clientDetails.setAccessTokenValiditySeconds(60 * 60);
-
+        
         clientDetailsRepository.save(clientDetails);
-
+        
         OAuthClientDetails clientDetailsAndroid = new OAuthClientDetails("android");
-
+        
         clientDetailsAndroid.setAuthorizedGrandTypes("password", "refresh_token");
         clientDetailsAndroid.setAuthorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT");
         clientDetailsAndroid.setScopes("read", "write", "trust");
         clientDetailsAndroid.setSecret("secret");
         clientDetailsAndroid.setAccessTokenValiditySeconds(60 * 60);
-
+        
         clientDetailsRepository.save(clientDetailsAndroid);
 
         val users = new ArrayList<User>();
@@ -88,8 +98,8 @@ public class DatabaseSeeder {
         harold.setUsername("Harold");
         harold.setPassword(passwordEncoder.encode("harold"));
         harold.setName("Harold");
-        harold.setSurname("Hidethepain");
-        harold.setEmail("harold@hidethepain.com");
+        harold.setSurname("Painhider");
+        harold.setEmail("harold@haroldmail.com");
         harold.setProfilePictureUrl("profilepictures/harold.jpg");
         harold.addRole(RoleType.ROLE_CLIENT);
 
@@ -101,6 +111,60 @@ public class DatabaseSeeder {
         val organisation = new Organization("Organisation 1", adminUser);
         organisation.addMember(testUser);
         organizationRepository.save(organisation);
+
+        val category = new Category();
+        category.setName("test-category");
+        category.setDescription("test-category-description");
+        category.setOrganization(organisation);
+
+        categoryRepository.save(category);
+
+        val topic = new Topic();
+        topic.setName("test-topic");
+        topic.setDescription("test-topic-description");
+        topic.setCategory(category);
+
+        topicRepository.save(topic);
+
+        List<Card> cards = new ArrayList<>();
+
+        val card1 = new Card();
+        val cardDetails1 = new CardDetails();
+        cardDetails1.setText("card1");
+        card1.setCategory(category);
+        card1.setCardDetails(cardDetails1);
+        card1.setUser(adminUser);
+
+        val card2 = new Card();
+        val cardDetails2 = new CardDetails();
+        cardDetails2.setText("card2");
+        card2.setCategory(category);
+        card2.setCardDetails(cardDetails2);
+        card2.setUser(adminUser);
+
+        val card3 = new Card();
+        val cardDetails3 = new CardDetails();
+        cardDetails3.setText("card3");
+        card3.setCategory(category);
+        card3.setCardDetails(cardDetails3);
+        card3.setUser(adminUser);
+
+        val card4 = new Card();
+        val cardDetails4 = new CardDetails();
+        cardDetails4.setText("card4");
+        card4.setCategory(category);
+        card4.setCardDetails(cardDetails4);
+        card4.setUser(adminUser);
+
+        cards.add(card1);
+        cards.add(card2);
+        cards.add(card3);
+        cards.add(card4);
+
+        cardRepository.save(cards);
+
+        Session session = new SynchronousSession();
+        session.setOrganization(organisation);
 
         List<Tag> tagList = new ArrayList<Tag>();
         Tag tag1 = new Tag();

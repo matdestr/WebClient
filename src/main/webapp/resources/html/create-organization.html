@@ -7,7 +7,7 @@
             <div class="panel-heading">
                 <h1 class="separator-dotted">Create a new organization</h1>
 
-                <error-dialog *ngIf="isError"></error-dialog>
+                <error-dialog *ngIf="errorMessages.length > 0" [messages]="errorMessages"></error-dialog>
                 <!--<div class="col-sm-12 col-md-6 col-md-offset-3">
                     <error-dialog *ngIf="isError"></error-dialog>
                 </div>-->
@@ -45,7 +45,7 @@
                             <i class="glyphicon glyphicon-envelope"></i>
                         </span>
 
-                            <input class="form-control forms-input-small"
+                            <input class="email-input form-control forms-input-small"
                                    type="email"
                                    placeholder="Invite user (email)"
                                    #userEmail="ngForm"
@@ -61,6 +61,7 @@
 
                         <div class="forms-input-group">
                             <button type="button"
+                                    id="add-user-btn"
                                     class="btn btn-default pull-right"
                                     (click)="addUserEntry()">
                                 <span class="green"><i class="glyphicon glyphicon-plus"></i></span> Add user

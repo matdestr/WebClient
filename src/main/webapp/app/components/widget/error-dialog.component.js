@@ -18,12 +18,16 @@ System.register(["angular2/core"], function(exports_1) {
         execute: function() {
             ErrorDialogComponent = (function () {
                 function ErrorDialogComponent() {
-                    this.message = 'Could not connect to the server. Please check your internet connection or try again later.';
+                    this.messages = new Array();
                 }
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Array)
+                ], ErrorDialogComponent.prototype, "messages", void 0);
                 ErrorDialogComponent = __decorate([
                     core_1.Component({
                         selector: 'error-dialog',
-                        template: "\n        <p class=\"alert alert-danger\">{{message}}</p>\n    "
+                        template: "\n    <div *ngIf=\"messages.length > 0\" class=\"alert alert-danger\">\n        <ul class=\"error-list\" *ngFor=\"#message of messages; #i = index\">\n            <li>{{ messages[i] }}</li>\n        </ul>\n    </div>\n    "
                     }), 
                     __metadata('design:paramtypes', [])
                 ], ErrorDialogComponent);

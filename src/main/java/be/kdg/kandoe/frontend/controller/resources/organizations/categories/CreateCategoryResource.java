@@ -8,8 +8,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Data
 @NoArgsConstructor
 public class CreateCategoryResource {
-    @NotEmpty
+    @NotEmpty(message = "{category.wrong.name}")
     private String name;
-    @Length(min = 0, max = 1000)
+    @NotEmpty(message = "{category.wrong.description}")
+    @Length(min = 0, max = 1000, message = "{category.wrong.length.description}")
     private String description;
 }

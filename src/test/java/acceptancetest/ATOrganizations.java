@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ATOrganizations {
@@ -15,19 +16,18 @@ public class ATOrganizations {
     
     @Before
     public void setup() {
-        /*WebDriver driver = new ChromeDriver();
+        WebDriver driver = new ChromeDriver();
         
         LoginHelper.register(driver, username, password);
         driver.get(String.format("%s/organizations/create", baseUrl));
         
-        // TODO*/
+        // TODO
     }
     
     @Test
     public void testCreateNewOrganization() {
         baseUrl = System.getProperty("app.baseUrl");
-        System.out.println("BASE URL: " + baseUrl);
-        
+
         WebDriver driver = new ChromeDriver();
         driver.get(baseUrl);
         
@@ -54,6 +54,8 @@ public class ATOrganizations {
         WebElement form = driver.findElement(By.name("form-new-organization"));
         
         form.findElement(By.name("organization-name")).sendKeys("Karel de Grote");
+        //form.findElement(By.id("add-user-btn")).click();
+        //form.findElements(By.className("email-input")).stream().forEach(e -> e.sendKeys("unexisting@notamailservice.com"));
         form.findElement(By.name("add-organization")).click();
         
         /*driver.get(baseUrl);
