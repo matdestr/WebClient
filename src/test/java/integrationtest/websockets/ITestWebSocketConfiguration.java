@@ -2,7 +2,6 @@ package integrationtest.websockets;
 
 import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
-import integrationtest.oauth.OAuth2TestConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

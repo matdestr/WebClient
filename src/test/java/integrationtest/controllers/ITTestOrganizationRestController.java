@@ -157,7 +157,6 @@ public class ITTestOrganizationRestController {
     public void testGetOrganizationsOfUser() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/organizations/user/" + user.getUsername())
-        )//.andDo(print())
-                .andExpect(status().isOk());
+        ).andDo(print()).andExpect(status().isOk());
     }
 }

@@ -22,16 +22,16 @@ public class Organization {
     @OneToOne(fetch = FetchType.EAGER)
     private User owner;
     
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<User> organizers;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<User> members;
 
     public Organization(String name, User owner) {
         this.name = name;
         this.owner = owner;
-        this.organizers = new ArrayList<>();
+        this.members = new ArrayList<>();
     }
 
-    public void addOrganizer(User user) {
-        this.organizers.add(user);
+    public void addMember(User user) {
+        this.members.add(user);
     }
 }
