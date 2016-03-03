@@ -145,7 +145,7 @@ public class ITTestTopicRestController {
 
             mockMvc.perform(MockMvcRequestBuilders.get(getUrl)
                     .header("Authorization", authorizationHeader))
-                    .andDo(print())
+                    //.andDo(print())
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(jsonPath("$.topicId").exists())
                     .andExpect(jsonPath("$.topicId").isNotEmpty())

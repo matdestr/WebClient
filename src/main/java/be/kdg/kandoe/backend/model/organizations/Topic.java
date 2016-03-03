@@ -1,10 +1,10 @@
 package be.kdg.kandoe.backend.model.organizations;
 
-import be.kdg.kandoe.backend.model.cards.Card;
+import be.kdg.kandoe.backend.model.cards.CardDetails;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -14,11 +14,15 @@ public class Topic {
     @GeneratedValue
     @Setter(AccessLevel.NONE)
     private int topicId;
+
     @Column(nullable = false)
     private String name;
+
     private String description;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
-    @OneToMany
-    private List<Card> cards;
+
+    @ManyToMany
+    private Set<CardDetails> cards;
 }
