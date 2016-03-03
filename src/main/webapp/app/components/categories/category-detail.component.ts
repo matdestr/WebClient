@@ -7,6 +7,8 @@ import {Category} from "../../entities/category/category";
 import {CategoryService} from "../../services/category.service";
 import {Topic} from "../../entities/topic";
 import {TopicService} from "../../services/topic.service";
+import {Tag} from "../../entities/tag";
+import {TagService} from "../../services/tag.service";
 
 @Component({
     selector: 'category-detail',
@@ -18,11 +20,14 @@ export class CategoryDetailComponent {
 
     private category:Category;
     private topics:Topic[]=[];
+    private tags:Tag[] = [];
+
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
                 private _categoryService: CategoryService,
-                private _topicService:TopicService) {
+                private _topicService:TopicService,
+                private _tagService:TagService) {
         this.category = new Category("","");
         var categoryId:number = +_routeArgs.params["categoryId"];
         this._categoryService.getCategory(categoryId).subscribe(
@@ -36,6 +41,15 @@ export class CategoryDetailComponent {
                 error => console.log(error),
                 () => console.log("Topics fetched")
             );
+
+        this._tagService.getTags().subscribe(data => {
+            let tags: Array<Tag> = data.json();
+            for(let tag of tags )
+                this.tags.push(Tag.createEmptyTag().deserialize(tag));
+
+
+
+        });
     }
 
     public toAddNewTopic(categoryId:number){
