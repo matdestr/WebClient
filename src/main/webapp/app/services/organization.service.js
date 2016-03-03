@@ -42,7 +42,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
                     headers.append('Content-Type', 'application/json');
                     return this._authHttp.post(OrganizationService.endPoint, JSON.stringify(organization), { headers: headers });
                 };
-                OrganizationService.prototype.getOrganizations = function (organizationId) {
+                OrganizationService.prototype.getOrganization = function (organizationId) {
                     return this._authHttp.get(OrganizationService.endPoint + organizationId);
                 };
                 OrganizationService.prototype.getOrganizationsByOwner = function (username) {

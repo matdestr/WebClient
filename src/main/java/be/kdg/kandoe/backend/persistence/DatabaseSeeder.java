@@ -94,7 +94,7 @@ public class DatabaseSeeder {
         harold.setPassword(passwordEncoder.encode("harold"));
         harold.setName("Harold");
         harold.setSurname("Painhider");
-        harold.setEmail("wannesvr@hotmail.com");
+        harold.setEmail("harold@haroldmail.com");
         harold.setProfilePictureUrl("profilepictures/harold.jpg");
         harold.addRole(RoleType.ROLE_CLIENT);
 

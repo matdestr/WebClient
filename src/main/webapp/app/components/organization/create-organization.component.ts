@@ -45,7 +45,7 @@ export class CreateOrganizationComponent implements OnInit {
 
             console.log("Creating organization");
             this._organizationService.createOrganization(this.organization)
-                .subscribe(null,
+                .subscribe((data) => { console.log(data); },
                     (error) => {
                         self.handleError(error);
                     },
