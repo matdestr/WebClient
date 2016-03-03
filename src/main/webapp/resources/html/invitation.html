@@ -1,0 +1,24 @@
+<toolbar></toolbar>
+
+<div class="container-fluid">
+    <h1>Invitation to join <b>{{ organization.name }}</b></h1>
+    <h4>Owned by <b>{{ organization.owner.name }} {{ organization.owner.surname }}</b></h4>
+    <h4 *ngIf="organization.members.length == 1">{{ organization.members.length }} member</h4>
+    <h4 *ngIf="organization.members.length != 1">{{ organization.members.length }} members</h4>
+
+    <error-dialog [messages]="errorMessages"></error-dialog>
+
+    <div class="row top-buffer-100">
+        <form>
+            <div class="forms-input-group clear-both text-center">
+                <div class="col-md-4 col-md-offset-2">
+                    <input type="submit" (click)="acceptInvitation()" value="Accept invitation"/>
+                </div>
+                <div class="col-md-4">
+                    <input class="decline-button" type="submit" (click)="declineInvitation()" value="Decline invitation"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>

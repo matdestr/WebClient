@@ -26,8 +26,6 @@ public class EmailServiceImpl implements EmailService {
 
     private Mailer mailer;
 
-    private String acceptUrl;
-
     @PostConstruct
     public void initializeMailer(){
         this.mailer = new Mailer(
@@ -36,10 +34,6 @@ public class EmailServiceImpl implements EmailService {
                 mailProperties.getUsername(),
                 mailProperties.getPassword(),
                 TransportStrategy.SMTP_SSL);
-
-        String baseUrl = System.getProperty("app.baseUrl");
-        acceptUrl = baseUrl == null ? "http://localhost:8080/kandoe" : baseUrl;
-        acceptUrl += "/#/organization/accept?acceptId=";
     }
 
     @Override
@@ -65,7 +59,7 @@ public class EmailServiceImpl implements EmailService {
 
                 Invitation invitation = invitationService.generateInvitation(user, organization);
 
-                String url = acceptUrl + invitation.getAcceptId();
+                String url = createAcceptUrl(invitation.getAcceptId(), invitation.getOrganization().getOrganizationId());
 
                 Email email = new Email();
                 email.setFromAddress("CanDo Team E", mailProperties.getUsername());
@@ -76,5 +70,13 @@ public class EmailServiceImpl implements EmailService {
                 mailer.sendMail(email);
             }
         }
+    }
+
+    private String createAcceptUrl(String acceptId, int organizationId){
+        String baseUrl = System.getProperty("app.baseUrl");
+        String acceptUrl = baseUrl == null ? "http://localhost:8080/kandoe" : baseUrl;
+        acceptUrl += String.format("/#/organization/accept?acceptId=%s&organizationId=%d", acceptId, organizationId);
+
+        return acceptUrl;
     }
 }

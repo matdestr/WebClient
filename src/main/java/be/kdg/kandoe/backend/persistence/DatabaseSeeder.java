@@ -1,6 +1,5 @@
 package be.kdg.kandoe.backend.persistence;
 
-import be.kdg.kandoe.backend.model.cards.Card;
 import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
 import be.kdg.kandoe.backend.model.organizations.Category;
@@ -40,9 +39,6 @@ public class DatabaseSeeder {
 
     @Autowired
     private TopicRepository topicRepository;
-
-    @Autowired
-    private CardRepository cardRepository;
 
     @Autowired
     private TagRepository tagRepository;
@@ -99,7 +95,7 @@ public class DatabaseSeeder {
         harold.setPassword(passwordEncoder.encode("harold"));
         harold.setName("Harold");
         harold.setSurname("Painhider");
-        harold.setEmail("wannesvr@hotmail.com");
+        harold.setEmail("harold@haroldmail.com");
         harold.setProfilePictureUrl("profilepictures/harold.jpg");
         harold.addRole(RoleType.ROLE_CLIENT);
 
@@ -126,7 +122,7 @@ public class DatabaseSeeder {
 
         topicRepository.save(topic);
 
-        List<Card> cards = new ArrayList<>();
+        /*List<Card> cards = new ArrayList<>();
 
         val card1 = new Card();
         val cardDetails1 = new CardDetails();
@@ -161,7 +157,7 @@ public class DatabaseSeeder {
         cards.add(card3);
         cards.add(card4);
 
-        cardRepository.save(cards);
+        cardRepository.save(cards);*/
 
         Session session = new SynchronousSession();
         session.setOrganization(organisation);

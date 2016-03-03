@@ -59,7 +59,7 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public void invitationAccepted(Invitation invitation) {
+    public void invalidateInvitation(Invitation invitation) {
         invitationRepository.delete(invitation);
     }
 }

@@ -2,6 +2,7 @@ import {Component} from "angular2/core";
 import {NgIf, NgFor, NgSwitch, NgSwitchWhen} from "angular2/common";
 import {RouteParams} from "angular2/router";
 import {Response} from "angular2/http";
+import {getUsername} from "../../libraries/angular2-jwt";
 import {User} from "../../entities/user/user";
 import {Organization} from "../../entities/organization";
 import {UserService} from "../../services/user.service";
@@ -25,7 +26,6 @@ export class UserProfileEditComponent {
     private errorMessages:string[] = new Array();
     private fileChanged:boolean = false;
     private file:File = null;
-    public organizations:Organization[] = [];
     public user:User = User.createEmptyUser();
     public updateModel:UpdateUserModel = new UpdateUserModel();
 
@@ -33,11 +33,17 @@ export class UserProfileEditComponent {
                        private _router:Router,
                        private _routeArgs:RouteParams,
                        private _userService:UserService,
-                       private _organizationService:OrganizationService,
                        private _tokenService:TokenService
     ) {
 
         var username:string = _routeArgs.get("username");
+
+        if (username == null)
+            this._router.navigate(["/Dashboard"]);
+
+        var token:string = localStorage.getItem("token");
+        if (getUsername(token) !== this.user.username)
+            this._router.navigate(["/Dashboard"]);
 
         _userService.getUser(username).subscribe((user:User) => {
             this.user = this.user.deserialize(user);
@@ -46,15 +52,6 @@ export class UserProfileEditComponent {
             this.updateModel.surname = this.user.surname;
             this.updateModel.email = this.user.email;
             this.updateModel.username = this.user.username;
-
-            this._organizationService.getOrganizationsByOwner(this.user.username).subscribe(
-                data => {
-                    this.organizations = data.json();
-                },
-                error => {
-                    console.log(error);
-                    this.organizations = []
-                });
         });
 
     }
@@ -121,7 +118,6 @@ export class UserProfileEditComponent {
             },
             (error) => {
                 console.log(error);
-                this.isError = true;
             }),
             () => {
                 return true;

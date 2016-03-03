@@ -1,0 +1,25 @@
+.decline-button {
+  background-color: $text-color-neutral !important;
+}
+
+input.invitation-button-accept {
+  display: inline-block;
+  width: 40% !important;
+}
+
+input.invitation-button-decline {
+  display: inline-block;
+  width: 40% !important;
+  background-color: $text-color-neutral !important;
+}
+
+h4.invitation-organization-title {
+  width: 49% !important;
+  padding-left: 1em;
+  display: inline-block;
+}
+
+form.invitation-accept-form {
+  display: inline-block;
+  width: 49%;
+}

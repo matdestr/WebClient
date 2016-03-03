@@ -1,4 +1,4 @@
-package integrationtest.oauth;
+package integrationtest.oauthtest;
 
 import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
 import be.kdg.kandoe.backend.model.users.User;
@@ -7,7 +7,7 @@ import be.kdg.kandoe.backend.service.api.OAuthClientDetailsService;
 import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
-import integrationtest.OAuth.OAuth2TestConfig;
+import integrationtest.oauthtest.OAuth2TestConfig;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -140,7 +140,7 @@ public class ITTestOAuthEndpoints {
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("token", token)
         )
-                .andDo(print())
+                //.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.user_name", is(user.getUsername())))
                 .andExpect(jsonPath("$.client_id", is(clientDetails.getClientId())));

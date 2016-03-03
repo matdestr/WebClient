@@ -27,7 +27,7 @@ export class OrganizationDetailComponent {
                 private _categoryService: CategoryService) {
         var organizationId:number = +_routeArgs.params["organizationId"];
 
-        this._organizationService.getOrganizations(organizationId).subscribe(
+        this._organizationService.getOrganization(organizationId).subscribe(
             data => {
                 this.organization = data.json();
                 this.members = this.organization.members;

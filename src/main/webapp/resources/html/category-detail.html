@@ -34,8 +34,15 @@
                             <h4 class="modal-title">Add more tags</h4>
                         </div>
                         <div class="modal-body">
-                            <p>Some text in the modal.</p>
-                        </div>
+                            <div class="tagList well">
+                                <form role="form">
+                                    <div *ngFor="#tag of tags" class="checkbox">
+                                        <label class="tagCheckbox">
+                                            <input type="checkbox">{{tag.name}}
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

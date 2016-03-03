@@ -13,13 +13,35 @@ export class InvitationService {
 
     }
 
-    public acceptInvitation(link:string) : Observable<Response> {
+    public getInvitationsForUser(userId:number) : Observable<Response> {
+        var searchParams:URLSearchParams = new URLSearchParams();
+        var requestOptions:RequestOptions = new RequestOptions();
+        searchParams.append("userId", userId);
+
+        requestOptions.search = searchParams;
+
+        return this._authHttp.get(InvitationService.endPoint + "/open", requestOptions);
+    }
+
+    public acceptInvitation(link:string, organizationId:number) : Observable<Response> {
         var searchParams:URLSearchParams = new URLSearchParams();
         var requestOptions:RequestOptions = new RequestOptions();
         searchParams.append("acceptId", link);
+        searchParams.append("organizationId", "" + organizationId);
 
         requestOptions.search = searchParams;
 
         return this._authHttp.get(InvitationService.endPoint, requestOptions);
+    }
+
+    public declineInvitation(link:string, organizationId:number) : Observable<Response> {
+        var searchParams:URLSearchParams = new URLSearchParams();
+        var requestOptions:RequestOptions = new RequestOptions();
+        searchParams.append("acceptId", link);
+        searchParams.append("organizationId", "" + organizationId);
+
+        requestOptions.search = searchParams;
+
+        return this._authHttp.get(InvitationService.endPoint + "/decline", requestOptions);
     }
 }
