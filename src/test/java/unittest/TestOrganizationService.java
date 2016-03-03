@@ -127,7 +127,7 @@ public class TestOrganizationService {
         Organization organization = new Organization("Organization 1", organizationUser);
         Organization saved = organizationService.addOrganization(organization);
 
-        saved.addMember(organizationUser);
+        saved.addOrganizer(organizationUser);
 
         organizationService.updateOrganization(saved);
 

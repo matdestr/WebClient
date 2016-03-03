@@ -23,15 +23,15 @@ public class Organization {
     private User owner;
     
     @OneToMany(fetch = FetchType.EAGER)
-    private List<User> members;
+    private List<User> organizers;
 
     public Organization(String name, User owner) {
         this.name = name;
         this.owner = owner;
-        this.members = new ArrayList<>();
+        this.organizers = new ArrayList<>();
     }
 
-    public void addMember(User user) {
-        this.members.add(user);
+    public void addOrganizer(User user) {
+        this.organizers.add(user);
     }
 }

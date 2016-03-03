@@ -7,16 +7,29 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @Data
-@NoArgsConstructor
 public class CardPosition {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
     private int cardPositionId;
-    private int priority;
+
     @OneToOne
+    @Setter(AccessLevel.NONE)
+    private CardDetails cardDetails;
+    
+    @OneToOne
+    @Setter(AccessLevel.NONE)
     private Session session;
+    
+    @Min(0)
+    private int priority;
+
+    public CardPosition(CardDetails cardDetails, Session session) {
+        this.cardDetails = cardDetails;
+        this.session = session;
+    }
 }

@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(value = "/api/invitations")
 public class InvitationRestController {
@@ -43,7 +41,7 @@ public class InvitationRestController {
         }
 
         Organization organization = organizationService.getOrganizationById(organizationId);
-        organization.addMember(user);
+        organization.addOrganizer(user);
         organizationService.updateOrganization(organization);
 
         invitationService.invitationAccepted(invitation);
