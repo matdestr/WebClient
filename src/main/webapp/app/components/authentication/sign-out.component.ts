@@ -1,6 +1,5 @@
-import {Component, Input} from 'angular2/core';
+import {Component, Input, Inject} from 'angular2/core';
 import {Router} from "angular2/router";
-
 
 @Component({
     selector: 'sign-out',
@@ -9,10 +8,12 @@ import {Router} from "angular2/router";
 export class SignOutComponent {
     @Input() public anchorSignOutClassName;
 
-    constructor(private _router : Router) { }
+    constructor(private _router : Router, @Inject('App.TokenName') private _tokenName : string) { }
 
     public onSignOut(){
-        localStorage.removeItem('token');
+        localStorage.removeItem(this._tokenName);
+        localStorage.removeItem(this._tokenName + '-expire-date');
+        localStorage.removeItem(this._tokenName + '-refresh-token');
 
         this._router.navigate(['Authentication'])
     }

@@ -12,7 +12,10 @@ public interface CardDetailsRepository extends JpaRepository<CardDetails, Intege
     @Query("SELECT cd FROM CardDetails cd JOIN cd.topics t WHERE t.topicId = (:topicId)")
     Set<CardDetails> findCardDetailsByTopicId(@Param("topicId") int topicId);
 
-    @Query("SELECT cd FROM CardDetails cd INNER JOIN cd.topics t WHERE t.category.categoryId = (:categoryId)")
+    /*@Query("SELECT cd FROM CardDetails cd INNER JOIN cd.topics t WHERE t.category.categoryId = (:categoryId)")
+    Set<CardDetails> findCardDetailsByCategoryId(@Param("categoryId") int categoryId);*/
+
+    @Query("SELECT cd FROM CardDetails cd INNER JOIN cd.category c WHERE c.categoryId = (:categoryId)")
     Set<CardDetails> findCardDetailsByCategoryId(@Param("categoryId") int categoryId);
 
     @Query("SELECT cd FROM CardDetails cd JOIN cd.topics t WHERE t.category = (:category) AND LOWER(cd.text) = LOWER(:text)")

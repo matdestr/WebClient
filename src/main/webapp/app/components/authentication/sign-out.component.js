@@ -8,6 +8,9 @@ System.register(['angular2/core', "angular2/router"], function(exports_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
+    var __param = (this && this.__param) || function (paramIndex, decorator) {
+        return function (target, key) { decorator(target, key, paramIndex); }
+    };
     var core_1, router_1;
     var SignOutComponent;
     return {
@@ -20,11 +23,14 @@ System.register(['angular2/core', "angular2/router"], function(exports_1) {
             }],
         execute: function() {
             SignOutComponent = (function () {
-                function SignOutComponent(_router) {
+                function SignOutComponent(_router, _tokenName) {
                     this._router = _router;
+                    this._tokenName = _tokenName;
                 }
                 SignOutComponent.prototype.onSignOut = function () {
-                    localStorage.removeItem('token');
+                    localStorage.removeItem(this._tokenName);
+                    localStorage.removeItem(this._tokenName + '-expire-date');
+                    localStorage.removeItem(this._tokenName + '-refresh-token');
                     this._router.navigate(['Authentication']);
                 };
                 __decorate([
@@ -35,8 +41,9 @@ System.register(['angular2/core', "angular2/router"], function(exports_1) {
                     core_1.Component({
                         selector: 'sign-out',
                         template: '<a [className]="anchorSignOutClassName" (click)="onSignOut()">Sign out</a>'
-                    }), 
-                    __metadata('design:paramtypes', [router_1.Router])
+                    }),
+                    __param(1, core_1.Inject('App.TokenName')), 
+                    __metadata('design:paramtypes', [router_1.Router, String])
                 ], SignOutComponent);
                 return SignOutComponent;
             })();

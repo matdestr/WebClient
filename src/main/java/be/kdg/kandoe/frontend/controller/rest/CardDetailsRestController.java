@@ -77,20 +77,44 @@ public class CardDetailsRestController {
         return new ResponseEntity<>(mapperFacade.mapAsList(cardDetailsSet, CardDetailsResource.class), HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/topics", method = RequestMethod.POST)
+    public ResponseEntity<CardDetailsResource> addCardDetailsToTopic(@AuthenticationPrincipal User user,
+                                                                     @RequestParam("topicId") int topicId,
+                                                                     @RequestParam("cardDetailsId") int cardDetailsId) {
+        Topic topic = this.topicService.getTopicByTopicId(topicId);
+        
+        if (topic == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        
+        Organization organization = topic.getCategory().getOrganization();
+
+        if (!this.checkUserIsOrganizer(user, organization))
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        CardDetails cardDetails = this.cardService.getCardDetailsById(cardDetailsId);
+        
+        if (cardDetails == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        
+        cardDetails = this.cardService.addCardDetailsToTopic(topic, cardDetails);
+
+        return new ResponseEntity<>(mapperFacade.map(cardDetails, CardDetailsResource.class), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/categories", method = RequestMethod.POST)
     public ResponseEntity<CardDetailsResource> createCardDetails(@AuthenticationPrincipal User user,
-                                                                 @RequestParam("topicId") int topicId,
+                                                                 @RequestParam("categoryId") int categoryId,
                                                                  @Valid @RequestBody CreateCardDetailsResource resource) {
-        Organization organization = this.topicService.getTopicByTopicId(topicId).getCategory().getOrganization();
+        Category category = this.categoryService.getCategoryById(categoryId);
+        Organization organization = category.getOrganization();
 
         if (!this.checkUserIsOrganizer(user, organization))
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
         CardDetails cardDetails = mapperFacade.map(resource, CardDetails.class);
         cardDetails.setCreator(user);
-
-        Topic topic = this.topicService.getTopicByTopicId(topicId);
-        cardDetails = this.cardService.addCardDetailsToTopic(topic, cardDetails);
+        
+        cardDetails = this.cardService.addCardDetailsToCategory(category, cardDetails);
 
         return new ResponseEntity<>(mapperFacade.map(cardDetails, CardDetailsResource.class), HttpStatus.CREATED);
     }

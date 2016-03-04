@@ -1,5 +1,6 @@
 package be.kdg.kandoe.backend.model.cards;
 
+import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.users.User;
 import lombok.*;
@@ -29,6 +30,9 @@ public class CardDetails {
 
     @ManyToOne(optional = false)
     private User creator;
+    
+    @ManyToOne(optional = false)
+    private Category category;
 
     @ManyToMany
     @Size(min = 1)

@@ -13,12 +13,15 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.List;
+import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
@@ -64,6 +67,14 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
                 new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:bundles/messages");
         return messageSource;
+    }
+    
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+        localeResolver.setDefaultLocale(new Locale("en", "US"));
+        
+        return localeResolver;
     }
 
     @Bean

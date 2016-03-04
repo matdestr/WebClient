@@ -121,8 +121,8 @@ public class ITCardDetailsRestController {
         JSONObject jsonObject = new JSONObject(resource);
 
         String response = mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/carddetails")
-                        .param("topicId", String.valueOf(topic.getTopicId()))
+                MockMvcRequestBuilders.post("/api/carddetails/categories")
+                        .param("categoryId", String.valueOf(category.getCategoryId()))
                         .header("Authorization", authorizationHeader)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonObject.toString())
@@ -133,6 +133,15 @@ public class ITCardDetailsRestController {
         JSONObject jsonResponse = new JSONObject(response);
 
         Assert.assertTrue(jsonResponse.getInt("cardDetailsId") > 0);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/carddetails/topics")
+                        .param("topicId", String.valueOf(topic.getTopicId()))
+                        .param("cardDetailsId", String.valueOf(jsonResponse.getInt("cardDetailsId")))
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonObject.toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         //String getUrl = String.format("/api/carddetails/%d", jsonResponse.getInt("cardDetailsId"));
 
@@ -177,8 +186,8 @@ public class ITCardDetailsRestController {
         JSONObject jsonObject = new JSONObject(resource);
 
         String response = mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/carddetails")
-                        .param("topicId", String.valueOf(topic.getTopicId()))
+                MockMvcRequestBuilders.post("/api/carddetails/categories")
+                        .param("categoryId", String.valueOf(category.getCategoryId()))
                         .header("Authorization", authorizationHeader)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonObject.toString())
@@ -190,6 +199,15 @@ public class ITCardDetailsRestController {
 
         Assert.assertTrue(jsonResponse.getInt("cardDetailsId") > 0);
 
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/carddetails/topics")
+                        .param("topicId", String.valueOf(topic.getTopicId()))
+                        .param("cardDetailsId", String.valueOf(jsonResponse.getInt("cardDetailsId")))
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonObject.toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+        
         //String getUrl = String.format("/api/carddetails/%d", jsonResponse.getInt("cardDetailsId"));
 
         mockMvc.perform(
@@ -217,8 +235,8 @@ public class ITCardDetailsRestController {
         JSONObject jsonObject = new JSONObject(resource);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/carddetails")
-                        .param("topicId", String.valueOf(topic.getTopicId()))
+                MockMvcRequestBuilders.post("/api/carddetails/categories")
+                        .param("categoryId", String.valueOf(category.getCategoryId()))
                         .header("Authorization", authorizationHeader)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonObject.toString())
@@ -237,8 +255,8 @@ public class ITCardDetailsRestController {
         JSONObject jsonObject = new JSONObject(resource);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/carddetails")
-                        .param("topicId", String.valueOf(topic.getTopicId()))
+                MockMvcRequestBuilders.post("/api/carddetails/categories")
+                        .param("categoryId", String.valueOf(topic.getTopicId()))
                         .header("Authorization", authorizationHeader)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonObject.toString())
@@ -251,5 +269,80 @@ public class ITCardDetailsRestController {
                 .andReturn().getResponse().getContentAsString();
         
         Assert.assertEquals(0, jsonResponse.length());
+    }
+    
+    @Test
+    public void addCardDetailsWithValidImageUrl() throws Exception {
+        String text = "Card details text";
+        String imageUrl = "https://i.ytimg.com/vi/8FF2JvHau2w/maxresdefault.jpg";
+
+        CreateCardDetailsResource resource = new CreateCardDetailsResource();
+        resource.setText(text);
+        resource.setImageUrl(imageUrl);
+
+        JSONObject jsonObject = new JSONObject(resource);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/carddetails/categories")
+                        .param("categoryId", String.valueOf(category.getCategoryId()))
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonObject.toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/carddetails/categories/" + String.valueOf(this.category.getCategoryId()))
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].cardDetailsId").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].cardDetailsId").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].text").value(text))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].imageUrl").value(imageUrl));
+    }
+    
+    @Test
+    public void addNonExistingCardDetailsToTopic() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/carddetails/topics")
+                        .param("topicId", String.valueOf(topic.getTopicId()))
+                        .param("cardDetailsId", String.valueOf(999))
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+        
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/carddetails/topics/" + String.valueOf(topic.getTopicId()))
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").isEmpty())
+                .andReturn().getResponse().getContentAsString();
+    }
+    
+    @Test
+    public void addCardDetailsToNonExistingTopic() throws Exception {
+        String text = "Card details text";
+
+        CreateCardDetailsResource resource = new CreateCardDetailsResource();
+        resource.setText(text);
+
+        JSONObject jsonObject = new JSONObject(resource);
+
+        String jsonResponse = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/carddetails/categories")
+                        .param("categoryId", String.valueOf(category.getCategoryId()))
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonObject.toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        JSONObject jsonResponseObject = new JSONObject(jsonResponse);
+        int cardDetailsId = jsonResponseObject.getInt("cardDetailsId");
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/carddetails/topics")
+                        .param("topicId", String.valueOf(999))
+                        .param("cardDetailsId", String.valueOf(cardDetailsId))
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }
