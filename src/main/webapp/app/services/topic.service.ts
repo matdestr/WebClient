@@ -9,7 +9,7 @@ import {RequestOptions} from "angular2/http";
 import {URLSearchParams} from "angular2/http";
 
 
-import {CreateTopicModel} from "../entities/createTopicForm";
+import {CreateTopicModel} from "../entities/topic/createTopicForm";
 
 
 @Injectable()

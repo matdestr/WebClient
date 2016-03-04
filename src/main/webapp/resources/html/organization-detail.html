@@ -4,12 +4,59 @@
 <div id="main-content">
     <div class="container-fluid">
         <div id="organization-detail">
+            <div class="row">
+                <div class="col-md-10 ptop">
 
-        <h1>{{organization.name}}</h1>
+                    <h1>{{organization.name}}</h1>
+            </div>
+                <div class="col-md-2 ptop">
+                    <p class="profile-button" data-toggle="modal" data-target="#myEditModal"><span class="glyphicon glyphicon-edit"></span> EDIT ORGANIZATION</p>
+                </div>
+            </div>
+
+            <div id="myEditModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+
+                        <div class="modal-body">
+                            <form #organizationForm="ngForm"
+                                  (ngSubmit)="onSubmit(organizationForm)"
+                                  name="form-new-organization"
+                                  role="form">
+                                <section class="forms-section">
+                                    <h2>Edit Organization Name</h2>
+
+                                    <div class="input-group forms-input-group"
+                                         [class.has-error]="!organizationName.valid && !organizationName.pristine"
+                                         title="Organization name">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <input id="organizationName"
+                                               name="organization-name"
+                                               class="form-control"
+                                               type="text"
+                                               placeholder="Organization name"
+                                               required
+                                               #organizationName="ngForm"
+                                               [(ngModel)]="organization.name"
+                                               (ngControl)="organizationName">
+                                    </div>
+                                </section>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
         <h2>Members</h2>
         <ul>
-            <table style="width:100%" id="memberTable">
+            <table style="width:100% ;margin-bottom: 2em" id="memberTable">
                 <tr class="spaceUnder" *ngFor="#member of members">
                     <td class="imageTable"><img class="memberprofile-picture" src="{{ member.profilePictureUrl }}"></td>
                     <td class="nameTable">{{member.name}}</td>
@@ -17,20 +64,80 @@
                 </tr>
             </table>
         </ul>
+            <button class="addNewButton" data-toggle="modal" data-target="#myMemberModal"><i class="glyphicon glyphicon-plus"></i>Add new Members</button>
 
-        <h2>Categories</h2>
+            <div id="myMemberModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+
+                        <div class="modal-body">
+                            <form #addNewMemberForm="ngForm"
+                                  (ngSubmit)="onSubmit(organizationForm)"
+                                  name="form-new-organization"
+                                  role="form">
+
+                                <section class="forms-section">
+                                    <h2>Add new members</h2>
+                                    <div *ngFor="#u of usersToInvite; #i = index"
+                                         class="input-group forms-input-group"
+                                         [class.has-error]="!userEmail.valid && !userEmail.pristine">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-envelope"></i>
+                                        </span>
+
+                                        <input class="email-input form-control forms-input-small"
+                                               type="email"
+                                               placeholder="Invite user (email)"
+                                               #userEmail="ngForm"
+                                               [(ngModel)]="u.email"
+                                               (ngControl)="userEmail">
+
+                                        <span *ngIf="i != 0"
+                                              class="input-group-addon forms-input-addon-remove red"
+                                              (click)="removeUserFromUsersToInvite(i)">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </span>
+                                    </div>
+
+
+                                </section>
+
+                            </form>
+                            <button type="button"
+                                    id="add-user-btn"
+                                    class="btn btn-default pull-right"
+                                    (click)="addUserEntry()">
+                                <span class="green"><i class="glyphicon glyphicon-plus"></i></span> Add user
+                            </button>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <h2>Categories</h2>
         <ul>
-            <table style="width:100%" id="categoryTable">
-            <tr class="spaceUnder" *ngFor="#category of categories">
-                    <td class="categoryName" (click)="toCategory(category.categoryId)">{{category.name}}</td>
-                    <td class="description" style="margin-left: 3em">{{category.description}}</td>
-            </tr>
-            </table>
+            <div class="row" *ngFor="#category of categories">
 
+                <div class="col-md-2 spaceUnder">
+                    <p class="categoryName" (click)="toCategory(category.categoryId)">{{category.name}}</p>
+                </div>
+                <div class="col-md-3 spaceUnder">
+                    <p class="description" >{{category.description}}</p>
+                </div>
+            </div>
         </ul>
 
 
-        <button class="addNewButton" (click)="toAddNewCategory(organization.organizationId)"><i class="glyphicon glyphicon-plus"></i>Add new Category</button>
+        <button class="addNewButton" (click)="toAddNewCategory(organization.organizationId)"><i class="glyphicon glyphicon-plus"></i>Create new Category</button>
         </div>
     </div>
 </div>

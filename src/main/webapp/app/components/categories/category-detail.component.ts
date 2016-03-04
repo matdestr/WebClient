@@ -5,7 +5,7 @@ import {RouteParams} from "angular2/router";
 import {User} from "../../entities/user/user";
 import {Category} from "../../entities/category/category";
 import {CategoryService} from "../../services/category.service";
-import {Topic} from "../../entities/topic";
+import {Topic} from "../../entities/topic/topic";
 import {TopicService} from "../../services/topic.service";
 import {Tag} from "../../entities/tag";
 import {TagService} from "../../services/tag.service";
@@ -58,6 +58,10 @@ export class CategoryDetailComponent {
 
     public toTopic(topicId:number){
         this._router.navigate(["/TopicDetail",{topicId:topicId}])
+    }
+
+    public toAddNewCard(categoryId:number){
+        this._router.navigate(["/CreateCard",{categoryId:categoryId}])
     }
 
 }

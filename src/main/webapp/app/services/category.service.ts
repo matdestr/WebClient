@@ -10,6 +10,8 @@ import {URLSearchParams} from "angular2/http";
 
 
 import {CreateCategoryModel} from "../entities/category/createCategoryForm";
+import {CreateCardModel} from "../entities/category/CreateCardForm";
+import {Category} from "../entities/category/category";
 
 @Injectable()
 export class CategoryService {
@@ -32,6 +34,21 @@ export class CategoryService {
 
         return this._authHttp.post(CategoryService.endPoint, JSON.stringify(category), options).retry(2);
     }
+
+    public saveCard(card: CreateCardModel,category: Category) : Observable<Response> {
+        var searchParams: URLSearchParams = new URLSearchParams();
+        searchParams.append("categoryId", "" + category.categoryId);
+
+        var headers: Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        var options: RequestOptions = new RequestOptions();
+        options.search = searchParams;
+        options.headers = headers;
+
+        return this._authHttp.post(CategoryService.endPoint, JSON.stringify(card), options).retry(2);
+    }
+
 
     public getCategoriesFromOrganization(organizationId: number): Observable<Response>{
         var searchParams: URLSearchParams = new URLSearchParams();

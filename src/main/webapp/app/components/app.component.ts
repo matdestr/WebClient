@@ -15,6 +15,7 @@ import {CategoryDetailComponent} from "./categories/category-detail.component";
 import {CreateTopicComponent} from "./topic/create-topic.component";
 import {AddTagComponent} from "./topic/add-tags.component";
 import {TopicDetailComponent} from "./topic/topic-detail.component";
+import {CreateCardComponent} from "./categories/create-card";
 
 @Component({
     selector: 'my-app',
@@ -36,7 +37,8 @@ import {TopicDetailComponent} from "./topic/topic-detail.component";
     {path: '/categories/:categoryId/detail', name:'CategoryDetail',component:CategoryDetailComponent},
     {path: '/topic/create', name:'CreateTopic', component:CreateTopicComponent},
     {path: '/categories/:categoryId/addtags', name:'AddTag', component:AddTagComponent} ,
-    {path: '/topic/:topicId/detail',name:'TopicDetail',component:TopicDetailComponent}
+    {path: '/topic/:topicId/detail',name:'TopicDetail',component:TopicDetailComponent} ,
+    {path: '/categories/:categoryId/createCard', name:'CreateCard', component:CreateCardComponent}
 ])
 export class AppComponent {
 

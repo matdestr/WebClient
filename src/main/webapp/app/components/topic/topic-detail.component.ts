@@ -5,7 +5,7 @@ import {RouteParams} from "angular2/router";
 import {User} from "../../entities/user/user";
 import {Category} from "../../entities/category/category";
 import {CategoryService} from "../../services/category.service";
-import {Topic} from "../../entities/topic";
+import {Topic} from "../../entities/topic/topic";
 import {TopicService} from "../../services/topic.service";
 
 @Component({

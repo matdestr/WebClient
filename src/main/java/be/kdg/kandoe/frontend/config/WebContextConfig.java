@@ -28,6 +28,7 @@ import java.util.Locale;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @PropertySource("classpath:application.properties")
 @ComponentScan(basePackages = "be.kdg.kandoe.frontend", excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class)})
+@Import( WebSocketConfig.class)
 public class WebContextConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private OAuth2UserArgumentResolver oAuth2UserArgumentResolver;

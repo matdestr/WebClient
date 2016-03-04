@@ -1,0 +1,63 @@
+<toolbar></toolbar>
+
+<div id="main-content">
+    <div class="forms container-fluid flex-container">
+        <div class="forms-panel panel col-sm-6 flex-item">
+
+            <div class="panel-heading">
+                <h1 class="separator-dotted">Create a new card</h1>
+
+                <div id="error" *ngIf="errors.length > 0" class="alert alert-danger">
+                    <ul>
+                        <li *ngFor="#error of errors; #i = index">
+                            {{error}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form #organizationForm="ngForm"
+                      (ngSubmit)="onSubmit(organizationForm)"
+                      name="form-new-topic"
+                      role="form">
+                    <section class="forms-section">
+                        <h2>Text</h2>
+                        <div class="input-group forms-input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                            <input id="cardText"
+                                   name="card-text"
+                                   class="form-control"
+                                   type="text"
+                                   placeholder="Card text"
+                                   required
+                                   #categoryName="ngForm"
+                                   [(ngModel)]="form.text"> </div>
+                        <h2>ImageUrl</h2>
+                            <div class="input-group forms-input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                <input id="cardImage"
+                                       name="card-image"
+                                       class="form-control"
+                                       type="text"
+                                       placeholder="Url of your image"
+                                       required
+                                       #categoryName="ngForm"
+                                       [(ngModel)]="myImage"> </div>
+                        <img class="cardImage" src="{{myImage}}">
+
+
+                    </section>
+
+                    <section>
+                        <div class="forms-input-group clear-both text-center">
+                            <button type="submit"
+                                    name="add-topic">
+                                <i class="glyphicon glyphicon-floppy-disk"></i> Create
+                            </button>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

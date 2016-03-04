@@ -1,16 +1,16 @@
 import {Component} from "angular2/core";
 import {OrganizationService} from "../../services/organization.service";
-import {Organization} from "../../entities/organization";
+import {Organization} from "../../entities/organization/organization";
 import {ToolbarComponent} from "../widget/toolbar.component";
 import {Router, RouteParams} from "angular2/router";
 import {Http, Headers, Response} from 'angular2/http';
 
 import {User} from "../../entities/user/user";
-import {Topic} from "../../entities/topic";
+import {Topic} from "../../entities/topic/topic";
 import {CategoryService} from "../../services/category.service"
 import {Category} from "../../entities/category/category"
 import {CreateCategoryModel} from "../../entities/category/createCategoryForm";
-import {CreateTopicModel} from "../../entities/createTopicForm";
+import {CreateTopicModel} from "../../entities/topic/createTopicForm";
 import {TopicService} from "../../services/topic.service";
 
 @Component({

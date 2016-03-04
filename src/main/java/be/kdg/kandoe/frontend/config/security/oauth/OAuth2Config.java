@@ -33,11 +33,6 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
         return new JwtAccessTokenConverter();
     }
 
-    /*@Bean
-    public JwtTokenStore jwtTokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
-    }*/
-
     /**
      * Defines the security constraints on the token endpoint
      * */
@@ -53,7 +48,6 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
      * */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        //endpoints.tokenStore(jwtTokenStore()); // TODO : Check
         endpoints.authenticationManager(authenticationManager)
                 .accessTokenConverter(accessTokenConverter())
                 .userDetailsService(this.userDetailsService);

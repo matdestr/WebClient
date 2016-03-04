@@ -3,24 +3,85 @@
 <div id="main-content">
     <div class="container-fluid">
         <div id="organization-detail">
+            <div class="row">
+                <div class="col-md-10 ptop">
 
-            <h1>{{category.name}}</h1>
+                    <h1>{{category.name}}</h1>
+                </div>
+                <div class="col-md-2 ptop">
+                    <p class="profile-button" data-toggle="modal" data-target="#myEditModal"><span class="glyphicon glyphicon-edit"></span> EDIT CATEGORY</p>
+                </div>
+            </div>
+
+            <div id="myEditModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form #organizationForm="ngForm"
+                                  (ngSubmit)="onSubmit(categoryForm)"
+                                  name="form-new-organization"
+                                  role="form">
+                                <section class="forms-section">
+                                    <h2>Edit Category Name</h2>
+
+                                    <div class="input-group forms-input-group"
+                                         title="Categoy name">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <input id="categoryName"
+                                               name="category-name"
+                                               class="form-control"
+                                               type="text"
+                                               placeholder="Category name"
+                                               required
+                                               #organizationName="ngForm"
+                                               [(ngModel)]="category.name"
+                                               (ngControl)="categoryName">
+                                    </div>
+                                </section>
+                            </form>                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <p class="description">{{category.description}}</p>
 
-            <h2 style="padding-top: 1em">Topics</h2>
+            <h2 >Topics</h2>
+            <ul>
+                <div class="row" *ngFor="#topic of topics">
+
+                    <div class="col-md-2 spaceUnder">
+                        <p class="categoryName" (click)="toTopic(topic.topicId)" >{{topic.name}}</p>
+                    </div>
+                    <div class="col-md-3 spaceUnder">
+                        <p class="description" style="margin-left: 3em">{{topic.description}}</p>
+                    </div>
+                </div>
+            </ul>
+
+
+            <button class="addNewButton" (click)="toAddNewTopic(category.categoryId)"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Topic</button>
+
+            <h2>Cards</h2>
+
+            <button class="addNewButton" (click)="toAddNewCard(category.categoryId)"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Card</button>
+
+
+
+            <h2 >Tags</h2>
             <ul>
                 <table style="width:100%">
-                    <tr class="spaceUnder" *ngFor="#topic of topics">
-                        <td class="categoryName" (click)="toTopic(topic.topicId)" >{{topic.name}}</td>
-                        <td class="description" style="margin-left: 3em">{{topic.description}}</td>
+                    <tr class="spaceUnder" *ngFor="#tag of tags">
+                        <td class="categoryName" >{{tag.name}}</td>
                     </tr>
                 </table>
             </ul>
-
-            <button class="addNewButton" (click)="toAddNewTopic(category.categoryId)"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add new Topic</button>
-
-
-            <h2>Tags</h2>
 
             <button class="addNewButton" data-toggle="modal" data-target="#myModal" ><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add More Tags</button>
 
