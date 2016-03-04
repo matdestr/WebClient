@@ -1,5 +1,5 @@
 import {Serializable} from "../../util/serializable";
-import {Topic} from "../../entities/topic"
+import {Topic} from "../../entities/topic/topic"
 
 export class Category implements Serializable<Category>{
     public categoryId: number;

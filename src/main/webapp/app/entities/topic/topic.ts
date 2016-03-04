@@ -1,4 +1,4 @@
-import {Serializable} from "../util/serializable";
+import {Serializable} from "../../util/serializable";
 
 export class Topic implements Serializable<Topic>{
     public name : string;

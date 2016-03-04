@@ -1,12 +1,13 @@
 import {Component, OnInit, Input} from "angular2/core";
 import {OrganizationService} from "../../services/organization.service";
-import {Organization} from "../../entities/organization";
+import {Organization} from "../../entities/organization/organization";
 import {ToolbarComponent} from "../widget/toolbar.component";
 import {Router} from "angular2/router";
 import {RouteParams} from "angular2/router";
 import {User} from "../../entities/user/user";
 import {Category} from "../../entities/category/category";
 import {CategoryService} from "../../services/category.service";
+import {Email} from "../../entities/user/email";
 
 
 @Component({
@@ -20,11 +21,14 @@ export class OrganizationDetailComponent {
     private organization:Organization = new Organization();
     private members: User[]=[];
     private categories: Category[]=[];
+    private usersToInvite : Email[] = [];
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
                 private _organizationService:OrganizationService,
                 private _categoryService: CategoryService) {
+
+        this.usersToInvite.push(new Email());
         var organizationId:number = +_routeArgs.params["organizationId"];
 
         this._organizationService.getOrganization(organizationId).subscribe(
@@ -48,6 +52,19 @@ export class OrganizationDetailComponent {
     public toCategory(categoryId:number){
         this._router.navigate(["/CategoryDetail",{categoryId:categoryId}])
     }
+
+    private addUserEntry() {
+        this.usersToInvite.push(new Email());
+    }
+
+    private filterEmails() {
+        return this.usersToInvite.filter(u => {return u && u.email.length > 0});
+    }
+
+    private removeUserFromUsersToInvite(index : number) {
+        this.usersToInvite.splice(index, 1);
+    }
+
 
 }
 

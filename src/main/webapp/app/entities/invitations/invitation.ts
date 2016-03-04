@@ -1,5 +1,5 @@
 import {User} from "../../entities/user/user";
-import {Organization} from "../../entities/organization";
+import {Organization} from "../../entities/organization/organization";
 
 export class Invitation {
     public invitedUser:User;

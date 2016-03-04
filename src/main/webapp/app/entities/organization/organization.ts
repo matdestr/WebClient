@@ -1,7 +1,7 @@
-import {User} from "../entities/user/user";
-import {Category} from "../entities/category/category"
+import {User} from "../../entities/user/user";
+import {Category} from "../../entities/category/category"
 
-import {Email} from "../entities/user/email";
+import {Email} from "../../entities/user/email";
 
 export class Organization {
     public organizationId : number;

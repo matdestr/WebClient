@@ -4,7 +4,7 @@ import {Router, RouteParams} from "angular2/router";
 import {Http, Headers, Response} from 'angular2/http';
 import {TopicService} from "../../services/topic.service"
 
-import {Topic} from "../../entities/topic";
+import {Topic} from "../../entities/topic/topic";
 import {CategoryService} from "../../services/category.service";
 import {Category} from "../../entities/category/category";
 

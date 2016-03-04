@@ -4,8 +4,8 @@ import {Observable} from "rxjs/Observable";
 import 'rxjs/Rx';
 import {AuthHttp} from '../libraries/angular2-jwt';
 
-import {Organization} from "../entities/organization";
-import {CreateOrganization} from "../entities/organization";
+import {Organization} from "../entities/organization/organization";
+import {CreateOrganization} from "../entities/organization/organization";
 import {RequestOptionsArgs} from "angular2/http";
 import {RequestOptions} from "angular2/http";
 import {URLSearchParams} from "angular2/http";

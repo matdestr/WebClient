@@ -8,7 +8,31 @@
             <p class="description">{{topic.description}}</p>
 
             <h2 style="padding-top: 1em">Cards</h2>
+            <button class="addNewButton" data-toggle="modal" data-target="#myCardModal"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add new Card</button>
 
+            <div id="myCardModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Add new cards</h4>
+                        </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit"
+                                    name="add-card">
+                                <i class="glyphicon glyphicon-floppy-disk"></i> Create
+                            </button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>

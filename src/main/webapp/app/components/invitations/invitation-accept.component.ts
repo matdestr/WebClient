@@ -5,7 +5,7 @@ import {Router} from "angular2/router";
 import {RouteParams} from "angular2/router";
 import {InvitationService} from "../../services/invitation.service";
 import {ROUTER_DIRECTIVES} from "angular2/router";
-import {Organization} from "../../entities/organization";
+import {Organization} from "../../entities/organization/organization";
 import {OrganizationService} from "../../services/organization.service";
 import {routerCanDeactivate} from "angular2/src/router/lifecycle_annotations_impl";
 import {ErrorDialogComponent} from "../widget/error-dialog.component";

@@ -1,6 +1,6 @@
 import {Component} from "angular2/core";
 import {OrganizationService} from "../../services/organization.service";
-import {Organization} from "../../entities/organization";
+import {Organization} from "../../entities/organization/organization";
 import {ToolbarComponent} from "../widget/toolbar.component";
 import {Router, RouteParams} from "angular2/router";
 import {Http, Headers, Response} from 'angular2/http';

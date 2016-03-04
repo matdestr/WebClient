@@ -1,7 +1,7 @@
 import {Component, Input} from "angular2/core";
 import {Invitation} from "../../entities/invitations/invitation";
 import {InvitationService} from "../../services/invitation.service";
-import {Organization} from "../../entities/organization";
+import {Organization} from "../../entities/organization/organization";
 import {Router} from "angular2/router";
 
 @Component({

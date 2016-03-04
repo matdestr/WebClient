@@ -6,7 +6,7 @@ import {User} from "../../entities/user/user";
 import {Email} from "../../entities/user/email";
 import {OrganizationService} from "../../services/organization.service";
 import {UserService} from "../../services/user.service";
-import {CreateOrganization} from "../../entities/organization";
+import {CreateOrganization} from "../../entities/organization/organization";
 import {tokenNotExpired} from "../../libraries/angular2-jwt";
 import {ToolbarComponent} from "../widget/toolbar.component";
 import {ErrorDialogComponent} from "../widget/error-dialog.component";

@@ -4,7 +4,7 @@ import {RouteParams} from "angular2/router";
 import {Response} from "angular2/http";
 import {getUsername} from "../../libraries/angular2-jwt";
 import {User} from "../../entities/user/user";
-import {Organization} from "../../entities/organization";
+import {Organization} from "../../entities/organization/organization";
 import {UserService} from "../../services/user.service";
 import {OrganizationService} from "../../services/organization.service";
 import {ToolbarComponent} from "../widget/toolbar.component";
