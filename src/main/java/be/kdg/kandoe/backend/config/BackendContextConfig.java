@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
                 value = Configuration.class)}
 )
 @EnableJpaRepositories(basePackages = "be.kdg.kandoe.backend.persistence")
-@Import({be.kdg.kandoe.backend.config.DataSourceConfig.class, be.kdg.kandoe.backend.config.EntityTransactionManagerConfig.class})
+@Import({be.kdg.kandoe.backend.config.DataSourceConfig.class, be.kdg.kandoe.backend.config.EntityTransactionManagerConfig.class, SchedulingConfig.class})
 public class BackendContextConfig {
     @Bean
     static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
