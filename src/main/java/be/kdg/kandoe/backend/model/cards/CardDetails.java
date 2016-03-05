@@ -38,6 +38,6 @@ public class CardDetails {
     @Size(min = 1)
     private Set<Topic> topics;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Comment> comments;
 }

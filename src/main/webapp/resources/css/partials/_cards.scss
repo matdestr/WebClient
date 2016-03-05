@@ -1,0 +1,122 @@
+.card{
+  background-color: $background-color;
+  box-shadow: 0 0 1.25em #333;
+  @include border-radius(0.5em);
+}
+
+.card-small {
+  @extend .card;
+  display: inline-block;
+  margin: ($default-margin + 1em) ($default-margin);
+  width: $card-width;
+
+  @media screen and (min-width: $breakpoint-tablet) {
+    width: $card-width-tablet;
+    margin: $default-margin + 1em;
+
+  }
+
+  @media screen and (min-width: $breakpoint-desktop) {
+    width: $card-width-desktop;
+  }
+
+  // Card image
+  .card-img {
+    max-height: $card-img-height;
+    overflow: hidden;
+    width: 100%;
+    @include border-top-radius(0.5em);
+
+    @media screen and (min-width: $breakpoint-tablet) {
+      max-height: $card-img-height-tablet;
+    }
+
+    @media screen and (min-width: $breakpoint-desktop) {
+      max-height: $card-img-height-desktop;
+    }
+  }
+
+  .card-block {
+    margin: $default-margin $margin-side-card-block;
+    display: block;
+
+    .card-text {
+      overflow-wrap: break-word;
+      color: $text-color-dark;
+      display: block; /* Fallback for non-webkit */
+      display: -webkit-box;
+      max-width: $card-width - $margin-side-card-block * 2;
+      height: $card-text-size * $card-line-height * $card-lines-amount; /* Fallback for non-webkit */
+      margin: 0 auto;
+      font-size: $card-text-size;
+      line-height: $card-line-height;
+      -webkit-line-clamp: $card-lines-amount;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      @media screen and (min-width: $breakpoint-tablet) {
+        max-width: $card-width-tablet - $margin-side-card-block * 2;
+        height: $card-text-size * $card-line-height * $card-lines-amount-tablet; /* Fallback for non-webkit */
+        -webkit-line-clamp: $card-lines-amount-tablet;
+      }
+
+      @media screen and (min-width: $breakpoint-desktop) {
+        max-width: $card-width-desktop - $margin-side-card-block * 2;
+        height: $card-text-size * $card-line-height * $card-lines-amount-desktop; /* Fallback for non-webkit */
+        -webkit-line-clamp: $card-lines-amount-desktop;
+      }
+    }
+  }
+}
+
+.card-large {
+  @extend .card;
+  display: block;
+  margin: ($default-margin + 1em) ($default-margin);
+  width: $card-width * $card-multiplier;
+
+  @media screen and (min-width: $breakpoint-tablet) {
+    width: $card-width-tablet * $card-multiplier;
+    margin: $default-margin + 1em;
+
+  }
+
+  @media screen and (min-width: $breakpoint-desktop) {
+    width: $card-width-desktop * $card-multiplier;
+  }
+
+  // Card image
+  .card-img {
+    max-height: $card-img-height * $card-multiplier;
+    overflow: hidden;
+    width: 100%;
+    @include border-top-radius(0.5em);
+
+    @media screen and (min-width: $breakpoint-tablet) {
+      max-height: $card-img-height-tablet * $card-multiplier;
+    }
+
+    @media screen and (min-width: $breakpoint-desktop) {
+      max-height: $card-img-height-desktop * $card-multiplier;
+    }
+  }
+
+  .card-block {
+    margin: $default-margin $margin-side-card-block;
+    display: block;
+
+    .card-text {
+      overflow-wrap: break-word;
+      color: $text-color-dark;
+      display: block; /* Fallback for non-webkit */
+      font-size: $card-text-size + 0.5;
+      line-height: $card-line-height;
+      min-height: $card-img-height * $card-multiplier;
+    }
+  }
+}
+
+
+
+

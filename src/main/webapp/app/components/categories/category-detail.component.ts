@@ -9,59 +9,74 @@ import {Topic} from "../../entities/topic/topic";
 import {TopicService} from "../../services/topic.service";
 import {Tag} from "../../entities/tag";
 import {TagService} from "../../services/tag.service";
+import {CardDetailsService} from "../../services/card-details.service";
+import {CardDetails} from "../../entities/category/card-details";
+import {error} from "util";
+import {CardDetailComponent} from "../cards/card-detail.component";
 
 @Component({
     selector: 'category-detail',
     templateUrl: 'html/category-detail.html',
-    directives: [ToolbarComponent]
+    directives: [ToolbarComponent, CardDetailComponent]
 })
-export class CategoryDetailComponent {
-    @Input()
-
-    private category:Category;
-    private topics:Topic[]=[];
+export class CategoryDetailComponent implements OnInit {
+    private category:Category = Category.createEmptyCategory();
+    private cards:CardDetails[] = [];
+    private topics:Topic[] = [];
     private tags:Tag[] = [];
+    private currentCard:CardDetails = CardDetails.createEmptyCard();
 
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
-                private _categoryService: CategoryService,
+                private _categoryService:CategoryService,
                 private _topicService:TopicService,
+                private _cardDetailsService:CardDetailsService,
                 private _tagService:TagService) {
-        this.category = new Category("","");
-        var categoryId:number = +_routeArgs.params["categoryId"];
+    }
+
+
+    ngOnInit():any {
+        var categoryId:number = +this._routeArgs.params["categoryId"];
+
         this._categoryService.getCategory(categoryId).subscribe(
+            data => this.category = data.json()
+        );
+
+        this._cardDetailsService.getCardDetailsOfCategory(categoryId).subscribe(
+            data => this.cards = data.json(),
+            error => console.log(error.json)
+        );
+
+        this._topicService.getTopicsFromCategory(categoryId).subscribe(
+            data => this.topics = data.json(),
+            error => console.log(error),
+            () => console.log("Topics fetched")
+        );
+
+        this._tagService.getTags().subscribe(
             data => {
-                this.category = data.json();
+                let tags:Array<Tag> = data.json();
+                for (let tag of tags)
+                    this.tags.push(Tag.createEmptyTag().deserialize(tag));
             }
         );
-        this._topicService.getTopicsFromCategory(categoryId)
-            .subscribe(
-                data => this.topics = data.json(),
-                error => console.log(error),
-                () => console.log("Topics fetched")
-            );
-
-        this._tagService.getTags().subscribe(data => {
-            let tags: Array<Tag> = data.json();
-            for(let tag of tags )
-                this.tags.push(Tag.createEmptyTag().deserialize(tag));
-
-
-
-        });
     }
 
-    public toAddNewTopic(categoryId:number){
-        this._router.navigate(["/CreateTopic", {categoryId:categoryId}])
+    public toAddNewTopic(categoryId:number) {
+        this._router.navigate(["/CreateTopic", {categoryId: categoryId}])
     }
 
-    public toTopic(topicId:number){
-        this._router.navigate(["/TopicDetail",{topicId:topicId}])
+    public toTopic(topicId:number) {
+        this._router.navigate(["/TopicDetail", {topicId: topicId}])
     }
 
-    public toAddNewCard(categoryId:number){
-        this._router.navigate(["/CreateCard",{categoryId:categoryId}])
+    public toAddNewCard(categoryId:number) {
+        this._router.navigate(["/CreateCard", {categoryId: categoryId}])
+    }
+
+    public onCardClick(card:CardDetails):void {
+        this.currentCard = card;
     }
 
 }

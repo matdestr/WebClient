@@ -9,7 +9,8 @@
                     <h1>{{category.name}}</h1>
                 </div>
                 <div class="col-md-2 ptop">
-                    <p class="profile-button" data-toggle="modal" data-target="#myEditModal"><span class="glyphicon glyphicon-edit"></span> EDIT CATEGORY</p>
+                    <p class="profile-button" data-toggle="modal" data-target="#myEditModal"><span
+                            class="glyphicon glyphicon-edit"></span> EDIT CATEGORY</p>
                 </div>
             </div>
 
@@ -28,7 +29,8 @@
 
                                     <div class="input-group forms-input-group"
                                          title="Categoy name">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <span class="input-group-addon"><i
+                                                class="glyphicon glyphicon-pencil"></i></span>
                                         <input id="categoryName"
                                                name="category-name"
                                                class="form-control"
@@ -40,7 +42,8 @@
                                                (ngControl)="categoryName">
                                     </div>
                                 </section>
-                            </form>                        </div>
+                            </form>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -52,12 +55,12 @@
 
             <p class="description">{{category.description}}</p>
 
-            <h2 >Topics</h2>
+            <h2>Topics</h2>
             <ul>
                 <div class="row" *ngFor="#topic of topics">
 
                     <div class="col-md-2 spaceUnder">
-                        <p class="categoryName" (click)="toTopic(topic.topicId)" >{{topic.name}}</p>
+                        <p class="categoryName" (click)="toTopic(topic.topicId)">{{topic.name}}</p>
                     </div>
                     <div class="col-md-3 spaceUnder">
                         <p class="description" style="margin-left: 3em">{{topic.description}}</p>
@@ -66,26 +69,48 @@
             </ul>
 
 
-            <button class="addNewButton" (click)="toAddNewTopic(category.categoryId)"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Topic</button>
+            <button class="addNewButton" (click)="toAddNewTopic(category.categoryId)"><i
+                    class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Topic
+            </button>
 
             <h2>Cards</h2>
 
-            <button class="addNewButton" (click)="toAddNewCard(category.categoryId)"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Card</button>
+            <ul>
+                <card-detail *ngFor="#card of cards" data-toggle="modal" data-target="#cardModal"
+                             [card]="card"
+                             [cardClassName]="'card-small'"
+                             (click)="onCardClick(card)">
+                </card-detail>
+            </ul>
+
+            <div id="cardModal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog flex-container">
+                        <card-detail [card]="currentCard"
+                                     [cardClassName]="'card-large'"
+                                     class="flex-item"></card-detail>
+                </div><!-- /.modal-dialog -->
+            </div>
 
 
+            <button class="addNewButton" (click)="toAddNewCard(category.categoryId)">
+                <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Card
+            </button>
 
-            <h2 >Tags</h2>
+
+            <h2>Tags</h2>
             <ul>
                 <table style="width:100%">
                     <tr class="spaceUnder" *ngFor="#tag of tags">
-                        <td class="categoryName" >{{tag.name}}</td>
+                        <td class="categoryName">{{tag.name}}</td>
                     </tr>
                 </table>
             </ul>
 
-            <button class="addNewButton" data-toggle="modal" data-target="#myModal" ><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add More Tags</button>
+            <button class="addNewButton" data-toggle="modal" data-target="#tagModal"><i
+                    class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add More Tags
+            </button>
 
-            <div id="myModal" class="modal fade" role="dialog">
+            <div id="tagModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
 
                     <!-- Modal content-->
@@ -103,13 +128,13 @@
                                         </label>
                                     </div>
                                 </form>
-                            </div>                        </div>
+                            </div>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

@@ -7,21 +7,28 @@ export class Category implements Serializable<Category>{
     public description: string;
     public topics: Topic[];
 
-    constructor(name:string, description:string) {
+
+    constructor(categoryId:number, name:string, description:string, topics:Topic[]) {
+        this.categoryId = categoryId;
         this.name = name;
         this.description = description;
+        this.topics = topics;
     }
 
-
     public static createEmptyCategory():Category {
-        return new Category("","");
+        return new Category(0, "","", []);
     }
 
     deserialize(object:Category):Category {
         this.name = object.name;
         this.description = object.description;
         this.categoryId = object.categoryId;
-        this.topics = object.topics;
+
+        var deserializedTopics:Topic[] = [];
+
+        for (let topic of object.topics)
+            deserializedTopics.push(Topic.createEmptyTopic().deserialize(topic));
+
         return this;
     }
 }

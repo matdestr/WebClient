@@ -13,15 +13,17 @@ import {ToolbarComponent} from "./components/widget/toolbar.component";
 import {TagService} from "./services/tag.service";
 import {TopicService} from "./services/topic.service";
 import {InvitationService} from "./services/invitation.service";
+import {CardDetailsService} from "./services/card-details.service";
 
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
-    TokenService, UserService, OrganizationService, CategoryService,TagService,TopicService, InvitationService,
+    TokenService, UserService, OrganizationService, CategoryService,
+    TagService, TopicService, InvitationService, CardDetailsService,
     ToolbarComponent,
     provide(AuthHttp, {
         useFactory: (http) => {
-            return new AuthHttp(new AuthConfig({tokenName : 'token'}), http);
+            return new AuthHttp(new AuthConfig({tokenName: 'token'}), http);
         },
         deps: [Http]
     }),

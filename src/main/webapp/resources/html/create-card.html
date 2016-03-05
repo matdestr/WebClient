@@ -16,8 +16,8 @@
                 </div>
             </div>
             <div class="panel-body">
-                <form #organizationForm="ngForm"
-                      (ngSubmit)="onSubmit(organizationForm)"
+                <form #cardForm="ngForm"
+                      (ngSubmit)="onSubmit(cardForm)"
                       name="form-new-topic"
                       role="form">
                     <section class="forms-section">
@@ -42,8 +42,8 @@
                                        placeholder="Url of your image"
                                        required
                                        #categoryName="ngForm"
-                                       [(ngModel)]="myImage"> </div>
-                        <img class="cardImage" src="{{myImage}}">
+                                       [(ngModel)]="form.imageUrl"> </div>
+                        <img class="cardImage" src="{{form.imageUrl}}">
 
 
                     </section>

@@ -20,6 +20,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -120,10 +121,8 @@ public class CardDetailsRestController {
     }
 
     private boolean checkUserIsOrganizer(User user, Organization organization) {
-        if (organization.getOwner().equals(user) || organization.getOrganizers().contains(user))
-            return true;
+        return organization.getOwner().getUserId() == user.getUserId() || organization.getOrganizers().contains(user);
 
-        return false;
     }
 
     private boolean checkUserIsMember(User user, Session session) {
