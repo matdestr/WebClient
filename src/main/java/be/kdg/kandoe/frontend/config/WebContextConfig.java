@@ -87,11 +87,6 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-    @Bean
-    static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
-        return new PropertySourcesPlaceholderConfigurer();
-    }
-
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
