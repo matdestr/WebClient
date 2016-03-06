@@ -15,8 +15,8 @@ export class Organization {
         organization.organizationId = -1;
         organization.name = "";
         organization.owner = User.createEmptyUser();
-        organization.members = new Array();
-        organization.categories = new Array();
+        organization.members = [];
+        organization.categories = [];
 
         return organization;
     }

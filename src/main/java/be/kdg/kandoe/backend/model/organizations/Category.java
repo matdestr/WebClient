@@ -1,5 +1,6 @@
 package be.kdg.kandoe.backend.model.organizations;
 
+import be.kdg.kandoe.backend.model.cards.CardDetails;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +25,9 @@ public class Category {
 
     @OneToMany
     private List<Tag> tags;
+    
+    @OneToMany
+    private List<CardDetails> cards;
 
     @OneToMany
     private List<Topic> topics;

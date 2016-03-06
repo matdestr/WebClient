@@ -9,6 +9,10 @@ export class Topic implements Serializable<Topic>{
         this.description = description;
     }
 
+    public static createEmptyTopic(): Topic{
+        return new Topic("", "");
+    }
+
     deserialize(object:Topic):Topic {
         this.name = object.name;
         this.description = object.description;

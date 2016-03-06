@@ -70,10 +70,10 @@ public class UserRestController {
 
         if (!uploadedFile.isEmpty()) {
             try {
-                String fileSeperator = File.separator;
+                String fileSeparator = File.separator;
                 String extension = FilenameUtils.getExtension(uploadedFile.getOriginalFilename());
 
-                String path = servletRequest.getSession().getServletContext().getRealPath("/") + fileSeperator + "profilepictures" + fileSeperator + userId + "." + extension;
+                String path = servletRequest.getSession().getServletContext().getRealPath("/") + fileSeparator + "profilepictures" + fileSeparator + userId + "." + extension;
                 File saveFile = new File(path);
                 if (!saveFile.getParentFile().exists()){
                     saveFile.getParentFile().mkdirs();
@@ -90,7 +90,7 @@ public class UserRestController {
 
                 ImageIO.write(image, "jpg", saveFile);
 
-                user.setProfilePictureUrl("profilepictures" + fileSeperator + userId + "." + extension);
+                user.setProfilePictureUrl("profilepictures" + fileSeparator + userId + "." + extension);
                 userService.updateUser(user);
             } catch (Exception e) {
                 throw e;

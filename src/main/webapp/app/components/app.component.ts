@@ -15,7 +15,7 @@ import {CategoryDetailComponent} from "./categories/category-detail.component";
 import {CreateTopicComponent} from "./topic/create-topic.component";
 import {AddTagComponent} from "./topic/add-tags.component";
 import {TopicDetailComponent} from "./topic/topic-detail.component";
-import {CreateCardComponent} from "./categories/create-card";
+import {CreateCardComponent} from "./cards/create-card-details.component";
 
 @Component({
     selector: 'my-app',

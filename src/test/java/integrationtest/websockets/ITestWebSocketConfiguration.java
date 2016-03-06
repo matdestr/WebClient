@@ -18,7 +18,7 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {RootContextConfig.class, WebContextConfig.class, WebSocketTestConfig.class})
+@ContextConfiguration(classes = {RootContextConfig.class, WebContextConfig.class})
 @WebAppConfiguration
 public class ITestWebSocketConfiguration {
     private WebSocketClient webSocketClient;

@@ -182,4 +182,47 @@ public class TestCardsService {
         cardService.addCardDetailsToTopic(topic1, cardDetails);
         cardService.addCardDetailsToTopic(topic3, cardDetails);
     }
+    
+    @Test
+    public void addCardDetailsToCategory() {
+        CardDetails cardDetails = new CardDetails();
+        cardDetails.setCreator(this.user);
+        cardDetails.setText("Some text on a card");
+        
+        cardDetails = cardService.addCardDetailsToCategory(this.category1, cardDetails);
+        
+        Assert.assertEquals(1, this.cardService.getCardDetailsOfCategory(this.category1.getCategoryId()).size());
+        Assert.assertTrue(this.cardService.getCardDetailsOfCategory(this.category1.getCategoryId()).contains(cardDetails));
+    }
+    
+    @Test(expected = CardServiceException.class)
+    public void addCardDetailsWithoutTextToCategory() {
+        CardDetails cardDetails = new CardDetails();
+        cardDetails.setCreator(this.user);
+        
+        cardDetails = cardService.addCardDetailsToCategory(this.category1, cardDetails);
+        
+        Assert.assertEquals(0, this.cardService.getCardDetailsOfCategory(this.category1.getCategoryId()).size());
+        Assert.assertFalse(this.cardService.getCardDetailsOfCategory(this.category1.getCategoryId()).contains(cardDetails));
+    }
+    
+    @Test
+    public void addCardDetailsToTopicAndCategory() {
+        CardDetails cardDetails1 = new CardDetails();
+        cardDetails1.setCreator(this.user);
+        cardDetails1.setText("My first card");
+        
+        CardDetails cardDetails2 = new CardDetails();
+        cardDetails2.setCreator(this.user);
+        cardDetails2.setText("My second card");
+        
+        cardDetails1 = this.cardService.addCardDetailsToTopic(topic1, cardDetails1);
+        cardDetails2 = this.cardService.addCardDetailsToCategory(category1, cardDetails2);
+        
+        Assert.assertEquals(1, this.cardService.getCardDetailsOfTopic(topic1.getTopicId()).size());
+        Assert.assertEquals(2, this.cardService.getCardDetailsOfCategory(category1.getCategoryId()).size());
+        
+        Assert.assertTrue(this.cardService.getCardDetailsOfTopic(topic1.getTopicId()).contains(cardDetails1));
+        Assert.assertTrue(this.cardService.getCardDetailsOfCategory(category1.getCategoryId()).contains(cardDetails2));
+    }
 }

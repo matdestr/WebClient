@@ -6,6 +6,8 @@ import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.EmailService;
 import be.kdg.kandoe.backend.service.api.InvitationService;
 import be.kdg.kandoe.backend.service.properties.MailProperties;
+import be.kdg.kandoe.backend.utils.JobScheduler;
+import be.kdg.kandoe.backend.utils.jobs.MailJob;
 import org.codemonkey.simplejavamail.Mailer;
 import org.codemonkey.simplejavamail.TransportStrategy;
 import org.codemonkey.simplejavamail.email.Email;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.mail.Message;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,6 +26,9 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private InvitationService invitationService;
+
+    @Autowired
+    private JobScheduler jobScheduler;
 
     private Mailer mailer;
 
@@ -45,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
                 email.setSubject("CanDo: Invitation to join organization " + organization.getName());
                 email.addRecipient("", emailAddress, Message.RecipientType.TO);
                 email.setTextHTML("<body style=\"font-family: Arial;\">Hi,<br><br>You have been invited to join the CanDo organization <b>" + organization.getName() + "</b> by <b>" + requester.getName() + " " + requester.getSurname() + ".</b><br><br>Regards,<br>Team Cando</body>");
-                mailer.sendMail(email);
+                jobScheduler.scheduleJob(new MailJob(mailer, email), new Date());
             }
         }
     }
@@ -67,7 +73,7 @@ public class EmailServiceImpl implements EmailService {
                 email.addRecipient("", emailAddress, Message.RecipientType.TO);
                 email.setTextHTML("<body style=\"font-family: Arial;\">Hi,<br><br>You have been invited to join the CanDo organization <b>" + organization.getName() + "</b> by <b>" + requester.getName() + " " + requester.getSurname() + ".</b><br>You can join by clicking the following link: <a href=\"" + url + "\">" + url + "</a>.<br><br>Regards,<br>Team Cando</body>");
 
-                mailer.sendMail(email);
+                jobScheduler.scheduleJob(new MailJob(mailer, email), new Date());
             }
         }
     }
