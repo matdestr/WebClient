@@ -42,7 +42,7 @@ export class UserProfileEditComponent {
             this._router.navigate(["/Dashboard"]);
 
         var token:string = localStorage.getItem("token");
-        if (getUsername(token) !== this.user.username)
+        if (getUsername(token) !== username)
             this._router.navigate(["/Dashboard"]);
 
         _userService.getUser(username).subscribe((user:User) => {
@@ -79,6 +79,10 @@ export class UserProfileEditComponent {
                 console.log("Image didn't change");
                 this.updateUser();
             }
+        else {
+            var message = this.messageToJson("Fill in your password.");
+            this.onError(message);
+        }
     }
 
     public updateUser() : void {
@@ -133,11 +137,19 @@ export class UserProfileEditComponent {
         this.fileChanged = true;
     }
 
-    private onError(message:string){
+    private onError(message) : void {
         if (message) {
-            this.errorMessages.push(message);
-        } else {
-            this.errorMessages = new Array();
-        }
+            var obj = JSON.parse(message);
+            if (obj)
+                this.errorMessages.push(obj.message);
+        } else
+            this.errorMessages = [];
+    }
+
+    private messageToJson(message) : string {
+        if (typeof(message) !== "string")
+            return null;
+
+        return "{\"message\":\"" + message +"\"}";
     }
 }

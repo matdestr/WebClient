@@ -14,6 +14,8 @@ import {isTokenExpired} from "../../services/token.service";
 //@CanActivate(() => isTokenExpired())
 export class DashboardComponent implements OnInit{
 
+    public constructor(){
+    }
 
     ngOnInit():any {
         var token = localStorage.getItem('token');

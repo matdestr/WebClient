@@ -6,7 +6,7 @@ import {NgFor, NgIf} from "angular2/common";
     template: `
     <div *ngIf="messages.length > 0" class="alert alert-danger">
         <ul class="error-list" *ngFor="#message of messages; #i = index">
-            <li>{{ messages[i] }}</li>
+            <li><span class="error-icon glyphicon glyphicon-remove-circle"></span>{{ messages[i] }}</li>
         </ul>
     </div>
     `

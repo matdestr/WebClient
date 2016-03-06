@@ -28,6 +28,7 @@ body {
   @include user-drag(none);
   @include user-select(none);
 
+  background-color: white;
   color: $text-color-neutral;
 
   font-family: $font-stack;
@@ -35,11 +36,11 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-#main-content {
+#main-content{
   margin-top: 3em;
 }
 
-#authentication {
+#authentication{
   min-height: 100vh;
   background: transparent url("../img/bg-kandoe.png") no-repeat !important;
   background-size: cover !important;
@@ -49,10 +50,13 @@ body {
   clear: both;
 }
 
-h1 {
-  margin-top: 0 !important;
+.top-buffer-10 {
+  margin-top: 10px !important;
 }
 
+h1{
+  margin-top: 0 !important;
+}
 .top-buffer-100 {
   margin-top: 100px;
 }

@@ -41,7 +41,8 @@ export class UserProfileComponent {
             this._router.navigate(["/Dashboard"]);
 
         var token:string = localStorage.getItem("token");
-        if (getUsername(token) === this.user.username)
+        console.log(getUsername(token) + " - " + username);
+        if (getUsername(token) === username)
             this.canEdit = true;
 
         _userService.getUser(username).subscribe((user:User) => {

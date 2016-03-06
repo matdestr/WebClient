@@ -11,16 +11,11 @@ import {RouteParams} from "angular2/router";
     directives: [SignInComponent, SignUpComponent]
 })
 export class AuthenticationComponent implements OnInit{
-    constructor(@Inject('App.TokenName') tokenName : string, router : Router, routeParams:RouteParams) {
+    constructor(@Inject('App.TokenName') tokenName : string, router : Router) {
         //var token : string = localStorage.getItem(tokenName);
         
         if (tokenNotExpired(tokenName)) {
             router.navigate(['/Dashboard']);
-        } else {
-            var goToSignIn:string = routeParams.get("signIn");
-            if (goToSignIn == "true"){
-
-            }
         }
     }
     

@@ -38,12 +38,17 @@ form input[type=submit], form button[type=submit] {
   padding: 0;
   width: 60%;
   height: $btn-height !important;
-  background: $primary-color;
+  background: $primary-color-dark;
   border: 0;
+  text-transform: uppercase;
+  /*
   @include border-radius(3px);
+  */
+  /*
   @include box-shadow(0, 15px, 30px, 0, rgba(255, 255, 255, .1), inset);
+  */
   font-size: 16px;
-  font-weight: 400;
+  font-weight: bold;
   color: $text-color-light;
   text-shadow: 0 1px 2px rgba(0, 0, 0, .1);
   text-align: center;
@@ -117,18 +122,22 @@ form input[type=submit], form button[type=submit] {
   }
 }
 
+.forms-login {
+  padding: 50px 50px 0 50px;
+}
+
 .forgot-password {
   text-decoration: underline;
-  color: #888;
+  color: #F8F8F8;
 
   &:hover, &:focus {
     text-decoration: underline;
-    color: #666;
+    color: #F8F8F8;
   }
 }
 
 .forms-input-group {
-  margin: ($default-margin*2) 0;
+  margin: ($default-margin) 0;
 }
 
 .forms-multi-input-group * {

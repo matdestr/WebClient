@@ -25,7 +25,7 @@ System.register(['angular2/core', "./authentication.component"], function(export
                 WelcomeComponent = __decorate([
                     core_1.Component({
                         selector: 'welcome',
-                        template: "\n        <div id=\"main-content\" >\n        <section id=\"authentication\" class=\"flex-container\">\n            <authentication class=\"flex-item\"></authentication>\n        </section>\n        </div>\n\n        <footer>\n            <p>test <a>link</a></p>\n        </footer>\n\n    ",
+                        template: "\n        <div id=\"main-content\" >\n        <section id=\"authentication\">\n            <authentication></authentication>\n        </section>\n        </div>\n    ",
                         directives: [authentication_component_1.AuthenticationComponent]
                     }), 
                     __metadata('design:paramtypes', [])

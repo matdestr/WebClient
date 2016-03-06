@@ -16,7 +16,7 @@ export class InvitationService {
     public getInvitationsForUser(userId:number) : Observable<Response> {
         var searchParams:URLSearchParams = new URLSearchParams();
         var requestOptions:RequestOptions = new RequestOptions();
-        searchParams.append("userId", userId);
+        searchParams.append("userId", "" + userId);
 
         requestOptions.search = searchParams;
 
