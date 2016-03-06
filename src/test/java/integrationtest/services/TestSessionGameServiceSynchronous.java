@@ -1,6 +1,7 @@
 package integrationtest.services;
 
 import be.kdg.kandoe.backend.config.BackendContextConfig;
+import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.sessions.ParticipantInfo;
@@ -11,10 +12,7 @@ import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.persistence.api.CategoryRepository;
 import be.kdg.kandoe.backend.persistence.api.OrganizationRepository;
 import be.kdg.kandoe.backend.persistence.api.SessionRepository;
-import be.kdg.kandoe.backend.service.api.EmailService;
-import be.kdg.kandoe.backend.service.api.SessionGameService;
-import be.kdg.kandoe.backend.service.api.SessionService;
-import be.kdg.kandoe.backend.service.api.UserService;
+import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.backend.service.exceptions.SessionGameServiceException;
 import be.kdg.kandoe.backend.service.impl.SessionGameServiceImpl;
 import org.junit.Assert;
@@ -42,7 +40,10 @@ public class TestSessionGameServiceSynchronous {
     
     @Autowired
     private SessionRepository sessionRepository;
-    
+
+    @Autowired
+    private CardService cardService;
+
     @Autowired
     private SessionService sessionService;
     
@@ -114,7 +115,7 @@ public class TestSessionGameServiceSynchronous {
     @Test
     public void inviteUsersAndJoin() {
         EmailService mockedEmailService = Mockito.mock(EmailService.class);
-        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService);
+        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService, cardService);
         
         sessionGameService.inviteUserForSession(sessionCreated, player1);
         Assert.assertEquals(SessionStatus.USERS_JOINING, sessionCreated.getSessionStatus());
@@ -142,7 +143,7 @@ public class TestSessionGameServiceSynchronous {
     @Test
     public void inviteTwoUsersAndLetOneJoinKeepsUsersJoiningStatus() {
         EmailService mockedEmailService = Mockito.mock(EmailService.class);
-        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService);
+        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService, cardService);
 
         sessionGameService.inviteUserForSession(sessionCreated, player1);
         sessionGameService.inviteUserForSession(sessionCreated, player2);
@@ -160,7 +161,7 @@ public class TestSessionGameServiceSynchronous {
         sessionCreated = this.sessionRepository.save(sessionCreated);
         
         EmailService mockedEmailService = Mockito.mock(EmailService.class);
-        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService);
+        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService, cardService);
 
         sessionGameService.inviteUserForSession(sessionCreated, player1);
         sessionGameService.inviteUserForSession(sessionCreated, player2);
@@ -175,7 +176,7 @@ public class TestSessionGameServiceSynchronous {
     @Test
     public void joinAllUsersWithNothingAllowedResultsInSessionStatusInProgress() {
         EmailService mockedEmailService = Mockito.mock(EmailService.class);
-        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService);
+        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService, cardService);
         
         sessionCreated.setParticipantsCanAddCards(false);
         sessionCreated.setCardCommentsAllowed(false);
@@ -185,7 +186,90 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.setUserJoined(sessionCreated, organizer);
         Assert.assertEquals(SessionStatus.IN_PROGRESS, sessionCreated.getSessionStatus());
     }
-    
+
+    @Test
+    public void addCardsToSession(){
+        EmailService mockedEmailService = Mockito.mock(EmailService.class);
+        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService, cardService);
+
+        sessionCreated.setParticipantsCanAddCards(true);
+        sessionCreated = sessionRepository.save(sessionCreated);
+
+        this.inviteTwoUsersAndLetThemJoin(sessionCreated);
+        sessionGameService.setUserJoined(sessionCreated, organizer);
+        Assert.assertTrue(sessionCreated.isParticipantsCanAddCards());
+        Assert.assertEquals(SessionStatus.ADDING_CARDS, sessionCreated.getSessionStatus());
+
+        CardDetails newCard = new CardDetails();
+        newCard.setText("new-card-added-by-user");
+
+        sessionGameService.addCardDetails(sessionCreated, organizer, newCard);
+
+        Assert.assertNotNull(cardService.getCardDetailsById(newCard.getCardDetailsId()));
+    }
+
+    @Test(expected = SessionGameServiceException.class)
+    public void addCardsToSessionThatDoesntAllowIt(){
+        EmailService mockedEmailService = Mockito.mock(EmailService.class);
+        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService, cardService);
+
+        sessionCreated.setParticipantsCanAddCards(false);
+        sessionCreated.setCardCommentsAllowed(false);
+        sessionCreated = sessionRepository.save(sessionCreated);
+
+        this.inviteTwoUsersAndLetThemJoin(sessionCreated);
+        sessionGameService.setUserJoined(sessionCreated, organizer);
+        Assert.assertFalse(sessionCreated.isParticipantsCanAddCards());
+        Assert.assertEquals(SessionStatus.IN_PROGRESS, sessionCreated.getSessionStatus());
+
+        CardDetails newCard = new CardDetails();
+        newCard.setText("new-card-added-by-user");
+
+        sessionGameService.addCardDetails(sessionCreated, organizer, newCard);
+    }
+
+    @Test(expected = SessionGameServiceException.class)
+    public void addCardsToSessionThatDoesAllowItButIsntInAddingCardsStatus(){
+        EmailService mockedEmailService = Mockito.mock(EmailService.class);
+        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService, cardService);
+
+        sessionCreated.setParticipantsCanAddCards(true);
+        sessionCreated.setCardCommentsAllowed(false);
+        this.inviteTwoUsersAndLetThemJoin(sessionCreated);
+        sessionGameService.setUserJoined(sessionCreated, organizer);
+        sessionCreated.setSessionStatus(SessionStatus.IN_PROGRESS);
+        sessionCreated = sessionRepository.save(sessionCreated);
+
+        Assert.assertTrue(sessionCreated.isParticipantsCanAddCards());
+        Assert.assertEquals(SessionStatus.IN_PROGRESS, sessionCreated.getSessionStatus());
+
+        CardDetails newCard = new CardDetails();
+        newCard.setText("new-card-added-by-user");
+
+        sessionGameService.addCardDetails(sessionCreated, organizer, newCard);
+    }
+
+    @Test(expected = SessionGameServiceException.class)
+    public void addCardsToSessionWithUserNotInSession(){
+        EmailService mockedEmailService = Mockito.mock(EmailService.class);
+        sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService, cardService);
+
+        sessionCreated.setParticipantsCanAddCards(true);
+        sessionCreated = sessionRepository.save(sessionCreated);
+
+        this.inviteTwoUsersAndLetThemJoin(sessionCreated);
+        sessionGameService.setUserJoined(sessionCreated, organizer);
+        Assert.assertTrue(sessionCreated.isParticipantsCanAddCards());
+        Assert.assertEquals(SessionStatus.ADDING_CARDS, sessionCreated.getSessionStatus());
+
+        CardDetails newCard = new CardDetails();
+        newCard.setText("new-card-added-by-user");
+
+        sessionGameService.addCardDetails(sessionCreated, player3, newCard);
+    }
+
+
+
     private void inviteTwoUsersAndLetThemJoin(Session session) {
         sessionGameService.inviteUserForSession(session, player1);
         sessionGameService.inviteUserForSession(session, player2);
