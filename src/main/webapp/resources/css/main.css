@@ -6291,7 +6291,6 @@ h2 {
   cursor: pointer; }
 
 .description {
-  width: 60%;
   float: left; }
 
 .spaceUnder {
@@ -6299,6 +6298,12 @@ h2 {
 
 h2 {
   margin-top: 2em; }
+
+.bullet-point {
+  display: list-item;
+  list-style: disc inside;
+  padding: 0 0 0 14px;
+  margin: 0; }
 
 .error-list > li {
   list-style-type: disc !important;

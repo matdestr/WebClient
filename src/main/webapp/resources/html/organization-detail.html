@@ -8,11 +8,14 @@
                 <div class="col-md-10 ptop">
 
                     <h1>{{organization.name}}</h1>
+
             </div>
                 <div class="col-md-2 ptop">
                     <p class="profile-button" data-toggle="modal" data-target="#myEditModal"><span class="glyphicon glyphicon-edit"></span> EDIT ORGANIZATION</p>
                 </div>
             </div>
+
+            <hr>
 
             <div id="myEditModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -54,7 +57,7 @@
                 </div>
             </div>
 
-        <h2>Members</h2>
+        <h2> Members</h2>
         <ul>
             <table style="width:100% ;margin-bottom: 2em" id="memberTable">
                 <tr class="spaceUnder" *ngFor="#member of members">
@@ -122,6 +125,7 @@
                 </div>
             </div>
 
+            <hr>
 
             <h2>Categories</h2>
         <ul>
@@ -130,7 +134,7 @@
                 <div class="col-md-2 spaceUnder">
                     <p class="categoryName" (click)="toCategory(category.categoryId)">{{category.name}}</p>
                 </div>
-                <div class="col-md-3 spaceUnder">
+                <div class="col-md-5 spaceUnder">
                     <p class="description" >{{category.description}}</p>
                 </div>
             </div>

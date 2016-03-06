@@ -13,6 +13,7 @@
                 </div>
             </div>
 
+
             <div id="myEditModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
 
@@ -51,6 +52,9 @@
             </div>
 
             <p class="description">{{category.description}}</p>
+            <br>
+            <hr>
+
 
             <h2 >Topics</h2>
             <ul>
@@ -68,17 +72,20 @@
 
             <button class="addNewButton" (click)="toAddNewTopic(category.categoryId)"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Topic</button>
 
+            <hr>
+
             <h2>Cards</h2>
 
             <button class="addNewButton" (click)="toAddNewCard(category.categoryId)"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Card</button>
 
+            <hr>
 
 
             <h2 >Tags</h2>
             <ul>
                 <table style="width:100%">
                     <tr class="spaceUnder" *ngFor="#tag of tags">
-                        <td class="categoryName" >{{tag.name}}</td>
+                        <p class="bullet-point">{{tag.name}}</p>
                     </tr>
                 </table>
             </ul>
