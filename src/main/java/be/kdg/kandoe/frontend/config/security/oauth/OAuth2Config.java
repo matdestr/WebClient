@@ -2,6 +2,7 @@ package be.kdg.kandoe.frontend.config.security.oauth;
 
 import be.kdg.kandoe.backend.service.api.OAuthClientDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,9 +29,15 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
     
+    @Value("${jwt.signingkey}")
+    private String signingKey;
+    
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
-        return new JwtAccessTokenConverter();
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        jwtAccessTokenConverter.setSigningKey(signingKey);
+        
+        return jwtAccessTokenConverter;
     }
 
     /**

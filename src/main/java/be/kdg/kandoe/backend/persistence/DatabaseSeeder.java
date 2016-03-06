@@ -6,8 +6,6 @@ import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Tag;
 import be.kdg.kandoe.backend.model.organizations.Topic;
-import be.kdg.kandoe.backend.model.sessions.Session;
-import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.model.users.roles.RoleType;
 import be.kdg.kandoe.backend.persistence.api.*;
@@ -24,7 +22,7 @@ import java.util.List;
 public class DatabaseSeeder {
     @Autowired
     private OAuthClientDetailsRepository clientDetailsRepository;
-    
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -43,29 +41,128 @@ public class DatabaseSeeder {
     @Autowired
     private TagRepository tagRepository;
 
+    @Autowired
+    private CardDetailsRepository cardDetailsRepository;
 
     @PostConstruct
-    private void seed(){
+    private void seed() {
+        seedOAuthClientDetails();
+        seedUsersCategoriesTopicsAndSessions();
+        seedTags();
+    }
+    
+    private void seedOAuthClientDetails() {
         OAuthClientDetails clientDetails = new OAuthClientDetails("webapp");
-        
+
         clientDetails.setAuthorizedGrandTypes("password", "authorization_code", "refresh_token", "client_credentials");
         clientDetails.setAuthorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT");
         clientDetails.setScopes("read", "write", "trust");
         clientDetails.setSecret("secret");
-        clientDetails.setAccessTokenValiditySeconds(60 * 60);
-        
+        //clientDetails.setAccessTokenValiditySeconds(60 * 60);
+        clientDetails.setAccessTokenValiditySeconds(604_800);
+
         clientDetailsRepository.save(clientDetails);
-        
+
         OAuthClientDetails clientDetailsAndroid = new OAuthClientDetails("android");
-        
+
         clientDetailsAndroid.setAuthorizedGrandTypes("password", "refresh_token");
         clientDetailsAndroid.setAuthorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT");
         clientDetailsAndroid.setScopes("read", "write", "trust");
         clientDetailsAndroid.setSecret("secret");
-        clientDetailsAndroid.setAccessTokenValiditySeconds(60 * 60);
-        
-        clientDetailsRepository.save(clientDetailsAndroid);
+        //clientDetailsAndroid.setAccessTokenValiditySeconds(60 * 60);
+        clientDetailsAndroid.setAccessTokenValiditySeconds(604_800);
 
+        clientDetailsRepository.save(clientDetailsAndroid);
+    }
+    
+    private void seedUsersCategoriesTopicsAndSessions() {
+        val users = new ArrayList<User>();
+        
+        User testUser = new User("user", passwordEncoder.encode("pass"));
+        testUser.setName("Test");
+        testUser.setSurname("User");
+        testUser.setEmail("testuser@cando.com");
+        testUser.setProfilePictureUrl("profilepictures/default.png");
+        testUser.addRole(RoleType.ROLE_CLIENT);
+
+        User harold = new User();
+        harold.setUsername("harold");
+        harold.setPassword(passwordEncoder.encode("harold"));
+        harold.setName("Harold");
+        harold.setSurname("Painhider");
+        harold.setEmail("harold@haroldmail.pain");
+        harold.setProfilePictureUrl("profilepictures/harold.jpg");
+        harold.addRole(RoleType.ROLE_CLIENT);
+        
+        users.add(testUser);
+        users.add(harold);
+        
+        userRepository.save(users);
+
+        Organization organization = new Organization("Pain hiders", testUser);
+        organization.addMember(harold);
+        organization = organizationRepository.save(organization);
+        
+        Category category1 = new Category();
+        category1.setOrganization(organization);
+        category1.setName("Category 1");
+        category1.setDescription("Description of the first category");
+        category1 = categoryRepository.save(category1);
+        
+        Topic topic1 = new Topic();
+        topic1.setCategory(category1);
+        topic1.setName("Topic 1");
+        topic1.setDescription("Description of the first topic");
+        topic1 = topicRepository.save(topic1);
+        
+        for (int i = 0; i < 10; i++) {
+            CardDetails cardDetails = new CardDetails();
+            cardDetails.setCategory(category1);
+            cardDetails.setCreator(testUser);
+            cardDetails.setText("Card " + (i + 1));
+            
+            cardDetailsRepository.save(cardDetails);
+        }
+    }
+
+    private void seedTags() {
+        List<Tag> tagList = new ArrayList<Tag>();
+
+        Tag tag1 = new Tag();
+        tagList.add(tag1);
+        tag1.setName("General");
+        Tag tag2 = new Tag();
+        tagList.add(tag2);
+        tag2.setName("Legals");
+        Tag tag3 = new Tag();
+        tagList.add(tag3);
+        tag3.setName("Medical");
+        Tag tag4 = new Tag();
+        tagList.add(tag4);
+        tag4.setName("Music");
+        Tag tag5 = new Tag();
+        tagList.add(tag5);
+        tag5.setName("Business");
+        Tag tag6 = new Tag();
+        tagList.add(tag6);
+        tag6.setName("Games");
+        Tag tag7 = new Tag();
+        tagList.add(tag7);
+        tag7.setName("Kids");
+        Tag tag8 = new Tag();
+        tagList.add(tag8);
+        tag8.setName("Health");
+        Tag tag9 = new Tag();
+        tagList.add(tag9);
+        tag9.setName("Finance");
+        Tag tag10 = new Tag();
+        tagList.add(tag10);
+        tag10.setName("Food");
+
+        tagRepository.save(tagList);
+    }
+    
+    private void seedOldData() {
         val users = new ArrayList<User>();
 
         val testUser = new User();
@@ -121,84 +218,5 @@ public class DatabaseSeeder {
         topic.setCategory(category);
 
         topicRepository.save(topic);
-
-        /*List<Card> cards = new ArrayList<>();
-
-        val card1 = new Card();
-        val cardDetails1 = new CardDetails();
-        cardDetails1.setText("card1");
-        card1.setCategory(category);
-        card1.setCardDetails(cardDetails1);
-        card1.setUser(adminUser);
-
-        val card2 = new Card();
-        val cardDetails2 = new CardDetails();
-        cardDetails2.setText("card2");
-        card2.setCategory(category);
-        card2.setCardDetails(cardDetails2);
-        card2.setUser(adminUser);
-
-        val card3 = new Card();
-        val cardDetails3 = new CardDetails();
-        cardDetails3.setText("card3");
-        card3.setCategory(category);
-        card3.setCardDetails(cardDetails3);
-        card3.setUser(adminUser);
-
-        val card4 = new Card();
-        val cardDetails4 = new CardDetails();
-        cardDetails4.setText("card4");
-        card4.setCategory(category);
-        card4.setCardDetails(cardDetails4);
-        card4.setUser(adminUser);
-
-        cards.add(card1);
-        cards.add(card2);
-        cards.add(card3);
-        cards.add(card4);
-
-        cardRepository.save(cards);*/
-
-        Session session = new SynchronousSession();
-        session.setOrganization(organisation);
-
-        List<Tag> tagList = new ArrayList<Tag>();
-        Tag tag1 = new Tag();
-        tagList.add(tag1);
-        tag1.setName("General");
-        Tag tag2 = new Tag();
-        tagList.add(tag2);
-        tag2.setName("Legals");
-        Tag tag3 = new Tag();
-        tagList.add(tag3);
-        tag3.setName("Medical");
-        Tag tag4 = new Tag();
-        tagList.add(tag4);
-        tag4.setName("Music");
-        Tag tag5 = new Tag();
-        tagList.add(tag5);
-        tag5.setName("Business");
-        Tag tag6 = new Tag();
-        tagList.add(tag6);
-        tag6.setName("Games");
-        Tag tag7 = new Tag();
-        tagList.add(tag7);
-        tag7.setName("Kids");
-        Tag tag8 = new Tag();
-        tagList.add(tag8);
-        tag8.setName("Health");
-        Tag tag9 = new Tag();
-        tagList.add(tag9);
-        tag9.setName("Finance");
-        Tag tag10 = new Tag();
-        tagList.add(tag10);
-        tag10.setName("Food");
-
-
-
-        tagRepository.save(tagList);
-
-
     }
-
 }

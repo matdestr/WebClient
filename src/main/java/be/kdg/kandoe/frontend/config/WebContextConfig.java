@@ -1,6 +1,9 @@
 package be.kdg.kandoe.frontend.config;
 
 import be.kdg.kandoe.frontend.config.security.resolvers.OAuth2UserArgumentResolver;
+import be.kdg.kandoe.frontend.controller.resources.formatters.LocalDateTimeFormatter;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -8,6 +11,9 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -97,4 +103,10 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
         argumentResolvers.add(oAuth2UserArgumentResolver);
     }
 
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        super.addFormatters(registry);
+        //registry.addConverter(new LocalDateTimeConverter("yyyy-MM-dd HH:mm"));
+        //registry.addFormatter(new LocalDateTimeFormatter("yyyy-MM-dd HH:mm"));
+    }
 }

@@ -44,4 +44,8 @@ public class Organization {
     public void addOrganizer(User user) {
         this.organizers.add(user);
     }
+    
+    public boolean isOrganizer(User user) {
+        return (this.owner.equals(user) || this.organizers.contains(user));
+    }
 }

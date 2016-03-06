@@ -7,7 +7,8 @@ import org.hibernate.validator.constraints.Range;
 @Data
 public class CreateAsynchronousSessionResource extends CreateSessionResource {
     public static final String TYPE = "async";
-    @Range(min = 0, message = "{session.wrong.time-between-moves}")
+    
+    @Range(min = 1, message = "{session.wrong.time-between-moves}")
     private int timeBetweenMoves;
 
     public CreateAsynchronousSessionResource() {

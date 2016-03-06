@@ -125,7 +125,7 @@ public class CardDetailsRestController {
 
     }
 
-    private boolean checkUserIsMember(User user, Session session) {
+    /*private boolean checkUserIsMember(User user, Session session) {
         return session.getParticipants().contains(user);
-    }
+    }*/
 }

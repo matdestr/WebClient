@@ -6,6 +6,7 @@ import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.persistence.api.CardDetailsRepository;
+import be.kdg.kandoe.backend.persistence.api.CategoryRepository;
 import be.kdg.kandoe.backend.service.api.CardService;
 import be.kdg.kandoe.backend.service.exceptions.CardServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -14,20 +15,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
 @Transactional
 public class CardServiceImpl implements CardService {
     private CardDetailsRepository cardDetailsRepository;
+    private CategoryRepository categoryRepository;
 
     private Logger logger;
 
     @Autowired
-    public CardServiceImpl(CardDetailsRepository cardDetailsRepository) {
+    public CardServiceImpl(CardDetailsRepository cardDetailsRepository, CategoryRepository categoryRepository) {
         this.cardDetailsRepository = cardDetailsRepository;
+        this.categoryRepository = categoryRepository;
         this.logger = LogManager.getLogger(this.getClass());
     }
     
@@ -82,6 +85,13 @@ public class CardServiceImpl implements CardService {
         try {
             cardDetails.setCategory(category);
             cardDetails = cardDetailsRepository.save(cardDetails);
+            
+            // Updating both sides of the relationship is needed
+            if (category.getCards() == null)
+                category.setCards(new ArrayList<>());
+
+            category.getCards().add(cardDetails);
+            category = categoryRepository.save(category);
 
             return cardDetails;
         } catch (Exception e) {
@@ -126,6 +136,12 @@ public class CardServiceImpl implements CardService {
 
         try {
             cardDetails = cardDetailsRepository.save(cardDetails);
+
+            if (topic.getCards() == null)
+                topic.setCards(new HashSet<>());
+
+            topic.getCards().add(cardDetails);
+            
             return cardDetails;
         } catch (Exception e) {
             logger.warn("Could not persist card details: " + e.getMessage());

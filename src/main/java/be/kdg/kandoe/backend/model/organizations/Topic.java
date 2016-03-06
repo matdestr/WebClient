@@ -4,11 +4,13 @@ import be.kdg.kandoe.backend.model.cards.CardDetails;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Data
-@NoArgsConstructor
+@EqualsAndHashCode(exclude = { "cards" })
+//@NoArgsConstructor
 public class Topic {
     @Id
     @GeneratedValue
@@ -25,4 +27,8 @@ public class Topic {
 
     @ManyToMany
     private Set<CardDetails> cards;
+    
+    public Topic() {
+        this.cards = new HashSet<>();
+    }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 @Entity
+@EqualsAndHashCode(exclude = { "organization", "cards" })
 @NoArgsConstructor
 public class Category {
     @Id
@@ -26,7 +27,8 @@ public class Category {
     @OneToMany
     private List<Tag> tags;
     
-    @OneToMany
+    //@OneToMany(targetEntity = CardDetails.class, fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE })
+    @OneToMany(targetEntity = CardDetails.class, fetch = FetchType.EAGER, mappedBy = "category"/*, cascade = CascadeType.ALL*/) // mappedBy is needed to prevent unique key violation!
     private List<CardDetails> cards;
 
     @OneToMany

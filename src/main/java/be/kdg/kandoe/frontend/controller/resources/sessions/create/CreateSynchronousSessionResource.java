@@ -1,15 +1,19 @@
 package be.kdg.kandoe.frontend.controller.resources.sessions.create;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Data
 public class CreateSynchronousSessionResource extends CreateSessionResource {
     public static final String TYPE = "sync";
 
-    @Range(min = 0, message = "{session.wrong.timebetweenmoves}")
-    private int timeBetweenMoves;
+    //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm")
+    //@JsonDeserialize(using = LocalDateDeserializer.class)
+    //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime startDateTime;
 
     public CreateSynchronousSessionResource() {
         super(CreateSynchronousSessionResource.TYPE);

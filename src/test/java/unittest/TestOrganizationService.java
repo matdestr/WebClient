@@ -90,14 +90,16 @@ public class TestOrganizationService {
     public void getOrganizationsByExistingOwner() throws UserServiceException {
         String organizationOne = "Organization 1";
         String organizationTwo = "Organization 2";
-        User user = userService.getUserByUsername("user");
+        
+        //User user = userService.getUserByUsername("user");
+        User user = userService.addUser(new User("test-user", "pass"));
 
         Organization organization1 = new Organization(organizationOne, user);
         Organization organization2 = new Organization(organizationTwo, user);
         organizationService.addOrganization(organization1);
         organizationService.addOrganization(organization2);
 
-        List<Organization> existing = organizationService.getOrganizationsByOwner("user");
+        List<Organization> existing = organizationService.getOrganizationsByOwner("test-user");
 
         assertEquals("list should contain 2 items", 2, existing.size());
     }

@@ -1,15 +1,13 @@
 package be.kdg.kandoe.frontend.controller.rest;
 
+import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.sessions.AsynchronousSession;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
-import be.kdg.kandoe.backend.service.api.OrganizationService;
-import be.kdg.kandoe.backend.service.api.SessionService;
-import be.kdg.kandoe.backend.service.api.TopicService;
-import be.kdg.kandoe.backend.service.api.UserService;
+import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.frontend.controller.resources.sessions.SessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.*;
 import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateAsynchronousSessionResource;
@@ -27,20 +25,26 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Null;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/sessions")
+@PreAuthorize("isAuthenticated()")
 public class SessionRestController {
     @Autowired
     private OrganizationService organizationService;
+    
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private TopicService topicService;
 
     @Autowired
     private SessionService sessionService;
+    
+    @Autowired
+    private SessionGameService sessionGameService;
 
     @Autowired
     private UserService userService;
@@ -48,17 +52,97 @@ public class SessionRestController {
     @Autowired
     private MapperFacade mapper;
 
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createSession(@AuthenticationPrincipal User user, @Valid @RequestBody CreateSynchronousSessionResource createSynchronousSessionResource) {
-        return createSessionHelperMethod(user, createSynchronousSessionResource);
-    }
-
-
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/add/{sessionId}", method = RequestMethod.POST)
-    public ResponseEntity addUserToSession(@AuthenticationPrincipal User user, @RequestParam int userId, @PathVariable int sessionId){
+    //@PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/{sessionId}", method = RequestMethod.GET)
+    public ResponseEntity<SessionResource> getSession(@AuthenticationPrincipal User user,
+                                                      @PathVariable("sessionId") int sessionId) {
         Session session = sessionService.getSessionById(sessionId);
+        
+        if (!session.isUserParticipant(user.getUserId()) && session.getOrganizer().getUserId() != user.getUserId())
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        
+        SessionResource sessionResource = mapper.map(session, SessionResource.class);
+        
+        return new ResponseEntity<>(sessionResource, HttpStatus.OK);
+    }
+    
+    //@PreAuthorize("isAuthenticated()")
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity createSession(@AuthenticationPrincipal User user, 
+                                        @Valid @RequestBody CreateSessionResource createSessionResource) {
+        Category category = categoryService.getCategoryById(createSessionResource.getCategoryId());
+        Topic topic = null;
+
+        if (!category.getOrganization().isOrganizer(user))
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        
+        if (createSessionResource.getTopicId() != null)
+            topic = topicService.getTopicByTopicId(createSessionResource.getTopicId());
+        
+        Session session = null;
+        Class<? extends SessionResource> returnedResourceClass = null;
+        
+        if (createSessionResource instanceof CreateSynchronousSessionResource) {
+            session = mapper.map(createSessionResource, SynchronousSession.class);
+            returnedResourceClass = SynchronousSessionResource.class;
+        } else if (createSessionResource instanceof CreateAsynchronousSessionResource) {
+            session = mapper.map(createSessionResource, AsynchronousSession.class);
+            returnedResourceClass = AsynchronousSessionResource.class;
+        }
+        
+        if (session == null)
+            throw new CanDoControllerRuntimeException("Session is of an unknown type", HttpStatus.BAD_REQUEST);
+
+        session.setCategory(category);
+        session.setTopic(topic);
+        session.setOrganizer(user);
+        
+        session = sessionService.addSession(session);
+        SessionResource returnedResource = mapper.map(session, returnedResourceClass);
+        
+        return new ResponseEntity(returnedResource, HttpStatus.CREATED);
+    }
+    
+    //@PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/{sessionId}/invite", method = RequestMethod.POST)
+    public ResponseEntity inviteUser(@AuthenticationPrincipal User user,
+                                     @PathVariable("sessionId") int sessionId,
+                                     @RequestParam("userId") int userId) {
+        Session session = sessionService.getSessionById(sessionId);
+        User userToInvite = userService.getUserByUserId(userId);
+        
+        if (!session.getCategory().getOrganization().isOrganizer(user))
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        
+        sessionGameService.inviteUserForSession(session, userToInvite);
+        
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+    
+    @RequestMapping(value = "/{sessionId}/join", method = RequestMethod.POST)
+    public ResponseEntity joinSession(@AuthenticationPrincipal User user,
+                                      @PathVariable("sessionId") int sessionId) {
+        Session session = sessionService.getSessionById(sessionId);
+        
+        if (!session.isUserParticipant(user.getUserId()))
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        
+        sessionGameService.setUserJoined(session, user);
+        
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+    
+    /*public ResponseEntity startSession(@AuthenticationPrincipal User user, @RequestParam("sessionId") int sessionId) {
+        
+        
+        return new ResponseEntity(HttpStatus.CREATED);
+    }*/
+    
+    //@PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/add/{sessionId}", method = RequestMethod.POST)
+    public ResponseEntity addUserToSession(@AuthenticationPrincipal User user, 
+                                           @RequestParam int userId, @PathVariable int sessionId){
+        /*Session session = sessionService.getSessionById(sessionId);
         User userToAdd = userService.getUserByUserId(userId);
 
         if (session == null)
@@ -81,12 +165,12 @@ public class SessionRestController {
         if (session.addParticipant(userToAdd)){
             sessionService.updateSession(session);
             return new ResponseEntity(HttpStatus.OK);
-        }
+        }*/
 
         throw new CanDoControllerRuntimeException("User %d is already participating in this session", HttpStatus.BAD_REQUEST);
     }
 
-    private ResponseEntity createSessionHelperMethod(User user, CreateSessionResource resource) {
+    /*private ResponseEntity createSessionHelperMethod(User user, CreateSessionResource resource) {
         List<Organization> organizations = organizationService.getOrganizationsByOwner(user.getUsername());
         val organizationOptional = organizations.stream().filter(o -> o.getOrganizationId() == resource.getOrganizationId()).findAny();
         if (organizationOptional.isPresent()) {
@@ -120,6 +204,5 @@ public class SessionRestController {
             }
         }
         throw new CanDoControllerRuntimeException(String.format("User (%s) is not the owner of an organization", user.getUsername()), HttpStatus.BAD_REQUEST);
-    }
-
+    }*/
 }

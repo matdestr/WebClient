@@ -15,10 +15,12 @@ public class SessionResourceMapper extends CustomMapper<Session, SessionResource
 
     @Override
     public void mapAtoB(Session session, SessionResource sessionResource, MappingContext context) {
-        if (session.getTopic() != null){
+        sessionResource.setCategoryId(session.getCategory().getCategoryId());
+        
+        if (session.getTopic() != null)
             sessionResource.setTopicId(session.getTopic().getTopicId());
-        }
-        sessionResource.setOrganizerId(session.getOrganizer().getUserId());
-        sessionResource.setUrl(session.getPublicUrl());
+        
+        if (session.getCurrentParticipantPlaying() != null)
+            sessionResource.setCurrentParticipantPlayingUserId(session.getCurrentParticipantPlaying().getUserId());
     }
 }

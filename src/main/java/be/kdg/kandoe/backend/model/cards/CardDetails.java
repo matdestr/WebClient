@@ -14,6 +14,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude = { "creator", "category", "topics" })
 @NoArgsConstructor
 public class CardDetails {
     @Id
@@ -31,7 +32,7 @@ public class CardDetails {
     @ManyToOne(optional = false)
     private User creator;
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
     private Category category;
 
     @ManyToMany

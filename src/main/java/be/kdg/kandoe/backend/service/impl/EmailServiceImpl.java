@@ -1,8 +1,10 @@
 package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.organizations.Organization;
+import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.users.Invitation;
 import be.kdg.kandoe.backend.model.users.User;
+import be.kdg.kandoe.backend.persistence.api.SessionRepository;
 import be.kdg.kandoe.backend.service.api.EmailService;
 import be.kdg.kandoe.backend.service.api.InvitationService;
 import be.kdg.kandoe.backend.service.properties.MailProperties;
@@ -12,6 +14,7 @@ import org.codemonkey.simplejavamail.Mailer;
 import org.codemonkey.simplejavamail.TransportStrategy;
 import org.codemonkey.simplejavamail.email.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -26,11 +29,17 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private InvitationService invitationService;
+    
+    @Autowired
+    private SessionRepository sessionRepository;
 
     @Autowired
     private JobScheduler jobScheduler;
 
     private Mailer mailer;
+    
+    @Value("${app.baseUrl}")
+    private String baseUrl;
 
     @PostConstruct
     public void initializeMailer(){
@@ -78,6 +87,32 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Override
+    public void sendSessionInvitationToUser(Session session, User organizer, User user) {
+        if (user.getEmail() == null || user.getEmail().isEmpty())
+            return;
+        
+        // TODO : Find better solution for user without email
+        
+        String invitationUrl = baseUrl + String.format("sessions/%s/join", session.getSessionId());
+        
+        Email email = new Email();
+        
+        email.setFromAddress("CanDo Team E", mailProperties.getUsername());
+        email.setSubject("CanDo: Invitation to join session");
+        email.addRecipient("", user.getEmail(), Message.RecipientType.TO);
+        email.setTextHTML(
+                String.format("\"<body style=\"font-family: Arial;\">" +
+                        "<p>Hello %s</p>" +
+                        "<p>%s has invited you to join their session." +
+                        "<br>You can accept the invite by clicking <a href=\"%s\">this link</a></p>" +
+                        "<p>Team CanDo</p>", user.getName(), organizer.getName(), invitationUrl)
+        );
+        
+        mailer.sendMail(email);
+    }
+
+    // TODO : Refactor with new baseUrl
     private String createAcceptUrl(String acceptId, int organizationId){
         String baseUrl = System.getProperty("app.baseUrl");
         String acceptUrl = baseUrl == null ? "http://localhost:8080/kandoe" : baseUrl;
