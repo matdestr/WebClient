@@ -3,9 +3,57 @@
 <div id="main-content">
     <div class="container-fluid">
         <div id="organization-detail">
-
+            <div class="row">
+            <div class="col-md-10 ptop">
             <h1>{{topic.name}}</h1>
             <p class="description">{{topic.description}}</p>
+                </div>
+            <div class="col-md-2 ptop">
+                <p class="profile-button" data-toggle="modal" data-target="#myEditModal"><span
+                        class="glyphicon glyphicon-edit"></span> EDIT TOPIC</p>
+            </div>
+                </div>
+
+            <div id="myEditModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form #organizationForm="ngForm"
+                                  (ngSubmit)="onSubmit(categoryForm)"
+                                  name="form-new-organization"
+                                  role="form">
+                                <section class="forms-section">
+                                    <h2>Edit Topic Name</h2>
+
+                                    <div class="input-group forms-input-group"
+                                         title="Topic name">
+                                        <span class="input-group-addon"><i
+                                                class="glyphicon glyphicon-pencil"></i></span>
+                                        <input id="topicName"
+                                               name="topic-name"
+                                               class="form-control"
+                                               type="text"
+                                               placeholder="Topic name"
+                                               required
+                                               #organizationName="ngForm"
+                                               [(ngModel)]="topic.name"
+                                               (ngControl)="topicName">
+                                    </div>
+                                </section>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
             <br>
             <hr>
 
@@ -38,3 +86,4 @@
         </div>
     </div>
 </div>
+

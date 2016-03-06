@@ -88,7 +88,6 @@
                 </card-detail>
             </ul>
 
-            <hr>
             <div id="cardModal" class="modal fade" tabindex="-1" role="dialog">
                 <div class="modal-dialog flex-container">
                         <card-detail [card]="currentCard"
@@ -102,13 +101,15 @@
                 <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Card
             </button>
 
+            <hr>
+
+
 
             <h2>Tags</h2>
             <ul>
                 <table style="width:100%">
                     <tr class="spaceUnder" *ngFor="#tag of tags">
                         <p class="bullet-point">{{tag.name}}</p>
-                        <td class="categoryName">{{tag.name}}</td>
                     </tr>
                 </table>
             </ul>
