@@ -43,8 +43,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category getCategoryById(int catgoryId) {
-        return repository.findOne(catgoryId);
+    public Category getCategoryById(int categoryId) {
+        Category category = repository.findOne(categoryId);
+        
+        if (category == null)
+            throw new CategoryServiceException("Category with ID " + categoryId + " does not exist");
+        
+        return category;
     }
 
     @Override
