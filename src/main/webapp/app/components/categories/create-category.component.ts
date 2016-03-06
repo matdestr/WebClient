@@ -21,7 +21,7 @@ import {HttpStatus} from "../../util/http/http-status";
 export class CreateCategoryComponent {
     private organizationId:number;
     private form:CreateCategoryModel = CreateCategoryModel.createEmptyCreateCategory();
-    private errors:Array<string> = new Array();
+    private errors:Array<string> = [];
     private tags:Tag[] = [];
 
 

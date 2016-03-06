@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = { "creator", "category", "topics" })
+@EqualsAndHashCode(exclude = {"creator", "category", "topics", "comments"})
 @NoArgsConstructor
 public class CardDetails {
     @Id

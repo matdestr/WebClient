@@ -14,7 +14,7 @@ import {CreateTopicModel} from "../entities/topic/createTopicForm";
 
 @Injectable()
 export class TopicService {
-    public static endPoint: string = "./api/topics/"
+    public static endPoint: string = "./api/topics/";
 
     constructor(private _authHttp: AuthHttp){
 
@@ -31,7 +31,9 @@ export class TopicService {
         options.search = searchParams;
         options.headers = headers;
 
-        return this._authHttp.post(TopicService.endPoint, JSON.stringify(topic), options).retry(2);
+        return this._authHttp
+            .post(TopicService.endPoint, JSON.stringify(topic), options)
+            .retry(2);
     }
 
     public getTopicsFromCategory(categoryId: number): Observable<Response>{
@@ -41,11 +43,13 @@ export class TopicService {
         var options: RequestOptions = new RequestOptions();
         options.search = searchParams;
 
-        return this._authHttp.get(TopicService.endPoint, options);
+        return this._authHttp
+            .get(TopicService.endPoint, options);
     }
 
     public getTopic(topicId : number) : Observable<Response> {
-        return this._authHttp.get(TopicService.endPoint + topicId);
+        return this._authHttp
+            .get(TopicService.endPoint + topicId);
     }
 
 }

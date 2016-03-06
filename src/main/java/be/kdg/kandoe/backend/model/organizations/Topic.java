@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = { "cards" })
+@EqualsAndHashCode(exclude = {"category", "cards"})
 //@NoArgsConstructor
 public class Topic {
     @Id
@@ -25,10 +25,11 @@ public class Topic {
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<CardDetails> cards;
-    
+
     public Topic() {
         this.cards = new HashSet<>();
     }
+
 }

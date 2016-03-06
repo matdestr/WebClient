@@ -18,6 +18,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.web.FilterChainProxy;
@@ -33,6 +34,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootContextConfig.class, WebContextConfig.class})
@@ -298,6 +302,43 @@ public class ITCardDetailsRestController {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].cardDetailsId").isNumber())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].text").value(text))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].imageUrl").value(imageUrl));
+    }
+
+    @Test
+    public void addExistingCardDetailsToTopic() throws Exception {
+        String text = "Card details text";
+
+        CreateCardDetailsResource resource = new CreateCardDetailsResource();
+        resource.setText(text);
+
+        JSONObject jsonObject = new JSONObject(resource);
+
+        String jsonResponse = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/carddetails/categories")
+                        .param("categoryId", String.valueOf(category.getCategoryId()))
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonObject.toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        JSONObject jsonResponseObject = new JSONObject(jsonResponse);
+        int cardDetailsId = jsonResponseObject.getInt("cardDetailsId");
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/carddetails/topics")
+                        .param("topicId", String.valueOf(topic.getTopicId()))
+                        .param("cardDetailsId", String.valueOf(cardDetailsId))
+                        .header("Authorization", authorizationHeader))
+                        .andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/carddetails/topics/" + String.valueOf(topic.getTopicId()))
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(1)))
+                .andReturn().getResponse().getContentAsString();
     }
     
     @Test

@@ -4,15 +4,15 @@
     <div class="container-fluid">
         <div id="organization-detail">
             <div class="row">
-            <div class="col-md-10 ptop">
-            <h1>{{topic.name}}</h1>
-            <p class="description">{{topic.description}}</p>
+                <div class="col-md-10 ptop">
+                    <h1>{{topic.name}}</h1>
+                    <p class="description">{{topic.description}}</p>
                 </div>
-            <div class="col-md-2 ptop">
-                <p class="profile-button" data-toggle="modal" data-target="#myEditModal"><span
-                        class="glyphicon glyphicon-edit"></span> EDIT TOPIC</p>
+                <div class="col-md-2 ptop">
+                    <p class="profile-button" data-toggle="modal" data-target="#myEditModal"><span
+                            class="glyphicon glyphicon-edit"></span> EDIT TOPIC</p>
+                </div>
             </div>
-                </div>
 
             <div id="myEditModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -58,7 +58,18 @@
             <hr>
 
             <h2 style="padding-top: 1em">Cards</h2>
-            <button class="addNewButton" data-toggle="modal" data-target="#myCardModal"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add new Card</button>
+
+            <ul>
+                <card-detail *ngFor="#card of cards"
+                             [card]="card"
+                             [cardClassName]="'card-small'"
+                             (click)="onCategoryCardClick(card)">
+                </card-detail>
+            </ul>
+
+            <button (click)="openAddCardModal()" class="addNewButton" data-toggle="modal" data-target="#myCardModal"><i
+                    class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add new Card
+            </button>
 
             <div id="myCardModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -71,10 +82,20 @@
                         </div>
                         <div class="modal-body">
 
+                            <ul>
+                                <card-detail *ngFor="#catCard of categoryCards"
+                                             [card]="catCard"
+                                             [cardClassName]="'card-small'"
+                                             (click)="onCategoryCardClick(catCard)">
+                                </card-detail>
+                            </ul>
+
                         </div>
                         <div class="modal-footer">
-                            <button type="submit"
-                                    name="add-card">
+                            <button (click)="onAddCardsClick()"
+                                    name="add-card"
+                                    class="btn btn-default"
+                                    data-dismiss="modal">
                                 <i class="glyphicon glyphicon-floppy-disk"></i> Create
                             </button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

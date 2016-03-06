@@ -8,8 +8,8 @@ import java.util.List;
 
 @Data
 @Entity
-@EqualsAndHashCode(exclude = { "organization", "cards" })
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"organization", "tags", "cards", "topics"})
 public class Category {
     @Id
     @GeneratedValue

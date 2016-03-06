@@ -162,6 +162,8 @@ public class DatabaseSeeder {
         tagRepository.save(tagList);
     }
     
+    /*
+        // TODO remove !!
     private void seedOldData() {
         val users = new ArrayList<User>();
 
@@ -218,5 +220,5 @@ public class DatabaseSeeder {
         topic.setCategory(category);
 
         topicRepository.save(topic);
-    }
+    }*/
 }

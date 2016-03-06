@@ -44,20 +44,25 @@ export class CategoryDetailComponent implements OnInit {
         );
 
         this._cardDetailsService.getCardDetailsOfCategory(categoryId).subscribe(
-            data => this.cards = data.json(),
+            data =>{
+                for (let card of data.json())
+                    this.cards.push(CardDetails.createEmptyCard().deserialize(card));
+            },
             error => console.log(error.json)
         );
 
         this._topicService.getTopicsFromCategory(categoryId).subscribe(
-            data => this.topics = data.json(),
+            data => {
+                for (let topic of data.json())
+                    this.topics.push(Topic.createEmptyTopic().deserialize(topic));
+            },
             error => console.log(error),
             () => console.log("Topics fetched")
         );
 
         this._tagService.getTags().subscribe(
             data => {
-                let tags:Array<Tag> = data.json();
-                for (let tag of tags)
+                for (let tag of data.json())
                     this.tags.push(Tag.createEmptyTag().deserialize(tag));
             }
         );

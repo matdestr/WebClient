@@ -10,7 +10,8 @@ export class User implements Serializable<User> {
     public roleTypes:Array<any>;
 
 
-    constructor(username:string, name:string, surname:string, email:string, profilePictureUrl:string = "profilepictures/default.png") {
+    constructor(userId: number, username:string, name:string, surname:string, email:string, profilePictureUrl:string = "profilepictures/default.png") {
+        this.userId = userId;
         this.username = username;
         this.name = name;
         this.surname = surname;
@@ -23,7 +24,7 @@ export class User implements Serializable<User> {
     }
 
     public static createEmptyUser():User {
-        return new User("", "", "", "");
+        return new User(0, "", "", "", "");
     }
 
     deserialize(object:User):User {
