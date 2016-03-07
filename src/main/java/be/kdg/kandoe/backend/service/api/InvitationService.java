@@ -10,8 +10,10 @@ import java.util.List;
 @Service
 public interface InvitationService {
     Invitation generateInvitation(User user, Organization organization);
+    Invitation generateInvitationForUnexistingUser(String email, Organization organization);
     Invitation saveInvitation(Invitation invitation);
     List<Invitation> getInvitationsByUserId(int userId);
     Invitation getInvitationByAcceptId(String acceptId);
     void invalidateInvitation(Invitation invitation);
+    List<Invitation> getInvitationsByEmail(String email);
 }

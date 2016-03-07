@@ -25,9 +25,7 @@ export class CategoryService {
         options.search = searchParams;
         options.headers = headers;
 
-        return this._authHttp
-            .post(CategoryService.endPoint, JSON.stringify(category), options)
-            .retry(2);
+        return this._authHttp.post(CategoryService.endPoint, JSON.stringify(category), options);
     }
 
 

@@ -20,7 +20,8 @@ export class SignInComponent{
     private password : string;
     private errorMessages:string[] = [];
 
-    constructor(private _signInService : UserService, private _tokenService: TokenService, private _router : Router) { }
+    constructor(private _signInService : UserService, private _tokenService: TokenService, private _router : Router) {
+    }
 
     private onSubmit() {
         this.onError(null);
@@ -48,10 +49,15 @@ export class SignInComponent{
     }
 
     private onError(message) : void {
+        var self:any = this;
         if (message) {
             var obj = JSON.parse(message);
-            if (obj)
+            if (obj) {
                 this.errorMessages.push(obj.message);
+                setTimeout(() => {
+                    self.errorMessages.splice(0);
+                }, 2000);
+            }
         } else
             this.errorMessages = [];
     }
@@ -61,9 +67,5 @@ export class SignInComponent{
             return null;
 
         return "{\"message\":\"" + message +"\"}";
-    }
-
-    public goToSignUp() : void {
-        this._router.navigate([""])
     }
 }

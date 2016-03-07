@@ -32,4 +32,6 @@ public class Invitation implements Serializable {
     private String acceptId;
 
     private boolean accepted;
+
+    private String email;
 }
