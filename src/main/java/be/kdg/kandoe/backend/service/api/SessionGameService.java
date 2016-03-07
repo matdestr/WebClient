@@ -16,12 +16,10 @@ public interface SessionGameService {
     //void confirmUsersJoined(Session session);
 
     void addCardDetails(Session session, User user, CardDetails cardDetails);
-
     void confirmAddedCards(Session session);
     
     void addComment(User user, CardDetails cardDetails, Comment comment);
     void confirmReviews(Session session);
-
 
     void startGame(Session session);
     Set<CardPosition> getCardPositions(Session session);

@@ -174,7 +174,7 @@ public class TestSessionGameServiceSynchronous {
     }
     
     @Test
-    public void joinAllUsersWithNothingAllowedResultsInSessionStatusInProgress() {
+    public void joinAllUsersWithNothingAllowedResultsInSessionStatusChoosingCards() {
         EmailService mockedEmailService = Mockito.mock(EmailService.class);
         sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService, cardService);
         
@@ -184,7 +184,7 @@ public class TestSessionGameServiceSynchronous {
         
         this.inviteTwoUsersAndLetThemJoin(sessionCreated);
         sessionGameService.setUserJoined(sessionCreated, organizer);
-        Assert.assertEquals(SessionStatus.IN_PROGRESS, sessionCreated.getSessionStatus());
+        Assert.assertEquals(SessionStatus.CHOOSING_CARDS, sessionCreated.getSessionStatus());
     }
 
     @Test
@@ -209,7 +209,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test(expected = SessionGameServiceException.class)
-    public void addCardsToSessionThatDoesntAllowIt(){
+    public void addCardsToSessionThatDoesNotAllowIt(){
         EmailService mockedEmailService = Mockito.mock(EmailService.class);
         sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService, cardService);
 
@@ -220,7 +220,7 @@ public class TestSessionGameServiceSynchronous {
         this.inviteTwoUsersAndLetThemJoin(sessionCreated);
         sessionGameService.setUserJoined(sessionCreated, organizer);
         Assert.assertFalse(sessionCreated.isParticipantsCanAddCards());
-        Assert.assertEquals(SessionStatus.IN_PROGRESS, sessionCreated.getSessionStatus());
+        Assert.assertEquals(SessionStatus.CHOOSING_CARDS, sessionCreated.getSessionStatus());
 
         CardDetails newCard = new CardDetails();
         newCard.setText("new-card-added-by-user");
@@ -229,7 +229,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test(expected = SessionGameServiceException.class)
-    public void addCardsToSessionThatDoesAllowItButIsntInAddingCardsStatus(){
+    public void addCardsToSessionThatDoesAllowItButIsNotInAddingCardsStatus(){
         EmailService mockedEmailService = Mockito.mock(EmailService.class);
         sessionGameService = new SessionGameServiceImpl(sessionRepository, mockedEmailService, cardService);
 

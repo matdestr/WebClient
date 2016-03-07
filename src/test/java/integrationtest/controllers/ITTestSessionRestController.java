@@ -689,7 +689,7 @@ public class ITTestSessionRestController {
         ).andExpect(status().isCreated());
 
         jsonResponse = this.getSessionData(createdSessionId);
-        Assert.assertEquals("READY_TO_START", jsonResponse.getString("sessionStatus"));
+        Assert.assertEquals("CHOOSING_CARDS", jsonResponse.getString("sessionStatus"));
 
         CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
         createCardDetailsResource.setText("test-card");

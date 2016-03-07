@@ -115,7 +115,7 @@ public class SessionGameServiceImpl implements SessionGameService {
             else if (session.isCardCommentsAllowed())
                 session.setSessionStatus(SessionStatus.REVIEWING_CARDS);
             else
-                session.setSessionStatus(SessionStatus.READY_TO_START);
+                session.setSessionStatus(SessionStatus.CHOOSING_CARDS);
         } else {
             throw new SessionGameServiceException("Cannot start a session when not all users have joined");
         }
