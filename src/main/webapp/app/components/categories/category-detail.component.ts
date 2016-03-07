@@ -84,4 +84,9 @@ export class CategoryDetailComponent implements OnInit {
         this.currentCard = card;
     }
 
+    //TODO: @Mathisse CreateSession?
+    public toAddNewSession(categoryId:number) {
+        this._router.navigate(["/CreateSession", {categoryId: categoryId}])
+    }
+
 }

@@ -3,6 +3,7 @@ package be.kdg.kandoe.backend.model.users;
 import be.kdg.kandoe.backend.model.users.roles.Role;
 import be.kdg.kandoe.backend.model.users.roles.RoleType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Table(name = "`User`")
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(exclude = { "roles" })
 public class User implements Serializable, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

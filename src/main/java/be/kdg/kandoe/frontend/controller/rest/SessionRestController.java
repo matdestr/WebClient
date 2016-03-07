@@ -28,7 +28,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/sessions")
+@RequestMapping("/api/sessions")
 @PreAuthorize("isAuthenticated()")
 public class SessionRestController {
     @Autowired
