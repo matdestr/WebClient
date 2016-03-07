@@ -6534,6 +6534,17 @@ form.invitation-accept-form {
   .circle .inner-circle {
     fill: #B71C1C; }
 
+#container {
+  margin-top: 2em;
+  margin-left: 2em; }
+
+.organization-name-link {
+  font-size: 20px;
+  cursor: pointer;
+  list-style: circle;
+  color: dimgray;
+  margin-left: 4em; }
+
 body {
   position: relative;
   min-height: 100%;

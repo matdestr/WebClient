@@ -9,8 +9,6 @@ import {ToolbarComponent} from "../widget/toolbar.component";
     directives: [ToolbarComponent]
 })
 export class ActiveSessionComponent {
-    @Input()
-
     constructor(private _router:Router,
                 private _routeArgs:RouteParams) {
 
