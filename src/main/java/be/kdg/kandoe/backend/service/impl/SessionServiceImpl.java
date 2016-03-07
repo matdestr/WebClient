@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 public class SessionServiceImpl implements SessionService {
@@ -55,7 +57,7 @@ public class SessionServiceImpl implements SessionService {
         
         if (session.getAmountOfCircles() > Session.MAX_CIRCLE_AMOUNT)
             session.setAmountOfCircles(Session.MAX_CIRCLE_AMOUNT);
-        
+
         ParticipantInfo participantInfoOrganizer = new ParticipantInfo();
         participantInfoOrganizer.setParticipant(session.getOrganizer());
         participantInfoOrganizer.setJoined(false);
@@ -73,7 +75,6 @@ public class SessionServiceImpl implements SessionService {
         if (savedSession == null) {
             throw new SessionServiceException("Session couldn't be saved");
         }
-        
         return savedSession;
     }
 }
