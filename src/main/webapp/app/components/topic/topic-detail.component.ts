@@ -24,7 +24,6 @@ export class TopicDetailComponent implements OnInit {
     private categoryCards:CardDetails[] = [];
     private categoryCardsToAdd:CardDetails[] = [];
 
-
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
                 private _topicService:TopicService,
@@ -65,17 +64,14 @@ export class TopicDetailComponent implements OnInit {
     }
 
     public onAddCardsClick() {
-        for (let card of this.categoryCardsToAdd) {
-            this._cardDetailsService.addCardToTopic(this.topic.topicId, card.cardDetailsId).subscribe(
+        for (let catCard of this.categoryCardsToAdd) {
+            this._cardDetailsService.addCardToTopic(this.topic.topicId, catCard.cardDetailsId).subscribe(
                 data => {
-                    this.cards = [];
-
-                    for (let card of data.json())
-                        this.cards.push(CardDetails.createEmptyCard().deserialize(card));
+                    let card = data.json();
+                     this.cards.push(CardDetails.createEmptyCard().deserialize(card));
                 },
                 error => console.log(error.json())
             );
-            console.log(card.text);
         }
     }
 

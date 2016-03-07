@@ -21,7 +21,6 @@ export class CardDetails implements Serializable<CardDetails> {
         return new CardDetails(0, "", "");
     }
 
-    //todo check solution
     deserialize(object:CardDetails):CardDetails {
         this.cardDetailsId = object.cardDetailsId;
         this.text = object.text;

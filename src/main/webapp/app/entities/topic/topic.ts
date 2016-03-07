@@ -21,7 +21,7 @@ export class Topic implements Serializable<Topic>{
         this.topicId = object.topicId;
         this.name = object.name;
         this.description = object.description;
-        this.categoryId = object.topicId;
+        this.categoryId = object.categoryId;
 
         return this;
     }
