@@ -16,6 +16,7 @@ import {CreateTopicComponent} from "./topic/create-topic.component";
 import {AddTagComponent} from "./topic/add-tags.component";
 import {TopicDetailComponent} from "./topic/topic-detail.component";
 import {CreateCardComponent} from "./cards/create-card-details.component";
+import {ActiveSessionComponent} from "./session/active-session.component";
 import {CreateSessionComponent} from  "./session/create-session.component"
 
 @Component({
@@ -39,6 +40,8 @@ import {CreateSessionComponent} from  "./session/create-session.component"
     {path: '/topic/create', name:'CreateTopic', component:CreateTopicComponent},
     {path: '/categories/:categoryId/addtags', name:'AddTag', component:AddTagComponent} ,
     {path: '/topic/:topicId/detail',name:'TopicDetail',component:TopicDetailComponent} ,
+    {path: '/categories/:categoryId/createCard', name:'CreateCard', component:CreateCardComponent},
+    {path: '/session',name:'ActiveSession',component:ActiveSessionComponent},
     {path: '/categories/:categoryId/createCard', name:'CreateCard', component:CreateCardComponent},
     {path: '/categories/:categoryId/createSession',name:'CreateSession', component:CreateSessionComponent}
 ])
