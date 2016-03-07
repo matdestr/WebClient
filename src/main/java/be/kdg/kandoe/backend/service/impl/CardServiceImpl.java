@@ -33,44 +33,6 @@ public class CardServiceImpl implements CardService {
         this.categoryRepository = categoryRepository;
         this.logger = LogManager.getLogger(this.getClass());
     }
-    
-    /*@Override
-    public Card addCard(Card card) {
-        Card savedCard = cardRepository.save(card);
-        
-        if (savedCard == null){
-            throw new CardServiceException("Card cannot be saved");
-        }
-        
-        return savedCard;
-    }*/
-    
-    private void validateCardDetails(CardDetails cardDetails) {
-        if (cardDetails == null) {
-            logger.warn("Received null instead of valid card details");
-            throw new CardServiceException("Card details cannot be null");
-        }
-
-        if (cardDetails.getCreator() == null) {
-            logger.warn("Received card details without a creator");
-            throw new CardServiceException("Card details creator cannot be null");
-        }
-    }
-    
-    private void validateCardDetailsExistence(Category category, CardDetails cardDetails) {
-        CardDetails cardDetailsMatchingTextAndCategory =
-                cardDetailsRepository.findCardDetailsByCategoryAndText(category, cardDetails.getText());
-
-        if (cardDetailsMatchingTextAndCategory != null) {
-            logger.warn("User tried to create card details with already existing text");
-            throw new CardServiceException("A card with that text already exists in the category");
-        }
-        
-        if (cardDetails.getCategory() != null && !cardDetails.getCategory().equals(category)) {
-            logger.warn("User tried to add card details to multiple categories");
-            throw new CardServiceException("Cannot add the same card details to multiple categories");
-        }
-    }
 
     @Override
     public CardDetails addCardDetailsToCategory(Category category, CardDetails cardDetails) {
@@ -81,17 +43,18 @@ public class CardServiceImpl implements CardService {
 
         this.validateCardDetails(cardDetails);
         this.validateCardDetailsExistence(category, cardDetails);
-        
+
         try {
             cardDetails.setCategory(category);
+
             cardDetails = cardDetailsRepository.save(cardDetails);
-            
+
             // Updating both sides of the relationship is needed
             if (category.getCards() == null)
                 category.setCards(new ArrayList<>());
 
             category.getCards().add(cardDetails);
-            category = categoryRepository.save(category);
+            categoryRepository.save(category);
 
             return cardDetails;
         } catch (Exception e) {
@@ -108,31 +71,18 @@ public class CardServiceImpl implements CardService {
         }
 
         this.validateCardDetails(cardDetails);
-        this.validateCardDetailsExistence(topic.getCategory(), cardDetails);
-        
-        cardDetails = this.addCardDetailsToCategory(topic.getCategory(), cardDetails);
-        
+        this.validateCardDetailsExistence(topic, cardDetails);
+
         if (!cardDetails.getCategory().equals(topic.getCategory())) {
             logger.warn("Tried to add card details to topic, but topic was of different category");
             throw new CardServiceException("Cannot add card details to topics of different categories");
         }
-        
+
         if (cardDetails.getTopics() == null)
             cardDetails.setTopics(new HashSet<>());
-        
+
         Set<Topic> cardDetailsTopics = cardDetails.getTopics();
         cardDetailsTopics.add(topic);
-
-        /*if (topics == null) {
-            topics = new HashSet<>();
-        } else {
-            Topic existingTopic = topics.iterator().next();
-
-            if (!existingTopic.getCategory().equals(topic.getCategory())) {
-                logger.warn("Tried to add card details to topic, but topic was of different category");
-                throw new CardServiceException("Cannot add card details to topics of different categories");
-            }
-        }*/
 
         try {
             cardDetails = cardDetailsRepository.save(cardDetails);
@@ -141,7 +91,7 @@ public class CardServiceImpl implements CardService {
                 topic.setCards(new HashSet<>());
 
             topic.getCards().add(cardDetails);
-            
+
             return cardDetails;
         } catch (Exception e) {
             logger.warn("Could not persist card details: " + e.getMessage());
@@ -173,4 +123,43 @@ public class CardServiceImpl implements CardService {
     public Set<CardPosition> getCardPositionsOfSession(int sessionId) {
         return null;
     }
+
+
+    private void validateCardDetails(CardDetails cardDetails) {
+        if (cardDetails == null) {
+            logger.warn("Received null instead of valid card details");
+            throw new CardServiceException("Card details cannot be null");
+        }
+
+        if (cardDetails.getCreator() == null) {
+            logger.warn("Received card details without a creator");
+            throw new CardServiceException("Card details creator cannot be null");
+        }
+    }
+
+    private void validateCardDetailsExistence(Category category, CardDetails cardDetails) {
+        CardDetails cardDetailsMatchingTextAndCategory =
+                cardDetailsRepository.findCardDetailsByCategoryAndText(category, cardDetails.getText());
+
+        if (cardDetailsMatchingTextAndCategory != null) {
+            logger.warn("User tried to create card details with already existing text");
+            throw new CardServiceException("A card with that text already exists in the category");
+        }
+
+        if (cardDetails.getCategory() != null && !cardDetails.getCategory().equals(category)) {
+            logger.warn("User tried to add card details to multiple categories");
+            throw new CardServiceException("Cannot add the same card details to multiple categories");
+        }
+    }
+
+    private void validateCardDetailsExistence(Topic topic, CardDetails cardDetails) {
+        CardDetails cardDetailsMatchingTextAndCategory =
+                cardDetailsRepository.findCardDetailsByTopicAndText(topic, cardDetails.getText());
+
+        if (cardDetailsMatchingTextAndCategory != null) {
+            logger.warn("User tried to create card details with already existing text");
+            throw new CardServiceException("A card with that text already exists in the topic");
+        }
+    }
+
 }

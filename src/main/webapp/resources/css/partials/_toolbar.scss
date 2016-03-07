@@ -14,9 +14,11 @@
     }
 
     .toolbar-menu a:hover {
-      color: $text-color-dark;
-      background-color: $primary-color-light;
-      transition: all .55s cubic-bezier(.25, .8, .25, 1);
+
+      &:hover, &:active {
+        background-color: $primary-color-light;
+        transition: all .55s cubic-bezier(.25, .8, .25, 1);
+      }
     }
 
     .toolbar-brand {
@@ -66,7 +68,7 @@
         }
       }
 
-      .toolbar-dropdown-menu-item-container{
+      .toolbar-dropdown-menu-item-container {
         display: block;
         clear: both;
         font-weight: normal;
@@ -79,16 +81,20 @@
         display: block;
         text-decoration: none;
 
-        color: $text-color-neutral;
+        color: $text-color-dark;
+
+        &:hover,
+        &:active,
+        &:focus,
+        &.active,
+        &.open {
+          background-color: $color-accent !important;
+          color: $text-color-light !important;
+        }
 
         @media screen and (min-width: $breakpoint-tablet) {
           padding: 1em 3em;
         }
-      }
-
-      .toolbar-dropdown-menu-item:hover {
-        background-color: $primary-color-light;
-        color: $text-color-light;
       }
     }
     .toolbar-user {
@@ -98,9 +104,14 @@
   }
 }
 
+//bootstrap issues
 .navbar-inverse .navbar-toggle {
   margin-right: 30px !important;
   border: none !important;
 }
 
-
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+  background-color: $primary-color-dark;
+}

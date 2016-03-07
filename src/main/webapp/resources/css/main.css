@@ -5917,8 +5917,7 @@ a {
     padding-right: 0; }
     .toolbar .toolbar-container *, .toolbar .toolbar-container .toolbar-menu a {
       color: #f8f8f8; }
-    .toolbar .toolbar-container .toolbar-menu a:hover {
-      color: #4f4f4f;
+    .toolbar .toolbar-container .toolbar-menu a:hover:hover, .toolbar .toolbar-container .toolbar-menu a:hover:active {
       background-color: #F44336;
       transition: all 0.55s cubic-bezier(0.25, 0.8, 0.25, 1); }
     .toolbar .toolbar-container .toolbar-brand {
@@ -5961,13 +5960,13 @@ a {
         padding: 1em;
         display: block;
         text-decoration: none;
-        color: dimgray; }
+        color: #4f4f4f; }
+        .toolbar .toolbar-container .toolbar-dropdown-menu .toolbar-dropdown-menu-item:hover, .toolbar .toolbar-container .toolbar-dropdown-menu .toolbar-dropdown-menu-item:active, .toolbar .toolbar-container .toolbar-dropdown-menu .toolbar-dropdown-menu-item:focus, .toolbar .toolbar-container .toolbar-dropdown-menu .toolbar-dropdown-menu-item.active, .toolbar .toolbar-container .toolbar-dropdown-menu .toolbar-dropdown-menu-item.open {
+          background-color: #2a2c2b !important;
+          color: #f8f8f8 !important; }
         @media screen and (min-width: 600px) {
           .toolbar .toolbar-container .toolbar-dropdown-menu .toolbar-dropdown-menu-item {
             padding: 1em 3em; } }
-      .toolbar .toolbar-container .toolbar-dropdown-menu .toolbar-dropdown-menu-item:hover {
-        background-color: #F44336;
-        color: #f8f8f8; }
     .toolbar .toolbar-container .toolbar-user {
       max-height: 33.33333px;
       margin: 0 0.5em; }
@@ -5975,6 +5974,11 @@ a {
 .navbar-inverse .navbar-toggle {
   margin-right: 30px !important;
   border: none !important; }
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+  background-color: #B71C1C; }
 
 footer {
   position: absolute;
@@ -6344,6 +6348,14 @@ form.invitation-accept-form {
   -moz-border-radius: 0.5em;
   -webkit-border-radius: 0.5em;
   border-radius: 0.5em; }
+
+.card-clickable {
+  cursor: pointer; }
+  .card-clickable:hover {
+    box-shadow: 0 0 1.25em #B71C1C; }
+
+.card-active {
+  box-shadow: 0 0 1.25em #B71C1C; }
 
 .card-small {
   display: inline-block;

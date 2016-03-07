@@ -82,6 +82,7 @@ export class CategoryDetailComponent implements OnInit {
 
     public onCardClick(card:CardDetails):void {
         this.currentCard = card;
+        console.log(card.text);
     }
 
 }

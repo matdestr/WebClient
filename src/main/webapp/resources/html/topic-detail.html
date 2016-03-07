@@ -62,7 +62,8 @@
                 <card-detail *ngFor="#card of cards"
                              [card]="card"
                              [cardClassName]="'card-small'"
-                             (click)="onCategoryCardClick(card)">
+                             [clickable]="true"
+                             (cardClick)="onCategoryCardClick($event)">
                 </card-detail>
             </ul>
 
@@ -85,7 +86,9 @@
                                 <card-detail *ngFor="#catCard of categoryCards"
                                              [card]="catCard"
                                              [cardClassName]="'card-small'"
-                                             (click)="onCategoryCardClick(catCard)">
+                                             [selectable]="true"
+                                             [clickable]="true"
+                                             (cardClick)="onCategoryCardClick($event)">
                                 </card-detail>
                             </ul>
 

@@ -51,7 +51,6 @@ export class TopicDetailComponent implements OnInit {
     public openAddCardModal():void {
         this.categoryCards = [];
 
-        console.log(this.topic.categoryId.toString());
         this._cardDetailsService.getCardDetailsOfCategory(this.topic.categoryId).subscribe(
             data => {
                 for (let card of data.json())
@@ -60,7 +59,17 @@ export class TopicDetailComponent implements OnInit {
     }
 
     public onCategoryCardClick(card:CardDetails):void {
-        this.categoryCardsToAdd.push(card);
+        var index = this.categoryCardsToAdd.indexOf(card);
+        console.log(index);
+        console.log(JSON.stringify(card));
+
+        if (index < 0) {
+            this.categoryCardsToAdd.push(card);
+
+        } else {
+            if (!card.active)
+                this.categoryCardsToAdd.splice(index, 1);
+        }
     }
 
     public onAddCardsClick() {
@@ -68,9 +77,9 @@ export class TopicDetailComponent implements OnInit {
             this._cardDetailsService.addCardToTopic(this.topic.topicId, catCard.cardDetailsId).subscribe(
                 data => {
                     let card = data.json();
-                     this.cards.push(CardDetails.createEmptyCard().deserialize(card));
+                    this.cards.push(CardDetails.createEmptyCard().deserialize(card));
                 },
-                error => console.log(error.json())
+                error => console.error(error.json())
             );
         }
     }

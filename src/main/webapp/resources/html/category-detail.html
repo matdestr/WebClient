@@ -84,7 +84,8 @@
                 <card-detail *ngFor="#card of cards" data-toggle="modal" data-target="#cardModal"
                              [card]="card"
                              [cardClassName]="'card-small'"
-                             (click)="onCardClick(card)">
+                             [clickable]="true"
+                             (cardClick)="onCardClick($event)">
                 </card-detail>
             </ul>
 
@@ -102,7 +103,6 @@
             </button>
 
             <hr>
-
 
 
             <h2>Tags</h2>
