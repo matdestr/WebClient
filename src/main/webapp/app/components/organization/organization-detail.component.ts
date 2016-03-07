@@ -66,5 +66,9 @@ export class OrganizationDetailComponent {
     }
 
 
+    public toSession():void{
+        this._router.navigate(["/ActiveSession"])
+    }
+
 }
 

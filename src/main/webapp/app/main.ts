@@ -14,12 +14,13 @@ import {TagService} from "./services/tag.service";
 import {TopicService} from "./services/topic.service";
 import {InvitationService} from "./services/invitation.service";
 import {CardDetailsService} from "./services/card-details.service";
+import {SessionService} from  "./services/session.service"
 
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     TokenService, UserService, OrganizationService, CategoryService,
-    TagService, TopicService, InvitationService, CardDetailsService,
+    TagService, TopicService, InvitationService, CardDetailsService,SessionService,
     ToolbarComponent,
     provide(AuthHttp, {
         useFactory: (http) => {

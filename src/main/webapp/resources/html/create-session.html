@@ -1,0 +1,97 @@
+<toolbar></toolbar>
+
+<div id="main-content">
+    <div class="forms container-fluid flex-container">
+        <div class="forms-panel panel col-sm-6 flex-item">
+
+            <div class="panel-heading">
+                <h1 class="separator-dotted">Create a new session</h1>
+
+                <div id="error" *ngIf="errors.length > 0" class="alert alert-danger">
+                    <ul>
+                        <li *ngFor="#error of errors; #i = index">
+                            {{error}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form #organizationForm="ngForm"
+                      (ngSubmit)="onSubmit(organizationForm)"
+                      name="form-new-session"
+                      role="form">
+                    <section class="forms-section">
+                        <h2>General information</h2>
+
+                        <div class="input-group forms-input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-minus"></i></span>
+                            <input id="minNumberOfCardsPerParticipant"
+                                   name="minNumberOfCardsPerParticipant-name"
+                                   class="form-control"
+                                   type="number"
+                                   placeholder="Minimum number of cards per participant"
+                                   required
+                                   #categoryName="ngForm"
+                                   [(ngModel)]="model.minNumberOfCardsPerParticipant">
+                        </div>
+
+                        <div class="input-group forms-input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+                            <input id="maxNumberOfCardsPerParticipant"
+                                   name="maxNumberOfCardsPerParticipant-name"
+                                   class="form-control"
+                                   type="number"
+                                   placeholder="Maximum number of cards per participant"
+                                   required
+                                   #categoryName="ngForm"
+                                   [(ngModel)]="model.maxNumberOfCardsPerParticipant">
+                        </div>
+
+                        <div class="input-group forms-input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                            <input id="amountOfCircles"
+                                   name="amountOfCircles-name"
+                                   class="form-control"
+                                   type="number"
+                                   placeholder="Amount of circles"
+                                   required
+                                   min="3"
+                                   max="6"
+                                   #categoryName="ngForm"
+                                   [(ngModel)]="model.amountOfCircles">
+                        </div>
+
+                        <hr>
+
+                        <label><input id="participantsCanAddCards"
+                                      name="participantsCanAddCards-name"
+                                      class="form-control"
+                                      type="checkbox"
+                                      placeholder="Participants can add cards"
+                                      #categoryName="ngForm"
+                                      [(ngModel)]="model.participantsCanAddCards">Participants can add cards</label>
+
+                        <label><input id="cardCommentsAllowed"
+                                      name="cardCommentsAllowed-name"
+                                      class="form-control"
+                                      type="checkbox"
+                                      placeholder="Card comments allowed"
+                                      #categoryName="ngForm"
+                                      [(ngModel)]="model.cardCommentsAllowed">Card comments allowed</label>
+
+                        <!-- TODO: @mathisse type session field -->
+
+
+                    </section>
+
+                    <div class="forms-input-group clear-both text-center">
+                        <button type="submit"
+                                name="add-session">
+                            <i class="glyphicon glyphicon-floppy-disk"></i> Create
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

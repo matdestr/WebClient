@@ -85,4 +85,8 @@ export class CategoryDetailComponent implements OnInit {
         console.log(card.text);
     }
 
+    public toAddNewSession(categoryId:number) {
+        this._router.navigate(["/CreateSession", {categoryId: categoryId}])
+    }
+
 }

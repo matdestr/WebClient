@@ -14,12 +14,12 @@ public interface SessionGameService {
     void setUserJoined(Session session, User user);
     void setUserLeft(Session session, User user);
     //void confirmUsersJoined(Session session);
-    
-    void addCardDetails(User user, CardDetails cardDetails);
-    void confirmAddedCards();
+
+    void addCardDetails(Session session, User user, CardDetails cardDetails);
+    void confirmAddedCards(Session session);
     
     void addComment(User user, CardDetails cardDetails, Comment comment);
-    void confirmReviews();
+    void confirmReviews(Session session);
 
     void startGame(Session session);
     Set<CardPosition> getCardPositions(Session session);

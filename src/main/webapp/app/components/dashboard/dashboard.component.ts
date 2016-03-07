@@ -1,23 +1,47 @@
-import {Component, OnInit} from 'angular2/core'
+import {Component, OnInit, Input} from "angular2/core";
+import {Router} from "angular2/router";
+import {RouteParams} from "angular2/router";
 import {ToolbarComponent} from "../widget/toolbar.component";
-import {getUsername, AuthConfig, tokenNotExpired} from "../../libraries/angular2-jwt";
-import {CanActivate} from "angular2/router";
-import {isTokenExpired} from "../../services/token.service";
+import {OrganizationService} from "../../services/organization.service";
+import {User} from "../../entities/user/user";
+import {UserService} from "../../services/user.service";
+import {getUsername} from "../../libraries/angular2-jwt";
+import {Organization} from "../../entities/organization/organization";
 
 @Component({
     selector: 'dashboard',
-    template: `
-        <toolbar></toolbar>
-    `,
+    templateUrl: 'html/dashboard.html',
     directives: [ToolbarComponent]
 })
-//@CanActivate(() => isTokenExpired())
-export class DashboardComponent implements OnInit{
+export class DashboardComponent {
+    public user: User = User.createEmptyUser();
+    private organizations: Organization[]=[];
 
-    public constructor(){
+    constructor(private _router:Router,
+                private _routeArgs:RouteParams,
+                private _organizationService: OrganizationService,
+                private _userService: UserService) {
+        var token = localStorage.getItem('token');
+
+        this._userService.getUser(getUsername(token)).subscribe((user:User) => {
+            this.user = this.user.deserialize(user);
+            this.getOrganizations();
+        });
     }
 
     ngOnInit():any {
         var token = localStorage.getItem('token');
     }
+
+    public getOrganizations(){
+        this._organizationService.getOrganizationsByUser(this.user.username).subscribe(
+            data => {
+                this.organizations = data.json();
+            } , error => {console.log(error); this.organizations = []});
+    }
+
+    public toOrganization(organizationId: number){
+        this._router.navigate(["/OrganizationDetail", { organizationId : organizationId }])
+    }
+
 }

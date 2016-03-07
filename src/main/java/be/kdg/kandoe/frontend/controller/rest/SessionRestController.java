@@ -1,5 +1,6 @@
 package be.kdg.kandoe.frontend.controller.rest;
 
+import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
@@ -8,6 +9,7 @@ import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.*;
+import be.kdg.kandoe.frontend.controller.resources.cards.CreateCardDetailsResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.SessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.*;
 import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateAsynchronousSessionResource;
@@ -28,12 +30,12 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/sessions")
+@RequestMapping("/api/sessions")
 @PreAuthorize("isAuthenticated()")
 public class SessionRestController {
     @Autowired
     private OrganizationService organizationService;
-    
+
     @Autowired
     private CategoryService categoryService;
 
@@ -42,7 +44,7 @@ public class SessionRestController {
 
     @Autowired
     private SessionService sessionService;
-    
+
     @Autowired
     private SessionGameService sessionGameService;
 
@@ -57,31 +59,31 @@ public class SessionRestController {
     public ResponseEntity<SessionResource> getSession(@AuthenticationPrincipal User user,
                                                       @PathVariable("sessionId") int sessionId) {
         Session session = sessionService.getSessionById(sessionId);
-        
+
         if (!session.isUserParticipant(user.getUserId()) && session.getOrganizer().getUserId() != user.getUserId())
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        
+
         SessionResource sessionResource = mapper.map(session, SessionResource.class);
-        
+
         return new ResponseEntity<>(sessionResource, HttpStatus.OK);
     }
-    
+
     //@PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createSession(@AuthenticationPrincipal User user, 
+    public ResponseEntity createSession(@AuthenticationPrincipal User user,
                                         @Valid @RequestBody CreateSessionResource createSessionResource) {
         Category category = categoryService.getCategoryById(createSessionResource.getCategoryId());
         Topic topic = null;
 
         if (!category.getOrganization().isOrganizer(user))
             return new ResponseEntity(HttpStatus.FORBIDDEN);
-        
+
         if (createSessionResource.getTopicId() != null)
             topic = topicService.getTopicByTopicId(createSessionResource.getTopicId());
-        
+
         Session session = null;
         Class<? extends SessionResource> returnedResourceClass = null;
-        
+
         if (createSessionResource instanceof CreateSynchronousSessionResource) {
             session = mapper.map(createSessionResource, SynchronousSession.class);
             returnedResourceClass = SynchronousSessionResource.class;
@@ -89,20 +91,20 @@ public class SessionRestController {
             session = mapper.map(createSessionResource, AsynchronousSession.class);
             returnedResourceClass = AsynchronousSessionResource.class;
         }
-        
+
         if (session == null)
             throw new CanDoControllerRuntimeException("Session is of an unknown type", HttpStatus.BAD_REQUEST);
 
         session.setCategory(category);
         session.setTopic(topic);
         session.setOrganizer(user);
-        
+
         session = sessionService.addSession(session);
         SessionResource returnedResource = mapper.map(session, returnedResourceClass);
-        
+
         return new ResponseEntity(returnedResource, HttpStatus.CREATED);
     }
-    
+
     //@PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{sessionId}/invite", method = RequestMethod.POST)
     public ResponseEntity inviteUser(@AuthenticationPrincipal User user,
@@ -110,38 +112,77 @@ public class SessionRestController {
                                      @RequestParam("userId") int userId) {
         Session session = sessionService.getSessionById(sessionId);
         User userToInvite = userService.getUserByUserId(userId);
-        
+
         if (!session.getCategory().getOrganization().isOrganizer(user))
             return new ResponseEntity(HttpStatus.FORBIDDEN);
-        
+
         sessionGameService.inviteUserForSession(session, userToInvite);
-        
+
         return new ResponseEntity(HttpStatus.CREATED);
     }
-    
+
     @RequestMapping(value = "/{sessionId}/join", method = RequestMethod.POST)
     public ResponseEntity joinSession(@AuthenticationPrincipal User user,
                                       @PathVariable("sessionId") int sessionId) {
         Session session = sessionService.getSessionById(sessionId);
-        
+
         if (!session.isUserParticipant(user.getUserId()))
             return new ResponseEntity(HttpStatus.FORBIDDEN);
-        
+
         sessionGameService.setUserJoined(session, user);
-        
+
         return new ResponseEntity(HttpStatus.CREATED);
     }
-    
+
+    @RequestMapping(value = "/{sessionId}/cards", method = RequestMethod.POST)
+    public ResponseEntity addCardToSession(@AuthenticationPrincipal User user,
+                                           @PathVariable("sessionId") int sessionId,
+                                           @Valid @RequestBody CreateCardDetailsResource createCardDetailsResource) {
+
+        Session session = sessionService.getSessionById(sessionId);
+
+        CardDetails cardDetails = mapper.map(createCardDetailsResource, CardDetails.class);
+        sessionGameService.addCardDetails(session, user, cardDetails);
+
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{sessionId}/cards", method = RequestMethod.PUT)
+    public ResponseEntity setCardAddingDone(@AuthenticationPrincipal User user,
+                                            @PathVariable("sessionId") int sessionId) {
+
+        Session session = sessionService.getSessionById(sessionId);
+        if (session.getOrganizer().getUserId() != user.getUserId()){
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+        sessionGameService.confirmAddedCards(session);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{sessionId}/reviews", method = RequestMethod.PUT)
+    public ResponseEntity setCardReviewsDone(@AuthenticationPrincipal User user,
+                                            @PathVariable("sessionId") int sessionId) {
+
+        Session session = sessionService.getSessionById(sessionId);
+        if (session.getOrganizer().getUserId() != user.getUserId()){
+            return new ResponseEntity(HttpStatus.CONFLICT);
+        }
+        sessionGameService.confirmReviews(session);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     /*public ResponseEntity startSession(@AuthenticationPrincipal User user, @RequestParam("sessionId") int sessionId) {
         
         
         return new ResponseEntity(HttpStatus.CREATED);
     }*/
-    
+
     //@PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/add/{sessionId}", method = RequestMethod.POST)
-    public ResponseEntity addUserToSession(@AuthenticationPrincipal User user, 
-                                           @RequestParam int userId, @PathVariable int sessionId){
+    public ResponseEntity addUserToSession(@AuthenticationPrincipal User user,
+                                           @RequestParam int userId, @PathVariable int sessionId) {
         /*Session session = sessionService.getSessionById(sessionId);
         User userToAdd = userService.getUserByUserId(userId);
 

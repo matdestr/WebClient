@@ -77,7 +77,7 @@ public abstract class Session {
     
     @OneToMany(targetEntity = CardPosition.class, fetch = FetchType.EAGER)
     private List<CardPosition> cardPositions;
-    
+
     @OneToMany(targetEntity = ChatMessage.class, mappedBy = "session", fetch = FetchType.EAGER)
     private List<ChatMessage> chatMessages;
     

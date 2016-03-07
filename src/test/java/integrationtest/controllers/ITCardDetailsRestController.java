@@ -450,4 +450,12 @@ public class ITCardDetailsRestController {
                         .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
+
+    @Test
+    public void getCardsOfNonExistingCategoryIsBadRequest() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/carddetails/categories/-1")
+                    .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
 }
