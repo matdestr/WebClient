@@ -13,6 +13,7 @@ import {TagService} from "../../services/tag.service";
 import {HttpStatus} from "../../util/http/http-status";
 import {CreateSessionModel} from "../../entities/session/dto/create-session-model";
 import {SessionService} from "../../services/session.service";
+import {isNumber} from "angular2/src/facade/lang";
 
 @Component({
     selector: 'create-session',
@@ -20,7 +21,8 @@ import {SessionService} from "../../services/session.service";
     directives: [ToolbarComponent]
 })
 export class CreateSessionComponent {
-    private categoryId: number;
+    private categoryId:number;
+    private topicId:number;
     private model:CreateSessionModel = CreateSessionModel.createEmptyCreateSession();
     private errors:Array<string> = [];
 
@@ -30,13 +32,14 @@ export class CreateSessionComponent {
                 private _sessionService:SessionService) {
 
         this.categoryId = +this._routeArgs.params["categoryId"];
+        this.topicId = +this._routeArgs.params["topicId"];
 
     }
 
 
     public onSubmit():void {
-        //TODO: @mathisse : create session service
-        this.model.categoryId =  this.categoryId;
+        this.model.categoryId = this.categoryId;
+        this.model.topicId = this.topicId;
         this._sessionService.saveSession(this.model).subscribe(
             data => this.handleData(data),
             error => this.handleErrors(error)
@@ -44,28 +47,34 @@ export class CreateSessionComponent {
     }
 
     public handleData(data:Response):void {
-        if (data.status == 201){
+        if (data.status == 201) {
             console.log("session created");
-            this._router.navigate(["/CategoryDetail", {categoryId:this.categoryId }])
+            if (this.topicId) {
+                this._router.navigate(["/TopicDetail", {topicId: this.topicId}])
+
+            } else {
+                this._router.navigate(["/CategoryDetail", {categoryId: this.categoryId}])
+
+            }
         }
     }
 
 
     public handleErrors(error:Response):void {
         this.resetForm();
-        /*let json = error.json();
+        let json = error.json();
 
-        switch (error.status) {
-            case HttpStatus.UNPROCESSABLE_ENTITY:
-                json.fieldErrors.forEach(e => this.errors.push(e.message));
-                break;
-            case HttpStatus.BAD_REQUEST:
-                this.errors.push(json.message);
-                break;
-            default:
-                console.log(error);
-                this.errors.push("Oops. Something went wrong!");
-        }  */
+         switch (error.status) {
+         case HttpStatus.UNPROCESSABLE_ENTITY:
+         json.fieldErrors.forEach(e => this.errors.push(e.message));
+         break;
+         case HttpStatus.BAD_REQUEST:
+         this.errors.push(json.message);
+         break;
+         default:
+         console.log(error);
+         this.errors.push("Oops. Something went wrong!");
+         }
 
         console.log(error);
     }

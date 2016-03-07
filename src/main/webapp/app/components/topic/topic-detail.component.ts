@@ -82,4 +82,8 @@ export class TopicDetailComponent implements OnInit {
     public onCardClick(card:CardDetails):void {
         this.currentCard = card;
     }
+
+    public toAddNewSession(categoryId:number,topicId:number) {
+        this._router.navigate(["/CreateSession", {categoryId: categoryId, topicId: topicId}])
+    }
 }
