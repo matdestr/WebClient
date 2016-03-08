@@ -10,6 +10,7 @@ import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.frontend.controller.resources.cards.CreateCardDetailsResource;
+import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CategoryResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.SessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.*;
 import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateAsynchronousSessionResource;
@@ -30,7 +31,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/sessions")
+@RequestMapping("/api/sessions")
 @PreAuthorize("isAuthenticated()")
 public class SessionRestController {
     @Autowired
@@ -57,7 +58,7 @@ public class SessionRestController {
     @Autowired
     private MapperFacade mapper;
 
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{sessionId}", method = RequestMethod.GET)
     public ResponseEntity<SessionResource> getSession(@AuthenticationPrincipal User user,
                                                       @PathVariable("sessionId") int sessionId) {
@@ -75,7 +76,6 @@ public class SessionRestController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createSession(@AuthenticationPrincipal User user,
                                         @Valid @RequestBody CreateSessionResource createSessionResource) {
-        //TODO check if user is part of any organisation
         Category category = categoryService.getCategoryById(createSessionResource.getCategoryId());
         Topic topic = null;
 
@@ -124,7 +124,6 @@ public class SessionRestController {
 
         return new ResponseEntity(HttpStatus.CREATED);
     }
-
 
     @RequestMapping(value = "/{sessionId}/join", method = RequestMethod.POST)
     public ResponseEntity joinSession(@AuthenticationPrincipal User user,

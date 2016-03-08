@@ -25,7 +25,7 @@
             <p *ngIf="invitations.length == 1">You have 1 open invitation.</p>
             <p *ngIf="invitations.length != 1">You have {{ invitations.length }} open invitations.</p>
 
-            <invitations [invitations]="invitations"></invitations>
+            <invitations [invitations]="invitations" (onaccept)="onInviteAccepted(i)"></invitations>
 
         </div>
     </div>

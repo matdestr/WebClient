@@ -1,5 +1,6 @@
 package acceptancetest;
 
+import acceptancetest.helpers.LoginHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -13,7 +14,7 @@ public class ATOrganizations {
     private String baseUrl;
     private String username = "user";
     private String password = "pass";
-    
+
     @Before
     public void setup() {
         WebDriver driver = new ChromeDriver();

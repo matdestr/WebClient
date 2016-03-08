@@ -1,20 +1,23 @@
-import {Component, OnInit, Input} from "angular2/core";
-import {ToolbarComponent} from "../widget/toolbar.component";
-import {Router} from "angular2/router";
-import {RouteParams} from "angular2/router";
-import {User} from "../../entities/user/user";
-import {Category} from "../../entities/category/category";
-import {CategoryService} from "../../services/category.service";
+import {Component, OnInit} from "angular2/core";
+import {Router, RouteParams} from "angular2/router";
+
 import {Topic} from "../../entities/topic/topic";
-import {TopicService} from "../../services/topic.service";
-import {CardDetailsService} from "../../services/card-details.service";
+import {Category} from "../../entities/category/category";
 import {CardDetails} from "../../entities/category/card-details";
-import {error} from "util";
+import {User} from "../../entities/user/user";
+
+import {TopicService} from "../../services/topic.service";
+import {CategoryService} from "../../services/category.service";
+import {CardDetailsService} from "../../services/card-details.service";
+
+import {ToolbarComponent} from "../widget/toolbar.component";
 import {CardDetailComponent} from "../cards/card-detail.component";
+
+import {error} from "util";
 
 @Component({
     selector: 'topic-detail',
-    templateUrl: 'html/topic-detail.html',
+    templateUrl: 'html/topic/topic-detail.html',
     directives: [ToolbarComponent, CardDetailComponent]
 })
 export class TopicDetailComponent implements OnInit {
@@ -23,7 +26,6 @@ export class TopicDetailComponent implements OnInit {
     private currentCard:CardDetails;
     private categoryCards:CardDetails[] = [];
     private categoryCardsToAdd:CardDetails[] = [];
-
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
@@ -49,37 +51,15 @@ export class TopicDetailComponent implements OnInit {
         );
     }
 
-    public openAddCardModal():void {
-        this.categoryCards = [];
-
-        console.log(this.topic.categoryId.toString());
-        this._cardDetailsService.getCardDetailsOfCategory(this.topic.categoryId).subscribe(
-            data => {
-                for (let card of data.json())
-                    this.categoryCards.push(CardDetails.createEmptyCard().deserialize(card));
-            });
-    }
-
-    public onCategoryCardClick(card:CardDetails):void {
-        this.categoryCardsToAdd.push(card);
-    }
-
-    public onAddCardsClick() {
-        for (let card of this.categoryCardsToAdd) {
-            this._cardDetailsService.addCardToTopic(this.topic.topicId, card.cardDetailsId).subscribe(
-                data => {
-                    this.cards = [];
-
-                    for (let card of data.json())
-                        this.cards.push(CardDetails.createEmptyCard().deserialize(card));
-                },
-                error => console.log(error.json())
-            );
-            console.log(card.text);
-        }
+    public openCardChooser():void {
+        this._router.navigate(["/TopicCardChooser", {topicId: this.topic.topicId}]);
     }
 
     public onCardClick(card:CardDetails):void {
         this.currentCard = card;
+    }
+
+    public toAddNewSession(categoryId:number, topicId:number) {
+        this._router.navigate(["/CreateSession", {categoryId: categoryId, topicId: topicId}])
     }
 }

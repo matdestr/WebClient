@@ -5,6 +5,7 @@ export class Invitation {
     public invitedUser:User;
     public organization:Organization;
     public acceptId:string;
+    public email:string;
 
     public accepted:boolean;
 

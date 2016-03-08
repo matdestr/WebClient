@@ -31,6 +31,26 @@ public class InvitationServiceImpl implements InvitationService {
         invitation.setOrganization(organization);
         invitation.setInvitedUser(user);
         invitation.setAcceptId(uuid);
+        invitation.setEmail(user.getEmail());
+
+        return saveInvitation(invitation);
+    }
+
+    @Override
+    public Invitation generateInvitationForUnexistingUser(String email, Organization organization) {
+        if (email == null)
+            throw new InvitationServiceException("email cannot be null");
+
+        if (organization == null)
+            throw new InvitationServiceException("organization cannot be null");
+
+        String uuid = UUID.randomUUID().toString();
+
+        Invitation invitation = new Invitation();
+        invitation.setAcceptId(uuid);
+        invitation.setOrganization(organization);
+        invitation.setEmail(email);
+        invitation.setInvitedUser(null);
 
         return saveInvitation(invitation);
     }
@@ -61,5 +81,13 @@ public class InvitationServiceImpl implements InvitationService {
     @Override
     public void invalidateInvitation(Invitation invitation) {
         invitationRepository.delete(invitation);
+    }
+
+    @Override
+    public List<Invitation> getInvitationsByEmail(String email) {
+        if (email == null)
+            throw new InvitationServiceException("email cannot be null");
+
+        return invitationRepository.findInvitationsByEmail(email);
     }
 }

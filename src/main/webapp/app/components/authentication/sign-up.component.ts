@@ -16,7 +16,7 @@ import {ErrorDialogComponent} from "../widget/error-dialog.component";
     directives: [ErrorDialogComponent]
 })
 export class SignUpComponent {
-    private errorMessages:string[] = new Array();
+    private errorMessages:string[] = [];
     private form: RegisterModel = new RegisterModel;
 
     constructor(private _userService: UserService, private _tokenService: TokenService, private _router: Router){
@@ -52,7 +52,10 @@ export class SignUpComponent {
         var obj = JSON.parse(error.text());
         console.log(obj);
         if (obj.fieldErrors){
-            obj.fieldErrors.forEach(e => this.onError(e.message));
+            if (obj.fieldErrors.length > 4)
+                this.onError("Please fill in all fields.");
+            else
+                obj.fieldErrors.forEach(e => this.onError(e.message));
         } else {
             this.onError(obj.message);
         }
@@ -66,10 +69,12 @@ export class SignUpComponent {
     }
 
     private onError(message:string){
+        var self:any = this;
+
         if (message) {
             this.errorMessages.push(message);
         } else {
-            this.errorMessages = new Array();
+            this.errorMessages = [];
         }
     }
 }

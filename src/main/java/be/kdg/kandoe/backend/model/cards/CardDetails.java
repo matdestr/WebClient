@@ -36,7 +36,7 @@ public class CardDetails {
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
     private Category category;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Size(min = 1)
     private Set<Topic> topics;
 

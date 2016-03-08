@@ -25,9 +25,7 @@ export class CategoryService {
         options.search = searchParams;
         options.headers = headers;
 
-        return this._authHttp
-            .post(CategoryService.endPoint, JSON.stringify(category), options)
-            .retry(2);
+        return this._authHttp.post(CategoryService.endPoint, JSON.stringify(category), options);
     }
 
 
@@ -43,5 +41,11 @@ export class CategoryService {
 
     public getCategory(categoryId:number):Observable<Response> {
         return this._authHttp.get(CategoryService.endPoint + categoryId);
+    }
+
+    public getSessionsFromCategory(categoryId: number): Observable<Response>{
+
+        return this._authHttp
+            .get(CategoryService.endPoint + categoryId +"/sessions");
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,5 +86,16 @@ public class SessionServiceImpl implements SessionService {
             throw new SessionServiceException("Session couldn't be saved");
         }
         return updatedSession;
+    }
+
+    @Override
+    public List<Session> getSessionsFromCategory(int categoryId) {
+        List<Session> sessionList = sessionRepository.findSessionsByCategoryCategoryId(categoryId);
+
+        if(sessionList.isEmpty()){
+            throw new SessionServiceException(String.format("No sessions found for category id %d", categoryId));
+        }
+
+        return sessionList;
     }
 }

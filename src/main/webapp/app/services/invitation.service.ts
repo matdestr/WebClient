@@ -13,10 +13,10 @@ export class InvitationService {
 
     }
 
-    public getInvitationsForUser(userId:number) : Observable<Response> {
+    public getInvitationsForUser(email:string) : Observable<Response> {
         var searchParams:URLSearchParams = new URLSearchParams();
         var requestOptions:RequestOptions = new RequestOptions();
-        searchParams.append("userId", "" + userId);
+        searchParams.append("email", "" + email);
 
         requestOptions.search = searchParams;
 

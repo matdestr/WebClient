@@ -4,6 +4,18 @@
   @include border-radius(0.5em);
 }
 
+.card-clickable{
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 1.25em $primary-color-dark;
+  }
+}
+
+.card-active{
+  box-shadow: 0 0 1.25em $primary-color-dark;
+}
+
 .card-small {
   @extend .card;
   display: inline-block;

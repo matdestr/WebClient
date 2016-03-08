@@ -62,10 +62,12 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../s
                     }
                 };
                 SignInComponent.prototype.onError = function (message) {
+                    var self = this;
                     if (message) {
                         var obj = JSON.parse(message);
-                        if (obj)
+                        if (obj) {
                             this.errorMessages.push(obj.message);
+                        }
                     }
                     else
                         this.errorMessages = [];
@@ -74,9 +76,6 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../s
                     if (typeof (message) !== "string")
                         return null;
                     return "{\"message\":\"" + message + "\"}";
-                };
-                SignInComponent.prototype.goToSignUp = function () {
-                    this._router.navigate([""]);
                 };
                 SignInComponent = __decorate([
                     core_1.Component({

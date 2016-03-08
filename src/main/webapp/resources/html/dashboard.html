@@ -1,0 +1,33 @@
+<toolbar></toolbar>
+<div id="main-content" >
+    <div id="container">
+        <h1>My Dashboard</h1>
+        <h2>All Organizations</h2>
+        <ul>
+            <div class="row" *ngFor="#organization of organizations">
+                <div class="col-md-2 spaceUnder">
+                    <li class="organization-name-link" (click)="toOrganization(organization.organizationId)">{{organization.name}}</li>
+                </div>
+            </div>
+        </ul>
+
+
+        <h2>Active Sessions</h2>
+
+        <div>
+            <h3>Session Name</h3>
+            <p>30 minutes until end of session</p>
+            <p>TODO img of snapshot</p>
+        </div>
+
+        <h2>Future Sessions</h2>
+        <div>
+            <h3>Session Name</h3>
+            <p>30 minutes until begin of session</p>
+            <p>TODO img of snapshot</p>
+        </div>
+
+        <h2>Previous Sessions</h2>
+        <p>TODO img of snapshot</p>
+    </div>
+</div>

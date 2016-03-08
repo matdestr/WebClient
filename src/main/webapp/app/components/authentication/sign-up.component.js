@@ -36,7 +36,7 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                     this._userService = _userService;
                     this._tokenService = _tokenService;
                     this._router = _router;
-                    this.errorMessages = new Array();
+                    this.errorMessages = [];
                     this.form = new register_1.RegisterModel;
                 }
                 SignUpComponent.prototype.onSubmit = function () {
@@ -62,7 +62,10 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                     var obj = JSON.parse(error.text());
                     console.log(obj);
                     if (obj.fieldErrors) {
-                        obj.fieldErrors.forEach(function (e) { return _this.onError(e.message); });
+                        if (obj.fieldErrors.length > 4)
+                            this.onError("Please fill in all fields.");
+                        else
+                            obj.fieldErrors.forEach(function (e) { return _this.onError(e.message); });
                     }
                     else {
                         this.onError(obj.message);
@@ -74,11 +77,12 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                     this.form.verifyPassword = "";
                 };
                 SignUpComponent.prototype.onError = function (message) {
+                    var self = this;
                     if (message) {
                         this.errorMessages.push(message);
                     }
                     else {
-                        this.errorMessages = new Array();
+                        this.errorMessages = [];
                     }
                 };
                 SignUpComponent = __decorate([

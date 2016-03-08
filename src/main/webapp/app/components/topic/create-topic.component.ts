@@ -10,12 +10,12 @@ import {Topic} from "../../entities/topic/topic";
 import {CategoryService} from "../../services/category.service"
 import {Category} from "../../entities/category/category"
 //import {CreateCategoryModel} from "../../entities/category/category";
-import {CreateTopicModel} from "../../entities/topic/createTopicForm";
+import {CreateTopicModel} from "../../entities/topic/create-topic-model";
 import {TopicService} from "../../services/topic.service";
 
 @Component({
     selector: 'create-topic',
-    templateUrl: 'html/create-topic.html',
+    templateUrl: 'html/topic/create-topic.html',
     directives: [ToolbarComponent]
 })
 export class CreateTopicComponent {
