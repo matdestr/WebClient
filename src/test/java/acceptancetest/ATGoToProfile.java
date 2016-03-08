@@ -1,6 +1,7 @@
 package acceptancetest;
 
 
+import acceptancetest.helpers.LoginHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
