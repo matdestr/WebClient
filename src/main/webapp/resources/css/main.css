@@ -5875,6 +5875,39 @@ a {
   -ms-flex-item-align: auto;
   align-self: auto; }
 
+.margin-container {
+  margin: 0.5em; }
+
+.margin-container-1 {
+  margin: 0.5em 0.5em 0.5em; }
+
+.margin-container-2 {
+  margin: 1em 0.5em 0.5em; }
+
+.margin-container-3 {
+  margin: 1.5em 0.5em 0.5em; }
+
+.margin-container-4 {
+  margin: 2em 0.5em 0.5em; }
+
+.margin-container-5 {
+  margin: 2.5em 0.5em 0.5em; }
+
+.margin-container-6 {
+  margin: 3em 0.5em 0.5em; }
+
+.margin-container-7 {
+  margin: 3.5em 0.5em 0.5em; }
+
+.margin-container-8 {
+  margin: 4em 0.5em 0.5em; }
+
+.margin-container-9 {
+  margin: 4.5em 0.5em 0.5em; }
+
+.margin-container-10 {
+  margin: 5em 0.5em 0.5em; }
+
 .btn-large-red {
   cursor: pointer;
   padding: 0;
@@ -6269,7 +6302,8 @@ h2 {
 #organization-detail {
   margin-left: 2em; }
 
-.addNewButton {
+.add-new-button {
+  margin: 0.5em 1em;
   cursor: pointer;
   padding: 0;
   width: 15em;
@@ -6291,6 +6325,8 @@ h2 {
   -moz-transition: all 0.2s ease;
   -webkit-transition: all 0.2s ease;
   -ms-transition: all 0.2s ease; }
+  .add-new-button.add-new-button-secondary {
+    background: #2a2c2b; }
 
 .categoryName {
   font-size: 20px;
@@ -6556,6 +6592,11 @@ form.invitation-accept-form {
   color: dimgray;
   margin-left: 4em; }
 
+.title {
+  color: #B71C1C;
+  font-size: 3em;
+  margin-bottom: 1em; }
+
 body {
   position: relative;
   min-height: 100%;
@@ -6563,11 +6604,6 @@ body {
   padding-bottom: 5.5em;
   user-drag: none;
   -webkit-user-drag: none;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
   background-color: white;
   color: dimgray;
   font-family: "Myriad Pro", "WeblySleek UI", Helvetica, sans-serif;

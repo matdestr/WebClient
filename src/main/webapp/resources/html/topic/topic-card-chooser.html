@@ -1,0 +1,35 @@
+<toolbar></toolbar>
+
+<section>
+
+    <h1 class="title text-center">Choose the cards you want to add</h1>
+
+    <div class="container">
+        <div class="row">
+            <search-box (update)="searchTerm = $event"></search-box>
+        </div>
+    </div>
+
+    <div class="margin-container-4 text-center">
+        <ul>
+            <card-detail *ngFor="#catCard of categoryCards | cardSearch:searchTerm"
+                         [card]="catCard"
+                         [cardClassName]="'card-small'"
+                         [selectable]="true"
+                         [clickable]="true"
+                         (cardClick)="onCategoryCardClick($event)">
+            </card-detail>
+        </ul>
+
+
+        <div class="margin-container-6">
+            <button (click)="onAddCardsClick()"
+                    name="add-card"
+                    class="add-new-button">
+                <i class="glyphicon glyphicon-floppy-disk"></i> Create
+            </button>
+            <button type="button" class="add-new-button add-new-button-secondary" (click)="navigateUp()">Dismiss</button>
+        </div>
+    </div>
+
+</section>
