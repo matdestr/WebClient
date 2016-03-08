@@ -7,12 +7,15 @@ import {User} from "../../entities/user/user";
 import {UserService} from "../../services/user.service";
 import {getUsername} from "../../libraries/angular2-jwt";
 import {Organization} from "../../entities/organization/organization";
+import {CanActivate} from "angular2/router";
+import {tokenNotExpired} from "../../libraries/angular2-jwt";
 
 @Component({
     selector: 'dashboard',
     templateUrl: 'html/dashboard.html',
     directives: [ToolbarComponent]
 })
+
 export class DashboardComponent {
     public user: User = User.createEmptyUser();
     private organizations: Organization[]=[];

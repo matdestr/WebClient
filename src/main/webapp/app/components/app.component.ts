@@ -47,5 +47,4 @@ import {TopicCardChooserComponent} from "./topic/topic-card-chooser.component";
     {path: '/categories/:categoryId/createSession', name:'CreateSession',       component:CreateSessionComponent}
 ])
 export class AppComponent {
-
 }

@@ -62,7 +62,10 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                     var obj = JSON.parse(error.text());
                     console.log(obj);
                     if (obj.fieldErrors) {
-                        obj.fieldErrors.forEach(function (e) { return _this.onError(e.message); });
+                        if (obj.fieldErrors.length > 4)
+                            this.onError("Please fill in all fields.");
+                        else
+                            obj.fieldErrors.forEach(function (e) { return _this.onError(e.message); });
                     }
                     else {
                         this.onError(obj.message);
@@ -80,9 +83,6 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                     }
                     else {
                         this.errorMessages = [];
-                        setTimeout(function () {
-                            self.errorMessages.splice(0);
-                        }, 2000);
                     }
                 };
                 SignUpComponent = __decorate([
