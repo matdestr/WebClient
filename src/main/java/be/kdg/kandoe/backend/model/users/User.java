@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "`User`")
 @NoArgsConstructor
+@EqualsAndHashCode (exclude = {"roles"})
 @Data
 public class User implements Serializable, UserDetails {
     @Id

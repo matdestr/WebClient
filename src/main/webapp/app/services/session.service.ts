@@ -23,7 +23,6 @@ export class SessionService {
 
     public saveSession(session: CreateSessionModel) : Observable<Response> {
         var searchParams: URLSearchParams = new URLSearchParams();
-        //searchParams.append("categoryId", "" + session.categoryId);
 
         var headers: Headers = new Headers();
         headers.append('Content-Type', 'application/json');
