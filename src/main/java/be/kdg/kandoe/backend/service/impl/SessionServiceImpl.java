@@ -77,4 +77,13 @@ public class SessionServiceImpl implements SessionService {
         }
         return savedSession;
     }
+
+    @Override
+    public Session updateSession(Session session) {
+        Session updatedSession = sessionRepository.save(session);
+        if (updatedSession == null) {
+            throw new SessionServiceException("Session couldn't be saved");
+        }
+        return updatedSession;
+    }
 }

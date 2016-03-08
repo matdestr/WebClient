@@ -88,7 +88,7 @@ public class CardServiceImpl implements CardService {
             
             // Updating both sides of the relationship is needed
             if (category.getCards() == null)
-                category.setCards(new ArrayList<>());
+                category.setCards(new HashSet<>());
 
             category.getCards().add(cardDetails);
             category = categoryRepository.save(category);
@@ -161,7 +161,11 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardDetails getCardDetailsById(int cardDetailsId) {
-        return cardDetailsRepository.findOne(cardDetailsId);
+        CardDetails cardDetails = cardDetailsRepository.findOne(cardDetailsId);
+        if (cardDetails == null){
+            throw new CardServiceException(String.format("No card found by %d", cardDetailsId));
+        }
+        return cardDetails;
     }
 
     @Override

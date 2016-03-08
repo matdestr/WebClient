@@ -30,7 +30,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         try {
             return organizationRepository.save(organization);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new OrganizationServiceException(String.format("Organization '%s' cannot be saved", organization.getName()), e);
         }
     }
@@ -38,10 +38,10 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public Organization getOrganizationById(int id) throws OrganizationServiceException {
         Organization organization = organizationRepository.findOne(id);
-        
+
         if (organization == null)
             throw new OrganizationServiceException(String.format("Could not find organization with ID %d", id));
-        
+
         return organization;
     }
 
@@ -55,7 +55,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         try {
             return organizationRepository.findOrganizationByName(name);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new OrganizationServiceException(String.format("Can't find organization %s", name), e);
         }
     }
@@ -74,10 +74,10 @@ public class OrganizationServiceImpl implements OrganizationService {
     public List<Organization> getOrganizationsByOwner(String ownerUsername) throws OrganizationServiceException {
         if (ownerUsername == null || ownerUsername.isEmpty())
             throw new OrganizationServiceException("owner username cannot be null or empty");
-        
+
         try {
             return organizationRepository.findOrganizationsByOwnerUsername(ownerUsername);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new OrganizationServiceException(String.format("can't find organizations for owner %s", ownerUsername), e);
         }
     }
@@ -90,7 +90,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         try {
             return organizationRepository.findOrganizationsByMembersUsernameOrOwnerUsername(username, username);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new OrganizationServiceException(String.format("can't find organizations for owner %s", username), e);
         }
     }
@@ -99,9 +99,8 @@ public class OrganizationServiceImpl implements OrganizationService {
     public void updateOrganization(Organization organization) throws OrganizationServiceException {
         try {
             organizationRepository.save(organization);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new OrganizationServiceException("Couldn't save organization", e);
         }
     }
-
 }

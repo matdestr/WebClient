@@ -10,10 +10,7 @@ import lombok.Data;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -45,37 +42,32 @@ public abstract class Session {
     @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER, optional = false)
     @JoinColumn(nullable = false, referencedColumnName = "userId")
     private User organizer;
-    
-    /*// TODO : Fix FK reference constraint creation
-    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "SessionParticipants",
-            joinColumns = @JoinColumn(name = "session_id"),
-            inverseJoinColumns = @JoinColumn(name = "participant_userId"),
-            foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
-            inverseForeignKey = @ForeignKey(ConstraintMode.CONSTRAINT),
-            uniqueConstraints = {
-                    @UniqueConstraint(columnNames = { "session_id", "participant_userId"})
-            }
-    )
-    private List<User> participants;*/
-    
+
     @OneToMany(
             targetEntity = ParticipantInfo.class,
             cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE },
             fetch = FetchType.EAGER
     )
     private Set<ParticipantInfo> participantInfo;
-    
-    private User currentParticipantPlaying;
 
-    /*@OneToMany(targetEntity = CardDetails.class, fetch = FetchType.EAGER)
-    private Set<CardDetails> cards;*/
+    @OneToOne(
+            targetEntity = ParticipantInfo.class,
+            cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE },
+            fetch = FetchType.EAGER
+    )
+    private ParticipantInfo currentParticipantPlaying;
 
-    @OneToMany(targetEntity = CardsChoice.class, fetch = FetchType.EAGER)
+    @OneToMany(
+            targetEntity = ParticipantInfo.class,
+            cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE },
+            fetch = FetchType.EAGER
+    )
+    private List<ParticipantInfo> participantSequence;
+
+    @OneToMany(targetEntity = CardsChoice.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CardsChoice> participantCardChoices;
     
-    @OneToMany(targetEntity = CardPosition.class, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = CardPosition.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CardPosition> cardPositions;
 
     @OneToMany(targetEntity = ChatMessage.class, mappedBy = "session", fetch = FetchType.EAGER)

@@ -21,6 +21,6 @@ public class SessionResourceMapper extends CustomMapper<Session, SessionResource
             sessionResource.setTopicId(session.getTopic().getTopicId());
         
         if (session.getCurrentParticipantPlaying() != null)
-            sessionResource.setCurrentParticipantPlayingUserId(session.getCurrentParticipantPlaying().getUserId());
+            sessionResource.setCurrentParticipantPlayingUserId(session.getCurrentParticipantPlaying().getParticipant().getUserId());
     }
 }

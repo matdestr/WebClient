@@ -49,12 +49,15 @@ public class SessionRestController {
     private SessionGameService sessionGameService;
 
     @Autowired
+    private CardService cardService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
     private MapperFacade mapper;
 
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{sessionId}", method = RequestMethod.GET)
     public ResponseEntity<SessionResource> getSession(@AuthenticationPrincipal User user,
                                                       @PathVariable("sessionId") int sessionId) {
@@ -68,10 +71,11 @@ public class SessionRestController {
         return new ResponseEntity<>(sessionResource, HttpStatus.OK);
     }
 
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createSession(@AuthenticationPrincipal User user,
                                         @Valid @RequestBody CreateSessionResource createSessionResource) {
+        //TODO check if user is part of any organisation
         Category category = categoryService.getCategoryById(createSessionResource.getCategoryId());
         Topic topic = null;
 
@@ -105,7 +109,7 @@ public class SessionRestController {
         return new ResponseEntity(returnedResource, HttpStatus.CREATED);
     }
 
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{sessionId}/invite", method = RequestMethod.POST)
     public ResponseEntity inviteUser(@AuthenticationPrincipal User user,
                                      @PathVariable("sessionId") int sessionId,
@@ -120,6 +124,7 @@ public class SessionRestController {
 
         return new ResponseEntity(HttpStatus.CREATED);
     }
+
 
     @RequestMapping(value = "/{sessionId}/join", method = RequestMethod.POST)
     public ResponseEntity joinSession(@AuthenticationPrincipal User user,
@@ -171,6 +176,16 @@ public class SessionRestController {
         sessionGameService.confirmReviews(session);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{sessionId}/cards/{cardId}", method = RequestMethod.POST)
+    public ResponseEntity chooseCardByUser(@AuthenticationPrincipal User user,
+                                           @PathVariable("sessionId") int sessionId,
+                                           @PathVariable("cardId") int cardId) {
+        Session session = sessionService.getSessionById(sessionId);
+        CardDetails cardDetails = cardService.getCardDetailsById(cardId);
+        sessionGameService.chooseCards(session, user, cardDetails);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     /*public ResponseEntity startSession(@AuthenticationPrincipal User user, @RequestParam("sessionId") int sessionId) {
