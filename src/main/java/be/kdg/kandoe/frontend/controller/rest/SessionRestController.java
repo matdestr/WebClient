@@ -58,7 +58,7 @@ public class SessionRestController {
     @Autowired
     private MapperFacade mapper;
 
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{sessionId}", method = RequestMethod.GET)
     public ResponseEntity<SessionResource> getSession(@AuthenticationPrincipal User user,
                                                       @PathVariable("sessionId") int sessionId) {
@@ -76,6 +76,7 @@ public class SessionRestController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createSession(@AuthenticationPrincipal User user,
                                         @Valid @RequestBody CreateSessionResource createSessionResource) {
+        //TODO check if user is part of any organisation
         Category category = categoryService.getCategoryById(createSessionResource.getCategoryId());
         Topic topic = null;
 
@@ -124,6 +125,7 @@ public class SessionRestController {
 
         return new ResponseEntity(HttpStatus.CREATED);
     }
+
 
     @RequestMapping(value = "/{sessionId}/join", method = RequestMethod.POST)
     public ResponseEntity joinSession(@AuthenticationPrincipal User user,

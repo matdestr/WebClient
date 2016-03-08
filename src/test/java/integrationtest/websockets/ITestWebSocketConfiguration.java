@@ -36,19 +36,6 @@ public class ITestWebSocketConfiguration {
 
     @Test
     public void testWebsocketsWithStomp(){
-        String url = baseUrl + "test";
-        StompSessionHandler handler = new StompSessionHandlerAdapter() {
-            @Override
-            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-                System.out.println("connected");
-            }
-
-            @Override
-            public void handleFrame(StompHeaders headers, Object payload) {
-                System.out.println(payload.toString());
-                super.handleFrame(headers, payload);
-            }
-        };
-        stompClient.connect(url, handler);
+     //TODO ACTUAL TEST
     }
 }

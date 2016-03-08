@@ -84,9 +84,6 @@ public class ITTestOrganizationRestController {
 
     @Test
     public void testCreateNewOrganizationAndGetCreatedOrganization() throws Exception {
-        /*String token = TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword);
-        String authorizationHeader = String.format("Bearer %s", token);*/
-
         OrganizationResource organizationResource = new OrganizationResource();
         organizationResource.setName("Karel de Grote");
 

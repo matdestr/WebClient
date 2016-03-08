@@ -299,6 +299,7 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.addCardDetails(session, player3, newCard);
     }
 
+    /*
     @Test
     public void chooseCardsAndConfirm() {
         session.setParticipantsCanAddCards(true);
@@ -332,7 +333,8 @@ public class TestSessionGameServiceSynchronous {
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
     }
-
+    */
+    /*
     @Test
     public void uniqueCardsPositions() {
         session.setParticipantsCanAddCards(true);
@@ -380,6 +382,7 @@ public class TestSessionGameServiceSynchronous {
         Assert.assertArrayEquals(cardPositionList.toArray(), set.toArray());
     }
 
+/*
     @Test
     public void testStartGame(){
         session.setParticipantsCanAddCards(true);

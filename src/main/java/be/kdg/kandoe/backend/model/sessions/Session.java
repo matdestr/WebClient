@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -57,13 +58,6 @@ public abstract class Session {
     )
     private ParticipantInfo currentParticipantPlaying;
 
-    @OneToMany(
-            targetEntity = ParticipantInfo.class,
-            cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE },
-            fetch = FetchType.EAGER
-    )
-    private List<ParticipantInfo> participantSequence;
-
     @OneToMany(targetEntity = CardsChoice.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CardsChoice> participantCardChoices;
     
@@ -82,9 +76,7 @@ public abstract class Session {
     private String publicUrl;
 
     public Session(){
-        //this.participants = new ArrayList<>();
         this.participantInfo = new HashSet<>();
-        //this.cards = new HashSet<>();
         this.cardPositions = new ArrayList<>();
         this.chatMessages = new ArrayList<>();
         this.participantCardChoices = new ArrayList<>();
@@ -96,22 +88,13 @@ public abstract class Session {
         this.maxNumberOfCardsPerParticipant = DEFAULT_MAX_CARDS_AMOUNT;
     }
 
+    public List<ParticipantInfo> getParticipantSequence(){
+        return Collections.unmodifiableList(this.participantInfo.stream().sorted((p1, p2) -> Integer.compare(p1.getJoinNumber(), p2.getJoinNumber())).collect(Collectors.toList()));
+    }
+
     public boolean isUserParticipant(int userId){
-        //return participants.stream().anyMatch(u -> u.getUserId() == userId);
         return participantInfo.stream().anyMatch(p -> p.getParticipant().getUserId() == userId);
     }
 
-    /*public boolean addParticipant(User user){
-        if (user == null){
-            throw new NullPointerException("user cannot be null");
-        }
 
-        if (isUserParticipant(user.getUserId())){
-            return false;
-        }
-
-        this.participants.add(user);
-        
-        return true;
-    }*/
 }

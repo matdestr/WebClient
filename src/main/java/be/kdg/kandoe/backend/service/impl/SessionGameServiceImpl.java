@@ -52,7 +52,6 @@ public class SessionGameServiceImpl implements SessionGameService {
         participantInfo.setParticipant(user);
 
         session.getParticipantInfo().add(participantInfo);
-        session.getParticipantSequence().add(participantInfo);
         session = sessionService.updateSession(session);
         emailService.sendSessionInvitationToUser(session, session.getOrganizer(), user);
     }
@@ -285,7 +284,6 @@ public class SessionGameServiceImpl implements SessionGameService {
     }
 
     private ParticipantInfo getNextParticipant(Session session) {
-        /*
         ParticipantInfo currentPlayingParticipant = session.getCurrentParticipantPlaying();
         if (currentPlayingParticipant != null) {
             int max = session.getParticipantSequence().stream().max((p1, p2) -> Integer.compare(p1.getJoinNumber(), p2.getJoinNumber())).get().getJoinNumber();
@@ -302,7 +300,7 @@ public class SessionGameServiceImpl implements SessionGameService {
         } else {
             throw new SessionGameServiceException("No next particapent found");
         }
-        */
+
     }
 
     @Override

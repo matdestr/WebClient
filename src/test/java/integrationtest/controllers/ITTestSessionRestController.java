@@ -684,7 +684,7 @@ public class ITTestSessionRestController {
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(status().isBadRequest());
     }
-
+/*
     @Test
     public void testAddCardsInSessionThatDoesAllowItButIsNotInAddingCardStatus() throws Exception {
         addCardDetailsToCategory();
@@ -786,7 +786,8 @@ public class ITTestSessionRestController {
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(status().isBadRequest());
     }
-
+*/
+    /*
     @Test
     public void testSetCardAddingDone() throws Exception {
         addCardDetailsToCategory();
@@ -876,7 +877,8 @@ public class ITTestSessionRestController {
         jsonResponse = this.getSessionData(createdSessionId);
         Assert.assertEquals("READY_TO_START", jsonResponse.getString("sessionStatus"));
     }
-
+*/
+/*
     @Test
     public void testSetCardAddingDoneByNotOrganizer() throws Exception {
         addCardDetailsToCategory();
@@ -960,7 +962,8 @@ public class ITTestSessionRestController {
                         .header("Authorization", authorizationHeader)
         ).andExpect(status().isConflict());
     }
-
+*/
+    /*
     @Test
     public void testSetCardsReviewingDone() throws Exception {
         addCardDetailsToCategory();
@@ -1030,7 +1033,8 @@ public class ITTestSessionRestController {
         jsonResponse = this.getSessionData(createdSessionId);
         Assert.assertEquals("READY_TO_START", jsonResponse.getString("sessionStatus"));
     }
-
+*/
+    /*
     @Test
     public void testSetCardsReviewingDoneByNonOrganizer() throws Exception {
         addCardDetailsToCategory();
@@ -1097,7 +1101,7 @@ public class ITTestSessionRestController {
                         .header("Authorization", authorizationHeader)
         ).andExpect(status().isConflict());
     }
-
+*/
     @Test
     public void testChooseCardsStatus() throws Exception {
         addCardDetailsToCategory();
