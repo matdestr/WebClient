@@ -72,7 +72,7 @@
             </ul>
 
 
-            <button class="add-new-button" (click)="toAddNewTopic(category.categoryId)"><i
+            <button class="addNewButton" (click)="toAddNewTopic(category.categoryId)"><i
                     class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Topic
             </button>
 
@@ -98,7 +98,7 @@
             </div>
 
 
-            <button class="add-new-button" (click)="toAddNewCard(category.categoryId)">
+            <button class="addNewButton" (click)="toAddNewCard(category.categoryId)">
                 <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Card
             </button>
 
@@ -114,7 +114,7 @@
                 </table>
             </ul>
 
-            <button class="add-new-button" data-toggle="modal" data-target="#tagModal"><i
+            <button class="addNewButton" data-toggle="modal" data-target="#tagModal"><i
                     class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add More Tags
             </button>
 
@@ -148,7 +148,19 @@
 
             <hr>
 
-            <button class="add-new-button" (click)="toAddNewSession(category.categoryId)">
+            <h2>Sessions</h2>
+
+            <ul>
+                <div class="row" *ngFor="#session of sessions">
+
+                    <div class="col-md-2 spaceUnder">
+                        <p class="categoryName" (click)="toSession(session.sessionId)">{{session.sessionId}}</p>
+                    </div>
+
+                </div>
+            </ul>
+
+            <button class="addNewButton" (click)="toAddNewSession(category.categoryId)">
                 <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Session
             </button>
 

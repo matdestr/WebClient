@@ -10,6 +10,7 @@ import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.frontend.controller.resources.cards.CreateCardDetailsResource;
+import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CategoryResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.SessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.*;
 import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateAsynchronousSessionResource;
@@ -67,6 +68,8 @@ public class SessionRestController {
 
         return new ResponseEntity<>(sessionResource, HttpStatus.OK);
     }
+
+
 
     //@PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.POST)

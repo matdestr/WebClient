@@ -42,4 +42,10 @@ export class CategoryService {
     public getCategory(categoryId:number):Observable<Response> {
         return this._authHttp.get(CategoryService.endPoint + categoryId);
     }
+
+    public getSessionsFromCategory(categoryId: number): Observable<Response>{
+
+        return this._authHttp
+            .get(CategoryService.endPoint + categoryId +"/sessions");
+    }
 }

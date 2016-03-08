@@ -65,19 +65,21 @@
 
                         <label><input id="participantsCanAddCards"
                                       name="participantsCanAddCards-name"
-                                      class="form-control"
+                                      class="sessionCheckBox"
                                       type="checkbox"
                                       placeholder="Participants can add cards"
                                       #categoryName="ngForm"
                                       [(ngModel)]="model.participantsCanAddCards">Participants can add cards</label>
 
-                        <label><input id="cardCommentsAllowed"
+                        <label class="sessionCheckBox"><input id="cardCommentsAllowed"
                                       name="cardCommentsAllowed-name"
-                                      class="form-control"
                                       type="checkbox"
                                       placeholder="Card comments allowed"
                                       #categoryName="ngForm"
                                       [(ngModel)]="model.cardCommentsAllowed">Card comments allowed</label>
+
+
+
 
                         <!-- TODO: @mathisse type session field -->
 

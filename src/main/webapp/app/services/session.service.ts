@@ -39,4 +39,5 @@ export class SessionService {
             .post(SessionService.endPoint, JSON.stringify(session), {headers:headers})
             .retry(2);
     }
+
 }

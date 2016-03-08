@@ -2,15 +2,20 @@ package be.kdg.kandoe.frontend.controller.rest;
 
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
+import be.kdg.kandoe.backend.model.sessions.Session;
+import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.CategoryService;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
+import be.kdg.kandoe.backend.service.api.SessionService;
 import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CategoryResource;
 import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CreateCategoryResource;
+import be.kdg.kandoe.frontend.controller.resources.sessions.SessionResource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,16 +27,19 @@ public class CategoryRestController {
 
     private final CategoryService categoryService;
     private final OrganizationService organizationService;
+    private final SessionService sessionService;
 
     private MapperFacade mapper;
 
     @Autowired
     public CategoryRestController(MapperFacade mapper,
                                   CategoryService categoryService,
-                                  OrganizationService organizationService) {
+                                  OrganizationService organizationService,
+                                  SessionService sessionService) {
         this.mapper = mapper;
         this.categoryService = categoryService;
         this.organizationService = organizationService;
+        this.sessionService = sessionService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -57,5 +65,14 @@ public class CategoryRestController {
     public ResponseEntity<CategoryResource> getCategory(@PathVariable("categoryId") int categoryId) {
         Category category = categoryService.getCategoryById(categoryId);
         return new ResponseEntity<>(mapper.map(category, CategoryResource.class), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{categoryId}/sessions", method = RequestMethod.GET)
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<SessionResource>> getSessionsFromCategory(@PathVariable("categoryId") int categoryId) {
+
+        List<Session> sessions = sessionService.getSessionsFromCategory(categoryId);
+
+        return new ResponseEntity<>(mapper.mapAsList(sessions, SessionResource.class), HttpStatus.OK);
     }
 }
