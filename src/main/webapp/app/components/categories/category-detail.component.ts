@@ -13,6 +13,8 @@ import {CardDetailsService} from "../../services/card-details.service";
 import {CardDetails} from "../../entities/category/card-details";
 import {error} from "util";
 import {CardDetailComponent} from "../cards/card-detail.component";
+import {Session} from "../../entities/session/session";
+import {SessionService} from "../../services/session.service";
 
 @Component({
     selector: 'category-detail',
@@ -23,6 +25,7 @@ export class CategoryDetailComponent implements OnInit {
     private category:Category = Category.createEmptyCategory();
     private cards:CardDetails[] = [];
     private topics:Topic[] = [];
+    private sessions:Session[] = [];
     private tags:Tag[] = [];
     private currentCard:CardDetails = CardDetails.createEmptyCard();
 
@@ -60,6 +63,15 @@ export class CategoryDetailComponent implements OnInit {
             () => console.log("Topics fetched")
         );
 
+        this._categoryService.getSessionsFromCategory(categoryId).subscribe(
+            data => {
+                for (let session of data.json())
+                    this.sessions.push(Session.createEmptySession().deserialize(session));
+            },
+            error => console.log(error),
+            () => console.log("Sessions fetched")
+        )
+
         this._tagService.getTags().subscribe(
             data => {
                 for (let tag of data.json())
@@ -87,6 +99,10 @@ export class CategoryDetailComponent implements OnInit {
 
     public toAddNewSession(categoryId:number) {
         this._router.navigate(["/CreateSession", {categoryId: categoryId}])
+    }
+
+    public toSession(sessionId:number) {
+        this._router.navigate(["/ActiveSession", {sessionId: sessionId}])
     }
 
 }

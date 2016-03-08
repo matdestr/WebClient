@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -29,7 +30,7 @@ public class Category {
     
     //@OneToMany(targetEntity = CardDetails.class, fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE })
     @OneToMany(targetEntity = CardDetails.class, fetch = FetchType.EAGER, mappedBy = "category"/*, cascade = CascadeType.ALL*/) // mappedBy is needed to prevent unique key violation!
-    private List<CardDetails> cards;
+    private Set<CardDetails> cards;
 
     @OneToMany
     private List<Topic> topics;

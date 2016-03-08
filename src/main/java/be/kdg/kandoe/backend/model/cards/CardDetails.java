@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @Data
 @EqualsAndHashCode(exclude = {"creator", "category", "topics", "comments"})
-@ToString(exclude = {"creator", "category", "topics", "comments"})
+@ToString(exclude = {"creator", "category", "topics", "comments"}, doNotUseGetters = true)
 @NoArgsConstructor
 public class CardDetails {
     @Id

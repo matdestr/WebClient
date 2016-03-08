@@ -10,6 +10,7 @@ import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.frontend.controller.resources.cards.CreateCardDetailsResource;
+import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CategoryResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.SessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.*;
 import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateAsynchronousSessionResource;
@@ -49,6 +50,9 @@ public class SessionRestController {
     private SessionGameService sessionGameService;
 
     @Autowired
+    private CardService cardService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -68,7 +72,7 @@ public class SessionRestController {
         return new ResponseEntity<>(sessionResource, HttpStatus.OK);
     }
 
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createSession(@AuthenticationPrincipal User user,
                                         @Valid @RequestBody CreateSessionResource createSessionResource) {
@@ -105,7 +109,7 @@ public class SessionRestController {
         return new ResponseEntity(returnedResource, HttpStatus.CREATED);
     }
 
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{sessionId}/invite", method = RequestMethod.POST)
     public ResponseEntity inviteUser(@AuthenticationPrincipal User user,
                                      @PathVariable("sessionId") int sessionId,
@@ -171,6 +175,16 @@ public class SessionRestController {
         sessionGameService.confirmReviews(session);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{sessionId}/cards/{cardId}", method = RequestMethod.POST)
+    public ResponseEntity chooseCardByUser(@AuthenticationPrincipal User user,
+                                           @PathVariable("sessionId") int sessionId,
+                                           @PathVariable("cardId") int cardId) {
+        Session session = sessionService.getSessionById(sessionId);
+        CardDetails cardDetails = cardService.getCardDetailsById(cardId);
+        sessionGameService.chooseCards(session, user, cardDetails);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     /*public ResponseEntity startSession(@AuthenticationPrincipal User user, @RequestParam("sessionId") int sessionId) {
