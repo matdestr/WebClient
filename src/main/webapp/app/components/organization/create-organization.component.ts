@@ -43,7 +43,6 @@ export class CreateOrganizationComponent implements OnInit {
         if (this.organization.name) {
             this.organization.emails = this.filterEmails();
 
-            console.log("Creating organization");
             this._organizationService.createOrganization(this.organization)
                 .subscribe((data) => { console.log(data); },
                     (error) => {

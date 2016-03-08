@@ -1,6 +1,5 @@
+<error-dialog [messages]="errorMessages"></error-dialog>
 <form (ngSubmit)="onSubmit()" id="form-sign-up" name="form-sign-up" role="form" style="display: none;">
-
-    <error-dialog *ngIf="errorMessages.length > 0" [messages]="errorMessages"></error-dialog>
 
     <div class="input-group forms-input-group">
         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -82,7 +81,7 @@
     </div>
 
     <div class="forms-input-group clear-both text-center">
-        <input type="submit" value="Sign Up"/>
+        <input id="sign-up-button" type="submit" value="Sign Up"/>
     </div>
 
 </form>

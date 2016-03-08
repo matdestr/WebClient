@@ -29,7 +29,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private InvitationService invitationService;
-    
+
     @Autowired
     private SessionRepository sessionRepository;
 
@@ -37,7 +37,7 @@ public class EmailServiceImpl implements EmailService {
     private JobScheduler jobScheduler;
 
     private Mailer mailer;
-    
+
     @Value("${app.baseUrl}")
     private String baseUrl;
 
@@ -56,10 +56,16 @@ public class EmailServiceImpl implements EmailService {
         for (String emailAddress : emails) {
             if (emailAddress != null) {
                 Email email = new Email();
+
+                invitationService.generateInvitationForUnexistingUser(emailAddress, organization);
+
+                System.out.println("Invitation created for " + emailAddress);
+
                 email.setFromAddress("CanDo Team E", mailProperties.getUsername());
                 email.setSubject("CanDo: Invitation to join organization " + organization.getName());
                 email.addRecipient("", emailAddress, Message.RecipientType.TO);
-                email.setTextHTML("<body style=\"font-family: Arial;\">Hi,<br><br>You have been invited to join the CanDo organization <b>" + organization.getName() + "</b> by <b>" + requester.getName() + " " + requester.getSurname() + ".</b><br><br>Regards,<br>Team Cando</body>");
+                email.setTextHTML("<body style=\"font-family: Arial;\">Hi,<br><br>You have been invited to join the CanDo organization <b>" + organization.getName() + "</b> by <b>" + requester.getName() + " " + requester.getSurname() + ".</b><br>You can join by creating an account here: " + baseUrl + ". You can accept the invitation in your newly created profile.<br><br>Regards,<br>Team Cando</body>");
+
                 jobScheduler.scheduleJob(new MailJob(mailer, email), new Date());
             }
         }
@@ -72,15 +78,15 @@ public class EmailServiceImpl implements EmailService {
 
             if (emailAddress != null && !emailAddress.isEmpty()) {
 
-                Invitation invitation = invitationService.generateInvitation(user, organization);
+                invitationService.generateInvitation(user, organization);
 
-                String url = createAcceptUrl(invitation.getAcceptId(), invitation.getOrganization().getOrganizationId());
+                String profileUrl = String.format("<a href=\"%s/profile?username=%s\">here</a>", baseUrl, user.getUsername());
 
                 Email email = new Email();
                 email.setFromAddress("CanDo Team E", mailProperties.getUsername());
                 email.setSubject("CanDo: Invitation to join organization " + organization.getName());
                 email.addRecipient("", emailAddress, Message.RecipientType.TO);
-                email.setTextHTML("<body style=\"font-family: Arial;\">Hi,<br><br>You have been invited to join the CanDo organization <b>" + organization.getName() + "</b> by <b>" + requester.getName() + " " + requester.getSurname() + ".</b><br>You can join by clicking the following link: <a href=\"" + url + "\">" + url + "</a>.<br><br>Regards,<br>Team Cando</body>");
+                email.setTextHTML("<body style=\"font-family: Arial;\">Hi,<br><br>You have been invited to join the CanDo organization <b>" + organization.getName() + "</b> by <b>" + requester.getName() + " " + requester.getSurname() + ".</b><br>You can join by checking your profile " + profileUrl + ".<br><br>Regards,<br>Team Cando</body>");
 
                 jobScheduler.scheduleJob(new MailJob(mailer, email), new Date());
             }
@@ -91,13 +97,13 @@ public class EmailServiceImpl implements EmailService {
     public void sendSessionInvitationToUser(Session session, User organizer, User user) {
         if (user.getEmail() == null || user.getEmail().isEmpty())
             return;
-        
+
         // TODO : Find better solution for user without email
-        
+
         String invitationUrl = baseUrl + String.format("sessions/%s/join", session.getSessionId());
-        
+
         Email email = new Email();
-        
+
         email.setFromAddress("CanDo Team E", mailProperties.getUsername());
         email.setSubject("CanDo: Invitation to join session");
         email.addRecipient("", user.getEmail(), Message.RecipientType.TO);
@@ -108,16 +114,7 @@ public class EmailServiceImpl implements EmailService {
                         "<br>You can accept the invite by clicking <a href=\"%s\">this link</a></p>" +
                         "<p>Team CanDo</p>", user.getName(), organizer.getName(), invitationUrl)
         );
-        
-        mailer.sendMail(email);
-    }
 
-    // TODO : Refactor with new baseUrl
-    private String createAcceptUrl(String acceptId, int organizationId){
-        String baseUrl = System.getProperty("app.baseUrl");
-        String acceptUrl = baseUrl == null ? "http://localhost:8080/kandoe" : baseUrl;
-        acceptUrl += String.format("/#/organization/accept?acceptId=%s&organizationId=%d", acceptId, organizationId);
-
-        return acceptUrl;
+        jobScheduler.scheduleJob(new MailJob(mailer, email), new Date());
     }
 }

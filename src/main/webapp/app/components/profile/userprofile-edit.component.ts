@@ -23,7 +23,7 @@ import {ErrorDialogComponent} from "../widget/error-dialog.component";
 })
 
 export class UserProfileEditComponent {
-    private errorMessages:string[] = new Array();
+    private errorMessages:string[] = [];
     private fileChanged:boolean = false;
     private file:File = null;
     public user:User = User.createEmptyUser();
@@ -61,7 +61,6 @@ export class UserProfileEditComponent {
 
         if (this.updateModel.verifyPassword != "")
             if (this.fileChanged){
-                console.log("Image changed, uploading image...");
                 var request = this._userService.uploadPhoto(this.user.userId, this.file);
                 request.onreadystatechange = (event) => {
                     var target = event.target || event.srcElement;
@@ -76,7 +75,6 @@ export class UserProfileEditComponent {
                     }
                 }
             } else {
-                console.log("Image didn't change");
                 this.updateUser();
             }
         else {

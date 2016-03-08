@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 import 'rxjs/Rx';
 import {AuthHttp} from '../libraries/angular2-jwt';
 
+import {Email} from "../entities/user/email";
 import {Organization} from "../entities/organization/organization";
 import {CreateOrganization} from "../entities/organization/organization";
 import {RequestOptionsArgs} from "angular2/http";
@@ -28,8 +29,16 @@ export class OrganizationService {
         headers.append('Content-Type', 'application/json');
         return this._authHttp.post(OrganizationService.endPoint, JSON.stringify(organization), {headers: headers});
     }
+
+    public addUsersToOrganization(organizationId:number, emails:Email[]) : Observable<Response> {
+        var headers : Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        return this._authHttp.post(OrganizationService.endPoint + "add/" + organizationId, JSON.stringify(emails), {headers: headers});
+    }
     
     public getOrganization(organizationId : number) : Observable<Response> {
+
         return this._authHttp.get(OrganizationService.endPoint + organizationId);
     }
 

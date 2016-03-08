@@ -41,7 +41,7 @@ export class UserProfileComponent {
             this._router.navigate(["/Dashboard"]);
 
         var token:string = localStorage.getItem("token");
-        console.log(getUsername(token) + " - " + username);
+
         if (getUsername(token) === username)
             this.canEdit = true;
 
@@ -49,22 +49,32 @@ export class UserProfileComponent {
             var self:any = this;
             this.user = this.user.deserialize(user);
 
-            this._organizationService.getOrganizationsByUser(this.user.username).subscribe(
-                data => {
-                    this.organizations = data.json();
-                },
-                error => {
-                    self.onError(error);
-                    this.organizations = []
-                });
+            this.retrieveOrganizations();
 
-            this._invitationService.getInvitationsForUser(this.user.userId).subscribe(
+            this._invitationService.getInvitationsForUser(this.user.email).subscribe(
                 data => { this.invitations = data.json(); },
                 error => { self.onError(error); },
                 () => {}
             );
         });
 
+    }
+
+    private retrieveOrganizations() : void {
+        var self:any = this;
+        this._organizationService.getOrganizationsByUser(this.user.username).subscribe(
+            data => {
+                this.organizations = data.json();
+            },
+            error => {
+                self.onError(error);
+                this.organizations = []
+            });
+    }
+
+    public onInviteAccepted(e) : void {
+        this.invitations.splice(e, 1)
+        this.retrieveOrganizations();
     }
 
     public editProfile():void {

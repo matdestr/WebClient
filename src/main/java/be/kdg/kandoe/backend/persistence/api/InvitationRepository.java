@@ -8,4 +8,5 @@ import java.util.List;
 public interface InvitationRepository extends JpaRepository<Invitation, Integer> {
     List<Invitation> findInvitationsByInvitedUserUserId(int userId);
     Invitation findInvitationByAcceptId(String acceptId);
+    List<Invitation> findInvitationsByEmail(String email);
 }

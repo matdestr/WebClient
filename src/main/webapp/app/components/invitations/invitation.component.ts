@@ -1,8 +1,10 @@
-import {Component, Input} from "angular2/core";
+import {Component, Input, Output} from "angular2/core";
 import {Invitation} from "../../entities/invitations/invitation";
 import {InvitationService} from "../../services/invitation.service";
 import {Organization} from "../../entities/organization/organization";
 import {Router} from "angular2/router";
+import {getUsername} from "../../libraries/angular2-jwt";
+import {EventEmitter} from "angular2/core";
 
 @Component({
     selector: 'invitations',
@@ -24,9 +26,14 @@ import {Router} from "angular2/router";
 })
 
 export class InvitationComponent {
+    private username:string = null;
     @Input() public invitations:Invitation[];
+    @Output() public onaccept:EventEmitter<number> = new EventEmitter<number>();
 
-    public constructor(private _invitationService:InvitationService){
+    public constructor(private _invitationService:InvitationService,
+                       private _router:Router){
+        var token:string = localStorage.getItem("token");
+        this.username = getUsername(token);
     }
 
     public accept(index:number) : void {
@@ -38,8 +45,7 @@ export class InvitationComponent {
                 (data) => { console.log(data) },
                 (error) => { console.log(error) },
                 () => {
-                    //console.log("Invitation accepted. " + this.invitations[index].acceptId + " is now invalid.");
-                    self.invitations.splice(index, 1)
+                    self.onaccept._next(index);
                 }
             )
     }
@@ -53,7 +59,6 @@ export class InvitationComponent {
                 (data) => { console.log(data) },
                 (error) => { console.log(error) },
                 () => {
-                    //console.log("Invitation declined. " + this.invitations[index].acceptId + " is now invalid.");
                     self.invitations.splice(index, 1)
                 }
             )

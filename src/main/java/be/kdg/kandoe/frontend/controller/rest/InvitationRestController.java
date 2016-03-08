@@ -41,13 +41,25 @@ public class InvitationRestController {
         }
 
         int invitationOrganizationId = invitation.getOrganization().getOrganizationId();
-        int userId = invitation.getInvitedUser().getUserId();
 
-        if (user.getUserId() != userId){
-            throw new CanDoControllerRuntimeException("Logged in user and the invited user their id's don't match.", HttpStatus.UNAUTHORIZED);
+        //Email in case the invite was sent to an unregistered user
+        //UserId in case the invite was sent to a registered user
+        int userId = -1;
+        String email = null;
+        if (invitation.getInvitedUser() != null)
+            userId = invitation.getInvitedUser().getUserId();
+        else
+            email = invitation.getEmail();
+
+        if (email == null){
+            if (user.getUserId() != userId)
+                throw new CanDoControllerRuntimeException("Logged in user and the invited user their id's don't match.", HttpStatus.UNAUTHORIZED);
+        } else {
+            if (! email.equals(user.getEmail()))
+                throw new CanDoControllerRuntimeException("Logged in user and the invited user their emails don't match", HttpStatus.UNAUTHORIZED);
         }
 
-        if (organizationId != invitationOrganizationId){
+        if (organizationId != invitationOrganizationId) {
             throw new CanDoControllerRuntimeException("Invite does not belong to this organization.", HttpStatus.BAD_REQUEST);
         }
 
@@ -56,6 +68,7 @@ public class InvitationRestController {
         organizationService.updateOrganization(organization);
 
         invitationService.invalidateInvitation(invitation);
+
 
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -85,12 +98,12 @@ public class InvitationRestController {
     }
 
     @RequestMapping(value = "/open", method = RequestMethod.GET)
-    public List<InvitationResource> getOpenInvitationsForUser(@AuthenticationPrincipal User user, @RequestParam("userId") int userId){
-        if (user.getUserId() != userId){
-            throw new CanDoControllerRuntimeException("Logged in user and the invited user their id's don't match.", HttpStatus.UNAUTHORIZED);
+    public List<InvitationResource> getOpenInvitationsForUser(@AuthenticationPrincipal User user, @RequestParam("email") String email){
+        if (! user.getEmail().equals(email)){
+            throw new CanDoControllerRuntimeException("Logged in user and the invited user don't match.", HttpStatus.UNAUTHORIZED);
         }
 
-        List<Invitation> invitations = invitationService.getInvitationsByUserId(userId);
+        List<Invitation> invitations = invitationService.getInvitationsByEmail(email);
         return mapperFacade.mapAsList(invitations, InvitationResource.class);
     }
 }

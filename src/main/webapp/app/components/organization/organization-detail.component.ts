@@ -8,6 +8,7 @@ import {User} from "../../entities/user/user";
 import {Category} from "../../entities/category/category";
 import {CategoryService} from "../../services/category.service";
 import {Email} from "../../entities/user/email";
+import {CreateCategoryModel} from "../../entities/category/dto/create-category-model";
 
 
 @Component({
@@ -42,7 +43,21 @@ export class OrganizationDetailComponent {
                 error => console.log(error),
                 () => console.log("Categories fetched")
             );
+    }
 
+    private addUsers() : void {
+        console.log("adding " + this.usersToInvite.length + " users");
+        this._organizationService.addUsersToOrganization(this.organization.organizationId, this.usersToInvite).subscribe(
+            (data) => {
+                console.log(data);
+            },
+            (error) => {
+                console.log(error);
+            },
+            () => {
+                console.log("XD");
+            }
+        );
     }
 
     public toAddNewCategory(organizationId:number){

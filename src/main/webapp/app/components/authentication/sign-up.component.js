@@ -36,7 +36,7 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                     this._userService = _userService;
                     this._tokenService = _tokenService;
                     this._router = _router;
-                    this.errorMessages = new Array();
+                    this.errorMessages = [];
                     this.form = new register_1.RegisterModel;
                 }
                 SignUpComponent.prototype.onSubmit = function () {
@@ -74,11 +74,15 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                     this.form.verifyPassword = "";
                 };
                 SignUpComponent.prototype.onError = function (message) {
+                    var self = this;
                     if (message) {
                         this.errorMessages.push(message);
                     }
                     else {
-                        this.errorMessages = new Array();
+                        this.errorMessages = [];
+                        setTimeout(function () {
+                            self.errorMessages.splice(0);
+                        }, 2000);
                     }
                 };
                 SignUpComponent = __decorate([

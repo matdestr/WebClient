@@ -13,7 +13,7 @@ public class ATOrganizations {
     private String baseUrl;
     private String username = "user";
     private String password = "pass";
-    
+
     @Before
     public void setup() {
         WebDriver driver = new ChromeDriver();

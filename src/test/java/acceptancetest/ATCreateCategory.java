@@ -17,7 +17,6 @@ public class ATCreateCategory {
     public void testCreateNewOrganization() {
 
         baseUrl = System.getProperty("app.baseUrl");
-        System.out.println("BASE URL: " + baseUrl);
 
         WebDriver driver = new ChromeDriver();
         driver.get(baseUrl);
