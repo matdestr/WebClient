@@ -23,3 +23,13 @@
   @include flex-order(0);
   @include flex-align-self(auto);
 }
+
+.margin-container{
+  margin: $default-margin;
+}
+
+@for $i from 1 through (10) {
+  .margin-container-#{$i} {
+    margin: $default-margin * $i $default-margin $default-margin;
+  }
+}
