@@ -13,7 +13,7 @@ export class CardSearchPipe implements PipeTransform {
         if (term == "")
             return value;
         else
-            return value.filter((card) => card.text.toLowerCase().indexOf(term.toLocaleLowerCase()) >= 0);
+            return value.filter((card) => card.text.toLowerCase().indexOf(term.toLocaleLowerCase()) >= 0 || card.active);
 
     }
 }
