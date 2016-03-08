@@ -16,7 +16,7 @@ import {Category} from "../../entities/category/category";
 })
 export class AddTagComponent {
     private categoryId:number;
-    private category: Category=new Category("","");
+    private category: Category= Category.createEmptyCategory();
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,

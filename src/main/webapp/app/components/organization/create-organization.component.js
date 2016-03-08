@@ -55,7 +55,6 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../e
                     var self = this;
                     if (this.organization.name) {
                         this.organization.emails = this.filterEmails();
-                        console.log("Creating organization");
                         this._organizationService.createOrganization(this.organization)
                             .subscribe(function (data) { console.log(data); }, function (error) {
                             self.handleError(error);

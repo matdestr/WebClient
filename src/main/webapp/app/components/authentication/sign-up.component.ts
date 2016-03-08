@@ -16,7 +16,7 @@ import {ErrorDialogComponent} from "../widget/error-dialog.component";
     directives: [ErrorDialogComponent]
 })
 export class SignUpComponent {
-    private errorMessages:string[] = new Array();
+    private errorMessages:string[] = [];
     private form: RegisterModel = new RegisterModel;
 
     constructor(private _userService: UserService, private _tokenService: TokenService, private _router: Router){
@@ -66,10 +66,15 @@ export class SignUpComponent {
     }
 
     private onError(message:string){
+        var self:any = this;
+
         if (message) {
             this.errorMessages.push(message);
         } else {
-            this.errorMessages = new Array();
+            this.errorMessages = [];
+            setTimeout(() => {
+                self.errorMessages.splice(0);
+            }, 2000);
         }
     }
 }

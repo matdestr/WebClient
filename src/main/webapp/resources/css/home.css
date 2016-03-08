@@ -14,7 +14,7 @@ body {
     #authentication .col-md-3 > a:hover {
       text-decoration: underline; }
     #authentication .col-md-3 > a.active {
-      text-decoration: underline; }
+      font-weight: bold; }
   #authentication .col-md-3 {
     margin-bottom: 1em; }
   #authentication #main-content {
@@ -34,7 +34,7 @@ body {
     -moz-box-shadow: none;
     box-shadow: none; }
   #authentication .alert-danger {
-    margin-top: 1em;
+    margin-top: 0;
     margin-bottom: 1em;
     background-color: #D32F2F;
     color: #f8f8f8;

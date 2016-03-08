@@ -14,4 +14,3 @@ function signUpClick(){
     $('#form-sign-up-link').addClass('active');
     //preventDefault();
 }
-

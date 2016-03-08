@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @RestController
@@ -47,32 +48,11 @@ public class OrganizationRestController {
             throw new CanDoControllerRuntimeException(String.format("An organization with the name %s already exists", organizationResource.getName()), HttpStatus.CONFLICT);
 
         Organization organization = new Organization(organizationResource.getName(), user);
-
-        List<String> emails = new ArrayList<>();
-        List<User> users = new ArrayList<>();
-
-        List<EmailResource> resourceMailList = organizationResource.getEmails();
-
-        if (resourceMailList != null && ! resourceMailList.isEmpty()) {
-            //Retrieve existing users
-            for (EmailResource mailObject : resourceMailList) {
-                String email = mailObject.getEmail();
-
-                if (email != null) {
-                    User requested = userService.getUserByEmail(email);
-                    if (requested != null) {
-                        users.add(requested);
-                    } else {
-                        emails.add(email);
-                    }
-                }
-            }
-        }
-
         organization = organizationService.addOrganization(organization);
 
-        emailService.inviteUsersToOrganization(organization, user, users);
-        //emailService.inviteUnexistingUsersToOrganization(organization, user, emails);
+        if (! organizationResource.getEmails().isEmpty())
+            inviteUsers(organization, user, organizationResource.getEmails());
+
 
         OrganizationResource resultResource = mapperFacade.map(organization, OrganizationResource.class);
         
@@ -89,6 +69,40 @@ public class OrganizationRestController {
         }
 
         organizationService.updateOrganization(organization);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/add/{organizationId}", method = RequestMethod.POST)
+    public ResponseEntity addUsersToOrganization(@AuthenticationPrincipal User user,
+                                                 @PathVariable("organizationId") int organizationId,
+                                                 @Valid @RequestBody List<EmailResource> emails){
+        Organization organization = organizationService.getOrganizationById(organizationId);
+
+        if (organization == null)
+            throw new CanDoControllerRuntimeException("no organization with id " + organizationId, HttpStatus.NOT_FOUND);
+
+        if (! emails.isEmpty()) {
+
+            AtomicBoolean canAdd = new AtomicBoolean(false);
+            int ownerId = organization.getOwner().getUserId();
+            if (ownerId == user.getUserId())
+                canAdd.set(true);
+
+            //don't loop if the owner was the requester
+            if (!canAdd.get())
+                for (User organizer : organization.getOrganizers()) {
+                    if (organizer.getUserId() == user.getUserId())
+                        canAdd.set(true);
+                    break;
+                }
+
+            if (canAdd.get()) {
+                this.inviteUsers(organization, user, emails);
+            } else {
+                throw new CanDoControllerRuntimeException("user isn't allowed to add users to organization", HttpStatus.UNAUTHORIZED);
+            }
+        }
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -123,4 +137,27 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
+    private void inviteUsers(Organization organization, User user, List<EmailResource> emailResources){
+        List<String> emails = new ArrayList<>();
+        List<User> users = new ArrayList<>();
+
+        if (emailResources != null && ! emailResources.isEmpty()) {
+            //Retrieve existing users
+            for (EmailResource mailObject : emailResources) {
+                String email = mailObject.getEmail();
+
+                if (email != null) {
+                    User requested = userService.getUserByEmail(email);
+                    if (requested != null) {
+                        users.add(requested);
+                    } else {
+                        emails.add(email);
+                    }
+                }
+            }
+        }
+
+        emailService.inviteUsersToOrganization(organization, user, users);
+        emailService.inviteUnexistingUsersToOrganization(organization, user, emails);
+    }
 }

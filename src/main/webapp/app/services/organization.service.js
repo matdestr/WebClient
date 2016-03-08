@@ -42,6 +42,11 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
                     headers.append('Content-Type', 'application/json');
                     return this._authHttp.post(OrganizationService.endPoint, JSON.stringify(organization), { headers: headers });
                 };
+                OrganizationService.prototype.addUsersToOrganization = function (organizationId, emails) {
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
+                    return this._authHttp.post(OrganizationService.endPoint + "add/" + organizationId, JSON.stringify(emails), { headers: headers });
+                };
                 OrganizationService.prototype.getOrganization = function (organizationId) {
                     return this._authHttp.get(OrganizationService.endPoint + organizationId);
                 };
