@@ -16,8 +16,8 @@ public class LoginHelper {
         String baseUrl = System.getProperty("app.baseUrl");
         driver.get(baseUrl);
 
-        WebElement signUp = driver.findElement(By.id("form-sign-up-link"));
-        signUp.click();
+        WebElement registrationForm = driver.findElement(By.name("registration"));
+        driver.switchTo().frame(registrationForm);
 
         driver.findElement(By.name("username")).sendKeys(username);
         driver.findElement(By.name("name")).sendKeys("User");
@@ -26,7 +26,7 @@ public class LoginHelper {
         driver.findElement(By.name("password")).sendKeys(password);
         driver.findElement(By.name("verify-password")).sendKeys(password);
 
-        driver.findElement(By.id("sign-up-button")).click();
+        registrationForm.submit();
         (new WebDriverWait(driver, timeout)).until((WebDriver d) -> d.getCurrentUrl().equals(baseUrl + "/overview"));
     }
     
