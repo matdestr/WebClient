@@ -67,9 +67,6 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../s
                         var obj = JSON.parse(message);
                         if (obj) {
                             this.errorMessages.push(obj.message);
-                            setTimeout(function () {
-                                self.errorMessages.splice(0);
-                            }, 2000);
                         }
                     }
                     else

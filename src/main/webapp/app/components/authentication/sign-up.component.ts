@@ -52,7 +52,10 @@ export class SignUpComponent {
         var obj = JSON.parse(error.text());
         console.log(obj);
         if (obj.fieldErrors){
-            obj.fieldErrors.forEach(e => this.onError(e.message));
+            if (obj.fieldErrors.length > 4)
+                this.onError("Please fill in all fields.");
+            else
+                obj.fieldErrors.forEach(e => this.onError(e.message));
         } else {
             this.onError(obj.message);
         }
@@ -72,9 +75,6 @@ export class SignUpComponent {
             this.errorMessages.push(message);
         } else {
             this.errorMessages = [];
-            setTimeout(() => {
-                self.errorMessages.splice(0);
-            }, 2000);
         }
     }
 }
