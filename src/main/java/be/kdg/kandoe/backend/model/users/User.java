@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @Table(name = "`User`")
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(exclude = { "roles" })
 public class User implements Serializable, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

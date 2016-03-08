@@ -20,6 +20,7 @@
 @import "partials/cards";
 @import "partials/session";
 @import "partials/dashboard";
+@import "partials/titles";
 
 body {
   position: relative;
@@ -28,7 +29,6 @@ body {
   padding-bottom: $footer-height + $default-margin;
 
   @include user-drag(none);
-  @include user-select(none);
 
   background-color: white;
   color: $text-color-neutral;

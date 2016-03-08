@@ -54,9 +54,6 @@ export class SignInComponent{
             var obj = JSON.parse(message);
             if (obj) {
                 this.errorMessages.push(obj.message);
-                setTimeout(() => {
-                    self.errorMessages.splice(0);
-                }, 2000);
             }
         } else
             this.errorMessages = [];

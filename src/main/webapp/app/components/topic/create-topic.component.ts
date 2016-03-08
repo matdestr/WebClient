@@ -15,7 +15,7 @@ import {TopicService} from "../../services/topic.service";
 
 @Component({
     selector: 'create-topic',
-    templateUrl: 'html/create-topic.html',
+    templateUrl: 'html/topic/create-topic.html',
     directives: [ToolbarComponent]
 })
 export class CreateTopicComponent {

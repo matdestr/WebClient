@@ -1,11 +1,13 @@
 import {Component, Input, Output, OnInit, EventEmitter} from 'angular2/core'
+import {NgIf} from 'angular2/common'
 import {CardDetails} from "../../entities/category/card-details";
 
 @Component({
     selector: 'card-detail',
     template: `
-                <div [className]="cardClassName" (click)="onClick()">
-                    <img class="card-img" [src]="card.imageUrl" alt="Card image">
+                <div [className]="cardClassName" [class.card-active]="active" (click)="onClick()">
+
+                    <img *ngIf="card.imageUrl != null"  class="card-img" [src]="card.imageUrl" alt="Card image">
                     <div class="card-block">
                         <p class="card-text">{{card.text}}</p>
                     </div>
@@ -29,12 +31,6 @@ export class CardDetailComponent implements OnInit {
     public onClick():void {
         if (this.selectable) {
             this.active = !this.active;
-
-            if (this.active)
-                this.cardClassName += " card-active";
-            else
-                this.cardClassName = this.cardClassName.replace("card-active", "");
-
             this.card.active = this.active;
         }
 
