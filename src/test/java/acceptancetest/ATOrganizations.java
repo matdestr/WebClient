@@ -54,11 +54,6 @@ public class ATOrganizations {
         );
 
         driver.findElement(By.name("my-organizations")).click();
-/*
-        List<WebElement> organizationElements = driver.findElements(By.className("organization"));
-
-        Assert.assertEquals(1, organizationElements.size());
-        Assert.assertEquals("Karel de Grote", organizationElements.get(0).getText());  */
     }
 
 
