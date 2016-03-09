@@ -28,7 +28,7 @@ public class SessionResource {
     private UserResource organizer;
     private List<ParticipantInfoResource> participantInfo;
     private int currentParticipantPlayingUserId;
-    private List<CardPositionResource> cardPositions;
+    //private List<CardPositionResource> cardPositions;
     private int minNumberOfCardsPerParticipant;
     private int maxNumberOfCardsPerParticipant;
     private boolean participantsCanAddCards;
@@ -38,6 +38,6 @@ public class SessionResource {
     
     public SessionResource() {
         this.participantInfo = new ArrayList<>();
-        this.cardPositions = new ArrayList<>();
+        //this.cardPositions = new ArrayList<>();
     }
 }

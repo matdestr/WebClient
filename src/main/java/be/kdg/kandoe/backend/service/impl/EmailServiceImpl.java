@@ -108,7 +108,7 @@ public class EmailServiceImpl implements EmailService {
         email.setSubject("CanDo: Invitation to join session");
         email.addRecipient("", user.getEmail(), Message.RecipientType.TO);
         email.setTextHTML(
-                String.format("\"<body style=\"font-family: Arial;\">" +
+                String.format("<body style=\"font-family: Arial;\">" +
                         "<p>Hello %s</p>" +
                         "<p>%s has invited you to join their session." +
                         "<br>You can accept the invite by clicking <a href=\"%s\">this link</a></p>" +

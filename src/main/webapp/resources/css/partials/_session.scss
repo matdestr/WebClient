@@ -12,12 +12,13 @@
 }
 
 #cardcontainer{
-  height: 100vh;
+  //height: 100vh;
   background-color: #f2f2f2;
   -webkit-box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
   -moz-box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
   box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
   margin-top:-$navbar-margin-bottom;
+  padding-bottom: 1em;
 }
 
 #main-content{
@@ -94,21 +95,24 @@
 
 .circle {
   position: relative;
-  padding-bottom: 100%;
-  vertical-align: middle;
+  //padding-bottom: 100%;
+  //vertical-align: middle;
   max-width: 40em;
-  margin:auto !important;
-  svg {
+  margin: auto;
+  
+  /*svg {
     display: inline-block;
     position: absolute;
     top: 0;
     left: 0;
-  }
+  }*/
+  
   .svg-circle {
     stroke:$primary-color-dark;
     stroke-width: 20px;
     fill:none;
   }
+  
   .inner-circle{
      fill:$primary-color-dark;
   }

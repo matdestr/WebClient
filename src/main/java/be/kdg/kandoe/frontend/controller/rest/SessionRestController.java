@@ -71,6 +71,19 @@ public class SessionRestController {
 
         return new ResponseEntity<>(sessionResource, HttpStatus.OK);
     }
+    
+    @RequestMapping(value = "/{sessionId}/positions", method = RequestMethod.GET)
+    public ResponseEntity<List<CardPositionResource>> getCardPositionsOfSession(@AuthenticationPrincipal User user,
+                                                                                @PathVariable("sessionId") int sessionId) {
+        Session session = sessionService.getSessionById(sessionId);
+        
+        if (!session.isUserParticipant(user.getUserId()))
+            throw new CanDoControllerRuntimeException("You cannot request information about a session you don't belong to", HttpStatus.FORBIDDEN);
+        
+        List<CardPositionResource> resources = mapper.mapAsList(session.getCardPositions(), CardPositionResource.class);
+        
+        return new ResponseEntity<>(resources, HttpStatus.OK);
+    }
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.POST)
@@ -108,36 +121,6 @@ public class SessionRestController {
         SessionResource returnedResource = mapper.map(session, returnedResourceClass);
 
         return new ResponseEntity(returnedResource, HttpStatus.CREATED);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/{sessionId}/invite", method = RequestMethod.POST)
-    public ResponseEntity inviteUser(@AuthenticationPrincipal User user,
-                                     @PathVariable("sessionId") int sessionId,
-                                     @RequestParam("userId") int userId) {
-        Session session = sessionService.getSessionById(sessionId);
-        User userToInvite = userService.getUserByUserId(userId);
-
-        if (!session.getCategory().getOrganization().isOrganizer(user))
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
-
-        sessionGameService.inviteUserForSession(session, userToInvite);
-
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
-
-
-    @RequestMapping(value = "/{sessionId}/join", method = RequestMethod.POST)
-    public ResponseEntity joinSession(@AuthenticationPrincipal User user,
-                                      @PathVariable("sessionId") int sessionId) {
-        Session session = sessionService.getSessionById(sessionId);
-
-        if (!session.isUserParticipant(user.getUserId()))
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
-
-        sessionGameService.setUserJoined(session, user);
-
-        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{sessionId}/cards", method = RequestMethod.POST)

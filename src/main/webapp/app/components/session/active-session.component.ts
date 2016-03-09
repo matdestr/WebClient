@@ -2,11 +2,12 @@ import {Component, OnInit, Input} from "angular2/core";
 import {Router} from "angular2/router";
 import {RouteParams} from "angular2/router";
 import {ToolbarComponent} from "../widget/toolbar.component";
+import {CardDetailComponent} from "../cards/card-detail.component";
 
 @Component({
     selector: 'active-session',
     templateUrl: 'html/active-session.html',
-    directives: [ToolbarComponent]
+    directives: [ToolbarComponent, CardDetailComponent]
 })
 export class ActiveSessionComponent {
     private stompClient:any = null;

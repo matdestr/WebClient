@@ -5,15 +5,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class InputHelper {
+    /**
+     * Workaround for a bug in the sendKeys() method.
+     * sendKeys() often skips letters, entering wrong input. This method enters the letters of a string
+     * one by one and waits for every letter to be entered before proceeding.
+     * */
     public static void sendKeys(WebDriver driver, WebElement element, String text) {
-        /*for (int i = 0; i < 3; i++) {
-            element.clear();
-            element.sendKeys(text);
-            
-            if (element.getAttribute("value").equals(text))
-                break;
-        }*/
-        
         String filledInText = "";
         
         for (char c : text.toCharArray()) {
@@ -23,12 +20,6 @@ public class InputHelper {
             final String filledInTextFinal = filledInText;
             
             (new WebDriverWait(driver, 1)).until((WebDriver d) -> element.getAttribute("value").equals(filledInTextFinal));
-
-            /*try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
         }
     }
 }

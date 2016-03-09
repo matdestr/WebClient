@@ -6493,12 +6493,12 @@ form.invitation-accept-form {
   transition: left 0.75s ease-in-out, top 0.75s ease-in-out; }
 
 #cardcontainer {
-  height: 100vh;
   background-color: #f2f2f2;
   -webkit-box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94);
   -moz-box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94);
   box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94);
-  margin-top: -20px; }
+  margin-top: -20px;
+  padding-bottom: 1em; }
 
 #main-content {
   margin-top: 0 !important; }
@@ -6565,15 +6565,14 @@ form.invitation-accept-form {
 
 .circle {
   position: relative;
-  padding-bottom: 100%;
-  vertical-align: middle;
   max-width: 40em;
-  margin: auto !important; }
-  .circle svg {
+  margin: auto;
+  /*svg {
     display: inline-block;
     position: absolute;
     top: 0;
-    left: 0; }
+    left: 0;
+  }*/ }
   .circle .svg-circle {
     stroke: #B71C1C;
     stroke-width: 20px;
