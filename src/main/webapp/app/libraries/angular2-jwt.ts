@@ -229,6 +229,9 @@ export function tokenNotExpired(tokenName?:string, jwt?:string) {
         token = localStorage.getItem(authToken);
     }
 
+    if (token == null)
+        return false;
+
     var jwtHelper = new JwtHelper();
 
     if (!token || jwtHelper.isTokenExpired(token, null)) {

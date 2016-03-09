@@ -16,7 +16,7 @@ public class TestWebSocketController {
     @PreAuthorize("isAuthenticated()")
     @MessageMapping("/test")
     @SendTo("/topic/values")
-    public String test(@AuthenticationPrincipal User user) throws Exception {
-        return "value";
+    public User test(@AuthenticationPrincipal User user) throws Exception {
+        return user;
     }
 }

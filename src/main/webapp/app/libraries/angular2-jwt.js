@@ -23,6 +23,8 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
         else {
             token = localStorage.getItem(authToken);
         }
+        if (token == null)
+            return false;
         var jwtHelper = new JwtHelper();
         if (!token || jwtHelper.isTokenExpired(token, null)) {
             return false;

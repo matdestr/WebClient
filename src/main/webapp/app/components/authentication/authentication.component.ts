@@ -12,10 +12,10 @@ import {RouteParams} from "angular2/router";
 })
 export class AuthenticationComponent implements OnInit{
     constructor(@Inject('App.TokenName') tokenName : string, router : Router) {
-        //var token : string = localStorage.getItem(tokenName);
-
         if (tokenNotExpired(tokenName)) {
             router.navigate(['/Dashboard']);
+        } else {
+            console.log("Token is expired...");
         }
     }
     

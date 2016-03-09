@@ -9,8 +9,23 @@ import {ToolbarComponent} from "../widget/toolbar.component";
     directives: [ToolbarComponent]
 })
 export class ActiveSessionComponent {
+    private stompClient:any = null;
+
     constructor(private _router:Router,
                 private _routeArgs:RouteParams) {
 
+        var self:any = this;
+        var socket = new SockJS('/kandoe/ws?token=' + localStorage.getItem("token"));
+        this.stompClient = Stomp.over(socket);
+        this.stompClient.connect({}, function(){
+            self.stompClient.subscribe('/topic/session/messages', function (data) {
+                console.log(JSON.parse(data.body).content);
+            });
+        });
+    }
+
+    public send() : void {
+        if (this.stompClient)
+            this.stompClient.send("/messages", null, JSON.stringify({'message': 'el grande matador'}));
     }
 }

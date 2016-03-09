@@ -21,19 +21,16 @@ export class DashboardComponent {
     private organizations: Organization[]=[];
 
     constructor(private _router:Router,
-                private _routeArgs:RouteParams,
                 private _organizationService: OrganizationService,
-                private _userService: UserService) {
+                private _userService: UserService) {}
+
+    ngOnInit():any {
         var token = localStorage.getItem('token');
 
         this._userService.getUser(getUsername(token)).subscribe((user:User) => {
             this.user = this.user.deserialize(user);
             this.getOrganizations();
         });
-    }
-
-    ngOnInit():any {
-        var token = localStorage.getItem('token');
     }
 
     public getOrganizations(){
