@@ -19,14 +19,18 @@ export class ActiveSessionComponent {
         var socket = new SockJS('/kandoe/ws?token=' + localStorage.getItem("token"));
         this.stompClient = Stomp.over(socket);
         this.stompClient.connect({}, function(){
-            self.stompClient.subscribe('/topic/session/messages', function (data) {
-                console.log(JSON.parse(data.body).content);
+            self.stompClient.subscribe('/topic/values', function (data) {
+                console.log(data);
+                //console.log(JSON.parse(data.body).content);
             });
         });
     }
 
     public send() : void {
-        if (this.stompClient)
-            this.stompClient.send("/messages", null, JSON.stringify({'message': 'el grande matador'}));
+        if (this.stompClient){
+            this.stompClient.send('/test', {} , null);
+            //this.stompClient.send("/messages", null, JSON.stringify({'message': 'el grande matador'}));
+        }
+
     }
 }

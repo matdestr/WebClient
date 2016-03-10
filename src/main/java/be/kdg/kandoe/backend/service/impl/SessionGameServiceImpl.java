@@ -18,10 +18,7 @@ import be.kdg.kandoe.backend.service.exceptions.SessionGameServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,7 +80,7 @@ public class SessionGameServiceImpl implements SessionGameService {
 
         ParticipantInfo participantInfo = firstMatchingParticipantInfo.get();
         participantInfo.setJoined(true);
-        participantInfo.setJoinNumber(session.getParticipantInfo().size() + 1);
+        participantInfo.setJoinNumber((int) (session.getParticipantInfo().stream().filter(p -> p.isJoined()).count()));
 
         CardsChoice cardsChoice = new CardsChoice();
         cardsChoice.setParticipant(user);
@@ -99,16 +96,13 @@ public class SessionGameServiceImpl implements SessionGameService {
     //TODO: testen
     @Override
     public void setUserLeft(Session session, User user) {
-        if (isUserInSession(session, user)) {
-            ParticipantInfo firstMatchingParticipantInfo = session.getParticipantInfo().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst().get();
-            firstMatchingParticipantInfo.setJoined(false);
-            session = sessionService.updateSession(session);
-            if (session == null) {
-                throw new SessionGameServiceException("Session couldn't be updated");
-            }
-        } else {
+        if (!isUserInSession(session, user)) {
             throw new SessionGameServiceException("User not in session");
         }
+
+        ParticipantInfo firstMatchingParticipantInfo = session.getParticipantInfo().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst().get();
+        firstMatchingParticipantInfo.setJoined(false);
+        session = sessionService.updateSession(session);
     }
 
     //@Override
@@ -120,40 +114,15 @@ public class SessionGameServiceImpl implements SessionGameService {
                 throw new SessionGameServiceException("Cannot start an already started session");
         }
 
-        if (session.getParticipantInfo().stream().allMatch(p -> p.isJoined())) {
-            if (session.isParticipantsCanAddCards())
-                session.setSessionStatus(SessionStatus.ADDING_CARDS);
-            else if (session.isCardCommentsAllowed())
-                session.setSessionStatus(SessionStatus.REVIEWING_CARDS);
-            else
-                session.setSessionStatus(SessionStatus.CHOOSING_CARDS);
-        } else {
+        if (!session.getParticipantInfo().stream().allMatch(p -> p.isJoined())) {
             throw new SessionGameServiceException("Cannot start a session when not all users have joined");
         }
-    }
-
-    @Override
-    public void addCardDetails(Session session, User user, CardDetails cardDetails) {
-        if (session.isParticipantsCanAddCards()) {
-            if (session.getSessionStatus() == SessionStatus.ADDING_CARDS) {
-                if (isUserInSession(session, user)) {
-                    cardDetails.setCreator(user);
-                    if (session.getTopic() == null) {
-                        Category category = session.getCategory();
-                        cardDetails = cardService.addCardDetailsToCategory(category, cardDetails);
-                    } else {
-                        Topic topic = session.getTopic();
-                        cardDetails = cardService.addCardDetailsToTopic(topic, cardDetails);
-                    }
-                } else {
-                    throw new SessionGameServiceException("User not in session");
-                }
-            } else {
-                throw new SessionGameServiceException("Session not in adding cards modus");
-            }
-        } else {
-            throw new SessionGameServiceException("Session doesn't allow users to add cards");
-        }
+        if (session.isParticipantsCanAddCards())
+            session.setSessionStatus(SessionStatus.ADDING_CARDS);
+        else if (session.isCardCommentsAllowed())
+            session.setSessionStatus(SessionStatus.REVIEWING_CARDS);
+        else
+            session.setSessionStatus(SessionStatus.CHOOSING_CARDS);
     }
 
     @Override
@@ -172,69 +141,62 @@ public class SessionGameServiceImpl implements SessionGameService {
 
     @Override
     public void chooseCards(Session session, User user, CardDetails cardDetails) {
-        if (session.getSessionStatus() == SessionStatus.CHOOSING_CARDS) {
-            if (isUserInSession(session, user)) {
-                Set<CardDetails> availableCards = new HashSet<>();
-                if (session.getTopic() != null) {
-                    availableCards = session.getTopic().getCards();
-                } else {
-                    availableCards = session.getCategory().getCards();
-                }
-                if (availableCards.stream().anyMatch(c -> c.getCardDetailsId() == cardDetails.getCardDetailsId())) {
-                    Optional<CardsChoice> cardsChoiceOptional = session.getParticipantCardChoices().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
-                    CardsChoice cardsChoice;
-                    if (cardsChoiceOptional.isPresent()) {
-                        cardsChoice = cardsChoiceOptional.get();
-                    } else {
-                        throw new SessionGameServiceException("User has no CardChoice. This shouldn't happen");
-                    }
-                    if (session.getMaxNumberOfCardsPerParticipant() > cardsChoice.getChosenCards().size()) {
-                        if (!cardsChoice.getChosenCards().stream().anyMatch(c -> c.getCardDetailsId() == cardDetails.getCardDetailsId())) {
-                            cardsChoice.getChosenCards().add(cardDetails);
-
-                            sessionService.updateSession(session);
-                        } else {
-                            //TODO is het wel nodig op een exception op te gooien?
-                        }
-                    } else {
-                        throw new SessionGameServiceException(String.format("User has exceeded the max threshold of cards (%d)", session.getMaxNumberOfCardsPerParticipant()));
-                    }
-
-                } else {
-                    throw new SessionGameServiceException("Card doesn't exist in topic/category");
-                }
-            } else {
-                throw new SessionGameServiceException("User is not in session");
-            }
-        } else {
+        if (session.getSessionStatus() != SessionStatus.CHOOSING_CARDS) {
             throw new SessionGameServiceException("Session not in choosing card modus");
+        }
+        if (!isUserInSession(session, user)) {
+            throw new SessionGameServiceException("User is not in session");
+        }
+        Set<CardDetails> availableCards = new HashSet<>();
+        if (session.getTopic() != null) {
+            availableCards = session.getTopic().getCards();
+        } else {
+            availableCards = session.getCategory().getCards();
+        }
+        if (!availableCards.stream().anyMatch(c -> c.getCardDetailsId() == cardDetails.getCardDetailsId())) {
+            throw new SessionGameServiceException("Card doesn't exist in topic/category");
+        }
+
+        Optional<CardsChoice> cardsChoiceOptional = session.getParticipantCardChoices().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
+        CardsChoice cardsChoice;
+        if (cardsChoiceOptional.isPresent()) {
+            cardsChoice = cardsChoiceOptional.get();
+        } else {
+            throw new SessionGameServiceException("User has no CardChoice. This shouldn't happen");
+        }
+
+        if (session.getMaxNumberOfCardsPerParticipant() < cardsChoice.getChosenCards().size()) {
+            throw new SessionGameServiceException(String.format("User has exceeded the max threshold of cards (%d)", session.getMaxNumberOfCardsPerParticipant()));
+        }
+
+        if (!cardsChoice.getChosenCards().stream().anyMatch(c -> c.getCardDetailsId() == cardDetails.getCardDetailsId())) {
+            cardsChoice.getChosenCards().add(cardDetails);
+            sessionService.updateSession(session);
         }
     }
 
     @Override
     public void confirmCardsChosen(Session session, User user) {
-        if (session.getSessionStatus() == SessionStatus.CHOOSING_CARDS) {
-            if (isUserInSession(session, user)) {
-                Optional<CardsChoice> cardChoiceOptional = session.getParticipantCardChoices().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
-                if (cardChoiceOptional.isPresent()) {
-                    CardsChoice cardsChoice = cardChoiceOptional.get();
-                    if (cardsChoice.getChosenCards().size() >= session.getMinNumberOfCardsPerParticipant() && cardsChoice.getChosenCards().size() <= session.getMaxNumberOfCardsPerParticipant()) {
-                        cardsChoice.setCardsChosen(true);
-                    } else {
-                        throw new SessionGameServiceException("User has more/less cards than allowed");
-                    }
-                } else {
-                    throw new SessionGameServiceException("User didn't choose any cards yet.");
-                }
-
-                if (session.getParticipantCardChoices().stream().allMatch(p -> p.isCardsChosen())) {
-                    confirmChoosingCards(session);
-                }
+        if (session.getSessionStatus() != SessionStatus.CHOOSING_CARDS) {
+            throw new SessionGameServiceException("Session not in choosing cards modus");
+        }
+        if (!isUserInSession(session, user)) {
+            throw new SessionGameServiceException("User not in session");
+        }
+        Optional<CardsChoice> cardChoiceOptional = session.getParticipantCardChoices().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
+        if (cardChoiceOptional.isPresent()) {
+            CardsChoice cardsChoice = cardChoiceOptional.get();
+            if (cardsChoice.getChosenCards().size() >= session.getMinNumberOfCardsPerParticipant() && cardsChoice.getChosenCards().size() <= session.getMaxNumberOfCardsPerParticipant()) {
+                cardsChoice.setCardsChosen(true);
             } else {
-                throw new SessionGameServiceException("User not in session");
+                throw new SessionGameServiceException("User has more/less cards than allowed");
             }
         } else {
-            throw new SessionGameServiceException("Session not in choosing cards modus");
+            throw new SessionGameServiceException("User didn't choose any cards yet.");
+        }
+
+        if (session.getParticipantCardChoices().stream().allMatch(p -> p.isCardsChosen())) {
+            confirmChoosingCards(session);
         }
     }
 
@@ -257,6 +219,7 @@ public class SessionGameServiceImpl implements SessionGameService {
     public void startGame(Session session) {
         if (session.getSessionStatus() == SessionStatus.READY_TO_START) {
             session.setSessionStatus(SessionStatus.IN_PROGRESS);
+            initCardPositions(session);
             session.setCurrentParticipantPlaying(getNextParticipant(session));
             sessionService.updateSession(session);
         } else {
@@ -268,9 +231,6 @@ public class SessionGameServiceImpl implements SessionGameService {
     public void confirmChoosingCards(Session session) {
         if (session.getSessionStatus() == SessionStatus.CHOOSING_CARDS) {
             session.setSessionStatus(SessionStatus.READY_TO_START);
-            session.setCurrentParticipantPlaying(getNextParticipant(session));
-
-            initCardPositions(session);
 
             sessionService.updateSession(session);
         } else {
@@ -283,68 +243,101 @@ public class SessionGameServiceImpl implements SessionGameService {
         session.setCardPositions(chosenUniqueCards.stream().map(c -> new CardPosition(c, session)).collect(Collectors.toList()));
     }
 
-    private ParticipantInfo getNextParticipant(Session session) {
+    @Override
+    public ParticipantInfo getNextParticipant(Session session) {
         ParticipantInfo currentPlayingParticipant = session.getCurrentParticipantPlaying();
         if (currentPlayingParticipant != null) {
-            int max = session.getParticipantSequence().stream().max((p1, p2) -> Integer.compare(p1.getJoinNumber(), p2.getJoinNumber())).get().getJoinNumber();
-            if (currentPlayingParticipant.getJoinNumber() == max){
-                return session.getParticipantSequence().stream()
-                        .sorted((p1, p2) -> Integer.compare(p1.getJoinNumber(), p2.getJoinNumber()))
-                        .findFirst().get();
+            Optional<ParticipantInfo> maxParticipantInfoOptional = session.getParticipantSequence().stream().max((p1, p2) -> Integer.compare(p1.getJoinNumber(), p2.getJoinNumber()));
+            int max;
+            if (maxParticipantInfoOptional.isPresent()) {
+                max = maxParticipantInfoOptional.get().getJoinNumber();
             } else {
-                return session.getParticipantSequence().stream()
-                        .sorted((p1, p2) -> Integer.compare(p1.getJoinNumber(), p2.getJoinNumber()))
-                        .filter(p -> p.getJoinNumber() >= currentPlayingParticipant.getJoinNumber() + 1)
-                        .findFirst().get();
+                max = 0;
+            }
+            if (currentPlayingParticipant.getJoinNumber() == max) {
+
+                return session.getParticipantSequence().get(0);
+
+            } else {
+                int currentIndex = 0;
+                List<ParticipantInfo> participantSequence = session.getParticipantSequence();
+
+                for (int i = 0; i < participantSequence.size(); i++) {
+                    if (participantSequence.get(i).getJoinNumber() == currentPlayingParticipant.getJoinNumber())
+                        currentIndex = i;
+                }
+
+                return participantSequence.get(currentIndex + 1);
             }
         } else {
-            throw new SessionGameServiceException("No next particapent found");
+            return session.getParticipantSequence().get(0);
         }
-
     }
 
     @Override
     public void increaseCardPriority(Session session, User user, CardDetails cardDetails) {
-        if (session.getSessionStatus() == SessionStatus.IN_PROGRESS) {
-            if (isUserInSession(session, user)) {
-                if (session.getCurrentParticipantPlaying().getParticipant().getUserId() == user.getUserId()) {
-                    Optional<ParticipantInfo> participantInfoOptional = session.getParticipantInfo().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
-                    Optional<CardsChoice> cardsChoiceOptional = session.getParticipantCardChoices().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
-                    if (participantInfoOptional.isPresent() && cardsChoiceOptional.isPresent()) {
-                        ParticipantInfo participantInfo = participantInfoOptional.get();
-                        CardsChoice cardsChoice = cardsChoiceOptional.get();
-                        if (!participantInfo.isMadeMove()) {
-                            Optional<CardPosition> cardPositionOptional = session.getCardPositions().stream().filter(c -> c.getCardDetails().getCardDetailsId() == c.getCardDetails().getCardDetailsId()).findFirst();
-                            if (cardsChoiceOptional.isPresent()) {
-                                CardPosition cardPosition = cardPositionOptional.get();
-                                cardPosition.setPriority(cardPosition.getPriority() + 1);
-                                participantInfo.setMadeMove(true);
-                                session.setCurrentParticipantPlaying(getNextParticipant(session));
-                                if (session.getParticipantInfo().stream().allMatch(p -> p.isMadeMove())) {
-                                    session.getParticipantInfo().forEach(p -> p.setMadeMove(false));
-                                }
-                                sessionService.updateSession(session);
-                            } else {
-                                throw new SessionGameServiceException("Card is not in game");
-                            }
-                        } else {
-                            throw new SessionGameServiceException("User already made a move this round");
-                        }
-                    }
-                } else {
-                    throw new SessionGameServiceException("Not the turn of this user");
-                }
-            } else {
-                throw new SessionGameServiceException("User is not in session");
-            }
-        } else {
+        if (session.getSessionStatus() != SessionStatus.IN_PROGRESS) {
             throw new SessionGameServiceException("Game isn't in progress");
         }
+
+        if (!isUserInSession(session, user)) {
+            throw new SessionGameServiceException("User is not in session");
+        }
+        if (session.getCurrentParticipantPlaying().getParticipant().getUserId() != user.getUserId()) {
+            throw new SessionGameServiceException("Not the turn of this user");
+        }
+
+        Optional<ParticipantInfo> participantInfoOptional = session.getParticipantInfo().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
+        Optional<CardsChoice> cardsChoiceOptional = session.getParticipantCardChoices().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
+
+        if (!(participantInfoOptional.isPresent() && cardsChoiceOptional.isPresent())) {
+            throw new SessionGameServiceException("Card is not in game");
+        }
+
+        ParticipantInfo participantInfo = participantInfoOptional.get();
+        CardsChoice cardsChoice = cardsChoiceOptional.get();
+
+        if (participantInfo.isMadeMove()) {
+            throw new SessionGameServiceException("User already made a move this round");
+        }
+
+        Optional<CardPosition> cardPositionOptional = session.getCardPositions().stream().filter(c -> c.getCardDetails().getCardDetailsId() == c.getCardDetails().getCardDetailsId()).findFirst();
+        if (cardsChoiceOptional.isPresent()) {
+
+            CardPosition cardPosition = cardPositionOptional.get();
+            cardPosition.setPriority(cardPosition.getPriority() + 1);
+
+            participantInfo.setMadeMove(true);
+            session.setCurrentParticipantPlaying(getNextParticipant(session));
+            if (session.getParticipantInfo().stream().allMatch(p -> p.isMadeMove())) {
+                session.getParticipantInfo().forEach(p -> p.setMadeMove(false));
+            }
+
+            sessionService.updateSession(session);
+
+            if (anyWinners(session)) {
+                endGame(session);
+            }
+
+        }
+    }
+
+    private boolean anyWinners(Session session) {
+        return session.getCardPositions().stream().anyMatch(c -> c.getPriority() == session.getAmountOfCircles());
     }
 
     @Override
     public void endGame(Session session) {
-        throw new SessionGameServiceException("Method not implemented");
+        if (session.getSessionStatus() == SessionStatus.IN_PROGRESS) {
+            List<CardPosition> cardPositions = session.getCardPositions();
+            int highestPriority = cardPositions.stream().mapToInt(c -> c.getPriority()).max().getAsInt();
+            List<CardDetails> winners = session.getCardPositions().stream().filter(c -> c.getPriority() == highestPriority).map(CardPosition::getCardDetails).collect(Collectors.toList());
+            session.setWinners(winners);
+            session.setSessionStatus(SessionStatus.FINISHED);
+            sessionService.updateSession(session);
+        } else {
+            throw new SessionGameServiceException("Game isn't in progress. Game can't be stopped");
+        }
     }
 
     private boolean isUserInSession(Session session, User user) {
