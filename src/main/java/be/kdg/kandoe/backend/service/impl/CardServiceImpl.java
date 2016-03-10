@@ -77,7 +77,11 @@ public class CardServiceImpl implements CardService {
         this.validateCardDetails(cardDetails);
         this.validateCardDetailsExistence(topic, cardDetails);
 
-        if (!cardDetails.getCategory().equals(topic.getCategory())) {
+        if (cardDetails.getCategory() == null) {
+            this.addCardDetailsToCategory(topic.getCategory(), cardDetails);
+        }
+
+        if (cardDetails.getCategory().getCategoryId() != topic.getCategory().getCategoryId()) {
             logger.warn("Tried to add card details to topic, but topic was of different category");
             throw new CardServiceException("Cannot add card details to topics of different categories");
         }

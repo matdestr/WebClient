@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -32,32 +31,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public Session addSession(Session session) {
-        if (session.getTopic() != null) {
-            if (session.getTopic().getCards().size() <= session.getMinNumberOfCardsPerParticipant()) {
-                throw new SessionServiceException("Cannot create a session with less cards than the minimum required per participant");
-            }
-        } else {
-            if (session.getCategory() == null)
-                throw new SessionServiceException("Session must be linked to a category");
-            
-            if (session.getCategory().getCards() == null || session.getCategory().getCards().size() < session.getMinNumberOfCardsPerParticipant())
-                throw new SessionServiceException("Cannot create a session with less cards than the minimum required per participant");
-        }
-        
-        if (session.getOrganizer() == null)
-            throw new SessionServiceException("Cannot add a session without an organizer");
-        
-        if (!session.getCategory().getOrganization().isOrganizer(session.getOrganizer()))
-            throw new SessionServiceException("User must be organization organizer to be able to create a session");
-        
-        if (session.getMinNumberOfCardsPerParticipant() > session.getMaxNumberOfCardsPerParticipant())
-            throw new SessionServiceException("Minimum amount of cards per participant must be greater than maximum amount of cards per participant");
-        
-        if (session.getAmountOfCircles() < Session.MIN_CIRCLE_AMOUNT)
-            session.setAmountOfCircles(Session.MIN_CIRCLE_AMOUNT);
-        
-        if (session.getAmountOfCircles() > Session.MAX_CIRCLE_AMOUNT)
-            session.setAmountOfCircles(Session.MAX_CIRCLE_AMOUNT);
+        session = validateSession(session);
 
         ParticipantInfo participantInfoOrganizer = new ParticipantInfo();
         participantInfoOrganizer.setParticipant(session.getOrganizer());
@@ -81,11 +55,43 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public Session updateSession(Session session) {
+        session = validateSession(session);
         Session updatedSession = sessionRepository.save(session);
         if (updatedSession == null) {
             throw new SessionServiceException("Session couldn't be saved");
         }
         return updatedSession;
+    }
+
+    private Session validateSession(Session session){
+        if (session.getTopic() != null) {
+            if (session.getTopic().getCards().size() <= session.getMinNumberOfCardsPerParticipant()) {
+                throw new SessionServiceException("Cannot create a session with less cards than the minimum required per participant");
+            }
+        } else {
+            if (session.getCategory() == null)
+                throw new SessionServiceException("Session must be linked to a category");
+
+            if (session.getCategory().getCards() == null || session.getCategory().getCards().size() < session.getMinNumberOfCardsPerParticipant())
+                throw new SessionServiceException("Cannot create a session with less cards than the minimum required per participant");
+        }
+
+        if (session.getOrganizer() == null)
+            throw new SessionServiceException("Cannot add a session without an organizer");
+
+        if (!session.getCategory().getOrganization().isOrganizer(session.getOrganizer()))
+            throw new SessionServiceException("User must be organization organizer to be able to create a session");
+
+        if (session.getMinNumberOfCardsPerParticipant() > session.getMaxNumberOfCardsPerParticipant())
+            throw new SessionServiceException("Minimum amount of cards per participant must be greater than maximum amount of cards per participant");
+
+        if (session.getAmountOfCircles() < Session.MIN_CIRCLE_AMOUNT)
+            session.setAmountOfCircles(Session.MIN_CIRCLE_AMOUNT);
+
+        if (session.getAmountOfCircles() > Session.MAX_CIRCLE_AMOUNT)
+            session.setAmountOfCircles(Session.MAX_CIRCLE_AMOUNT);
+
+        return session;
     }
 
     @Override

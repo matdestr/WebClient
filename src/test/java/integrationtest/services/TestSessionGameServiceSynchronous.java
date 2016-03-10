@@ -350,17 +350,14 @@ public class TestSessionGameServiceSynchronous {
         cardDetailsSet.add(cardDetails3);
         
         sessionGameService.chooseCards(session, organizer, cardDetailsSet);
-        //sessionGameService.confirmCardsChosen(session, organizer);
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails1);
         cardDetailsSet.add(cardDetails2);
 
         sessionGameService.chooseCards(session, player1, cardDetailsSet);
-        //sessionGameService.confirmCardsChosen(session, player1);
         
         sessionGameService.chooseCards(session, player2, cardDetailsSet);
-        //sessionGameService.confirmCardsChosen(session, player2);
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();
@@ -431,7 +428,6 @@ public class TestSessionGameServiceSynchronous {
         Assert.assertEquals(SessionStatus.IN_PROGRESS, session.getSessionStatus());
     }
 
-    //TODO fixen
     @Test
     public void testIncreaseCardPriority(){
         session.setParticipantsCanAddCards(true);
