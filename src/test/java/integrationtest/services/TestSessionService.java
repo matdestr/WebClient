@@ -5,10 +5,12 @@ import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
+import be.kdg.kandoe.backend.model.sessions.AsynchronousSession;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.persistence.api.*;
+import be.kdg.kandoe.backend.service.api.CardService;
 import be.kdg.kandoe.backend.service.api.SessionService;
 import be.kdg.kandoe.backend.service.exceptions.SessionServiceException;
 import org.junit.Assert;
@@ -22,6 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { BackendContextConfig.class })
@@ -44,7 +50,11 @@ public class TestSessionService {
     
     @Autowired
     private SessionService sessionService;
-    
+
+    @Autowired
+    private CardService cardService;
+
+
     private User user;
     private Organization organization;
     private Category category;
@@ -167,5 +177,64 @@ public class TestSessionService {
         session.setOrganizer(nonOrganizer);
         
         sessionService.addSession(session);
+    }
+
+
+
+    @Test
+    public void testCreateSychronusSession(){
+        SynchronousSession session = new SynchronousSession();
+        session.setOrganizer(user);
+        session.setCategory(category);
+        Session savedSession = sessionService.addSession(session);
+        assertEquals(session.getSessionId(), savedSession.getSessionId());
+    }
+
+    @Test
+    public void testCreateAsynchronousSessionSession(){
+        Session session = new AsynchronousSession();
+        session.setOrganizer(user);
+        session.setCategory(category);
+        Session savedSession = sessionService.addSession(session);
+        assertEquals(session.getSessionId(), savedSession.getSessionId());
+    }
+
+    @Test
+    public void testFetchSessionsOfDifferentTypes(){
+        Session asynchronousSession = new AsynchronousSession();
+        Session synchronousSession = new SynchronousSession();
+
+        asynchronousSession.setOrganizer(user);
+        asynchronousSession.setCategory(category);
+
+        synchronousSession.setOrganizer(user);
+        synchronousSession.setCategory(category);
+
+        Session savedAsynchronousSession = sessionService.addSession(asynchronousSession);
+        Session savedSynchronousSession = sessionService.addSession(synchronousSession);
+
+        Session fetchedAsynchronousSession = sessionService.getSessionById(savedAsynchronousSession.getSessionId());
+        Session fetchedSynchronousSession = sessionService.getSessionById(savedSynchronousSession.getSessionId());
+
+        assertThat(fetchedAsynchronousSession, instanceOf(AsynchronousSession.class));
+        assertThat(fetchedSynchronousSession, instanceOf(SynchronousSession.class));
+    }
+
+    @Test
+    public void testAddSessionToTopic(){
+        cardService.addCardDetailsToTopic(topic, cardDetails1);
+        cardService.addCardDetailsToTopic(topic, cardDetails2);
+        cardService.addCardDetailsToTopic(topic, cardDetails3);
+        cardService.addCardDetailsToTopic(topic, cardDetails4);
+        cardService.addCardDetailsToTopic(topic, cardDetails5);
+
+        Session session = new SynchronousSession();
+        session.setOrganizer(user);
+        session.setCategory(category);
+        session.setTopic(this.topic);
+
+        Session savedSession = sessionService.addSession(session);
+        assertEquals(savedSession.getTopic().getName(), topic.getName());
+        assertEquals(savedSession.getOrganizer().getUserId(), this.user.getUserId());
     }
 }
