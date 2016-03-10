@@ -44,6 +44,11 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                     this._userService = _userService;
                     this.user = user_1.User.createEmptyUser();
                     this.organizations = [];
+                    this.organizationsSubSet = [];
+                    this.counterBegin = 0;
+                    this.counterEnd = 4;
+                    this.myLeftDisplay = "block";
+                    this.myRightDisplay = "block";
                     var token = localStorage.getItem('token');
                     this._userService.getUser(angular2_jwt_1.getUsername(token)).subscribe(function (user) {
                         _this.user = _this.user.deserialize(user);
@@ -57,10 +62,39 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                     var _this = this;
                     this._organizationService.getOrganizationsByUser(this.user.username).subscribe(function (data) {
                         _this.organizations = data.json();
+                        _this.updateSubSet();
                     }, function (error) { console.log(error); _this.organizations = []; });
+                };
+                DashboardComponent.prototype.updateSubSet = function () {
+                    this.organizationsSubSet = this.organizations.slice(0, 4);
+                    this.myLeftDisplay = "none";
                 };
                 DashboardComponent.prototype.toOrganization = function (organizationId) {
                     this._router.navigate(["/OrganizationDetail", { organizationId: organizationId }]);
+                };
+                DashboardComponent.prototype.nextOrgPage = function () {
+                    this.myLeftDisplay = "block";
+                    if (this.counterEnd >= this.organizations.length) {
+                        this.myRightDisplay = "none";
+                        return;
+                    }
+                    else {
+                        this.counterBegin++;
+                        this.counterEnd++;
+                        this.organizationsSubSet = this.organizations.slice(this.counterBegin, this.counterEnd);
+                    }
+                };
+                DashboardComponent.prototype.previousOrgPage = function () {
+                    this.myRightDisplay = "block";
+                    if (this.counterBegin <= 0) {
+                        this.myLeftDisplay = "none";
+                        return;
+                    }
+                    else {
+                        this.counterBegin--;
+                        this.counterEnd--;
+                        this.organizationsSubSet = this.organizations.slice(this.counterBegin, this.counterEnd);
+                    }
                 };
                 DashboardComponent = __decorate([
                     core_1.Component({

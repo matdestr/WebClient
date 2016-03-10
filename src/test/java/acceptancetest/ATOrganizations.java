@@ -54,6 +54,8 @@ public class ATOrganizations {
         );
 
         driver.findElement(By.name("my-organizations")).click();
+
+
     }
 
 
