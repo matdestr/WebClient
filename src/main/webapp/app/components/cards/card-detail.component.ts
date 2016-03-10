@@ -15,7 +15,7 @@ import {CardDetails} from "../../entities/category/card-details";
         `
 })
 export class CardDetailComponent implements OnInit {
-    @Input() public card:CardDetails;
+    @Input() public card:CardDetails = CardDetails.createEmptyCard();
     @Input() public cardClassName:string;
     @Input() public clickable:boolean;
     @Input() public selectable:boolean;
@@ -26,6 +26,9 @@ export class CardDetailComponent implements OnInit {
     ngOnInit():any {
         if (this.clickable)
             this.cardClassName += " card-clickable";
+
+        this.card.imageUrl = "img/ok.jpg";
+        this.card.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
     }
 
     public onClick():void {

@@ -5946,6 +5946,8 @@ a {
   border: 0;
   border-radius: 0;
   z-index: 1000; }
+  .toolbar .toolbar.navbar-header {
+    margin: 0 auto !important; }
   .toolbar .toolbar-container {
     padding-right: 0; }
     .toolbar .toolbar-container *, .toolbar .toolbar-container .toolbar-menu a {
@@ -6007,6 +6009,9 @@ a {
 .navbar-inverse .navbar-toggle {
   margin-right: 30px !important;
   border: none !important; }
+
+.navbar {
+  margin-bottom: 0; }
 
 .navbar-inverse .navbar-nav > .open > a,
 .navbar-inverse .navbar-nav > .open > a:hover,
@@ -6379,10 +6384,13 @@ form.invitation-accept-form {
 
 .card, .card-small, .card-large {
   background-color: whitesmoke;
+  /*
   box-shadow: 0 0 1.25em #333;
-  -moz-border-radius: 0.5em;
-  -webkit-border-radius: 0.5em;
-  border-radius: 0.5em; }
+  */
+  border: solid 1px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px; }
 
 .card-clickable {
   cursor: pointer; }
@@ -6407,8 +6415,7 @@ form.invitation-accept-form {
     max-height: 7.5em;
     overflow: hidden;
     width: 100%;
-    border-top-right-radius: 0.5em;
-    border-top-left-radius: 0.5em; }
+    /*@include border-top-radius(0.5em);*/ }
     @media screen and (min-width: 600px) {
       .card-small .card-img {
         max-height: 10em; } }
@@ -6449,7 +6456,7 @@ form.invitation-accept-form {
 
 .card-large {
   display: block;
-  margin: 1.5em 0.5em;
+  margin: 0 auto;
   width: 20em; }
   @media screen and (min-width: 600px) {
     .card-large {
@@ -6493,12 +6500,63 @@ form.invitation-accept-form {
   transition: left 0.75s ease-in-out, top 0.75s ease-in-out; }
 
 #cardcontainer {
+  height: 95vh;
   background-color: #f2f2f2;
   -webkit-box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94);
   -moz-box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94);
-  box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94);
-  margin-top: -20px;
-  padding-bottom: 1em; }
+  box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94); }
+
+#circlecontainer {
+  height: 95vh;
+  display: block; }
+
+.row {
+  margin: 0 !important; }
+
+#chatcontainer {
+  height: 400px;
+  background-color: #f2f2f2; }
+  @media only screen and (min-width: 600px) {
+    #chatcontainer {
+      height: 95vh; } }
+
+#chatbox {
+  overflow-y: scroll;
+  max-height: 200px;
+  height: 200px; }
+  @media only screen and (min-width: 600px) {
+    #chatbox {
+      max-height: 480px;
+      height: 480px; } }
+
+#messagebox {
+  display: block;
+  margin: 0 auto; }
+
+.chat-title {
+  padding-top: 1em !important; }
+
+#chat-input-box {
+  margin-top: 1em; }
+
+.chat-input-area {
+  display: block;
+  margin: 0.5em auto;
+  width: 80%; }
+
+.chat-picture {
+  width: 45px; }
+
+.chat-username {
+  font-weight: bold; }
+
+.chat-send-button {
+  width: 40% !important;
+  float: right;
+  margin-top: 1em; }
+
+.chatmessage {
+  padding: 0.5em; }
 
 #main-content {
   margin-top: 0 !important; }
@@ -6600,7 +6658,7 @@ body {
   position: relative;
   min-height: 100%;
   overflow-x: hidden;
-  padding-bottom: 5.5em;
+  /*padding-bottom: $footer-height + $default-margin;*/
   user-drag: none;
   -webkit-user-drag: none;
   background-color: white;
@@ -6612,11 +6670,11 @@ body {
 #main-content {
   margin-top: 3em; }
 
-#authentication {
+/*#authentication{
   min-height: 100vh;
   background: transparent url("../img/bg-kandoe.png") no-repeat !important;
-  background-size: cover !important; }
-
+  background-size: cover !important;
+}*/
 .clear-both {
   clear: both; }
 
