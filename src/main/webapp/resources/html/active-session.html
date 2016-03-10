@@ -2,9 +2,36 @@
 <div id="main-content" >
 
     <div class="row">
-        <div id="cardcontainer" class="col-sm-3">
-            <h1 class="text-center card-name">Selected card</h1>
+        <div id="cardcontainer" class="col-xs-12 col-lg-3">
+            <h1 class="card-name">Selected card</h1>
             <card-detail [cardClassName]="'card-large'"></card-detail>
         </div>
+
+        <div id="circlecontainer" class="col-xs-12 col-lg-6">
+
+        </div>
+
+        <div id="chatcontainer" class="col-xs-12 col-lg-3">
+            <h1 class="chat-title">Chat</h1>
+            <div #chatbox id="chatbox">
+                <div id="messagebox" *ngFor="#message of messages; #i = index">
+                    <p class="chatmessage">
+<!--
+                        <span><img class="chat-picture" src="{{ message.user.profilePictureUrl }}"></span>
+-->
+                        <span>{{ message.date | date:"HH:mm" }}</span>
+                        <span class="chat-username">{{ message.user.username }}:</span>
+                        <span>{{ message.message }}</span></p>
+                </div>
+            </div>
+            <div>
+                <div class="chat-input-area form-group">
+                    <input [(ngModel)]="currentMessage" class="form-control" id="chat-input-box" type="text">
+                    <input (keydown)="send()" (click)="send()" class="form-control chat-send-button" type="submit" value="Send">
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </div>

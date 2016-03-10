@@ -6,6 +6,10 @@
   border-radius: 0;
   z-index: 1000;
 
+  .toolbar.navbar-header {
+    margin: 0 auto !important;
+  }
+
   .toolbar-container {
     padding-right: 0;
 
@@ -108,6 +112,10 @@
 .navbar-inverse .navbar-toggle {
   margin-right: 30px !important;
   border: none !important;
+}
+
+.navbar {
+  margin-bottom: 0;
 }
 
 .navbar-inverse .navbar-nav > .open > a,
