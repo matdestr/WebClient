@@ -3,8 +3,6 @@ package be.kdg.kandoe.backend.service.impl;
 import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.cards.CardPosition;
 import be.kdg.kandoe.backend.model.cards.Comment;
-import be.kdg.kandoe.backend.model.organizations.Category;
-import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.sessions.CardsChoice;
 import be.kdg.kandoe.backend.model.sessions.ParticipantInfo;
 import be.kdg.kandoe.backend.model.sessions.Session;
@@ -38,6 +36,8 @@ public class SessionGameServiceImpl implements SessionGameService {
 
     @Override
     public void inviteUserForSession(Session session, User user) {
+        // TODO : Max amount or players or not?
+        
         if (session.getSessionStatus() != SessionStatus.CREATED && session.getSessionStatus() != SessionStatus.USERS_JOINING)
             throw new SessionGameServiceException("Cannot invite user when the session has already started");
 
@@ -71,7 +71,6 @@ public class SessionGameServiceImpl implements SessionGameService {
 
     @Override
     public void setUserJoined(Session session, User user) {
-        //TODO controle op aantal spelers
         if (session.getParticipantInfo().size() <= 1)
             throw new SessionGameServiceException("Cannot join a session to which no users are invited");
 
@@ -94,8 +93,7 @@ public class SessionGameServiceImpl implements SessionGameService {
         if (session.getParticipantInfo().stream().allMatch(p -> p.isJoined()))
             this.confirmUsersJoined(session);
     }
-
-    //TODO: testen
+    
     @Override
     public void setUserLeft(Session session, User user) {
         if (!isUserInSession(session, user)) {

@@ -4,7 +4,6 @@ import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.users.Invitation;
 import be.kdg.kandoe.backend.model.users.User;
-import be.kdg.kandoe.backend.persistence.api.SessionRepository;
 import be.kdg.kandoe.backend.service.api.EmailService;
 import be.kdg.kandoe.backend.service.api.InvitationService;
 import be.kdg.kandoe.backend.service.properties.MailProperties;
@@ -29,9 +28,6 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private InvitationService invitationService;
-
-    @Autowired
-    private SessionRepository sessionRepository;
 
     @Autowired
     private JobScheduler jobScheduler;

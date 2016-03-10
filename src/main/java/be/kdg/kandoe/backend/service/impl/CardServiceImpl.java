@@ -1,10 +1,8 @@
 package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;
-import be.kdg.kandoe.backend.model.cards.CardPosition;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Topic;
-import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.persistence.api.CardDetailsRepository;
 import be.kdg.kandoe.backend.persistence.api.CategoryRepository;
 import be.kdg.kandoe.backend.persistence.api.TopicRepository;
@@ -127,22 +125,23 @@ public class CardServiceImpl implements CardService {
     @Override
     public CardDetails getCardDetailsById(int cardDetailsId) {
         CardDetails cardDetails = cardDetailsRepository.findOne(cardDetailsId);
+        
         if (cardDetails == null){
-            throw new CardServiceException(String.format("No card found by %d", cardDetailsId));
+            throw new CardServiceException(String.format("Could not find card details with ID %d", cardDetailsId));
         }
+        
         return cardDetails;
     }
 
-    @Override
+    /*@Override
     public void initializeCardPositions(Session session) {
 
-    }
+    }*/
 
-    @Override
+    /*@Override
     public Set<CardPosition> getCardPositionsOfSession(int sessionId) {
         return null;
-    }
-
+    }*/
 
     private void validateCardDetails(CardDetails cardDetails) {
         if (cardDetails == null) {
@@ -180,5 +179,4 @@ public class CardServiceImpl implements CardService {
             throw new CardServiceException("A card with that text already exists in the topic");
         }
     }
-
 }

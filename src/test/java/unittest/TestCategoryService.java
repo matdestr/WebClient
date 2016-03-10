@@ -61,8 +61,7 @@ public class TestCategoryService {
         assertEquals(testCategory.getCategoryId(), fetchedCategory.getCategoryId());
         assertEquals(testCategory.getOrganization().getOrganizationId(), fetchedCategory.getOrganization().getOrganizationId());
     }
-
-
+    
     @Test(expected = CategoryServiceException.class)
     public void testAddExistingCategoryInSameOrganization() throws CategoryServiceException {
         categoryService.addCategory(testCategory);
@@ -75,7 +74,6 @@ public class TestCategoryService {
 
         categoryService.addCategory(newTestCategory);
     }
-
 
     @Test
     public void testAddExistingCategoryInDifferentOrganization() throws CategoryServiceException {
@@ -92,5 +90,28 @@ public class TestCategoryService {
         Category fetchedNewCategory = categoryService.getCategoryByName(newTestCategory.getName(), newTestCategory.getOrganization());
         assertEquals(newTestCategory, fetchedNewCategory);
     }
+    
+    @Test(expected = CategoryServiceException.class)
+    public void addCategoryWithoutOrganizationThrowsException() {
+        Category category = new Category();
+        category.setName("Invalid category");
+        
+        categoryService.addCategory(category);
+    }
+    
+    @Test(expected = CategoryServiceException.class)
+    public void addCategoryWithoutNameThrowsException() {
+        Category category = new Category();
+        category.setOrganization(organization1);
 
+        categoryService.addCategory(category);
+    }
+    
+    @Test(expected = CategoryServiceException.class)
+    public void addCategoryWithEmptyNameThrowsException() {
+        Category category = new Category();
+        category.setName("");
+        
+        categoryService.addCategory(category);
+    }
 }
