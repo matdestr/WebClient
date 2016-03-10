@@ -311,7 +311,7 @@ public class ITSessionGameRestController {
     }
     
     @Test
-    public void inviteUserAsNonOwnerResultsInForbidden() throws Exception {
+    public void inviteUserAsNonOrganizerResultsInForbidden() throws Exception {
         String participantUsername = "participant-1";
         String participantPassword = "participant-pass";
         
@@ -325,9 +325,20 @@ public class ITSessionGameRestController {
         userToInvite = userService.addUser(userToInvite);
         
         Session session = createDefaultSession();
+        
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                    .header("Authorization", authorizationHeader)
+                    .param("userId", String.valueOf(participant.getUserId()))
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         String tokenParticipant = TokenProvider.getToken(mockMvc, clientDetails, participantUsername, participantPassword);
         String authorizationHeaderParticipant = String.format("Bearer %s", tokenParticipant);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
         
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
@@ -336,12 +347,14 @@ public class ITSessionGameRestController {
         ).andExpect(MockMvcResultMatchers.status().isForbidden());
         
         session = sessionService.getSessionById(session.getSessionId());
-        Assert.assertEquals(1, session.getParticipantInfo().size());
+        Assert.assertEquals(2, session.getParticipantInfo().size());
     }
     
-    /*@Test
-    public void allUsersChooseCardsResultsInStartedGame() throws Exception {
+    @Test
+    public void allParticipantsChooseCardsAndStartGameResultsInStartedGame() throws Exception {
         Session session = createDefaultSession();
+        session.setMinNumberOfCardsPerParticipant(2);
+        session = sessionService.updateSession(session);
 
         String participant1Username = "participant-1";
         String participant1Password = "participant-1-pass";
@@ -374,6 +387,9 @@ public class ITSessionGameRestController {
                     .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
                     .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
         
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
@@ -383,11 +399,18 @@ public class ITSessionGameRestController {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
         
         session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/start")
+                    .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
         Assert.assertEquals(SessionStatus.IN_PROGRESS, session.getSessionStatus());
         
         String stringChosenCards = mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/positions")
                     .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
@@ -395,17 +418,96 @@ public class ITSessionGameRestController {
         
         JSONArray jsonArrayChosenCards = new JSONArray(stringChosenCards);
         Assert.assertEquals(3, jsonArrayChosenCards.length());
-    }*/
+    }
     
-    /*@Test
+    @Test
     public void addCardDetailsToSessionWhenInProgressResultsInBadRequest() throws Exception {
         Session session = createDefaultSession();
+        session.setMinNumberOfCardsPerParticipant(1);
+        session.setParticipantsCanAddCards(true);
+        session = sessionService.updateSession(session);
 
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1 = userService.addUser(participant1);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+        
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                    .header("Authorization", authorizationHeader)
+                    .param("userId", String.valueOf(participant1.getUserId()))
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+        
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
         
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("Added card #1");
+        
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new JSONObject(createCardDetailsResource).toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+        
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                    .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/start")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("Added card #2");
+        
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new JSONObject(createCardDetailsResource).toString())
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+    
+    /*@Test
+    public void addCardDetailsWhenAlreadyConfirmed() {
+        
+    }*/
+    
+    /*@Test
+    public void startGameWithoutOtherParticipantsResultsInBadRequest() {
         Assert.fail();
     }
     

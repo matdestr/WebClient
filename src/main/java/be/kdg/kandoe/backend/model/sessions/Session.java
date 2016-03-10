@@ -46,6 +46,7 @@ public abstract class Session {
             cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE},
             fetch = FetchType.EAGER
     )
+    @JoinColumn(name = "Session_ParticipantInfo")
     private Set<ParticipantInfo> participantInfo;
 
     @OneToOne(

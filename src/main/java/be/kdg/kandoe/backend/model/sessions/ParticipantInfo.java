@@ -14,7 +14,7 @@ public class ParticipantInfo {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
-    private int id;
+    private int participantInfoId;
     
     @ManyToOne(targetEntity = User.class, optional = false, fetch = FetchType.EAGER)
     private User participant;
@@ -22,5 +22,5 @@ public class ParticipantInfo {
     private int joinNumber;
     private boolean joined;
     private boolean madeMove;
-
+    private boolean addedCardsCompleted;
 }

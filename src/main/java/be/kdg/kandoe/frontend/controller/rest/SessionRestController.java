@@ -72,7 +72,7 @@ public class SessionRestController {
         return new ResponseEntity<>(sessionResource, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/{sessionId}/positions", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/{sessionId}/positions", method = RequestMethod.GET)
     public ResponseEntity<List<CardPositionResource>> getCardPositionsOfSession(@AuthenticationPrincipal User user,
                                                                                 @PathVariable("sessionId") int sessionId) {
         Session session = sessionService.getSessionById(sessionId);
@@ -83,7 +83,7 @@ public class SessionRestController {
         List<CardPositionResource> resources = mapper.mapAsList(session.getCardPositions(), CardPositionResource.class);
         
         return new ResponseEntity<>(resources, HttpStatus.OK);
-    }
+    }*/
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.POST)

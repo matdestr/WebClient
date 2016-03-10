@@ -17,11 +17,13 @@ import be.kdg.kandoe.backend.service.api.SessionService;
 import be.kdg.kandoe.backend.service.exceptions.SessionGameServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class SessionGameServiceImpl implements SessionGameService {
     private final CardService cardService;
     private final SessionService sessionService;
@@ -126,6 +128,38 @@ public class SessionGameServiceImpl implements SessionGameService {
     }
 
     @Override
+    public void confirmUserAddedCards(Session session, User user) {
+        if (!isUserInSession(session, user))
+            throw new SessionGameServiceException("You must be a participant of this session to perform this action");
+        
+        if (!session.isParticipantsCanAddCards())
+            throw new SessionGameServiceException("Adding cards is not allowed for this session");
+        
+        Optional<ParticipantInfo> optionalParticipantInfo = session.getParticipantInfo()
+                .stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
+        
+        if (!optionalParticipantInfo.isPresent())
+            throw new SessionGameServiceException("Unexpected error: session does not contain any information about the user");
+        
+        ParticipantInfo participantInfo = optionalParticipantInfo.get();
+        
+        if (participantInfo.isAddedCardsCompleted())
+            throw new SessionGameServiceException("You have already confirmed your added cards");
+        
+        participantInfo.setAddedCardsCompleted(true);
+        
+        if (session.getParticipantInfo().stream().allMatch(p -> p.isAddedCardsCompleted())) {
+            if (session.isCardCommentsAllowed()) {
+                session.setSessionStatus(SessionStatus.REVIEWING_CARDS);
+            } else {
+                session.setSessionStatus(SessionStatus.CHOOSING_CARDS);
+            }
+        }
+
+        sessionService.updateSession(session);
+    }
+
+    @Override
     public void confirmAddedCards(Session session) {
         if (session.getSessionStatus() == SessionStatus.ADDING_CARDS && session.isParticipantsCanAddCards()) {
             if (session.isCardCommentsAllowed()) {
@@ -135,11 +169,11 @@ public class SessionGameServiceImpl implements SessionGameService {
             }
             sessionService.updateSession(session);
         } else {
-            throw new SessionGameServiceException("Session not in adding cards modus");
+            throw new SessionGameServiceException("Session not in adding cards mode");
         }
     }
 
-    @Override
+    /*@Override
     public void chooseCards(Session session, User user, CardDetails cardDetails) {
         if (session.getSessionStatus() != SessionStatus.CHOOSING_CARDS) {
             throw new SessionGameServiceException("Session not in choosing card modus");
@@ -173,9 +207,77 @@ public class SessionGameServiceImpl implements SessionGameService {
             cardsChoice.getChosenCards().add(cardDetails);
             sessionService.updateSession(session);
         }
-    }
+    }*/
 
     @Override
+    public void chooseCards(Session session, User user, Set<CardDetails> cardDetailsToChoose) {
+        if (session.getSessionStatus() != SessionStatus.CHOOSING_CARDS)
+            throw new SessionGameServiceException("Session must be in state 'choosing cards' to be able to choose cards");
+        
+        if (!isUserInSession(session, user))
+            throw new SessionGameServiceException("You cannot choose cards for a session you are not a participant of");
+        
+        if (cardDetailsToChoose == null || cardDetailsToChoose.isEmpty())
+            throw new SessionGameServiceException("The list of cards to choose must not be empty");
+        
+        Set<CardDetails> availableCards = (session.getTopic() != null ? session.getTopic().getCards() : session.getCategory().getCards());
+        
+        if (availableCards == null || availableCards.isEmpty())
+            throw new SessionGameServiceException("Cannot choose any cards as there are no cards available for the session");
+        
+        if (cardDetailsToChoose.size() < session.getMinNumberOfCardsPerParticipant())
+            throw new SessionGameServiceException("Cannot choose less cards than the minimum required per participant");
+        
+        if (cardDetailsToChoose.size() > session.getMaxNumberOfCardsPerParticipant())
+            throw new SessionGameServiceException("Cannot choose more cards than the maximum allowed per participant");
+        
+        Optional<CardsChoice> optionalCardsChoice = session.getParticipantCardChoices().stream()
+                .filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
+
+        CardsChoice cardsChoice = null;
+        
+        if (!optionalCardsChoice.isPresent()) {
+            cardsChoice = new CardsChoice();
+            
+            cardsChoice.setParticipant(user);
+            cardsChoice.setChosenCards(new ArrayList<>());
+
+            session.getParticipantCardChoices().add(cardsChoice);
+        } else {
+            cardsChoice = optionalCardsChoice.get();
+
+            if (!cardsChoice.getChosenCards().isEmpty())
+                throw new SessionGameServiceException("User has already chosen cards for this session");
+        }
+        
+        for (CardDetails cardDetails : cardDetailsToChoose) {
+            if (cardDetails == null)
+                throw new SessionGameServiceException("Null is not a valid card to choose");
+            
+            if (!availableCards.stream().anyMatch(c -> c.getCardDetailsId() == cardDetails.getCardDetailsId()))
+                throw new SessionGameServiceException("The chosen card does not exist in the session");
+            
+            cardsChoice.getChosenCards().add(cardDetails);
+        }
+        
+        session = sessionService.updateSession(session);
+        
+        if (session.getParticipantInfo().size() == session.getParticipantCardChoices().size()) {
+            boolean allParticipantsHaveChosenCards = true;
+
+            for (CardsChoice choice : session.getParticipantCardChoices()) {
+                if (choice.getChosenCards() == null || choice.getChosenCards().isEmpty())
+                    allParticipantsHaveChosenCards = false;
+            }
+            
+            if (allParticipantsHaveChosenCards) {
+                session.setSessionStatus(SessionStatus.READY_TO_START);
+                sessionService.updateSession(session);
+            }
+        }
+    }
+
+    /*@Override
     public void confirmCardsChosen(Session session, User user) {
         if (session.getSessionStatus() != SessionStatus.CHOOSING_CARDS) {
             throw new SessionGameServiceException("Session not in choosing cards modus");
@@ -198,7 +300,7 @@ public class SessionGameServiceImpl implements SessionGameService {
         if (session.getParticipantCardChoices().stream().allMatch(p -> p.isCardsChosen())) {
             confirmChoosingCards(session);
         }
-    }
+    }*/
 
     @Override
     public void addReview(User user, CardDetails cardDetails, Comment comment) {

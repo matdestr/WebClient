@@ -24,10 +24,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -233,20 +230,29 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.confirmAddedCards(session);
         Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
 
-        sessionGameService.chooseCards(session, organizer, cardDetails3);
-        sessionGameService.confirmCardsChosen(session, organizer);
+        Set<CardDetails> cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails3);
+        
+        sessionGameService.chooseCards(session, organizer, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, organizer);
 
-        sessionGameService.chooseCards(session, player1, cardDetails1);
-        sessionGameService.confirmCardsChosen(session, player1);
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, player1);
 
-        sessionGameService.chooseCards(session, player2, cardDetails1);
-        sessionGameService.chooseCards(session, player2, cardDetails2);
-        sessionGameService.confirmCardsChosen(session, player2);
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        cardDetailsSet.add(cardDetails2);
+        
+        sessionGameService.chooseCards(session, player2, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, player2);
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
     }
 
-    @Test(expected = SessionGameServiceException.class)
+    @Test
     public void chooseLessCardsThenAllowed(){
         session.setParticipantsCanAddCards(true);
         session.setCardCommentsAllowed(false);
@@ -260,13 +266,22 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.confirmAddedCards(session);
         Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
 
-        sessionGameService.chooseCards(session, organizer, cardDetails3);
-        sessionGameService.confirmCardsChosen(session, organizer);
+        Set<CardDetails> cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails3);
+        
+        sessionGameService.chooseCards(session, organizer, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, organizer);
 
-        sessionGameService.chooseCards(session, player1, cardDetails1);
-        sessionGameService.confirmCardsChosen(session, player1);
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        
+        //sessionGameService.chooseCards(session, player1, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, player1);
 
-        sessionGameService.confirmCardsChosen(session, player2);
+        //sessionGameService.confirmCardsChosen(session, player2);
+        
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
     }
 
     @Test(expected = SessionGameServiceException.class)
@@ -283,17 +298,38 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.confirmAddedCards(session);
         Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
 
-        sessionGameService.chooseCards(session, organizer, cardDetails3);
-        sessionGameService.confirmCardsChosen(session, organizer);
+        Set<CardDetails> cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails3);
+        
+        sessionGameService.chooseCards(session, organizer, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, organizer);
 
-        sessionGameService.chooseCards(session, player1, cardDetails1);
-        sessionGameService.chooseCards(session, player1, cardDetails2);
-        sessionGameService.chooseCards(session, player1, cardDetails4);
-        sessionGameService.chooseCards(session, player1, cardDetails3);
-        sessionGameService.chooseCards(session, player1, cardDetails5);
-        sessionGameService.confirmCardsChosen(session, player1);
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
+
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails2);
+        
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
+
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails4);
+        
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
 
 
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails3);
+        
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
+
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails5);
+        
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, player1);
     }
 
     @Test
@@ -310,16 +346,21 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.confirmAddedCards(session);
         Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
 
-        sessionGameService.chooseCards(session, organizer, cardDetails3);
-        sessionGameService.confirmCardsChosen(session, organizer);
+        Set<CardDetails> cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails3);
+        
+        sessionGameService.chooseCards(session, organizer, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, organizer);
 
-        sessionGameService.chooseCards(session, player1, cardDetails1);
-        sessionGameService.chooseCards(session, player1, cardDetails2);
-        sessionGameService.confirmCardsChosen(session, player1);
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        cardDetailsSet.add(cardDetails2);
 
-        sessionGameService.chooseCards(session, player2, cardDetails1);
-        sessionGameService.chooseCards(session, player2, cardDetails2);
-        sessionGameService.confirmCardsChosen(session, player2);
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, player1);
+        
+        sessionGameService.chooseCards(session, player2, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, player2);
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();
@@ -351,16 +392,25 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.confirmAddedCards(session);
         Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
 
-        sessionGameService.chooseCards(session, organizer, cardDetails3);
-        sessionGameService.confirmCardsChosen(session, organizer);
+        Set<CardDetails> cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails3);
+        
+        sessionGameService.chooseCards(session, organizer, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, organizer);
 
-        sessionGameService.chooseCards(session, player1, cardDetails1);
-        sessionGameService.chooseCards(session, player1, cardDetails2);
-        sessionGameService.confirmCardsChosen(session, player1);
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        cardDetailsSet.add(cardDetails2);
 
-        sessionGameService.chooseCards(session, player2, cardDetails1);
-        sessionGameService.chooseCards(session, player2, cardDetails2);
-        sessionGameService.confirmCardsChosen(session, player2);
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, player1);
+
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        cardDetailsSet.add(cardDetails2);
+
+        sessionGameService.chooseCards(session, player2, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, player2);
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();
@@ -396,15 +446,26 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.confirmAddedCards(session);
         Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
 
-        sessionGameService.chooseCards(session, player1, cardDetails1);
-        sessionGameService.chooseCards(session, player2, cardDetails1);
-        sessionGameService.chooseCards(session, player2, cardDetails2);
-        sessionGameService.chooseCards(session, organizer, cardDetails3);
+        Set<CardDetails> cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
+
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        cardDetailsSet.add(cardDetails2);
+        
+        sessionGameService.chooseCards(session, player2, cardDetailsSet);
+
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails3);
+        
+        sessionGameService.chooseCards(session, organizer, cardDetailsSet);
 
 
-        sessionGameService.confirmCardsChosen(session, player1);
+        /*sessionGameService.confirmCardsChosen(session, player1);
         sessionGameService.confirmCardsChosen(session, player2);
-        sessionGameService.confirmCardsChosen(session, organizer);
+        sessionGameService.confirmCardsChosen(session, organizer);*/
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();
@@ -444,16 +505,25 @@ public class TestSessionGameServiceSynchronous {
 
         Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
 
-        sessionGameService.chooseCards(session, organizer, cardDetails3);
-        sessionGameService.confirmCardsChosen(session, organizer);
+        Set<CardDetails> cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails3);
+        
+        sessionGameService.chooseCards(session, organizer, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, organizer);
 
-        sessionGameService.chooseCards(session, player1, cardDetails1);
-        sessionGameService.chooseCards(session, player1, cardDetails2);
-        sessionGameService.confirmCardsChosen(session, player1);
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        cardDetailsSet.add(cardDetails2);
 
-        sessionGameService.chooseCards(session, player2, cardDetails1);
-        sessionGameService.chooseCards(session, player2, cardDetails2);
-        sessionGameService.confirmCardsChosen(session, player2);
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, player1);
+
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        cardDetailsSet.add(cardDetails2);
+
+        sessionGameService.chooseCards(session, player2, cardDetailsSet);
+        //sessionGameService.confirmCardsChosen(session, player2);
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
 
@@ -503,15 +573,26 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.confirmAddedCards(session);
         Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
 
-        sessionGameService.chooseCards(session, player1, cardDetails1);
-        sessionGameService.chooseCards(session, player2, cardDetails1);
-        sessionGameService.chooseCards(session, player2, cardDetails2);
-        sessionGameService.chooseCards(session, organizer, cardDetails3);
+        Set<CardDetails> cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
+
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        cardDetailsSet.add(cardDetails2);
+        
+        sessionGameService.chooseCards(session, player2, cardDetailsSet);
+        
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails3);
+        
+        sessionGameService.chooseCards(session, organizer, cardDetailsSet);
 
 
-        sessionGameService.confirmCardsChosen(session, player1);
+        /*sessionGameService.confirmCardsChosen(session, player1);
         sessionGameService.confirmCardsChosen(session, player2);
-        sessionGameService.confirmCardsChosen(session, organizer);
+        sessionGameService.confirmCardsChosen(session, organizer);*/
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();
@@ -604,15 +685,25 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.confirmAddedCards(session);
         Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
 
-        sessionGameService.chooseCards(session, player1, cardDetails1);
-        sessionGameService.chooseCards(session, player2, cardDetails1);
-        sessionGameService.chooseCards(session, player2, cardDetails2);
-        sessionGameService.chooseCards(session, organizer, cardDetails3);
+        Set<CardDetails> cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        
+        sessionGameService.chooseCards(session, player1, cardDetailsSet);
 
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails1);
+        cardDetailsSet.add(cardDetails2);
+        
+        sessionGameService.chooseCards(session, player2, cardDetailsSet);
 
-        sessionGameService.confirmCardsChosen(session, player1);
+        cardDetailsSet = new HashSet<>();
+        cardDetailsSet.add(cardDetails3);
+        
+        sessionGameService.chooseCards(session, organizer, cardDetailsSet);
+
+        /*sessionGameService.confirmCardsChosen(session, player1);
         sessionGameService.confirmCardsChosen(session, player2);
-        sessionGameService.confirmCardsChosen(session, organizer);
+        sessionGameService.confirmCardsChosen(session, organizer);*/
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();

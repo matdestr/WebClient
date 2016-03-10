@@ -43,11 +43,13 @@ public class CardServiceImpl implements CardService {
             throw new CardServiceException("Category cannot be null");
         }
 
+        cardDetails.setCategory(category);
+
         this.validateCardDetails(cardDetails);
         this.validateCardDetailsExistence(category, cardDetails);
 
         try {
-            cardDetails.setCategory(category);
+            //cardDetails.setCategory(category);
 
             cardDetails = cardDetailsRepository.save(cardDetails);
 

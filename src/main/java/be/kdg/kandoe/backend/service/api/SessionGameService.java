@@ -8,6 +8,7 @@ import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.users.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SessionGameService {
     void inviteUserForSession(Session session, User user);
@@ -16,10 +17,12 @@ public interface SessionGameService {
     void setUserLeft(Session session, User user);
     //void confirmUsersJoined(Session session);
 
+    void confirmUserAddedCards(Session session, User user);
     void confirmAddedCards(Session session);
 
-    void chooseCards(Session session, User user, CardDetails cardDetails);
-    void confirmCardsChosen(Session session, User user);
+    //void chooseCards(Session session, User user, CardDetails cardDetails);
+    void chooseCards(Session session, User user, Set<CardDetails> cardDetailsList);
+    //void confirmCardsChosen(Session session, User user);
     void confirmChoosingCards(Session session);
 
     void addReview(User user, CardDetails cardDetails, Comment comment);
