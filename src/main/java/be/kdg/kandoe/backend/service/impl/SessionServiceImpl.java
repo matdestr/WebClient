@@ -80,6 +80,15 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
+    public Session updateSession(Session session) {
+        Session updatedSession = sessionRepository.save(session);
+        if (updatedSession == null) {
+            throw new SessionServiceException("Session couldn't be saved");
+        }
+        return updatedSession;
+    }
+
+    @Override
     public List<Session> getSessionsFromCategory(int categoryId) {
         List<Session> sessionList = sessionRepository.findSessionsByCategoryCategoryId(categoryId);
 

@@ -33,9 +33,11 @@ System.register(['angular2/core', "./sign-in.component", "./sign-up.component", 
         execute: function() {
             AuthenticationComponent = (function () {
                 function AuthenticationComponent(tokenName, router) {
-                    //var token : string = localStorage.getItem(tokenName);
                     if (angular2_jwt_1.tokenNotExpired(tokenName)) {
                         router.navigate(['/Dashboard']);
+                    }
+                    else {
+                        console.log("Token is expired...");
                     }
                 }
                 AuthenticationComponent.prototype.ngOnInit = function () {

@@ -13,7 +13,7 @@ import {CardDetailsService} from "../../services/card-details.service";
 import {ToolbarComponent} from "../widget/toolbar.component";
 import {CardDetailComponent} from "../cards/card-detail.component";
 
-import {CardSearchPipe} from "../../util/pipes/search-pipe";
+import {CardSearchPipe} from "../../util/pipes/card-search-pipe";
 import {SearchBoxComponent} from "../widget/search-box";
 
 
@@ -69,9 +69,10 @@ export class TopicCardChooserComponent implements OnInit {
 
     public onAddCardsClick() {
         for (let catCard of this.categoryCardsToAdd)
-            this._cardDetailsService.addCardToTopic(this.topic.topicId, catCard.cardDetailsId).subscribe();
+            this._cardDetailsService.addCardToTopic(this.topic.topicId, catCard.cardDetailsId).subscribe(
+                data => this.navigateUp()
+            );
 
-        this.navigateUp();
     }
 
     public navigateUp() {

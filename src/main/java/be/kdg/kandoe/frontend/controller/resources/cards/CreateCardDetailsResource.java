@@ -11,6 +11,6 @@ public class CreateCardDetailsResource {
     @NotEmpty(message = "{carddetails.wrong.text}")
     private String text;
     
-    @URL(regexp = ".*\\.(jpg|png)$", message = "{carddetails.wrong.imageurl}")
+    @URL(regexp = ".*\\.(jpg|jpeg|png)$", message = "{carddetails.wrong.imageurl}")
     private String imageUrl;
 }

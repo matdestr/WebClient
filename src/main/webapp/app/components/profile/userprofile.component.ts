@@ -1,4 +1,4 @@
-import {Component} from "angular2/core";
+import {Component, OnInit} from "angular2/core";
 import {NgIf, NgFor, NgSwitch, NgSwitchWhen} from "angular2/common";
 import {RouteParams} from "angular2/router";
 import {Response} from "angular2/http";
@@ -21,7 +21,7 @@ import {tokenNotExpired} from "../../libraries/angular2-jwt";
     directives: [ToolbarComponent, ErrorDialogComponent, InvitationComponent]
 })
 
-export class UserProfileComponent {
+export class UserProfileComponent implements OnInit {
     private canEdit:boolean = false;
     private errorMessages:string[] = [];
     private invitations:Invitation[] = [];
@@ -34,10 +34,12 @@ export class UserProfileComponent {
         private _userService:UserService,
         private _organizationService:OrganizationService,
         private _invitationService:InvitationService){
+    }
 
-        var username:string = _routeArgs.get("username");
+    ngOnInit():any {
+        var username:string = this._routeArgs.get("username");
 
-        if (username == null)
+        if (username == null || username.length == 0)
             this._router.navigate(["/Dashboard"]);
 
         var token:string = localStorage.getItem("token");
@@ -45,20 +47,25 @@ export class UserProfileComponent {
         if (getUsername(token) === username)
             this.canEdit = true;
 
-        _userService.getUser(username).subscribe((user:User) => {
-            var self:any = this;
-            this.user = this.user.deserialize(user);
+        this._userService.getUser(username).subscribe(
+            (data) => {
+                var self:any = this;
+                this.user = this.user.deserialize(data);
 
-            this.retrieveOrganizations();
+                this.retrieveOrganizations();
 
-            this._invitationService.getInvitationsForUser(this.user.email).subscribe(
-                data => { this.invitations = data.json(); },
-                error => { self.onError(error); },
-                () => {}
-            );
-        });
+                this._invitationService.getInvitationsForUser(this.user.email).subscribe(
+                    data => { this.invitations = data.json(); },
+                    error => { self.onError(error); },
+                    () => {}
+                );
+            },
+            (error) => { this._router.navigate(["/Dashboard"]) },
+            () => { });
 
+        return null;
     }
+
 
     private retrieveOrganizations() : void {
         var self:any = this;

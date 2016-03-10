@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @Data
 @EqualsAndHashCode(exclude = {"creator", "category", "topics", "comments"})
-@ToString(exclude = {"creator", "category", "topics", "comments"})
+@ToString(exclude = {"creator", "category", "topics", "comments"}, doNotUseGetters = true)
 @NoArgsConstructor
 public class CardDetails {
     @Id
@@ -27,7 +27,7 @@ public class CardDetails {
     @Length(min = 3)
     private String text;
 
-    @URL(regexp = ".*\\.(jpg|png)$")
+    @URL(regexp = ".*\\.(jpg|jpeg|png)$")
     private String imageUrl;
 
     @ManyToOne(optional = false)

@@ -2,6 +2,8 @@ package be.kdg.kandoe.backend.model.users.roles;
 
 import be.kdg.kandoe.backend.model.users.User;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -14,6 +16,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "RoleType", discriminatorType = DiscriminatorType.STRING)
 @Data
+@ToString(exclude = {"user"}, doNotUseGetters = true)
 public abstract class Role {
     @Id
     @GeneratedValue

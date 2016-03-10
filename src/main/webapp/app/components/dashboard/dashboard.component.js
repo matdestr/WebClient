@@ -8,7 +8,7 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, router_2, toolbar_component_1, organization_service_1, user_1, user_service_1, angular2_jwt_1;
+    var core_1, router_1, toolbar_component_1, organization_service_1, user_1, user_service_1, angular2_jwt_1;
     var DashboardComponent;
     return {
         setters:[
@@ -17,7 +17,6 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
             },
             function (router_1_1) {
                 router_1 = router_1_1;
-                router_2 = router_1_1;
             },
             function (toolbar_component_1_1) {
                 toolbar_component_1 = toolbar_component_1_1;
@@ -36,14 +35,15 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
             }],
         execute: function() {
             DashboardComponent = (function () {
-                function DashboardComponent(_router, _routeArgs, _organizationService, _userService) {
-                    var _this = this;
+                function DashboardComponent(_router, _organizationService, _userService) {
                     this._router = _router;
-                    this._routeArgs = _routeArgs;
                     this._organizationService = _organizationService;
                     this._userService = _userService;
                     this.user = user_1.User.createEmptyUser();
                     this.organizations = [];
+                }
+                DashboardComponent.prototype.ngOnInit = function () {
+                    var _this = this;
                     this.organizationsSubSet = [];
                     this.counterBegin = 0;
                     this.counterEnd = 4;
@@ -54,9 +54,6 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                         _this.user = _this.user.deserialize(user);
                         _this.getOrganizations();
                     });
-                }
-                DashboardComponent.prototype.ngOnInit = function () {
-                    var token = localStorage.getItem('token');
                 };
                 DashboardComponent.prototype.getOrganizations = function () {
                     var _this = this;
@@ -102,7 +99,7 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                         templateUrl: 'html/dashboard.html',
                         directives: [toolbar_component_1.ToolbarComponent]
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router, router_2.RouteParams, organization_service_1.OrganizationService, user_service_1.UserService])
+                    __metadata('design:paramtypes', [router_1.Router, organization_service_1.OrganizationService, user_service_1.UserService])
                 ], DashboardComponent);
                 return DashboardComponent;
             })();

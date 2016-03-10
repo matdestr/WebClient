@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { BackendContextConfig.class })
@@ -105,7 +106,7 @@ public class TestSessionService {
         cardDetails5.setText("Card 5");
         cardDetails5 = cardDetailsRepository.save(cardDetails5);
         
-        category.setCards(new ArrayList<>());
+        category.setCards(new HashSet<>());
         category.getCards().add(cardDetails1);
         category.getCards().add(cardDetails2);
         category.getCards().add(cardDetails3);

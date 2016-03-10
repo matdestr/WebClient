@@ -50,7 +50,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootContextConfig.class, WebContextConfig.class})
 @WebAppConfiguration
@@ -174,26 +173,6 @@ public class ITTestSessionRestController {
         cardDetails5 = cardDetailsRepository.save(cardDetails5);*/
     }
 
-    /*@Test
-    public void testCreateAsynchronousSession() throws Exception {
-        CreateAsynchronousSessionResource createAsynchSessionResource = new CreateAsynchronousSessionResource();
-        createAsynchSessionResource.setOrganizationId(organization.getOrganizationId());
-        createAsynchSessionResource.setMaxNumberOfCardsPerParticipant(10);
-        createAsynchSessionResource.setMinNumberOfCardsPerParticipant(5);
-        createAsynchSessionResource.setCardCommentsAllowed(true);
-        JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
-
-        mockMvc.perform(
-                post(baseApiUrl)
-                        .header("Authorization", authorizationHeader)
-                        .content(jsonObject.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated())
-                //.andDo(print())
-                .andExpect(jsonPath("$.sessionId").exists())
-                .andExpect(jsonPath("$.sessionId").isNotEmpty());
-    }*/
-    
     private JSONObject getSessionData(int sessionId) throws Exception {
         String stringResponse = mockMvc.perform(
                 MockMvcRequestBuilders.get(baseApiUrl + "/" + sessionId)
@@ -704,7 +683,7 @@ public class ITTestSessionRestController {
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(status().isBadRequest());
     }
-
+/*
     @Test
     public void testAddCardsInSessionThatDoesAllowItButIsNotInAddingCardStatus() throws Exception {
         addCardDetailsToCategory();
@@ -806,7 +785,8 @@ public class ITTestSessionRestController {
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(status().isBadRequest());
     }
-
+*/
+    /*
     @Test
     public void testSetCardAddingDone() throws Exception {
         addCardDetailsToCategory();
@@ -896,7 +876,8 @@ public class ITTestSessionRestController {
         jsonResponse = this.getSessionData(createdSessionId);
         Assert.assertEquals("READY_TO_START", jsonResponse.getString("sessionStatus"));
     }
-
+*/
+/*
     @Test
     public void testSetCardAddingDoneByNotOrganizer() throws Exception {
         addCardDetailsToCategory();
@@ -980,7 +961,8 @@ public class ITTestSessionRestController {
                         .header("Authorization", authorizationHeader)
         ).andExpect(status().isConflict());
     }
-
+*/
+    /*
     @Test
     public void testSetCardsReviewingDone() throws Exception {
         addCardDetailsToCategory();
@@ -1050,7 +1032,8 @@ public class ITTestSessionRestController {
         jsonResponse = this.getSessionData(createdSessionId);
         Assert.assertEquals("READY_TO_START", jsonResponse.getString("sessionStatus"));
     }
-
+*/
+    /*
     @Test
     public void testSetCardsReviewingDoneByNonOrganizer() throws Exception {
         addCardDetailsToCategory();
@@ -1117,167 +1100,481 @@ public class ITTestSessionRestController {
                         .header("Authorization", authorizationHeader)
         ).andExpect(status().isConflict());
     }
-    /*@Test
-    public void testCreateAsynchronousSessionWithLessMaxThanMinCards() throws Exception {
-        CreateAsynchronousSessionResource createAsynchSessionResource = new CreateAsynchronousSessionResource();
-        createAsynchSessionResource.setOrganizationId(organization.getOrganizationId());
-        createAsynchSessionResource.setMaxNumberOfCards(5);
-        createAsynchSessionResource.setMinNumberOfCards(10);
-        createAsynchSessionResource.setCommentsAllowed(true);
-        JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
+*/
+    @Test
+    public void testChooseCardsStatus() throws Exception {
+        addCardDetailsToCategory();
 
-        mockMvc.perform(
-                post(baseApiUrl)
-                        .header("Authorization", authorizationHeader)
-                        .content(jsonObject.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isUnprocessableEntity());
-    }*/
+        CreateSynchronousSessionResource resource = new CreateSynchronousSessionResource();
+        resource.setCategoryId(category.getCategoryId());
+        resource.setMinNumberOfCardsPerParticipant(3);
+        resource.setMaxNumberOfCardsPerParticipant(5);
+        resource.setParticipantsCanAddCards(true);
 
-    /*@Test
-    public void testCreateAsynchronousSessionWithoutAuthorization() throws Exception {
-        CreateAsynchronousSessionResource createAsynchSessionResource = new CreateAsynchronousSessionResource();
-        createAsynchSessionResource.setOrganizationId(organization.getOrganizationId());
-        createAsynchSessionResource.setMaxNumberOfCards(10);
-        createAsynchSessionResource.setMinNumberOfCards(5);
-        createAsynchSessionResource.setCommentsAllowed(true);
+        JSONObject jsonObject = new JSONObject(resource);
+        jsonObject.put("type", "sync");
 
-        JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
-
-        mockMvc.perform(
-                post(baseApiUrl)
-                        .content(jsonObject.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isUnauthorized());
-    }*/
-
-    /*@Test
-    public void testCreateSynchronousSessionWithTopic() throws Exception {
-        CreateSynchronousSessionResource createSynchronousSessionResource = new CreateSynchronousSessionResource();
-        createSynchronousSessionResource.setOrganizationId(organization.getOrganizationId());
-        createSynchronousSessionResource.setMinNumberOfCards(5);
-        createSynchronousSessionResource.setMaxNumberOfCards(10);
-        createSynchronousSessionResource.setTopicId(topic.getTopicId());
-
-        JSONObject jsonObject = new JSONObject(createSynchronousSessionResource);
-
-        mockMvc.perform(
+        String createdStringResponse = mockMvc.perform(
                 post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.sessionId").exists())
-                .andExpect(jsonPath("$.sessionId").isNotEmpty())
-                .andExpect(jsonPath("$.topicId", is(topic.getTopicId())));
-    }*/
+                .andReturn().getResponse().getContentAsString();
 
-    /*@Test
-    public void testCreateAsynchronousSessionWithTopic() throws Exception {
-        CreateAsynchronousSessionResource createAsynchSessionResource = new CreateAsynchronousSessionResource();
-        createAsynchSessionResource.setOrganizationId(organization.getOrganizationId());
-        createAsynchSessionResource.setMaxNumberOfCards(10);
-        createAsynchSessionResource.setMinNumberOfCards(5);
-        createAsynchSessionResource.setCommentsAllowed(true);
-        createAsynchSessionResource.setTopicId(topic.getTopicId());
-        JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
+        JSONObject createdJsonResponse = new JSONObject(createdStringResponse);
+        int createdSessionId = createdJsonResponse.getInt("sessionId");
+
+        JSONObject jsonResponse = this.getSessionData(createdSessionId);
+
+        Assert.assertEquals("CREATED", jsonResponse.getString("sessionStatus"));
+
+        User userToInvite = userService.addUser(new User("participant-1", "pass"));
 
         mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("userId", String.valueOf(userToInvite.getUserId()))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/join")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
+
+        String token = TokenProvider.getToken(mockMvc, clientDetails, userToInvite.getUsername(), "pass");
+        authorizationHeader = String.format("Bearer %s", token);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/join")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("ADDING_CARDS", jsonResponse.getString("sessionStatus"));
+
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("test-card");
+
+        JSONObject createCardDetailsJson = new JSONObject(createCardDetailsResource);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/cards")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+                        .content(createCardDetailsJson.toString())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isCreated());
+
+        CreateCardDetailsResource createCardDetailsResource2 = new CreateCardDetailsResource();
+        createCardDetailsResource2.setText("test-card2");
+
+        JSONObject createCardDetailsJson2 = new JSONObject(createCardDetailsResource2);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/cards")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+                        .content(createCardDetailsJson2.toString())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isCreated());
+
+        token = TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword);
+        authorizationHeader = String.format("Bearer %s", token);
+
+        mockMvc.perform(
+                put(baseApiUrl + "/" + createdSessionId + "/cards" )
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isOk());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("CHOOSING_CARDS", jsonResponse.getString("sessionStatus"));
+    }
+
+    @Test
+    public void testChooseCardsDuringChooseCardsStatus() throws Exception {
+        addCardDetailsToCategory();
+
+        CreateSynchronousSessionResource resource = new CreateSynchronousSessionResource();
+        resource.setCategoryId(category.getCategoryId());
+        resource.setMinNumberOfCardsPerParticipant(3);
+        resource.setMaxNumberOfCardsPerParticipant(5);
+        resource.setParticipantsCanAddCards(true);
+
+        JSONObject jsonObject = new JSONObject(resource);
+        jsonObject.put("type", "sync");
+
+        String createdStringResponse = mockMvc.perform(
                 post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.sessionId").exists())
-                .andExpect(jsonPath("$.sessionId").isNotEmpty())
-                .andExpect(jsonPath("$.topicId", is(topic.getTopicId())));
-    }*/
+                .andReturn().getResponse().getContentAsString();
 
-    /*@Test
-    public void testAddUserToSynchronousSession() throws Exception {
-        User userToAdd = new User("add", "pass");
-        userToAdd = userService.addUser(userToAdd);
+        JSONObject createdJsonResponse = new JSONObject(createdStringResponse);
+        int createdSessionId = createdJsonResponse.getInt("sessionId");
+
+        JSONObject jsonResponse = this.getSessionData(createdSessionId);
+
+        Assert.assertEquals("CREATED", jsonResponse.getString("sessionStatus"));
+
+        User userToInvite = userService.addUser(new User("participant-1", "pass"));
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("userId", String.valueOf(userToInvite.getUserId()))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/join")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
+
+        String token = TokenProvider.getToken(mockMvc, clientDetails, userToInvite.getUsername(), "pass");
+        authorizationHeader = String.format("Bearer %s", token);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/join")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("ADDING_CARDS", jsonResponse.getString("sessionStatus"));
+
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("test-card");
+
+        JSONObject createCardDetailsJson = new JSONObject(createCardDetailsResource);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/cards")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+                        .content(createCardDetailsJson.toString())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isCreated());
+
+
+        token = TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword);
+        authorizationHeader = String.format("Bearer %s", token);
+
+        mockMvc.perform(
+                put(baseApiUrl + "/" + createdSessionId + "/cards" )
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isOk());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("CHOOSING_CARDS", jsonResponse.getString("sessionStatus"));
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/" + "cards" + "/" + cardDetails1.getCardDetailsId() )
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isCreated());
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/" + "cards" + "/" + cardDetails2.getCardDetailsId() )
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isCreated());
+    }
+
+    @Test
+    public void testChooseCardsByUserNotInSession() throws Exception {
+        addCardDetailsToCategory();
 
         CreateSynchronousSessionResource resource = new CreateSynchronousSessionResource();
-        resource.setOrganizationId(organization.getOrganizationId());
-        resource.setMinNumberOfCards(5);
-        resource.setMaxNumberOfCards(10);
-        resource.setTopicId(topic.getTopicId());
+        resource.setCategoryId(category.getCategoryId());
+        resource.setMinNumberOfCardsPerParticipant(3);
+        resource.setMaxNumberOfCardsPerParticipant(5);
+        resource.setParticipantsCanAddCards(true);
 
         JSONObject jsonObject = new JSONObject(resource);
+        jsonObject.put("type", "sync");
 
-        MvcResult result = mockMvc.perform(
+        String createdStringResponse = mockMvc.perform(
                 post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated()).andReturn();
+        ).andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
 
-        String jsonResponseString = result.getResponse().getContentAsString();
-        JSONObject jsonResponse = new JSONObject(jsonResponseString);
-        int sessionId = (int) jsonResponse.get("sessionId");
+        JSONObject createdJsonResponse = new JSONObject(createdStringResponse);
+        int createdSessionId = createdJsonResponse.getInt("sessionId");
 
-        String url = String.format(baseApiUrl + "/add/%d?userId=%d", sessionId, userToAdd.getUserId());
+        JSONObject jsonResponse = this.getSessionData(createdSessionId);
 
-        mockMvc.perform(post(url).header("Authorization", authorizationHeader)).andExpect(status().isOk());
-    }*/
+        Assert.assertEquals("CREATED", jsonResponse.getString("sessionStatus"));
 
+        User userToInvite = userService.addUser(new User("participant-1", "pass"));
 
-
-    /*@Test
-    public void testAddUserToAsynchronousSession() throws Exception {
-        User userToAdd = new User("add", "pass");
-        userToAdd = userService.addUser(userToAdd);
-
-        CreateAsynchronousSessionResource resource = new CreateAsynchronousSessionResource();
-        resource.setOrganizationId(organization.getOrganizationId());
-        resource.setMinNumberOfCards(5);
-        resource.setMaxNumberOfCards(10);
-        resource.setTopicId(topic.getTopicId());
-
-        JSONObject jsonObject = new JSONObject(resource);
-
-        MvcResult result = mockMvc.perform(
-                post(baseApiUrl)
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .content(jsonObject.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated()).andReturn();
+                        .param("userId", String.valueOf(userToInvite.getUserId()))
+        ).andExpect(status().isCreated());
 
-        String jsonResponseString = result.getResponse().getContentAsString();
-        JSONObject jsonResponse = new JSONObject(jsonResponseString);
-        int sessionId = (int) jsonResponse.get("sessionId");
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
 
-        String url = String.format(baseApiUrl + "/add/%d?userId=%d", sessionId, userToAdd.getUserId());
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/join")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+        ).andExpect(status().isCreated());
 
-        mockMvc.perform(post(url).header("Authorization", authorizationHeader)).andExpect(status().isOk());
-    }*/
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
 
-    /*@Test
-    public void testAddUserWithInvalidIdToAsynchronousSession() throws Exception {
+        String token = TokenProvider.getToken(mockMvc, clientDetails, userToInvite.getUsername(), "pass");
+        authorizationHeader = String.format("Bearer %s", token);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/join")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("ADDING_CARDS", jsonResponse.getString("sessionStatus"));
+
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("test-card");
+
+        JSONObject createCardDetailsJson = new JSONObject(createCardDetailsResource);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/cards")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+                        .content(createCardDetailsJson.toString())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isCreated());
+
+
+        token = TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword);
+        authorizationHeader = String.format("Bearer %s", token);
+
+        mockMvc.perform(
+                put(baseApiUrl + "/" + createdSessionId + "/cards" )
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isOk());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("CHOOSING_CARDS", jsonResponse.getString("sessionStatus"));
+
+        User newUser = userService.addUser(new User("non-participant", "pass"));
+
+        token = TokenProvider.getToken(mockMvc, clientDetails, newUser.getUsername(), "pass");
+        authorizationHeader = String.format("Bearer %s", token);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/" + "cards" + "/" + cardDetails1.getCardDetailsId() )
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testChooseCardsWithNonExistingCardInCategoryOrTopic() throws Exception {
+        addCardDetailsToCategory();
+
         CreateSynchronousSessionResource resource = new CreateSynchronousSessionResource();
-        resource.setOrganizationId(organization.getOrganizationId());
-        resource.setMinNumberOfCards(5);
-        resource.setMaxNumberOfCards(10);
-        resource.setTopicId(topic.getTopicId());
-
+        resource.setCategoryId(category.getCategoryId());
+        resource.setMinNumberOfCardsPerParticipant(3);
+        resource.setMaxNumberOfCardsPerParticipant(5);
+        resource.setParticipantsCanAddCards(true);
 
         JSONObject jsonObject = new JSONObject(resource);
+        jsonObject.put("type", "sync");
 
-        MvcResult result = mockMvc.perform(
+        String createdStringResponse = mockMvc.perform(
                 post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated()).andReturn();
+        ).andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
 
-        String jsonResponseString = result.getResponse().getContentAsString();
-        JSONObject jsonResponse = new JSONObject(jsonResponseString);
-        int sessionId = (int) jsonResponse.get("sessionId");
+        JSONObject createdJsonResponse = new JSONObject(createdStringResponse);
+        int createdSessionId = createdJsonResponse.getInt("sessionId");
 
-        String url = String.format(baseApiUrl + "/add/%d?userId=%d", sessionId, -1);
+        JSONObject jsonResponse = this.getSessionData(createdSessionId);
 
-        mockMvc.perform(post(url).header("Authorization", authorizationHeader)).andExpect(status().isBadRequest());
-    }*/
+        Assert.assertEquals("CREATED", jsonResponse.getString("sessionStatus"));
 
+        User userToInvite = userService.addUser(new User("participant-1", "pass"));
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("userId", String.valueOf(userToInvite.getUserId()))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/join")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
+
+        String token = TokenProvider.getToken(mockMvc, clientDetails, userToInvite.getUsername(), "pass");
+        authorizationHeader = String.format("Bearer %s", token);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/join")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("ADDING_CARDS", jsonResponse.getString("sessionStatus"));
+
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("test-card");
+
+        JSONObject createCardDetailsJson = new JSONObject(createCardDetailsResource);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/cards")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+                        .content(createCardDetailsJson.toString())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isCreated());
+
+
+        token = TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword);
+        authorizationHeader = String.format("Bearer %s", token);
+
+        mockMvc.perform(
+                put(baseApiUrl + "/" + createdSessionId + "/cards" )
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isOk());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("CHOOSING_CARDS", jsonResponse.getString("sessionStatus"));
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/" + "cards" + "/" + -1 )
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testChooseCardsTooManyCards() throws Exception {
+        addCardDetailsToCategory();
+
+        CreateSynchronousSessionResource resource = new CreateSynchronousSessionResource();
+        resource.setCategoryId(category.getCategoryId());
+        resource.setMinNumberOfCardsPerParticipant(1);
+        resource.setMaxNumberOfCardsPerParticipant(1);
+        resource.setParticipantsCanAddCards(true);
+
+        JSONObject jsonObject = new JSONObject(resource);
+        jsonObject.put("type", "sync");
+
+        String createdStringResponse = mockMvc.perform(
+                post(baseApiUrl)
+                        .header("Authorization", authorizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        JSONObject createdJsonResponse = new JSONObject(createdStringResponse);
+        int createdSessionId = createdJsonResponse.getInt("sessionId");
+
+        JSONObject jsonResponse = this.getSessionData(createdSessionId);
+
+        Assert.assertEquals("CREATED", jsonResponse.getString("sessionStatus"));
+
+        User userToInvite = userService.addUser(new User("participant-1", "pass"));
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("userId", String.valueOf(userToInvite.getUserId()))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/join")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
+
+        String token = TokenProvider.getToken(mockMvc, clientDetails, userToInvite.getUsername(), "pass");
+        authorizationHeader = String.format("Bearer %s", token);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/join")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+        ).andExpect(status().isCreated());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("ADDING_CARDS", jsonResponse.getString("sessionStatus"));
+
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("test-card");
+
+        JSONObject createCardDetailsJson = new JSONObject(createCardDetailsResource);
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/cards")
+                        .header("Authorization", authorizationHeader)
+                        .param("sessionId", String.valueOf(createdSessionId))
+                        .content(createCardDetailsJson.toString())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isCreated());
+
+
+        token = TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword);
+        authorizationHeader = String.format("Bearer %s", token);
+
+        mockMvc.perform(
+                put(baseApiUrl + "/" + createdSessionId + "/cards" )
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isOk());
+
+        jsonResponse = this.getSessionData(createdSessionId);
+        Assert.assertEquals("CHOOSING_CARDS", jsonResponse.getString("sessionStatus"));
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/" + "cards" + "/" + cardDetails1.getCardDetailsId() )
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isCreated());
+
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/" + "cards" + "/" + cardDetails2.getCardDetailsId() )
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isBadRequest()).andDo(print());
+    }
 }

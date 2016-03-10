@@ -3,42 +3,8 @@
 
     <div class="row">
         <div id="cardcontainer" class="col-sm-3">
-            <h1 class="text-center card-name ">Card Name</h1>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Playing_card_spade_A.svg/2000px-Playing_card_spade_A.svg.png" class="card-image">
-            <div class="card-description"><p class="text-center">Lorem ipsum dolor sit amet, at eius utamur persequeris mel. Eu eam cetero oporteat deterruisset, vel affert epicurei verterem cu. Sea an enim habeo convenire.</p>
-            </div>
-            <div class="cardFoot">
-                <div class="arrows">
-                    <div style="display: inline-block; margin-right: auto;margin-left: auto">
-                         <a class="arrow glyphicon glyphicon-arrow-left"></a>
-                        <i>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; </i>
-                        <a class="arrow glyphicon glyphicon-arrow-right">  </a>
-                    </div>
-                </div>
-                <button class="upVoteButton" >UPVOTE</button>
-            </div>
-
-         </div>
-        <div class="circle col-sm-9">
-            <svg version="1.1" viewBox="0 0 700 700" preserveAspectRatio="xMinYMid">
-                    <circle cx="350" cy="350" r="300" class="svg-circle"></circle>
-                    <circle cx="350" cy="350" r="240" class="svg-circle"  ></circle>
-                    <circle cx="350" cy="350" r="180"  class="svg-circle"></circle>
-                    <circle cx="350" cy="350" r="120" class="svg-circle"></circle>
-                    <circle cx="350" cy="350" r="60" class="inner-circle"></circle>
-                </svg>
-            </div>
-             <!--
-            <div class="field">1</div>
-            <div class="field">2</div>
-            <div class="field">3</div>
-            <div class="field">4</div>
-            <div class="field">5</div>
-            <div class="field">6</div>
-            <div class="field">7</div>
-            <div class="field">8</div> -->
-
-
+            <h1 class="text-center card-name">Selected card</h1>
+            <card-detail [cardClassName]="'card-large'"></card-detail>
+        </div>
     </div>
 </div>
-

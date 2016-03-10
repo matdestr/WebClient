@@ -26,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(User user) {
+        if (user == null)
+            throw new UserServiceException("User cannot be null");
+        
         try {
             String unencryptedPassword = user.getPassword();
             String encryptedPassword = passwordEncoder.encode(unencryptedPassword);

@@ -84,9 +84,6 @@ public class ITTestOrganizationRestController {
 
     @Test
     public void testCreateNewOrganizationAndGetCreatedOrganization() throws Exception {
-        /*String token = TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword);
-        String authorizationHeader = String.format("Bearer %s", token);*/
-
         OrganizationResource organizationResource = new OrganizationResource();
         organizationResource.setName("Karel de Grote");
 
@@ -159,4 +156,30 @@ public class ITTestOrganizationRestController {
                 MockMvcRequestBuilders.get("/api/organizations/user/" + user.getUsername())
         )/*.andDo(print())*/.andExpect(status().isOk());
     }
+    
+    /*@Test
+    public void assignOrganizerToUser() throws Exception {
+        OrganizationResource organizationResource = new OrganizationResource();
+        organizationResource.setName("Test organization");
+
+        JSONObject jsonObject = new JSONObject(organizationResource);
+
+        String response = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/organizations")
+                        .header("Authorization", authorizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+        
+        JSONObject jsonResponse = new JSONObject(response);
+        
+        Assert.assertEquals(0, jsonResponse.getJSONObject("organizers").length());
+        
+        String response = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/organization/owners")
+                .header("Authorization", authorizationHeader)
+                
+        )
+    }*/
 }

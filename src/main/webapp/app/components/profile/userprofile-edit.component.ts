@@ -1,4 +1,4 @@
-import {Component} from "angular2/core";
+import {Component, OnInit} from "angular2/core";
 import {NgIf, NgFor, NgSwitch, NgSwitchWhen} from "angular2/common";
 import {RouteParams} from "angular2/router";
 import {Response} from "angular2/http";
@@ -22,7 +22,7 @@ import {ErrorDialogComponent} from "../widget/error-dialog.component";
     directives: [ToolbarComponent, ErrorDialogComponent]
 })
 
-export class UserProfileEditComponent {
+export class UserProfileEditComponent implements OnInit{
     private errorMessages:string[] = [];
     private fileChanged:boolean = false;
     private file:File = null;
@@ -34,9 +34,10 @@ export class UserProfileEditComponent {
                        private _routeArgs:RouteParams,
                        private _userService:UserService,
                        private _tokenService:TokenService
-    ) {
+    ) {}
 
-        var username:string = _routeArgs.get("username");
+    ngOnInit():any {
+        var username:string = this._routeArgs.get("username");
 
         if (username == null)
             this._router.navigate(["/Dashboard"]);
@@ -45,7 +46,7 @@ export class UserProfileEditComponent {
         if (getUsername(token) !== username)
             this._router.navigate(["/Dashboard"]);
 
-        _userService.getUser(username).subscribe((user:User) => {
+        this._userService.getUser(username).subscribe((user:User) => {
             this.user = this.user.deserialize(user);
 
             this.updateModel.name = this.user.name;
@@ -53,7 +54,6 @@ export class UserProfileEditComponent {
             this.updateModel.email = this.user.email;
             this.updateModel.username = this.user.username;
         });
-
     }
 
     public saveChanges():void {

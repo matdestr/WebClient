@@ -6,6 +6,8 @@ import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Tag;
 import be.kdg.kandoe.backend.model.organizations.Topic;
+import be.kdg.kandoe.backend.model.sessions.Session;
+import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.model.users.roles.RoleType;
 import be.kdg.kandoe.backend.persistence.api.*;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -43,6 +46,9 @@ public class DatabaseSeeder {
 
     @Autowired
     private CardDetailsRepository cardDetailsRepository;
+    
+    @Autowired
+    private SessionRepository sessionRepository;
 
     @PostConstruct
     private void seed() {
@@ -115,14 +121,74 @@ public class DatabaseSeeder {
         topic1.setDescription("Description of the first topic");
         topic1 = topicRepository.save(topic1);
         
-        for (int i = 0; i < 10; i++) {
+        /*for (int i = 0; i < 10; i++) {
             CardDetails cardDetails = new CardDetails();
             cardDetails.setCategory(category1);
             cardDetails.setCreator(testUser);
             cardDetails.setText("Card " + (i + 1));
             
             cardDetailsRepository.save(cardDetails);
-        }
+        }*/
+        
+        topic1 = seedCardDetails(category1, topic1, testUser);
+        
+        Session session = new SynchronousSession();
+        session.setOrganizer(testUser);
+        session.setCategory(category1);
+        session.setTopic(topic1);
+        session.setAmountOfCircles(5);
+        session = sessionRepository.save(session);
+    }
+    
+    private Topic seedCardDetails(Category category, Topic topic, User creator) {
+        if (category.getCards() == null)
+            category.setCards(new HashSet<>());
+        
+        CardDetails cardDetails1 = new CardDetails();
+        cardDetails1.setCategory(category);
+        cardDetails1.setCreator(creator);
+        cardDetails1.setText("Card #1");
+        cardDetails1.setImageUrl("https://s-media-cache-ak0.pinimg.com/736x/41/99/ed/4199edcef653e72fa3dd9b9bb629f2f5.jpg");
+        
+        CardDetails cardDetails2 = new CardDetails();
+        cardDetails2.setCategory(category);
+        cardDetails2.setCreator(creator);
+        cardDetails2.setText("Card #2");
+        cardDetails2.setImageUrl("http://figures.boundless.com/11036/full/cash.jpeg");
+        
+        CardDetails cardDetails3 = new CardDetails();
+        cardDetails3.setCategory(category);
+        cardDetails3.setCreator(creator);
+        cardDetails3.setText("Harry the cactus");
+        cardDetails3.setImageUrl("http://i4.mirror.co.uk/incoming/article5704312.ece/ALTERNATES/s615b/waving-cactus.jpg");
+        
+        cardDetails1 = cardDetailsRepository.save(cardDetails1);
+        cardDetails2 = cardDetailsRepository.save(cardDetails2);
+        cardDetails3 = cardDetailsRepository.save(cardDetails3);
+        
+        category.getCards().add(cardDetails1);
+        category.getCards().add(cardDetails2);
+        category.getCards().add(cardDetails3);
+        
+        category = categoryRepository.save(category);
+        
+        if (topic.getCards() == null)
+            topic.setCards(new HashSet<>());
+
+        cardDetails1.setTopics(new HashSet<>());
+        cardDetails2.setTopics(new HashSet<>());
+        cardDetails3.setTopics(new HashSet<>());
+        
+        cardDetails1.getTopics().add(topic);
+        cardDetails2.getTopics().add(topic);
+        cardDetails3.getTopics().add(topic);
+
+        cardDetails1 = cardDetailsRepository.save(cardDetails1);
+        cardDetails2 = cardDetailsRepository.save(cardDetails2);
+        cardDetails3 = cardDetailsRepository.save(cardDetails3);
+        
+        topic.getCards().addAll(category.getCards());
+        return topicRepository.save(topic);
     }
 
     private void seedTags() {

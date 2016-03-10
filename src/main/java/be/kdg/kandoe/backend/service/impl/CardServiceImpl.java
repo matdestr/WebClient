@@ -7,6 +7,7 @@ import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.persistence.api.CardDetailsRepository;
 import be.kdg.kandoe.backend.persistence.api.CategoryRepository;
+import be.kdg.kandoe.backend.persistence.api.TopicRepository;
 import be.kdg.kandoe.backend.service.api.CardService;
 import be.kdg.kandoe.backend.service.exceptions.CardServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,13 +24,15 @@ import java.util.Set;
 public class CardServiceImpl implements CardService {
     private CardDetailsRepository cardDetailsRepository;
     private CategoryRepository categoryRepository;
+    private TopicRepository topicRepository;
 
     private Logger logger;
 
     @Autowired
-    public CardServiceImpl(CardDetailsRepository cardDetailsRepository, CategoryRepository categoryRepository) {
+    public CardServiceImpl(CardDetailsRepository cardDetailsRepository, CategoryRepository categoryRepository, TopicRepository topicRepository) {
         this.cardDetailsRepository = cardDetailsRepository;
         this.categoryRepository = categoryRepository;
+        this.topicRepository = topicRepository;
         this.logger = LogManager.getLogger(this.getClass());
     }
 
@@ -51,7 +53,7 @@ public class CardServiceImpl implements CardService {
 
             // Updating both sides of the relationship is needed
             if (category.getCards() == null)
-                category.setCards(new ArrayList<>());
+                category.setCards(new HashSet<>());
 
             category.getCards().add(cardDetails);
             categoryRepository.save(category);
@@ -80,17 +82,24 @@ public class CardServiceImpl implements CardService {
 
         if (cardDetails.getTopics() == null)
             cardDetails.setTopics(new HashSet<>());
-
+ 
         Set<Topic> cardDetailsTopics = cardDetails.getTopics();
         cardDetailsTopics.add(topic);
 
         try {
             cardDetails = cardDetailsRepository.save(cardDetails);
 
+            if (topic.getCategory().getCards() == null)
+                topic.getCategory().setCards(new HashSet<>());
+            
             if (topic.getCards() == null)
                 topic.setCards(new HashSet<>());
 
+            topic.getCategory().getCards().add(cardDetails);
             topic.getCards().add(cardDetails);
+            
+            categoryRepository.save(topic.getCategory());
+            topicRepository.save(topic);
 
             return cardDetails;
         } catch (Exception e) {
@@ -111,7 +120,11 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardDetails getCardDetailsById(int cardDetailsId) {
-        return cardDetailsRepository.findOne(cardDetailsId);
+        CardDetails cardDetails = cardDetailsRepository.findOne(cardDetailsId);
+        if (cardDetails == null){
+            throw new CardServiceException(String.format("No card found by %d", cardDetailsId));
+        }
+        return cardDetails;
     }
 
     @Override
