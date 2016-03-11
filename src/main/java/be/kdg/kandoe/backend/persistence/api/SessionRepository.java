@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface SessionRepository extends JpaRepository<Session, Integer> {
     List<Session> findSessionsByCategoryCategoryId(int categoryId);
+    List<Session> findSessionsByTopicTopicId(int topicId);
 }

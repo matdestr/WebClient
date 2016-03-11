@@ -3,13 +3,16 @@ package be.kdg.kandoe.frontend.controller.rest;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
+import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.service.api.CategoryService;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
+import be.kdg.kandoe.backend.service.api.SessionService;
 import be.kdg.kandoe.backend.service.api.TopicService;
 import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CategoryResource;
 import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CreateCategoryResource;
 import be.kdg.kandoe.frontend.controller.resources.organizations.topic.CreateTopicResource;
 import be.kdg.kandoe.frontend.controller.resources.organizations.topic.TopicResource;
+import be.kdg.kandoe.frontend.controller.resources.sessions.SessionResource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,16 +30,18 @@ public class TopicRestController
 
     private final TopicService topicService;
     private final CategoryService categoryService;
+    private final SessionService sessionService;
 
     private MapperFacade mapper;
 
     @Autowired
     public TopicRestController(MapperFacade mapper,TopicService topicService,
-                                  CategoryService categoryService
+                                  CategoryService categoryService, SessionService sessionService
                                   ) {
         this.mapper = mapper;
         this.topicService = topicService;
         this.categoryService = categoryService;
+        this.sessionService = sessionService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -65,5 +70,14 @@ public class TopicRestController
         Topic topic = topicService.getTopicByTopicId(topicId);
 
         return new ResponseEntity<>(mapper.map(topic, TopicResource.class), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{topicId}/sessions", method = RequestMethod.GET)
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<SessionResource>> getSessionsFromTopic(@PathVariable("topicId") int topicId) {
+
+        List<Session> sessions = sessionService.getSessionsFromTopic(topicId);
+
+        return new ResponseEntity<>(mapper.mapAsList(sessions, SessionResource.class), HttpStatus.OK);
     }
 }

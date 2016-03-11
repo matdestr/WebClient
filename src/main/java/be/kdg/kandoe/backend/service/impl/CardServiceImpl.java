@@ -1,8 +1,10 @@
 package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;
+import be.kdg.kandoe.backend.model.cards.CardPosition;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Topic;
+import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.persistence.api.CardDetailsRepository;
 import be.kdg.kandoe.backend.persistence.api.CategoryRepository;
 import be.kdg.kandoe.backend.persistence.api.TopicRepository;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,7 +50,7 @@ public class CardServiceImpl implements CardService {
         this.validateCardDetailsExistence(category, cardDetails);
 
         try {
-            //cardDetails.setCategory(category);
+            cardDetails.setCategory(category);
 
             cardDetails = cardDetailsRepository.save(cardDetails);
 
@@ -75,18 +78,17 @@ public class CardServiceImpl implements CardService {
         this.validateCardDetails(cardDetails);
         this.validateCardDetailsExistence(topic, cardDetails);
 
-        if (cardDetails.getCategory() == null) {
-            this.addCardDetailsToCategory(topic.getCategory(), cardDetails);
+        if(cardDetails.getCategory() == null){
+            this.addCardDetailsToCategory(topic.getCategory(),cardDetails);
         }
-
-        if (cardDetails.getCategory().getCategoryId() != topic.getCategory().getCategoryId()) {
+        if (!cardDetails.getCategory().equals(topic.getCategory())) {
             logger.warn("Tried to add card details to topic, but topic was of different category");
             throw new CardServiceException("Cannot add card details to topics of different categories");
         }
 
         if (cardDetails.getTopics() == null)
             cardDetails.setTopics(new HashSet<>());
- 
+
         Set<Topic> cardDetailsTopics = cardDetails.getTopics();
         cardDetailsTopics.add(topic);
 
@@ -95,13 +97,13 @@ public class CardServiceImpl implements CardService {
 
             if (topic.getCategory().getCards() == null)
                 topic.getCategory().setCards(new HashSet<>());
-            
+
             if (topic.getCards() == null)
                 topic.setCards(new HashSet<>());
 
             topic.getCategory().getCards().add(cardDetails);
             topic.getCards().add(cardDetails);
-            
+
             categoryRepository.save(topic.getCategory());
             topicRepository.save(topic);
 
@@ -124,24 +126,10 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardDetails getCardDetailsById(int cardDetailsId) {
-        CardDetails cardDetails = cardDetailsRepository.findOne(cardDetailsId);
-        
-        if (cardDetails == null){
-            throw new CardServiceException(String.format("Could not find card details with ID %d", cardDetailsId));
-        }
-        
-        return cardDetails;
+        return cardDetailsRepository.findOne(cardDetailsId);
     }
 
-    /*@Override
-    public void initializeCardPositions(Session session) {
 
-    }*/
-
-    /*@Override
-    public Set<CardPosition> getCardPositionsOfSession(int sessionId) {
-        return null;
-    }*/
 
     private void validateCardDetails(CardDetails cardDetails) {
         if (cardDetails == null) {
@@ -179,4 +167,5 @@ public class CardServiceImpl implements CardService {
             throw new CardServiceException("A card with that text already exists in the topic");
         }
     }
+
 }

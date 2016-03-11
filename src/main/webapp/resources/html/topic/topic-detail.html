@@ -73,6 +73,18 @@
 
             <hr>
 
+            <h2>Sessions</h2>
+
+            <ul>
+                <div class="row" *ngFor="#session of sessions">
+
+                    <div class="col-md-2 spaceUnder">
+                        <p class="categoryName" (click)="toSession(session.sessionId)">{{session.sessionId}}</p>
+                    </div>
+
+                </div>
+            </ul>
+
             <button class="add-new-button" (click)="toAddNewSession(topic.categoryId,topic.topicId)">
                 <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Session
             </button>
