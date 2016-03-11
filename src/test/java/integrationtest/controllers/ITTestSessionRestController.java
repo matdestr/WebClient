@@ -95,6 +95,8 @@ public class ITTestSessionRestController {
     @Before
     public void setup() throws Exception {
         this.user = userService.addUser(new User("test-user", unencryptedPassword));
+        this.user.setEmail("cando-user@localhost.com");
+        this.user = userService.updateUser(user);
 
         OAuthClientDetails clientDetails = IntegrationTestHelpers.getOAuthClientDetails();
         this.clientDetails = oAuthClientDetailsService.addClientsDetails(clientDetails);
@@ -280,11 +282,13 @@ public class ITTestSessionRestController {
         Assert.assertEquals(1, jsonArrayParticipants.length());
 
         User userToInvite = userService.addUser(new User("participant-1", "pass"));
-
+        userToInvite.setEmail("localhost@localhost.com");
+        userToInvite = userService.updateUser(userToInvite);
+        
         mockMvc.perform(
                 post(baseApiUrl + "/" + createdSessionId + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .param("userId", String.valueOf(userToInvite.getUserId()))
+                        .param("email", String.valueOf(userToInvite.getEmail()))
         ).andExpect(status().isCreated());
 
         getResult = getSessionData(createdSessionId);
@@ -339,7 +343,7 @@ public class ITTestSessionRestController {
         mockMvc.perform(
                 post(baseApiUrl + "/" + createdSessionId + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .param("userId", String.valueOf(user.getUserId()))
+                        .param("email", String.valueOf(user.getEmail()))
         ).andExpect(status().isBadRequest());
 
         getResult = getSessionData(createdSessionId);
@@ -377,11 +381,13 @@ public class ITTestSessionRestController {
         Assert.assertEquals("CREATED", jsonResponse.getString("sessionStatus"));
 
         User userToInvite = userService.addUser(new User("participant-1", "pass"));
+        userToInvite.setEmail("localhost@localhost.com");
+        userToInvite = userService.updateUser(userToInvite);
 
         mockMvc.perform(
                 post(baseApiUrl + "/" + createdSessionId + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .param("userId", String.valueOf(userToInvite.getUserId()))
+                        .param("email", String.valueOf(userToInvite.getEmail()))
         ).andExpect(status().isCreated());
 
         jsonResponse = this.getSessionData(createdSessionId);
