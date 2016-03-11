@@ -63,6 +63,7 @@ public abstract class Session {
     private List<CardDetails> winners;
 
     @OneToMany(targetEntity = CardsChoice.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "Session_CardsChoice")
     private List<CardsChoice> participantCardChoices;
 
     @OneToMany(targetEntity = CardPosition.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)

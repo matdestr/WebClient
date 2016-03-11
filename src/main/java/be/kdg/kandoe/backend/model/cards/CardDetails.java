@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -37,9 +39,9 @@ public class CardDetails {
     private Category category;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @Size(min = 1)
-    private Set<Topic> topics;
+    @Size(min = 0)
+    private Set<Topic> topics = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 }

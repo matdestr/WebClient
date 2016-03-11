@@ -40,6 +40,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.TreeSet;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootContextConfig.class, WebContextConfig.class})
 @WebAppConfiguration
@@ -200,7 +205,7 @@ public class ITSessionGameRestController {
                 MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/positions")
                 .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isArray())
                 .andReturn().getResponse().getContentAsString();
 
         //JSONObject jsonResponse = new JSONObject(stringResponse);
@@ -264,6 +269,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
         
         User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
         participant1 = userService.addUser(participant1);
         
         Session session = createDefaultSession();
@@ -278,7 +284,7 @@ public class ITSessionGameRestController {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .param("userId", String.valueOf(participant1.getUserId()))
+                        .param("email", String.valueOf(participant1.getEmail()))
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
         
         mockMvc.perform(
@@ -295,7 +301,7 @@ public class ITSessionGameRestController {
                 MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/all-cards")
                     .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isArray())
                 .andReturn().getResponse().getContentAsString();
         
         JSONArray jsonAllCardsArray = new JSONArray(stringAllCardsResponse);
@@ -316,7 +322,7 @@ public class ITSessionGameRestController {
                 MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/all-cards")
                     .header("Authorization", authorizationHeaderParticipant1)
         ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isArray())
                 .andReturn().getResponse().getContentAsString();
         
         JSONArray jsonAllCardsArrayAfterAdding = new JSONArray(stringAllCardsResponseAfterAdding);
@@ -335,14 +341,17 @@ public class ITSessionGameRestController {
         User userToInvite = new User(userToInviteUsername, userToInvitePassword);
         
         participant = userService.addUser(participant);
+        participant.setEmail("test3@mail.com");
+        userToInvite.setEmail("test@mail.com");
         userToInvite = userService.addUser(userToInvite);
+        userToInvite.setEmail("test2@mail.com");
         
         Session session = createDefaultSession();
         
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                     .header("Authorization", authorizationHeader)
-                    .param("userId", String.valueOf(participant.getUserId()))
+                        .param("email",participant.getEmail())
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         String tokenParticipant = TokenProvider.getToken(mockMvc, clientDetails, participantUsername, participantPassword);
@@ -356,7 +365,7 @@ public class ITSessionGameRestController {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                     .header("Authorization", authorizationHeaderParticipant)
-                    .param("userId", String.valueOf(userToInvite.getUserId()))
+                    .param("email", userToInvite.getEmail())
         ).andExpect(MockMvcResultMatchers.status().isForbidden());
         
         session = sessionService.getSessionById(session.getSessionId());
@@ -373,6 +382,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
 
         User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
         participant1 = userService.addUser(participant1);
 
         String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
@@ -381,8 +391,8 @@ public class ITSessionGameRestController {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .param("userId", String.valueOf(participant1.getUserId()))
-        ).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isCreated());
+                        .param("email", participant1.getEmail())
+        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
@@ -426,7 +436,7 @@ public class ITSessionGameRestController {
                 MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/positions")
                     .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isArray())
                 .andReturn().getResponse().getContentAsString();
         
         JSONArray jsonArrayChosenCards = new JSONArray(stringChosenCards);
@@ -444,6 +454,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
 
         User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
         participant1 = userService.addUser(participant1);
 
         String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
@@ -452,7 +463,7 @@ public class ITSessionGameRestController {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                     .header("Authorization", authorizationHeader)
-                    .param("userId", String.valueOf(participant1.getUserId()))
+                        .param("email", participant1.getEmail())
         ).andExpect(MockMvcResultMatchers.status().isCreated());
         
         mockMvc.perform(
@@ -526,6 +537,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
 
         User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
         participant1 = userService.addUser(participant1);
 
         String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
@@ -534,7 +546,7 @@ public class ITSessionGameRestController {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .param("userId", String.valueOf(participant1.getUserId()))
+                        .param("email", participant1.getEmail())
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
@@ -605,6 +617,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
 
         User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
         participant1 = userService.addUser(participant1);
 
         String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
@@ -613,7 +626,7 @@ public class ITSessionGameRestController {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .param("userId", String.valueOf(participant1.getUserId()))
+                        .param("email", participant1.getEmail())
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
@@ -644,6 +657,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
 
         User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
         participant1 = userService.addUser(participant1);
 
         Session session = createDefaultSession();
@@ -658,7 +672,7 @@ public class ITSessionGameRestController {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .param("userId", String.valueOf(participant1.getUserId()))
+                        .param("email", participant1.getEmail())
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
@@ -675,7 +689,7 @@ public class ITSessionGameRestController {
                 MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/all-cards")
                         .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isArray())
                 .andReturn().getResponse().getContentAsString();
 
         JSONArray jsonAllCardsArray = new JSONArray(stringAllCardsResponse);
@@ -709,6 +723,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
 
         User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
         participant1 = userService.addUser(participant1);
 
         String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
@@ -717,8 +732,8 @@ public class ITSessionGameRestController {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .param("userId", String.valueOf(participant1.getUserId()))
-        ).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isCreated());
+                        .param("email", participant1.getEmail())
+        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
@@ -787,12 +802,13 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
 
         User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
         participant1 = userService.addUser(participant1);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .param("userId", String.valueOf(participant1.getUserId()))
+                        .param("email", participant1.getEmail())
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         User nonUser = new User("not-joined-user", "pass");
@@ -814,6 +830,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
 
         User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
         participant1 = userService.addUser(participant1);
 
         Session session = createDefaultSession();
@@ -829,7 +846,7 @@ public class ITSessionGameRestController {
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                         .header("Authorization", authorizationHeader)
-                        .param("userId", String.valueOf(participant1.getUserId()))
+                        .param("email", participant1.getEmail())
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
@@ -846,7 +863,7 @@ public class ITSessionGameRestController {
                 MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/all-cards")
                         .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isArray())
                 .andReturn().getResponse().getContentAsString();
 
         JSONArray jsonAllCardsArray = new JSONArray(stringAllCardsResponse);
@@ -867,14 +884,12 @@ public class ITSessionGameRestController {
                 MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/all-cards")
                         .header("Authorization", authorizationHeaderParticipant1)
         ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isArray())
                 .andReturn().getResponse().getContentAsString();
 
         JSONArray jsonAllCardsArrayAfterAdding = new JSONArray(stringAllCardsResponseAfterAdding);
         Assert.assertEquals(4, jsonAllCardsArrayAfterAdding.length());
     }
-
-    // TODO : Test invalid session ID or user ID results in 400 Bad Request
 
     @Test
     public void testStartingNonExisitingSession() throws Exception {
@@ -882,6 +897,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
 
         User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
         participant1 = userService.addUser(participant1);
 
         mockMvc.perform(
@@ -889,5 +905,427 @@ public class ITSessionGameRestController {
                         .header("Authorization", authorizationHeader)
                         .param("userId", String.valueOf(participant1.getUserId()))
         ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void testIncreaseCardPosition() throws Exception {
+        Session session = createDefaultSession();
+        session.setMinNumberOfCardsPerParticipant(2);
+        session = sessionService.updateSession(session);
+
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
+        participant1 = userService.addUser(participant1);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("email", participant1.getEmail())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .param("cardDetailsId", String.valueOf(cardDetails4.getCardDetailsId()))
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/start")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.IN_PROGRESS, session.getSessionStatus());
+
+        String stringChosenCards = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andReturn().getResponse().getContentAsString();
+
+        JSONArray jsonArrayChosenCards = new JSONArray(stringChosenCards);
+        Assert.assertEquals(3, jsonArrayChosenCards.length());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(jsonPath("$.priority", is(1)));
+    }
+
+    @Test
+    public void testEndGame() throws Exception {
+        Session session = createDefaultSession();
+        session.setMinNumberOfCardsPerParticipant(2);
+        session.setAmountOfCircles(1);
+        session = sessionService.updateSession(session);
+
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
+        participant1 = userService.addUser(participant1);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("email", participant1.getEmail())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .param("cardDetailsId", String.valueOf(cardDetails4.getCardDetailsId()))
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/start")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.IN_PROGRESS, session.getSessionStatus());
+
+        String stringChosenCards = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andReturn().getResponse().getContentAsString();
+
+        JSONArray jsonArrayChosenCards = new JSONArray(stringChosenCards);
+        Assert.assertEquals(3, jsonArrayChosenCards.length());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.priority", is(1)));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeader)
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.priority", is(2)));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.priority", is(3)));
+
+        Assert.assertEquals(SessionStatus.FINISHED, session.getSessionStatus());
+    }
+
+
+    @Test
+    public void testIncreaseCardPositionByNotTurnUser() throws Exception {
+        Session session = createDefaultSession();
+        session.setMinNumberOfCardsPerParticipant(2);
+        session = sessionService.updateSession(session);
+
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
+        participant1 = userService.addUser(participant1);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("email", participant1.getEmail())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .param("cardDetailsId", String.valueOf(cardDetails4.getCardDetailsId()))
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/start")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.IN_PROGRESS, session.getSessionStatus());
+
+        String stringChosenCards = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andReturn().getResponse().getContentAsString();
+
+        JSONArray jsonArrayChosenCards = new JSONArray(stringChosenCards);
+        Assert.assertEquals(3, jsonArrayChosenCards.length());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeader)
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void testForceEndGame() throws Exception {
+        Session session = createDefaultSession();
+        session.setMinNumberOfCardsPerParticipant(2);
+        session.setAmountOfCircles(1);
+        session = sessionService.updateSession(session);
+
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
+        participant1 = userService.addUser(participant1);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("email", participant1.getEmail())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .param("cardDetailsId", String.valueOf(cardDetails4.getCardDetailsId()))
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/start")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.IN_PROGRESS, session.getSessionStatus());
+
+        String stringChosenCards = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andReturn().getResponse().getContentAsString();
+
+        JSONArray jsonArrayChosenCards = new JSONArray(stringChosenCards);
+        Assert.assertEquals(3, jsonArrayChosenCards.length());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.priority", is(1)));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/end")
+                        .header("Authorization", authorizationHeader)
+        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk());
+
+        Assert.assertEquals(SessionStatus.FINISHED, session.getSessionStatus());
+    }
+
+    @Test
+    public void testForceEndGameByNonOrganizerResultsInForbidden() throws Exception {
+        Session session = createDefaultSession();
+        session.setMinNumberOfCardsPerParticipant(2);
+        session.setAmountOfCircles(1);
+        session = sessionService.updateSession(session);
+
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
+        participant1 = userService.addUser(participant1);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("email", participant1.getEmail())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
+                        .param("cardDetailsId", String.valueOf(cardDetails3.getCardDetailsId()))
+                        .param("cardDetailsId", String.valueOf(cardDetails4.getCardDetailsId()))
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/start")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        session = sessionService.getSessionById(session.getSessionId());
+        Assert.assertEquals(SessionStatus.IN_PROGRESS, session.getSessionStatus());
+
+        String stringChosenCards = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andReturn().getResponse().getContentAsString();
+
+        JSONArray jsonArrayChosenCards = new JSONArray(stringChosenCards);
+        Assert.assertEquals(3, jsonArrayChosenCards.length());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/sessions/" + session.getSessionId() + "/positions")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
+        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.priority", is(1)));
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/end")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isForbidden());
+
     }
 }
