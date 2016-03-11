@@ -22,9 +22,10 @@
         <div class="organization-arrow" >
             <button class="paginate left" (click)="previousSesPage()"><i></i><i></i></button>
         </div>
+        <div *ngFor="#session of sessions">
         <div class="red-block">
-            <h3 class="text-center">Session Name</h3>
-            <div class="progressdiv">
+            <h3 class="text-center">Session {{session.sessionId}}</h3>
+            <div  class="progressdiv">
                 <div class="progress">
                     <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar"
                          aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
@@ -36,6 +37,7 @@
         </div>
         <div class="organization-arrow">
             <button class="paginate right" style="float: right" (click)="nextSesPage()" ><i></i><i></i></button>
+        </div>
         </div>
 
         <h2 class="header-for-block">Future Sessions</h2>
