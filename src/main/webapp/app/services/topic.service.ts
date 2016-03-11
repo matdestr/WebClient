@@ -52,4 +52,9 @@ export class TopicService {
             .get(TopicService.endPoint + topicId);
     }
 
+    public getSessionsFromTopic(topicId: number): Observable<Response>{
+        return this._authHttp
+            .get(TopicService.endPoint + topicId +"/sessions");
+    }
+
 }
