@@ -12,17 +12,30 @@
 }
 
 #cardcontainer{
-  height: 95vh;
+  height: 70vh;
   background-color: #f2f2f2;
   -webkit-box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
   -moz-box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
   box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
   //margin-top:-$navbar-margin-bottom;
   //padding: 1em;
+
+  @media only screen and (min-width: $breakpoint-desktop) {
+    height: 100vh;
+  }
+
+  div.card-large {
+    width: 80% !important;
+    height: 40vh;
+  }
+
+  .card-text {
+    font-size: 1em;
+  }
 }
 
 #circlecontainer {
-  height:95vh;
+  height: 50vh;
   display: block;
 }
 
@@ -31,12 +44,20 @@
 }
 
 #chatcontainer {
-  height: 400px;
+  height: 60vh;
   background-color: #f2f2f2;
 
   @media only screen and (min-width: $breakpoint-tablet){
-    height: 95vh;
+    height: 55vh;
   }
+
+  @media only screen and(min-width: $breakpoint-desktop) {
+    height:100vh;
+  }
+}
+
+.session-active-card {
+  width: 80%;
 }
 
 #chatbox {
@@ -45,8 +66,13 @@
   height: 200px;
 
   @media only screen and (min-width: $breakpoint-tablet){
-    max-height: 480px;
-    height: 480px;
+    max-height: 25vh;
+    height: 25vh;
+  }
+  
+  @media only screen and (min-width: $breakpoint-desktop) {
+    max-height: 65vh;
+    height: 65vh;
   }
 }
 

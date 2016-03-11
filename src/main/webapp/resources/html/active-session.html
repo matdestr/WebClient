@@ -2,16 +2,16 @@
 <div id="main-content" >
 
     <div class="row">
-        <div id="cardcontainer" class="col-xs-12 col-lg-3">
+        <div id="cardcontainer" class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
             <h1 class="card-name">Selected card</h1>
             <card-detail [cardClassName]="'card-large'"></card-detail>
         </div>
 
-        <div id="circlecontainer" class="col-xs-12 col-lg-6">
+        <div id="circlecontainer" class="col-xs-12 col-sm-8 col-md-8 col-lg-6">
 
         </div>
 
-        <div id="chatcontainer" class="col-xs-12 col-lg-3">
+        <div id="chatcontainer" class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
             <h1 class="chat-title">Chat</h1>
             <div #chatbox id="chatbox">
                 <div id="messagebox" *ngFor="#message of messages; #i = index">

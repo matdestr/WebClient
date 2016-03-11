@@ -1,12 +1,25 @@
 @import "vendors/bootstrap-3.3.6/bootstrap";
 @import "core/variables";
 
+@import "core/mixins";
+
+@import "partials/cards";
+@import "partials/containers";
+@import "partials/controls";
+@import "partials/dashboard";
+@import "partials/errordialog";
+@import "partials/forms";
+@import "partials/invitation";
+@import "partials/organization-detail";
+@import "partials/session";
+@import "partials/spans";
+@import "partials/spinners";
+@import "partials/titles";
+@import "partials/toolbar";
+@import "partials/userprofile";
+
 body {
   padding: 0 !important;
-}
-
-#main-content {
-  margin: 0;
 }
 
 #form-sign-in {
