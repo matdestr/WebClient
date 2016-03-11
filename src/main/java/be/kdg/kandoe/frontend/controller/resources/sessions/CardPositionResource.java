@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CardPositionResource {
-    //private int cardDetailsId;
+    private int cardPositionId;
     private CardDetailsResource cardDetails;
     private int priority;
 }

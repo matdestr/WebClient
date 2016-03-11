@@ -30,7 +30,7 @@ public interface SessionGameService {
 
     ParticipantInfo getNextParticipant(Session session);
 
-    void increaseCardPriority(Session session, User user, CardDetails cardPosition);
+    CardPosition increaseCardPriority(Session session, User user, CardDetails cardDetails);
 
     void startGame(Session session);
     void endGame(Session session);

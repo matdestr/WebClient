@@ -106,7 +106,7 @@ public class DatabaseSeeder {
         userRepository.save(users);
 
         Organization organization = new Organization("Pain hiders", testUser);
-        organization.addMember(harold);
+        organization.addOrganizer(harold);
         organization = organizationRepository.save(organization);
         
         Category category1 = new Category();

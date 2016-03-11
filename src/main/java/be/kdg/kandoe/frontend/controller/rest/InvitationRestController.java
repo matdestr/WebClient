@@ -64,7 +64,7 @@ public class InvitationRestController {
         }
 
         Organization organization = organizationService.getOrganizationById(invitationOrganizationId);
-        organization.addMember(user);
+        organization.addOrganizer(user);
         organizationService.updateOrganization(organization);
 
         invitationService.invalidateInvitation(invitation);

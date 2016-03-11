@@ -375,7 +375,7 @@ public class SessionGameServiceImpl implements SessionGameService {
     }
 
     @Override
-    public void increaseCardPriority(Session session, User user, CardDetails cardDetails) {
+    public CardPosition increaseCardPriority(Session session, User user, CardDetails cardDetails) {
         if (session.getSessionStatus() != SessionStatus.IN_PROGRESS) {
             throw new SessionGameServiceException("Game isn't in progress");
         }
@@ -387,31 +387,15 @@ public class SessionGameServiceImpl implements SessionGameService {
             throw new SessionGameServiceException("Not the turn of this user");
         }
 
-        Optional<ParticipantInfo> participantInfoOptional = session.getParticipantInfo().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
-        Optional<CardsChoice> cardsChoiceOptional = session.getParticipantCardChoices().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
-
-        if (!(participantInfoOptional.isPresent() && cardsChoiceOptional.isPresent())) {
+        if(!session.getCardPositions().stream().anyMatch(c -> c.getCardDetails().getCardDetailsId() == cardDetails.getCardDetailsId())){
             throw new SessionGameServiceException("Card is not in game");
         }
 
-        ParticipantInfo participantInfo = participantInfoOptional.get();
-        CardsChoice cardsChoice = cardsChoiceOptional.get();
-
-        if (participantInfo.isMadeMove()) {
-            throw new SessionGameServiceException("User already made a move this round");
-        }
-
-        Optional<CardPosition> cardPositionOptional = session.getCardPositions().stream().filter(c -> c.getCardDetails().getCardDetailsId() == c.getCardDetails().getCardDetailsId()).findFirst();
-        if (cardsChoiceOptional.isPresent()) {
+        Optional<CardPosition> cardPositionOptional = session.getCardPositions().stream().filter(c -> c.getCardDetails().getCardDetailsId() == cardDetails.getCardDetailsId()).findFirst();
+        if (cardPositionOptional.isPresent()) {
 
             CardPosition cardPosition = cardPositionOptional.get();
             cardPosition.setPriority(cardPosition.getPriority() + 1);
-
-            participantInfo.setMadeMove(true);
-            session.setCurrentParticipantPlaying(getNextParticipant(session));
-            if (session.getParticipantInfo().stream().allMatch(p -> p.isMadeMove())) {
-                session.getParticipantInfo().forEach(p -> p.setMadeMove(false));
-            }
 
             sessionService.updateSession(session);
 
@@ -419,6 +403,10 @@ public class SessionGameServiceImpl implements SessionGameService {
                 endGame(session);
             }
 
+            session.setCurrentParticipantPlaying(getNextParticipant(session));
+            return cardPosition;
+        } else {
+            throw new SessionGameServiceException("Card is not on the board");
         }
     }
 

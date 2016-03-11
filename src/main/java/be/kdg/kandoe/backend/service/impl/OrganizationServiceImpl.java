@@ -82,7 +82,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 
         try {
-            return organizationRepository.findOrganizationsByMembersUsernameOrOwnerUsername(username, username);
+            return organizationRepository.findOrganizationsByOrganizersUsernameOrOwnerUsername(username, username);
         } catch (Exception e) {
             throw new OrganizationServiceException(String.format("can't find organizations for owner %s", username), e);
         }
