@@ -8,6 +8,7 @@ import java.util.List;
 public interface SessionService {
     Session getSessionById(int sessionId);
     Session addSession(Session session);
+    List<Session> getSessionsUser(int userId);
     Session updateSession(Session session);
     List<Session> getSessionsFromCategory(int categoryId);
     List<Session> getSessionsFromTopic(int topicId);
