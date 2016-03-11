@@ -20,23 +20,20 @@ public abstract class Session {
     public static final int MAX_PLAYERS = 6;
     public static final int MIN_CIRCLE_AMOUNT = 3;
     public static final int MAX_CIRCLE_AMOUNT = 6;
-    
+
     public static final int DEFAULT_CIRCLE_AMOUNT = 5;
     public static final int DEFAULT_MIN_CARDS_AMOUNT = 4;
     public static final int DEFAULT_MAX_CARDS_AMOUNT = 5;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Setter(AccessLevel.NONE)
     private int sessionId;
 
-    /*@ManyToOne
-    private Organization organization;*/
-    
     @ManyToOne
     @JoinColumn(nullable = false)
     private Category category;
-    
+
     @ManyToOne(optional = true)
     private Topic topic;
 
@@ -46,27 +43,35 @@ public abstract class Session {
 
     @OneToMany(
             targetEntity = ParticipantInfo.class,
-            cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE },
+            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE},
             fetch = FetchType.EAGER
     )
+    @JoinColumn(name = "Session_ParticipantInfo")
     private Set<ParticipantInfo> participantInfo;
 
     @OneToOne(
             targetEntity = ParticipantInfo.class,
-            cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE },
+            cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE},
             fetch = FetchType.EAGER
     )
     private ParticipantInfo currentParticipantPlaying;
 
+    @ManyToMany(
+            targetEntity = CardDetails.class,
+            cascade = {CascadeType.REFRESH, CascadeType.MERGE},
+            fetch = FetchType.EAGER)
+    private List<CardDetails> winners;
+
     @OneToMany(targetEntity = CardsChoice.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CardsChoice> participantCardChoices;
-    
+
     @OneToMany(targetEntity = CardPosition.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CardPosition> cardPositions;
 
     @OneToMany(targetEntity = ChatMessage.class, mappedBy = "session", fetch = FetchType.EAGER)
     private List<ChatMessage> chatMessages;
-    
+
+
     private int minNumberOfCardsPerParticipant;
     private int maxNumberOfCardsPerParticipant;
     private boolean participantsCanAddCards;
@@ -75,26 +80,25 @@ public abstract class Session {
     private int amountOfCircles;
     private String publicUrl;
 
-    public Session(){
+
+    public Session() {
         this.participantInfo = new HashSet<>();
         this.cardPositions = new ArrayList<>();
         this.chatMessages = new ArrayList<>();
         this.participantCardChoices = new ArrayList<>();
-        
+
         this.sessionStatus = SessionStatus.CREATED;
-        
+
         this.amountOfCircles = DEFAULT_CIRCLE_AMOUNT;
         this.minNumberOfCardsPerParticipant = DEFAULT_MIN_CARDS_AMOUNT;
         this.maxNumberOfCardsPerParticipant = DEFAULT_MAX_CARDS_AMOUNT;
     }
 
-    public List<ParticipantInfo> getParticipantSequence(){
+    public List<ParticipantInfo> getParticipantSequence() {
         return Collections.unmodifiableList(this.participantInfo.stream().sorted((p1, p2) -> Integer.compare(p1.getJoinNumber(), p2.getJoinNumber())).collect(Collectors.toList()));
     }
 
-    public boolean isUserParticipant(int userId){
+    public boolean isUserParticipant(int userId) {
         return participantInfo.stream().anyMatch(p -> p.getParticipant().getUserId() == userId);
     }
-
-
 }

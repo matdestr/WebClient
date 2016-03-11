@@ -22,7 +22,7 @@ public class Category {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Organization organization;
 
     @OneToMany

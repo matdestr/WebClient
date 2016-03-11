@@ -1,11 +1,15 @@
 package be.kdg.kandoe.frontend.controller.rest;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;
+import be.kdg.kandoe.backend.model.cards.CardPosition;
+import be.kdg.kandoe.backend.model.sessions.CardsChoice;
 import be.kdg.kandoe.backend.model.sessions.Session;
+import be.kdg.kandoe.backend.model.sessions.SessionStatus;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.frontend.controller.resources.cards.CardDetailsResource;
 import be.kdg.kandoe.frontend.controller.resources.cards.CreateCardDetailsResource;
+import be.kdg.kandoe.frontend.controller.resources.sessions.CardPositionResource;
 import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -61,6 +66,13 @@ public class SessionGameRestController {
             throw new CanDoControllerRuntimeException("You must be a participant of the session to perform this action", HttpStatus.FORBIDDEN);
     }
     
+    private void checkUserIsOrganizer(User user, Session session) {
+        checkUserIsParticipant(user, session);
+        
+        if (!session.getOrganizer().equals(user))
+            throw new CanDoControllerRuntimeException("You must be the organizer of the session to perform this action", HttpStatus.FORBIDDEN);
+    }
+    
     @RequestMapping(value = "/{sessionId}/invite", method = RequestMethod.POST)
     public ResponseEntity inviteUser(@AuthenticationPrincipal User user,
                                      @PathVariable("sessionId") int sessionId,
@@ -70,7 +82,8 @@ public class SessionGameRestController {
 
         /*if (!session.getCategory().getOrganization().isOrganizer(user))
             return new ResponseEntity(HttpStatus.FORBIDDEN);*/
-        checkUserIsParticipant(user, session);
+        //checkUserIsParticipant(user, session);
+        checkUserIsOrganizer(user, session);
 
         sessionGameService.inviteUserForSession(session, userToInvite);
 
@@ -119,6 +132,9 @@ public class SessionGameRestController {
         
         if (!session.isParticipantsCanAddCards())
             throw new CanDoControllerRuntimeException("Participants are not allowed to add cards for this session", HttpStatus.FORBIDDEN);
+
+        if (session.getSessionStatus() != SessionStatus.ADDING_CARDS)
+            throw new CanDoControllerRuntimeException("The session is not in the 'adding cards' mode");
         
         CardDetails cardDetails = mapperFacade.map(resource, CardDetails.class);
         cardDetails.setCreator(user);
@@ -137,6 +153,19 @@ public class SessionGameRestController {
         return new ResponseEntity<>(resultingResource, HttpStatus.CREATED);
     }
     
+    @RequestMapping(value = "/{sessionId}/all-cards/confirm", method = RequestMethod.POST)
+    public ResponseEntity confirmAddedCards(@AuthenticationPrincipal User user,
+                                            @PathVariable("sessionId") int sessionId) {
+        Session session = sessionService.getSessionById(sessionId);
+        checkUserIsParticipant(user, session);
+
+        if (!session.isParticipantsCanAddCards())
+            throw new CanDoControllerRuntimeException("Participants are not allowed to add cards for this session", HttpStatus.FORBIDDEN);
+        
+        sessionGameService.confirmUserAddedCards(session, user);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+    
     /*@RequestMapping(value = "/{sessionId}/chosen-cards", method = RequestMethod.GET)
     public ResponseEntity<List<CardDetailsResource>> getChosenCards(@AuthenticationPrincipal User user,
                                                                     @PathVariable("sessionId") int sessionId) {
@@ -145,12 +174,50 @@ public class SessionGameRestController {
         if (session == null)
             throw new CanDoControllerRuntimeException("Could not find session with ID " + sessionId, HttpStatus.NOT_FOUND);
         
-        // TODO
-    }
+        List<CardsChoice> cardChoices = session.getParticipantCardChoices();
+    }*/
     
     @RequestMapping(value = "/{sessionId}/chosen-cards", method = RequestMethod.POST)
     public ResponseEntity chooseCards(@AuthenticationPrincipal User user,
-                                      @PathVariable("sessionId") int sessionId) {
+                                      @PathVariable("sessionId") int sessionId,
+                                      @RequestParam("cardDetailsId") List<Integer> cardDetailsIds) {
+        Session session = sessionService.getSessionById(sessionId);
+        checkUserIsParticipant(user, session);
+        Set<CardDetails> cardDetails = new HashSet<>();
         
-    }*/
+        for (int cardDetailsId : cardDetailsIds) {
+            CardDetails c = cardService.getCardDetailsById(cardDetailsId);
+            cardDetails.add(c);
+        }
+        
+        sessionGameService.chooseCards(session, user, cardDetails);
+        
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+    
+    @RequestMapping(value = "/{sessionId}/start", method = RequestMethod.POST)
+    public ResponseEntity startGame(@AuthenticationPrincipal User user,
+                                    @PathVariable("sessionId") int sessionId) {
+        Session session = sessionService.getSessionById(sessionId);
+        checkUserIsOrganizer(user, session);
+        sessionGameService.startGame(session);
+        
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+    
+    @RequestMapping(value = "/{sessionId}/positions", method = RequestMethod.GET)
+    public ResponseEntity<List<CardPositionResource>> getCardPositions(@AuthenticationPrincipal User user,
+                                                                       @PathVariable("sessionId") int sessionId) {
+        Session session = sessionService.getSessionById(sessionId);
+
+        if (session == null)
+            throw new CanDoControllerRuntimeException("Could not find session with ID " + sessionId, HttpStatus.NOT_FOUND);
+        
+        this.checkUserIsParticipant(user, session);
+        
+        List<CardPosition> cardPositions = session.getCardPositions();
+        List<CardPositionResource> cardPositionResources = mapperFacade.mapAsList(cardPositions, CardPositionResource.class);
+        
+        return new ResponseEntity<>(cardPositionResources, HttpStatus.OK);
+    }
 }

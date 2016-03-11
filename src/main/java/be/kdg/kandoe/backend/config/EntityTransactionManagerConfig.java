@@ -50,5 +50,4 @@ public class EntityTransactionManagerConfig
 
         return transactionManager;
     }
-
 }

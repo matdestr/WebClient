@@ -26,7 +26,7 @@ body {
   position: relative;
   min-height: 100%;
   overflow-x: hidden;
-  padding-bottom: $footer-height + $default-margin;
+  /*padding-bottom: $footer-height + $default-margin;*/
 
   @include user-drag(none);
 
@@ -42,11 +42,11 @@ body {
   margin-top: 3em;
 }
 
-#authentication{
+/*#authentication{
   min-height: 100vh;
   background: transparent url("../img/bg-kandoe.png") no-repeat !important;
   background-size: cover !important;
-}
+}*/
 
 .clear-both {
   clear: both;

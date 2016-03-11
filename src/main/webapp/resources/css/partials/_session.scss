@@ -12,13 +12,79 @@
 }
 
 #cardcontainer{
-  //height: 100vh;
+  height: 95vh;
   background-color: #f2f2f2;
   -webkit-box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
   -moz-box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
   box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
-  margin-top:-$navbar-margin-bottom;
-  padding-bottom: 1em;
+  //margin-top:-$navbar-margin-bottom;
+  //padding: 1em;
+}
+
+#circlecontainer {
+  height:95vh;
+  display: block;
+}
+
+.row {
+  margin: 0 !important;
+}
+
+#chatcontainer {
+  height: 400px;
+  background-color: #f2f2f2;
+
+  @media only screen and (min-width: $breakpoint-tablet){
+    height: 95vh;
+  }
+}
+
+#chatbox {
+  overflow-y: scroll;
+  max-height: 200px;
+  height: 200px;
+
+  @media only screen and (min-width: $breakpoint-tablet){
+    max-height: 480px;
+    height: 480px;
+  }
+}
+
+#messagebox {
+  display: block;
+  margin: 0 auto;
+}
+
+.chat-title {
+  padding-top: 1em !important;
+}
+
+#chat-input-box {
+  margin-top: 1em;
+}
+
+.chat-input-area {
+  display: block;
+  margin: 0.5em auto;
+  width: 80%;
+}
+
+.chat-picture {
+  width: 45px;
+}
+
+.chat-username {
+  font-weight: bold;
+}
+
+.chat-send-button {
+  width: 40% !important;
+  float: right;
+  margin-top: 1em;
+}
+
+.chatmessage {
+  padding: 0.5em;
 }
 
 #main-content{

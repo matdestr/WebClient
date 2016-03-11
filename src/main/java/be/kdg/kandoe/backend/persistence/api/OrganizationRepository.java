@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-
 public interface OrganizationRepository extends JpaRepository<Organization, Integer> {
     Organization findOrganizationByName(String name);
     List<Organization> findOrganizationsByOwnerUsername(String owner);

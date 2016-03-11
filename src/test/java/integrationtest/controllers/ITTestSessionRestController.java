@@ -444,7 +444,8 @@ public class ITTestSessionRestController {
         Assert.assertEquals("CREATED", jsonResponse.getString("sessionStatus"));
     }
 
-    @Test
+    // TODO : Move to ITSessionGameRestController + refactor
+    /*@Test
     public void testAddCardsToSession() throws Exception {
         addCardDetailsToCategory();
 
@@ -529,9 +530,10 @@ public class ITTestSessionRestController {
                         .content(createCardDetailsJson2.toString())
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(status().isCreated());
-    }
+    }*/
 
-    @Test
+    // TODO : Move this test to ITSessionGameRestController + refactor
+    /*@Test
     public void testAddCardsByUserNotInSession() throws Exception {
         addCardDetailsToCategory();
 
@@ -608,9 +610,10 @@ public class ITTestSessionRestController {
                         .content(createCardDetailsJson.toString())
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(status().isBadRequest());
-    }
+    }*/
 
-    @Test
+    // TODO : Move this test to ITSessionGameRestController + refactor
+    /*@Test
     public void testAddCardsInSessionThatDoesntAllowIt() throws Exception {
         addCardDetailsToCategory();
 
@@ -682,7 +685,7 @@ public class ITTestSessionRestController {
                         .content(createCardDetailsJson.toString())
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(status().isBadRequest());
-    }
+    }*/
 /*
     @Test
     public void testAddCardsInSessionThatDoesAllowItButIsNotInAddingCardStatus() throws Exception {
@@ -1101,7 +1104,8 @@ public class ITTestSessionRestController {
         ).andExpect(status().isConflict());
     }
 */
-    @Test
+    // TODO : Move this test to ITSessionGameRestController + refactor
+    /*@Test
     public void testChooseCardsStatus() throws Exception {
         addCardDetailsToCategory();
 
@@ -1197,9 +1201,10 @@ public class ITTestSessionRestController {
 
         jsonResponse = this.getSessionData(createdSessionId);
         Assert.assertEquals("CHOOSING_CARDS", jsonResponse.getString("sessionStatus"));
-    }
+    }*/
 
-    @Test
+    // TODO : Move this test to ITSessionGameRestController
+    /*@Test
     public void testChooseCardsDuringChooseCardsStatus() throws Exception {
         addCardDetailsToCategory();
 
@@ -1293,9 +1298,10 @@ public class ITTestSessionRestController {
                 post(baseApiUrl + "/" + createdSessionId + "/" + "cards" + "/" + cardDetails2.getCardDetailsId() )
                         .header("Authorization", authorizationHeader)
         ).andExpect(status().isCreated());
-    }
+    }*/
 
-    @Test
+    // TODO : Move this test to ITSessionGameRestController
+    /*@Test
     public void testChooseCardsByUserNotInSession() throws Exception {
         addCardDetailsToCategory();
 
@@ -1389,9 +1395,10 @@ public class ITTestSessionRestController {
                 post(baseApiUrl + "/" + createdSessionId + "/" + "cards" + "/" + cardDetails1.getCardDetailsId() )
                         .header("Authorization", authorizationHeader)
         ).andExpect(status().isBadRequest());
-    }
+    }*/
 
-    @Test
+    // TODO : Move this test to ITSessionGameRestController
+    /*@Test
     public void testChooseCardsWithNonExistingCardInCategoryOrTopic() throws Exception {
         addCardDetailsToCategory();
 
@@ -1480,9 +1487,10 @@ public class ITTestSessionRestController {
                 post(baseApiUrl + "/" + createdSessionId + "/" + "cards" + "/" + -1 )
                         .header("Authorization", authorizationHeader)
         ).andExpect(status().isBadRequest());
-    }
+    }*/
 
-    @Test
+    // TODO : Move this test to ITSessionGameRestController
+    /*@Test
     public void testChooseCardsTooManyCards() throws Exception {
         addCardDetailsToCategory();
 
@@ -1576,5 +1584,5 @@ public class ITTestSessionRestController {
                 post(baseApiUrl + "/" + createdSessionId + "/" + "cards" + "/" + cardDetails2.getCardDetailsId() )
                         .header("Authorization", authorizationHeader)
         ).andExpect(status().isBadRequest()).andDo(print());
-    }
+    }*/
 }

@@ -1,7 +1,10 @@
 .card{
   background-color: $background-color;
+  /*
   box-shadow: 0 0 1.25em #333;
-  @include border-radius(0.5em);
+  */
+  border: solid 1px ;
+  @include border-radius(2px);
 }
 
 .card-clickable{
@@ -37,7 +40,7 @@
     max-height: $card-img-height;
     overflow: hidden;
     width: 100%;
-    @include border-top-radius(0.5em);
+    /*@include border-top-radius(0.5em);*/
 
     @media screen and (min-width: $breakpoint-tablet) {
       max-height: $card-img-height-tablet;
@@ -85,7 +88,7 @@
 .card-large {
   @extend .card;
   display: block;
-  margin: ($default-margin + 1em) ($default-margin);
+  margin: 0 auto;
   width: $card-width * $card-multiplier;
 
   @media screen and (min-width: $breakpoint-tablet) {

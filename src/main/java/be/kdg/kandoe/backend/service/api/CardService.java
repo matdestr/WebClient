@@ -19,7 +19,7 @@ public interface CardService {
     
     CardDetails getCardDetailsById(int cardDetailsId);
 
-    void initializeCardPositions(Session session);
+    //void initializeCardPositions(Session session);
 
-    Set<CardPosition> getCardPositionsOfSession(int sessionId);
+    //Set<CardPosition> getCardPositionsOfSession(int sessionId);
 }

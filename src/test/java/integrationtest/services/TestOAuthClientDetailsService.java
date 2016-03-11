@@ -1,4 +1,4 @@
-package unittest;
+package integrationtest.services;
 
 import be.kdg.kandoe.backend.config.BackendContextConfig;
 import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
