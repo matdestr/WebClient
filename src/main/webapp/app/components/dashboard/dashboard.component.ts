@@ -37,6 +37,14 @@ export class DashboardComponent {
             this.user = this.user.deserialize(user);
             this.getOrganizations();
         });
+
+        if(this.organizations.length<=4) {
+            this.myLeftDisplay = "none";
+            this.myRightDisplay = "none";
+        }else {
+            this.myLeftDisplay = "block";
+            this.myRightDisplay = "block";
+        }
     }
 
     public getOrganizations(){
@@ -49,7 +57,9 @@ export class DashboardComponent {
 
     public updateSubSet(){
         this.organizationsSubSet = this.organizations.slice(0,4);
-        this.myLeftDisplay="none";
+        if(this.organizations.length>4){
+            this.myRightDisplay = "block";
+        }
     }
 
     public toOrganization(organizationId: number){
@@ -57,9 +67,11 @@ export class DashboardComponent {
     }
 
     public nextOrgPage(){
-        this.myLeftDisplay="block";
-        if(this.counterEnd >= this.organizations.length){
+        this.myLeftDisplay = "block";
+        if(this.counterEnd >= this.organizations.length-1){
             this.myRightDisplay="none";
+        }
+        if(this.counterEnd >= this.organizations.length){
             return;
         }
         else{
@@ -70,9 +82,11 @@ export class DashboardComponent {
     }
 
     public previousOrgPage(){
-        this.myRightDisplay="block";
-        if(this.counterBegin <= 0){
+        this.myRightDisplay = "block";
+        if(this.counterBegin <= 1){
             this.myLeftDisplay="none";
+        }
+        if(this.counterBegin <= 0){
             return;
         }  else {
             this.counterBegin--;

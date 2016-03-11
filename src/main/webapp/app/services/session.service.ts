@@ -38,4 +38,9 @@ export class SessionService {
             .retry(2);
     }
 
+    public getSession(sessionId : number) : Observable<Response> {
+        return this._authHttp
+            .get(SessionService.endPoint + sessionId);
+    }
+
 }

@@ -1,0 +1,15 @@
+<toolbar></toolbar>
+<ul>
+    <card-detail *ngFor="#sessionCard of sessionCards"
+                 [card]="sessionCard"
+                 [cardClassName]="'card-small'"
+                 (click)="onSessionCardClick(sessionCard)">
+    </card-detail>
+</ul>
+
+<button (click)="onAddCardsClick()"
+        name="add-card"
+        class="btn btn-default"
+        data-dismiss="modal">
+    <i class="glyphicon glyphicon-floppy-disk"></i> Choose Cards
+</button>

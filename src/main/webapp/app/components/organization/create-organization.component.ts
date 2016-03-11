@@ -21,7 +21,6 @@ import {Response} from "angular2/http";
 export class CreateOrganizationComponent implements OnInit {
     private organization : CreateOrganization;
     private usersToInvite : Email[];
-    
     private organizationCreated : boolean;
     private showErrorOrganizationName : boolean;
     private errorMessages:string[] = new Array();
@@ -47,8 +46,7 @@ export class CreateOrganizationComponent implements OnInit {
                 .subscribe((data) => { console.log(data); },
                     (error) => {
                         self.handleError(error);
-                    },
-                    () => {
+                    }, () => {
                         this.organizationCreated = true;
                         this._router.navigate(['/Dashboard']);
                     });
