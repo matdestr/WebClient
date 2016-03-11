@@ -41,6 +41,11 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                     this._userService = _userService;
                     this.user = user_1.User.createEmptyUser();
                     this.organizations = [];
+                    this.organizationsSubSet = [];
+                    this.counterBegin = 0;
+                    this.counterEnd = 4;
+                    this.myLeftDisplay = "block";
+                    this.myRightDisplay = "block";
                 }
                 DashboardComponent.prototype.ngOnInit = function () {
                     var _this = this;
@@ -49,15 +54,58 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                         _this.user = _this.user.deserialize(user);
                         _this.getOrganizations();
                     });
+                    if (this.organizations.length <= 4) {
+                        this.myLeftDisplay = "none";
+                        this.myRightDisplay = "none";
+                    }
+                    else {
+                        this.myLeftDisplay = "block";
+                        this.myRightDisplay = "block";
+                    }
                 };
                 DashboardComponent.prototype.getOrganizations = function () {
                     var _this = this;
                     this._organizationService.getOrganizationsByUser(this.user.username).subscribe(function (data) {
                         _this.organizations = data.json();
+                        _this.updateSubSet();
                     }, function (error) { console.log(error); _this.organizations = []; });
+                };
+                DashboardComponent.prototype.updateSubSet = function () {
+                    this.organizationsSubSet = this.organizations.slice(0, 4);
+                    if (this.organizations.length > 4) {
+                        this.myRightDisplay = "block";
+                    }
                 };
                 DashboardComponent.prototype.toOrganization = function (organizationId) {
                     this._router.navigate(["/OrganizationDetail", { organizationId: organizationId }]);
+                };
+                DashboardComponent.prototype.nextOrgPage = function () {
+                    this.myLeftDisplay = "block";
+                    if (this.counterEnd >= this.organizations.length - 1) {
+                        this.myRightDisplay = "none";
+                    }
+                    if (this.counterEnd >= this.organizations.length) {
+                        return;
+                    }
+                    else {
+                        this.counterBegin++;
+                        this.counterEnd++;
+                        this.organizationsSubSet = this.organizations.slice(this.counterBegin, this.counterEnd);
+                    }
+                };
+                DashboardComponent.prototype.previousOrgPage = function () {
+                    this.myRightDisplay = "block";
+                    if (this.counterBegin <= 1) {
+                        this.myLeftDisplay = "none";
+                    }
+                    if (this.counterBegin <= 0) {
+                        return;
+                    }
+                    else {
+                        this.counterBegin--;
+                        this.counterEnd--;
+                        this.organizationsSubSet = this.organizations.slice(this.counterBegin, this.counterEnd);
+                    }
                 };
                 DashboardComponent = __decorate([
                     core_1.Component({

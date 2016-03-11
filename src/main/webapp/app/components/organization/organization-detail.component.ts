@@ -80,10 +80,5 @@ export class OrganizationDetailComponent {
         this.usersToInvite.splice(index, 1);
     }
 
-
-    public toSession():void{
-        this._router.navigate(["/ActiveSession"])
-    }
-
 }
 

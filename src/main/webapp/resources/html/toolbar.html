@@ -9,7 +9,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="toolbar-brand navbar-brand" href="#">CanDo</a>
+                <a class="toolbar-brand navbar-brand" name="dashboard" href="#">CanDo</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -21,10 +21,10 @@
                     <li *ngIf="organizations.length > 0" class="toolbar-dropdown dropdown">
                         <a href="#" class="toolbar-dropdown-toggle dropdown-toggle " data-toggle="dropdown">
 
-                            <div class="toolbar-dropdown-toggle-container">
-                                <span >My organizations
+                            <div class="toolbar-dropdown-toggle-container" >
+                                <a name="my-organizations">My organizations
                                     <span class="caret"></span>
-                                </span>
+                                </a>
                             </div>
 
                         </a>

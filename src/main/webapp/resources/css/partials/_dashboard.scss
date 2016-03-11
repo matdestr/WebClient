@@ -1,13 +1,177 @@
+
 #container{
   margin-top:2em;
   margin-left: 2em;
 }
 
-.organization-name-link{
-  font-size:20px;
-  cursor: pointer;
-  list-style: circle;
-  color:$text-color-neutral;
-  margin-left: 4em;
+.progressdiv{
+  width: 80%;
+  margin: 0 auto;
 }
 
+.black-block{
+  width: 20%;
+  background-color: $color-accent;
+  color:white;
+  font-size: 25px;
+  font-style: oblique;
+  height: 110px;
+  cursor: pointer;
+  float: left ;
+  margin-left: 10px;
+  margin-right: 10px;
+  line-height: 110px;
+}
+
+.red-block{
+  width: 20%;
+  background-color: $primary-color-dark;
+  color:white;
+  font-size: 25px;
+  font-style: oblique;
+  height: 110px;
+  cursor: pointer;
+  float: left ;
+  margin-left: 10px;
+  margin-right: 10px;
+  line-height: 110px;
+}
+
+.black-block:hover{
+  background-color: $text-color-dark;
+}
+
+.red-block:hover{
+  background-color:$primary-color;
+}
+
+.organization-arrow{
+  float: left ;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 40px;
+  height:110px;
+}
+
+.organization-block-text{
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
+
+.header-for-block{
+  margin-top:6em;
+}
+
+$size:15%;
+$thickness: 5px;
+$angle: 40deg;
+$angleHover: 30deg;
+$angleActive: 25deg;
+
+@mixin arrowTransform( $angle, $x: 0, $y: 0 ) {
+  i:first-child {
+    transform: translate( $x, $y ) rotate( $angle );
+  }
+
+  i:last-child {
+    transform: translate( $x, -$y ) rotate( -$angle );
+  }
+}
+
+button {
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+
+.paginate {
+  width: $size;
+  height: $size;
+  cursor: pointer;
+  transform: translate3d(0,0,0); // fixes flicker in webkit
+
+  position: absolute;
+  margin-top: -15px;
+  -webkit-filter: drop-shadow( 0 2px 0px rgba(0,0,0,0.2) );
+
+  i {
+    position: absolute;
+    left: 0;
+    width: $size;
+    height: $thickness;
+    border-radius: $thickness / 2;
+    background: $primary-color-dark;
+    transition: all 0.15s ease;
+  }
+
+  &.left {
+    i {
+      transform-origin: 0% 50%
+    }
+
+    @include arrowTransform( $angle, 0, -1px );
+
+    &:hover {
+      @include arrowTransform( $angleHover, 0, -1px );
+    }
+
+    &:active {
+      @include arrowTransform( $angleActive, 1px, -1px );
+    }
+
+    &[data-state=disabled] {
+      @include arrowTransform( 0deg, -5px, 0 );
+
+      &:hover {
+        @include arrowTransform( 0deg, -5px, 0 );
+      }
+    }
+  }
+
+  &.right {
+
+    margin-left: 5px;
+    i {
+      transform-origin: 100% 50%
+    }
+
+    @include arrowTransform( $angle, 0, 1px );
+
+    &:hover {
+      @include arrowTransform( $angleHover, 0, 1px );
+    }
+
+    &:active {
+      @include arrowTransform( $angleActive, 1px, 1px );
+    }
+
+    &[data-state=disabled] {
+      @include arrowTransform( 0deg, 5px, 0 );
+
+      &:hover {
+        @include arrowTransform( 0deg, 5px, 0 );
+      }
+    }
+  }
+
+  &[data-state=disabled] {
+    opacity: 0.3;
+    cursor: default;
+  }
+}
+
+
+
+.counter {
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  margin-top: -15px;
+  font-size: 30px;
+  font-family: Helvetica, sans-serif;
+  text-shadow: 0px 2px 0px rgba( 0, 0, 0, 0.2 );
+  color: $primary-color-dark;
+}

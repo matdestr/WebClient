@@ -1,0 +1,56 @@
+<toolbar></toolbar>
+<div id="main-content">
+    <div class="forms container-fluid flex-container" style="margin-top: 4em">
+        <div class="forms-panel panel col-sm-6 flex-item">
+            <div class="panel-heading">
+                <h1>Add users to join this session</h1>
+            </div>
+            <div class="panel-body">
+                <form #cardForm="ngForm"
+                      (ngSubmit)="onSubmit(cardForm)"
+                      name="form-invite-users"
+                      role="form">
+                <div *ngFor="#u of usersToInvite; #i = index"
+                     class="input-group forms-input-group"
+                     [class.has-error]="!userEmail.valid && !userEmail.pristine">
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-envelope"></i>
+                                    </span>
+
+                    <input class="email-input form-control forms-input-small"
+                           type="email"
+                           placeholder="Invite user (email)"
+                           #userEmail="ngForm"
+                           [(ngModel)]="u.email"
+                           (ngControl)="userEmail">
+
+                                <span *ngIf="i != 0"
+                                      class="input-group-addon forms-input-addon-remove red"
+                                      (click)="removeUserFromUsersToInvite(i)">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </span>
+                </div>
+
+                <div class="forms-input-group">
+                    <button type="button"
+                            id="add-user-btn"
+                            class="btn btn-default pull-right"
+                            (click)="addUserEntry()">
+                        <span class="green"><i class="glyphicon glyphicon-plus"></i></span> Add user
+                    </button>
+                </div>
+
+                    <section>
+                        <div class="forms-input-group clear-both text-center">
+                            <button type="submit"
+                                    name="invite-users">
+                                <i class="glyphicon glyphicon-user"></i> INVITE
+                            </button>
+                        </div>
+                    </section>
+                </form>
+
+            </div>
+            </div>
+        </div>
+</div>

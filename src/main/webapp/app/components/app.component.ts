@@ -19,6 +19,8 @@ import {CreateCardComponent} from "./cards/create-card-details.component";
 import {ActiveSessionComponent} from "./session/active-session.component";
 import {CreateSessionComponent} from  "./session/create-session.component"
 import {TopicCardChooserComponent} from "./topic/topic-card-chooser.component";
+import {SessionAddCardsComponent} from "./session/session-add-cards.component";
+import {InviteUsersComponent} from "./session/invite-users.component";
 
 @Component({
     selector: 'my-app',
@@ -44,7 +46,9 @@ import {TopicCardChooserComponent} from "./topic/topic-card-chooser.component";
     {path: '/topic/:topicId/cardChooser',       name:'TopicCardChooser',        component:TopicCardChooserComponent} ,
     {path: '/session',                          name:'ActiveSession',           component:ActiveSessionComponent},
     {path: '/categories/:categoryId/createCard',name:'CreateCard',              component:CreateCardComponent},
-    {path: '/categories/:categoryId/createSession', name:'CreateSession',       component:CreateSessionComponent}
+    {path: '/categories/:categoryId/createSession', name:'CreateSession',       component:CreateSessionComponent},
+    {path: '/session/:sessionId/all-cards',     name:'SessionAddCards',         component:SessionAddCardsComponent},
+    {path:'/session/:sessionId/invite-users',   name:'InviteUsers',             component:InviteUsersComponent},
 ])
 export class AppComponent {
 }

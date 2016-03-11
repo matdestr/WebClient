@@ -102,7 +102,7 @@ export class CategoryDetailComponent implements OnInit {
     }
 
     public toSession(sessionId:number) {
-        this._router.navigate(["/ActiveSession", {sessionId: sessionId}])
+        this._router.navigate(["/InviteUsers", {sessionId: sessionId}])
     }
 
 }

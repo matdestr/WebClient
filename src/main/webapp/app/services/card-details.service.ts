@@ -54,5 +54,8 @@ export class CardDetailsService {
             .get(CardDetailsService.endpoint.concat("/topics/") + topicId);
     }
 
+    public getCardDetailsOfSession(sessionId:Number):Observable<Response>{
+        return this._authHttp.get(CardDetailsService.endpoint.concat("/")+sessionId+("/all-cards"))  ;
+    }
 
 }
