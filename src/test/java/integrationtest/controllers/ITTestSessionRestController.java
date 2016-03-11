@@ -5,21 +5,15 @@ import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
-import be.kdg.kandoe.backend.model.sessions.Session;
-import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
-import be.kdg.kandoe.backend.persistence.api.CardDetailsRepository;
 import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
 import be.kdg.kandoe.frontend.controller.resources.cards.CreateCardDetailsResource;
-import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateAsynchronousSessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.create.CreateSynchronousSessionResource;
-import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import integrationtest.IntegrationTestHelpers;
 import integrationtest.TokenProvider;
-import lombok.val;
+import org.hamcrest.Matchers;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -34,7 +28,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,10 +35,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
 
-import static org.hamcrest.core.Is.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -78,7 +68,7 @@ public class ITTestSessionRestController {
 
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private CardService cardService;
 
@@ -95,7 +85,7 @@ public class ITTestSessionRestController {
     private Organization organization;
     private Category category;
     private Topic topic;
-    
+
     private CardDetails cardDetails1;
     private CardDetails cardDetails2;
     private CardDetails cardDetails3;
@@ -172,6 +162,26 @@ public class ITTestSessionRestController {
         cardDetails4 = cardDetailsRepository.save(cardDetails4);
         cardDetails5 = cardDetailsRepository.save(cardDetails5);*/
     }
+
+    /*@Test
+    public void testCreateAsynchronousSession() throws Exception {
+        CreateAsynchronousSessionResource createAsynchSessionResource = new CreateAsynchronousSessionResource();
+        createAsynchSessionResource.setOrganizationId(organization.getOrganizationId());
+        createAsynchSessionResource.setMaxNumberOfCardsPerParticipant(10);
+        createAsynchSessionResource.setMinNumberOfCardsPerParticipant(5);
+        createAsynchSessionResource.setCardCommentsAllowed(true);
+        JSONObject jsonObject = new JSONObject(createAsynchSessionResource);
+
+        mockMvc.perform(
+                post(baseApiUrl)
+                        .header("Authorization", authorizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isCreated())
+                //.andDo(print())
+                .andExpect(jsonPath("$.sessionId").exists())
+                .andExpect(jsonPath("$.sessionId").isNotEmpty());
+    }*/
 
     private JSONObject getSessionData(int sessionId) throws Exception {
         String stringResponse = mockMvc.perform(
@@ -373,10 +383,17 @@ public class ITTestSessionRestController {
                         .header("Authorization", authorizationHeader)
                         .param("userId", String.valueOf(userToInvite.getUserId()))
         ).andExpect(status().isCreated());
-        
+
         jsonResponse = this.getSessionData(createdSessionId);
         Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
-        
+
+        mockMvc.perform(get(baseApiUrl)
+                .header("Authorization", authorizationHeader))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").exists())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$", Matchers.hasSize(1)));
+
         mockMvc.perform(
                 post(baseApiUrl + "/" + createdSessionId + "/join")
                         .header("Authorization", authorizationHeader)

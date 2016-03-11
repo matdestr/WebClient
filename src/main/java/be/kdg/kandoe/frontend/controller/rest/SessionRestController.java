@@ -47,15 +47,6 @@ public class SessionRestController {
     private SessionService sessionService;
 
     @Autowired
-    private SessionGameService sessionGameService;
-
-    @Autowired
-    private CardService cardService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
     private MapperFacade mapper;
 
     @PreAuthorize("isAuthenticated()")
@@ -71,19 +62,6 @@ public class SessionRestController {
 
         return new ResponseEntity<>(sessionResource, HttpStatus.OK);
     }
-    
-    /*@RequestMapping(value = "/{sessionId}/positions", method = RequestMethod.GET)
-    public ResponseEntity<List<CardPositionResource>> getCardPositionsOfSession(@AuthenticationPrincipal User user,
-                                                                                @PathVariable("sessionId") int sessionId) {
-        Session session = sessionService.getSessionById(sessionId);
-        
-        if (!session.isUserParticipant(user.getUserId()))
-            throw new CanDoControllerRuntimeException("You cannot request information about a session you don't belong to", HttpStatus.FORBIDDEN);
-        
-        List<CardPositionResource> resources = mapper.mapAsList(session.getCardPositions(), CardPositionResource.class);
-        
-        return new ResponseEntity<>(resources, HttpStatus.OK);
-    }*/
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.POST)
@@ -121,5 +99,13 @@ public class SessionRestController {
         SessionResource returnedResource = mapper.map(session, returnedResourceClass);
 
         return new ResponseEntity(returnedResource, HttpStatus.CREATED);
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<SessionListItemResource>> getSessionsUser(@AuthenticationPrincipal User user){
+        List<Session> sessions = sessionService.getSessionsUser(user.getUserId());
+
+        return new ResponseEntity<>(mapper.mapAsList(sessions, SessionListItemResource.class), HttpStatus.OK);
     }
 }
