@@ -22,7 +22,7 @@ public class ATGoToProfile {
         LoginHelper.register(driver, username, password);
     }
 
-    @Test
+    //@Test
     public void goToProfile(){
         WebDriver driver = new ChromeDriver();
         LoginHelper.login(driver, username, password);

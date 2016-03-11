@@ -40,7 +40,7 @@ export class CategoryDetailComponent implements OnInit {
 
 
     ngOnInit():any {
-        var categoryId:number = +this._routeArgs.params["categoryId"];
+        var categoryId = +this._routeArgs.params["categoryId"];
 
         this._categoryService.getCategory(categoryId).subscribe(
             data => this.category = data.json()
@@ -70,7 +70,7 @@ export class CategoryDetailComponent implements OnInit {
             },
             error => console.log(error),
             () => console.log("Sessions fetched")
-        )
+        );
 
         this._tagService.getTags().subscribe(
             data => {

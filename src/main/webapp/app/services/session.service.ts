@@ -32,7 +32,6 @@ export class SessionService {
         options.headers = headers;
 
         console.log(JSON.stringify(session));
-        session.topicId = 0;
 
         return this._authHttp
             .post(SessionService.endPoint, JSON.stringify(session), {headers:headers})

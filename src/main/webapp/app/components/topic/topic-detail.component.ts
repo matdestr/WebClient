@@ -14,6 +14,7 @@ import {ToolbarComponent} from "../widget/toolbar.component";
 import {CardDetailComponent} from "../cards/card-detail.component";
 
 import {error} from "util";
+import {Session} from "../../entities/session/session";
 
 @Component({
     selector: 'topic-detail',
@@ -23,6 +24,7 @@ import {error} from "util";
 export class TopicDetailComponent implements OnInit {
     private topic:Topic = Topic.createEmptyTopic();
     private cards:CardDetails[] = [];
+    private sessions:Session[] = [];
     private currentCard:CardDetails;
     private categoryCards:CardDetails[] = [];
     private categoryCardsToAdd:CardDetails[] = [];
@@ -37,6 +39,7 @@ export class TopicDetailComponent implements OnInit {
     ngOnInit():any {
         var topicId:number = +this._routeArgs.params["topicId"];
 
+
         this._topicService.getTopic(topicId).subscribe(
             data => {
                 this.topic = this.topic.deserialize(data.json());
@@ -48,6 +51,15 @@ export class TopicDetailComponent implements OnInit {
                 for (let card of data.json())
                     this.cards.push(CardDetails.createEmptyCard().deserialize(card));
             }
+        );
+
+        this._topicService.getSessionsFromTopic(topicId).subscribe(
+            data => {
+                for (let session of data.json())
+                    this.sessions.push(Session.createEmptySession().deserialize(session));
+            },
+            error => console.log(error),
+            () => console.log("Sessions fetched")
         );
     }
 
@@ -61,5 +73,9 @@ export class TopicDetailComponent implements OnInit {
 
     public toAddNewSession(categoryId:number, topicId:number) {
         this._router.navigate(["/CreateSession", {categoryId: categoryId, topicId: topicId}])
+    }
+
+    public toSession(sessionId:number) {
+        this._router.navigate(["/ActiveSession", {sessionId: sessionId}])
     }
 }

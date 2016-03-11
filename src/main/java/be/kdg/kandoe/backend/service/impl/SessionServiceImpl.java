@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,10 +23,9 @@ public class SessionServiceImpl implements SessionService {
     public Session getSessionById(int sessionId) {
         Session fetchedSession = sessionRepository.findOne(sessionId);
         
-        if (fetchedSession == null){
+        if (fetchedSession == null)
             throw new SessionServiceException(String.format("No session found with id %d", sessionId));
-        }
-        
+
         return fetchedSession;
     }
 
@@ -36,17 +36,17 @@ public class SessionServiceImpl implements SessionService {
         ParticipantInfo participantInfoOrganizer = new ParticipantInfo();
         participantInfoOrganizer.setParticipant(session.getOrganizer());
         participantInfoOrganizer.setJoined(false);
-        
+
         session.getParticipantInfo().add(participantInfoOrganizer);
         session.setSessionStatus(SessionStatus.CREATED);
         Session savedSession;
-        
+
         try {
             savedSession = sessionRepository.save(session);
         } catch (Exception e) {
             throw new SessionServiceException("Session could not be saved");
         }
-        
+
         if (savedSession == null) {
             throw new SessionServiceException("Session couldn't be saved");
         }
@@ -103,5 +103,20 @@ public class SessionServiceImpl implements SessionService {
         }
 
         return sessionList;
+    }
+
+    @Override
+    public List<Session> getSessionsFromTopic(int topicId) {
+        List<Session> sessionList = sessionRepository.findSessionsByTopicTopicId(topicId);
+
+        if(sessionList.isEmpty()){
+            throw new SessionServiceException(String.format("No sessions found for topic id %d", topicId));
+        }
+
+        return sessionList;    }
+
+    @Override
+    public List<Session> getSessionsUser(int userId) {
+        return this.sessionRepository.findSessionsByParticipantInfo_Participant_UserId(userId);
     }
 }
