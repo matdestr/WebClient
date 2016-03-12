@@ -43,4 +43,8 @@ export class SessionService {
             .get(SessionService.endPoint + sessionId);
     }
 
+    public getSessions():Observable<Response>{
+        return this._authHttp.get(SessionService.endPoint);
+    }
+
 }

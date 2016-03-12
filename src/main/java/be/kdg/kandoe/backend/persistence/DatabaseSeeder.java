@@ -6,7 +6,9 @@ import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Tag;
 import be.kdg.kandoe.backend.model.organizations.Topic;
+import be.kdg.kandoe.backend.model.sessions.ParticipantInfo;
 import be.kdg.kandoe.backend.model.sessions.Session;
+import be.kdg.kandoe.backend.model.sessions.SessionStatus;
 import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.model.users.roles.RoleType;
@@ -20,6 +22,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class DatabaseSeeder {
@@ -106,7 +109,7 @@ public class DatabaseSeeder {
         userRepository.save(users);
 
         Organization organization = new Organization("Pain hiders", testUser);
-        organization.addMember(harold);
+        organization.addOrganizer(harold);
         organization = organizationRepository.save(organization);
         
         Category category1 = new Category();
@@ -131,13 +134,48 @@ public class DatabaseSeeder {
         }*/
         
         topic1 = seedCardDetails(category1, topic1, testUser);
-        
-        Session session = new SynchronousSession();
-        session.setOrganizer(testUser);
-        session.setCategory(category1);
-        session.setTopic(topic1);
-        session.setAmountOfCircles(5);
-        session = sessionRepository.save(session);
+
+        ParticipantInfo participantInfo1 = new ParticipantInfo();
+        Set<ParticipantInfo> participantInfos1 = new HashSet<>();
+        participantInfo1.setParticipant(testUser);
+        participantInfos1.add(participantInfo1);
+
+        Session session1 = new SynchronousSession();
+        session1.setParticipantInfo(participantInfos1);
+        session1.setOrganizer(testUser);
+        session1.setCategory(category1);
+        session1.setTopic(topic1);
+        session1.setAmountOfCircles(5);
+        session1.setSessionStatus(SessionStatus.ADDING_CARDS);
+
+        ParticipantInfo participantInfo2 = new ParticipantInfo();
+        Set<ParticipantInfo> participantInfos2 = new HashSet<>();
+        participantInfo2.setParticipant(testUser);
+        participantInfos2.add(participantInfo2);
+
+        Session session2 = new SynchronousSession();
+        session2.setParticipantInfo(participantInfos2);
+        session2.setOrganizer(testUser);
+        session2.setCategory(category1);
+        session2.setTopic(topic1);
+        session2.setAmountOfCircles(5);
+
+        ParticipantInfo participantInfo3 = new ParticipantInfo();
+        Set<ParticipantInfo> participantInfos3 = new HashSet<>();
+        participantInfo3.setParticipant(testUser);
+        participantInfos3.add(participantInfo3);
+
+        Session session3 = new SynchronousSession();
+        session3.setParticipantInfo(participantInfos3);
+        session3.setOrganizer(testUser);
+        session3.setCategory(category1);
+        session3.setTopic(topic1);
+        session3.setAmountOfCircles(5);
+        session3.setSessionStatus(SessionStatus.USERS_JOINING);
+
+        sessionRepository.save(session1);
+        sessionRepository.save(session2);
+        sessionRepository.save(session3);
     }
     
     private Topic seedCardDetails(Category category, Topic topic, User creator) {

@@ -21,6 +21,5 @@ public class ParticipantInfo {
 
     private int joinNumber;
     private boolean joined;
-    private boolean madeMove;
     private boolean addedCardsCompleted;
 }

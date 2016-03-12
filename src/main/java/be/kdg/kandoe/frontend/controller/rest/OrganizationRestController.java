@@ -38,7 +38,6 @@ public class OrganizationRestController {
     private MapperFacade mapperFacade;
     
     @RequestMapping(method = RequestMethod.POST)
-    //@PreAuthorize("hasAnyRole('ROLE_CLIENT')")
     public ResponseEntity createOrganization(@AuthenticationPrincipal User user,
                                              @Valid @RequestBody CreateOrganizationResource organizationResource) {
 
