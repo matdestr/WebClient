@@ -54,12 +54,27 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                     this.organizationsSubSet = [];
                     this.counterBegin = 0;
                     this.counterEnd = 4;
+                    this.counterActBegin = 0;
+                    this.counterActEnd = 4;
+                    this.counterFutBegin = 0;
+                    this.counterFutEnd = 4;
+                    this.counterPrevBegin = 0;
+                    this.counterPrevEnd = 4;
                     this.myLeftDisplay = "block";
                     this.myRightDisplay = "block";
+                    this.myLeftActDisplay = "block";
+                    this.myRightActDisplay = "block";
+                    this.myLeftFutDisplay = "block";
+                    this.myRightFutDisplay = "block";
+                    this.myLeftPrevDisplay = "block";
+                    this.myRightPrevDisplay = "block";
                     this.sessions = [];
                     this.activeSessions = [];
+                    this.activeSessionsSubset = [];
                     this.futureSessions = [];
+                    this.futureSessionsSubset = [];
                     this.previousSessions = [];
+                    this.previousSessionsSubset = [];
                 }
                 DashboardComponent.prototype.ngOnInit = function () {
                     var _this = this;
@@ -69,20 +84,46 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                         _this.getOrganizations();
                         _this.getSessions();
                     });
-                    if (this.organizations.length <= 4) {
-                        this.myLeftDisplay = "none";
-                        this.myRightDisplay = "none";
+                };
+                DashboardComponent.prototype.updateDisplays = function () {
+                    if (this.activeSessions.length <= 4) {
+                        this.myLeftActDisplay = "none";
+                        this.myRightActDisplay = "none";
                     }
                     else {
-                        this.myLeftDisplay = "block";
-                        this.myRightDisplay = "block";
+                        this.myLeftActDisplay = "none";
+                        this.myRightActDisplay = "block";
+                    }
+                    if (this.futureSessions.length <= 4) {
+                        this.myLeftFutDisplay = "none";
+                        this.myRightFutDisplay = "none";
+                    }
+                    else {
+                        this.myLeftFutDisplay = "none";
+                        this.myRightFutDisplay = "block";
+                    }
+                    if (this.previousSessions.length <= 4) {
+                        this.myLeftPrevDisplay = "none";
+                        this.myRightPrevDisplay = "none";
+                    }
+                    else {
+                        this.myLeftPrevDisplay = "none";
+                        this.myRightPrevDisplay = "block";
                     }
                 };
                 DashboardComponent.prototype.getOrganizations = function () {
                     var _this = this;
                     this._organizationService.getOrganizationsByUser(this.user.username).subscribe(function (data) {
                         _this.organizations = data.json();
-                        _this.updateSubSet();
+                        _this.organizationsSubSet = _this.organizations.slice(0, 4);
+                        if (_this.organizations.length <= 4) {
+                            _this.myLeftDisplay = "none";
+                            _this.myRightDisplay = "none";
+                        }
+                        else {
+                            _this.myLeftDisplay = "none";
+                            _this.myRightDisplay = "block";
+                        }
                     }, function (error) { console.log(error); _this.organizations = []; });
                 };
                 DashboardComponent.prototype.getSessions = function () {
@@ -93,9 +134,6 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                             var session = session_list_item_1.SessionListItem.createEmptySessionListItem().deserialize(sessionObject);
                             _this.sessions.push(session);
                             switch (session.sessionStatus) {
-                                case session_status_1.SessionStatus.CREATED:
-                                    _this.futureSessions.push(session);
-                                    break;
                                 case session_status_1.SessionStatus.FINISHED:
                                     _this.previousSessions.push(session);
                                     break;
@@ -107,16 +145,20 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                                     break;
                             }
                         }
+                        _this.updateSubSet();
+                        _this.updateDisplays();
                     }, function (error) { console.log(error); });
                 };
                 DashboardComponent.prototype.updateSubSet = function () {
-                    this.organizationsSubSet = this.organizations.slice(0, 4);
-                    if (this.organizations.length > 4) {
-                        this.myRightDisplay = "block";
-                    }
+                    this.activeSessionsSubset = this.activeSessions.slice(0, 4);
+                    this.futureSessionsSubset = this.futureSessions.slice(0, 4);
+                    this.previousSessionsSubset = this.previousSessions.slice(0, 4);
                 };
                 DashboardComponent.prototype.toOrganization = function (organizationId) {
                     this._router.navigate(["/OrganizationDetail", { organizationId: organizationId }]);
+                };
+                DashboardComponent.prototype.toSession = function (sessionId) {
+                    this._router.navigate(["/ActiveSession"], { sessionId: sessionId });
                 };
                 DashboardComponent.prototype.nextOrgPage = function () {
                     this.myLeftDisplay = "block";
@@ -147,8 +189,88 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                     }
                 };
                 DashboardComponent.prototype.nextActiveSesPage = function () {
+                    this.myLeftActDisplay = "block";
+                    if (this.counterActEnd >= this.activeSessions.length - 1) {
+                        this.myRightActDisplay = "none";
+                    }
+                    if (this.counterActEnd >= this.activeSessions.length) {
+                        return;
+                    }
+                    else {
+                        this.counterActBegin++;
+                        this.counterActEnd++;
+                        this.activeSessionsSubset = this.activeSessions.slice(this.counterActBegin, this.counterActEnd);
+                    }
                 };
                 DashboardComponent.prototype.previousActiveSesPage = function () {
+                    this.myRightActDisplay = "block";
+                    if (this.counterActBegin <= 1) {
+                        this.myLeftActDisplay = "none";
+                    }
+                    if (this.counterActBegin <= 0) {
+                        return;
+                    }
+                    else {
+                        this.counterActBegin--;
+                        this.counterActEnd--;
+                        this.activeSessionsSubset = this.activeSessions.slice(this.counterActBegin, this.counterActEnd);
+                    }
+                };
+                DashboardComponent.prototype.nextFutSesPage = function () {
+                    this.myLeftFutDisplay = "block";
+                    if (this.counterFutEnd >= this.futureSessions.length - 1) {
+                        this.myRightFutDisplay = "none";
+                    }
+                    if (this.counterFutEnd >= this.futureSessions.length) {
+                        return;
+                    }
+                    else {
+                        this.counterFutBegin++;
+                        this.counterFutEnd++;
+                        this.futureSessionsSubset = this.futureSessions.slice(this.counterFutBegin, this.counterFutEnd);
+                    }
+                };
+                DashboardComponent.prototype.previousFutSesPage = function () {
+                    this.myRightFutDisplay = "block";
+                    if (this.counterFutBegin <= 1) {
+                        this.myLeftFutDisplay = "none";
+                    }
+                    if (this.counterFutBegin <= 0) {
+                        return;
+                    }
+                    else {
+                        this.counterFutBegin--;
+                        this.counterFutEnd--;
+                        this.futureSessionsSubset = this.futureSessions.slice(this.counterFutBegin, this.counterFutEnd);
+                    }
+                };
+                DashboardComponent.prototype.nextPrevSesPage = function () {
+                    this.myLeftPrevDisplay = "block";
+                    if (this.counterPrevEnd >= this.previousSessions.length - 1) {
+                        this.myRightPrevDisplay = "none";
+                    }
+                    if (this.counterPrevEnd >= this.previousSessions.length) {
+                        return;
+                    }
+                    else {
+                        this.counterPrevBegin++;
+                        this.counterPrevEnd++;
+                        this.futureSessionsSubset = this.futureSessions.slice(this.counterPrevBegin, this.counterPrevEnd);
+                    }
+                };
+                DashboardComponent.prototype.previousPrevSesPage = function () {
+                    this.myRightPrevDisplay = "block";
+                    if (this.counterPrevBegin <= 1) {
+                        this.myLeftPrevDisplay = "none";
+                    }
+                    if (this.counterPrevBegin <= 0) {
+                        return;
+                    }
+                    else {
+                        this.counterPrevBegin--;
+                        this.counterPrevEnd--;
+                        this.previousSessionsSubset = this.previousSessions.slice(this.counterPrevBegin, this.counterPrevEnd);
+                    }
                 };
                 DashboardComponent = __decorate([
                     core_1.Component({
