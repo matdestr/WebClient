@@ -241,8 +241,7 @@ export class ActiveSessionComponent implements OnInit {
     public send() : void {
         if (this.stompClient)
             if (this.currentMessage || this.currentMessage.length != 0) {
-                console.log(this.currentMessage.length);
-                this.stompClient.send("/messages", null, JSON.stringify({'message': this.currentMessage}));
+                this.stompClient.send("/messages", null, JSON.stringify({'sessionId': this.sessionId,'message': this.currentMessage}));
                 this.currentMessage = "";
             }
     }

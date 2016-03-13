@@ -6502,20 +6502,51 @@ form.invitation-accept-form {
   cursor: pointer;
   transition: left 0.75s ease-in-out, top 0.75s ease-in-out; }
 
+.game-card-position {
+  cursor: pointer;
+  transition: x 0.75s ease-in-out, y 0.75s ease-in-out;
+  rx: 10;
+  ry: 10;
+  fill: white;
+  stroke: #2a2c2b; }
+
 #cardcontainer {
   height: 70vh;
   background-color: #f2f2f2;
   -webkit-box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94);
   -moz-box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94);
   box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94); }
+  #cardcontainer .game-card-preview-image-icon {
+    fill: #2a2c2b; }
   @media only screen and (min-width: 1024px) {
     #cardcontainer {
       height: 100vh; } }
-  #cardcontainer div.card-large {
-    width: 80% !important;
-    height: 40vh; }
-  #cardcontainer .card-text {
-    font-size: 1em; }
+
+div.card-large {
+  width: 80% !important;
+  height: 40vh; }
+
+.card-text {
+  font-size: 1em;
+  text-align: center; }
+
+.card-detail-container {
+  border: 0.25em solid #2a2c2b;
+  border-radius: 5%;
+  min-height: 50vh;
+  background-color: white;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  padding-top: 0.75em; }
+  .card-detail-container img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1em; }
+  .card-detail-container p {
+    font-size: 120%; }
+
+#circle-container {
+  height: 95vh; }
 
 #circlecontainer {
   height: 50vh;
@@ -6554,8 +6585,9 @@ form.invitation-accept-form {
   display: block;
   margin: 0 auto; }
 
-.chat-title {
-  padding-top: 1em !important; }
+.card-name, .chat-title {
+  padding-top: 0.5em !important;
+  margin-bottom: 0.5em; }
 
 #chat-input-box {
   margin-top: 1em; }
@@ -6603,21 +6635,18 @@ form.invitation-accept-form {
   margin-bottom: 1em;
   display: block; }
 
-.card-name {
-  margin-top: 1em !important; }
-
-.cardFoot {
+.card-foot {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
   display: block;
-  margin-top: 1em; }
+  margin-top: 2em; }
 
 .card-description {
   margin-left: 2em;
   margin-right: 2em; }
 
-.upVoteButton {
+.upvote-button {
   cursor: pointer;
   padding: 0;
   background: #dc3522;
@@ -6626,6 +6655,7 @@ form.invitation-accept-form {
   margin-left: auto;
   margin-right: auto;
   margin-top: 1em;
+  margin-bottom: 0.5em;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -6642,8 +6672,9 @@ form.invitation-accept-form {
   -webkit-transition: all 0.2s ease;
   -ms-transition: all 0.2s ease; }
 
-.circle {
+#game-svg-container {
   position: relative;
+  line-height: 0;
   max-width: 40em;
   margin: auto;
   /*svg {
@@ -6652,12 +6683,18 @@ form.invitation-accept-form {
     top: 0;
     left: 0;
   }*/ }
-  .circle .svg-circle {
+  #game-svg-container .svg-circle {
     stroke: #B71C1C;
-    stroke-width: 20px;
+    stroke-width: 40;
     fill: none; }
-  .circle .inner-circle {
-    fill: #B71C1C; }
+  #game-svg-container .inner-circle {
+    /*stroke: $color-accent;
+    fill: $color-accent;*/ }
+  #game-svg-container .sessionCheckBox {
+    margin-right: auto;
+    margin-left: auto; }
+  #game-svg-container #radio-button-group-session {
+    display: none; }
 
 #container {
   margin-top: 2em;

@@ -7,33 +7,6 @@
             <card-detail [cardClassName]="'card-large'"></card-detail>
         </div>
 
-        <div id="circlecontainer" class="col-xs-12 col-sm-8 col-md-8 col-lg-6">
-
-        </div>
-
-        <div id="chatcontainer" class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
-        <div id="card-container" class="col-xs-12 col-md-3">
-            <h1 *ngIf="!selectedCard" class="card-name">No card selected</h1>
-            <h1 *ngIf="selectedCard" class="card-name">Selected card</h1>
-
-            <div *ngIf="selectedCard" class="card-detail-container">
-                <img *ngIf="selectedCard.cardDetails.imageUrl"
-                     [src]="selectedCard.cardDetails.imageUrl"
-                     alt="card image">
-                <p>{{selectedCard.cardDetails.text}}</p>
-            </div>
-
-            <div class="card-foot">
-                <div class="arrows flex-container">
-                    <div>
-                        <a class="arrow glyphicon glyphicon-arrow-left" style="margin-right: 1em;" (click)="previousCard()"></a>
-                        <a class="arrow glyphicon glyphicon-arrow-right" (click)="nextCard()"></a>
-                    </div>
-                </div>
-                <button class="upvote-button" (click)="upvoteCurrentCard()">UPVOTE</button>
-            </div>
-        </div>
-
         <div id="circle-container" class="col-xs-12 col-md-6">
             <div id="game-svg-container">
                 <svg id="game-svg" version="1.1" viewBox="0 0 700 700">
@@ -93,7 +66,7 @@
             </div>
         </div>
 
-        <div id="chat-container" class="col-xs-12 col-md-3">
+        <div id="chatcontainer" class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
             <h1 class="chat-title">Chat</h1>
             <div #chatbox id="chatbox">
                 <div id="messagebox" *ngFor="#message of messages; #i = index">
