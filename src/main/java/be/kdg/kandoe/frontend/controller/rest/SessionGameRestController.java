@@ -17,6 +17,7 @@ import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -44,16 +45,18 @@ public class SessionGameRestController {
     private SessionGameService sessionGameService;
     private CardService cardService;
 
+    private SimpMessagingTemplate simpMessagingTemplate;
     private MapperFacade mapperFacade;
 
     @Autowired
     public SessionGameRestController(UserService userService, SessionService sessionService,
                                      SessionGameService sessionGameService, CardService cardService,
-                                     MapperFacade mapperFacade) {
+                                     SimpMessagingTemplate simpMessagingTemplate, MapperFacade mapperFacade) {
         this.userService = userService;
         this.sessionService = sessionService;
         this.sessionGameService = sessionGameService;
         this.cardService = cardService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
         this.mapperFacade = mapperFacade;
     }
 
@@ -236,6 +239,7 @@ public class SessionGameRestController {
         CardPosition cardPosition = sessionGameService.increaseCardPriority(session, user, cardDetails);
         CardPositionResource cardPositionResource = mapperFacade.map(cardPosition, CardPositionResource.class);
 
+        this.sendSessionCardPositionUpdate(sessionId, cardPositionResource);
         return new ResponseEntity<>(cardPositionResource, HttpStatus.OK);
     }
 
@@ -252,5 +256,11 @@ public class SessionGameRestController {
         sessionGameService.endGame(session);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+    
+    private void sendSessionCardPositionUpdate(int sessionId, CardPositionResource cardPositionResource) {
+        this.simpMessagingTemplate.convertAndSend(
+                "/topic/sessions/" + sessionId + "/positions", cardPositionResource
+        );
     }
 }

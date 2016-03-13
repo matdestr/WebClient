@@ -1,15 +1,13 @@
 package be.kdg.kandoe.backend.persistence;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;
+import be.kdg.kandoe.backend.model.cards.CardPosition;
 import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Tag;
 import be.kdg.kandoe.backend.model.organizations.Topic;
-import be.kdg.kandoe.backend.model.sessions.ParticipantInfo;
-import be.kdg.kandoe.backend.model.sessions.Session;
-import be.kdg.kandoe.backend.model.sessions.SessionStatus;
-import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
+import be.kdg.kandoe.backend.model.sessions.*;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.model.users.roles.RoleType;
 import be.kdg.kandoe.backend.persistence.api.*;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -134,7 +133,91 @@ public class DatabaseSeeder {
         }*/
         
         topic1 = seedCardDetails(category1, topic1, testUser);
+        
+        Session session = new SynchronousSession();
+        session.setOrganizer(testUser);
+        session.setCategory(category1);
+        session.setTopic(topic1);
+        session.setAmountOfCircles(5);
+        session = sessionRepository.save(session);
+        
+        // First session in progress
+        Session sessionInProgress = new SynchronousSession();
+        sessionInProgress.setOrganizer(testUser);
+        sessionInProgress.setCategory(category1);
+        sessionInProgress.setAmountOfCircles(5);
+        sessionInProgress.setCardCommentsAllowed(false);
+        sessionInProgress.setParticipantsCanAddCards(false);
+        sessionInProgress.setSessionStatus(SessionStatus.IN_PROGRESS);
 
+        ParticipantInfo participantInfoOrganizer = new ParticipantInfo();
+        participantInfoOrganizer.setParticipant(testUser);
+
+        sessionInProgress.getParticipantInfo().add(participantInfoOrganizer);
+        
+        Iterator<CardDetails> category1CardIterator = category1.getCards().iterator();
+        CardDetails cardsChoice1CardDetails1 = category1CardIterator.next();
+        CardDetails cardsChoice1CardDetails2 = category1CardIterator.next();
+        
+        List<CardDetails> cardsChoice1ChosenCards = new ArrayList<>();
+        cardsChoice1ChosenCards.add(cardsChoice1CardDetails1);
+        cardsChoice1ChosenCards.add(cardsChoice1CardDetails2);
+        
+        CardsChoice cardsChoice1 = new CardsChoice();
+        cardsChoice1.setParticipant(testUser);
+        cardsChoice1.setChosenCards(cardsChoice1ChosenCards);
+        cardsChoice1.setCardsChosen(true);
+        
+        sessionInProgress.getParticipantCardChoices().add(cardsChoice1);
+        
+        sessionInProgress = sessionRepository.save(sessionInProgress);
+        
+        // Second session in progress
+        Session sessionInProgress2 = new SynchronousSession();
+        sessionInProgress2.setOrganizer(testUser);
+        sessionInProgress2.setCategory(category1);
+        sessionInProgress2.setAmountOfCircles(4);
+        sessionInProgress2.setMinNumberOfCardsPerParticipant(2);
+
+        sessionInProgress2.setCardCommentsAllowed(false);
+        sessionInProgress2.setParticipantsCanAddCards(false);
+        sessionInProgress2.setSessionStatus(SessionStatus.IN_PROGRESS);
+
+        ParticipantInfo participantInfoOrganizer2 = new ParticipantInfo();
+        participantInfoOrganizer2.setParticipant(testUser);
+
+        sessionInProgress2.getParticipantInfo().add(participantInfoOrganizer2);
+        
+        category1CardIterator = category1.getCards().iterator();
+        CardDetails cardsChoice2CardDetails1 = category1CardIterator.next();
+        CardDetails cardsChoice2CardDetails2 = category1CardIterator.next();
+        CardDetails cardsChoice2CardDetails3 = category1CardIterator.next();
+        
+        List<CardDetails> cardsChoice2ChosenCards = new ArrayList<>();
+        cardsChoice2ChosenCards.add(cardsChoice2CardDetails1);
+        cardsChoice2ChosenCards.add(cardsChoice2CardDetails2);
+        cardsChoice2ChosenCards.add(cardsChoice2CardDetails3);
+
+        CardsChoice cardsChoice2 = new CardsChoice();
+        cardsChoice2.setParticipant(testUser);
+        cardsChoice2.setChosenCards(cardsChoice2ChosenCards);
+        cardsChoice2.setCardsChosen(true);
+
+        CardPosition sessionInProgress2CardPosition1 = new CardPosition(cardsChoice2CardDetails1, sessionInProgress2);
+        CardPosition sessionInProgress2CardPosition2 = new CardPosition(cardsChoice2CardDetails2, sessionInProgress2);
+        CardPosition sessionInProgress2CardPosition3 = new CardPosition(cardsChoice2CardDetails3, sessionInProgress2);
+
+        sessionInProgress2.getParticipantCardChoices().add(cardsChoice2);
+        sessionInProgress2.getCardPositions().add(sessionInProgress2CardPosition1);
+        sessionInProgress2.getCardPositions().add(sessionInProgress2CardPosition2);
+        sessionInProgress2.getCardPositions().add(sessionInProgress2CardPosition3);
+        
+        sessionInProgress2.setCurrentParticipantPlaying(participantInfoOrganizer2);
+
+        sessionInProgress2 = sessionRepository.save(sessionInProgress2);
+
+
+        // Stuff Thanee
         ParticipantInfo participantInfo1 = new ParticipantInfo();
         Set<ParticipantInfo> participantInfos1 = new HashSet<>();
         participantInfo1.setParticipant(testUser);

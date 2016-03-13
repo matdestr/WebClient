@@ -8,17 +8,19 @@ import {RequestOptionsArgs} from "angular2/http";
 import {RequestOptions} from "angular2/http";
 import {URLSearchParams} from "angular2/http";
 
-
 import {CreateTopicModel} from "../entities/topic/create-topic-model";
 import {CreateSessionModel} from "../entities/session/dto/create-session-model";
-
 
 @Injectable()
 export class SessionService {
     public static endPoint: string = "./api/sessions";
 
-    constructor(private _authHttp: AuthHttp){
-
+    constructor (private _authHttp: AuthHttp) { }
+    
+    public getSession(sessionId : number) : Observable<Response> {
+        return this._authHttp
+            .get(SessionService.endPoint + '/' + sessionId)
+            .retry(2);
     }
 
     public saveSession(session: CreateSessionModel) : Observable<Response> {
@@ -38,13 +40,11 @@ export class SessionService {
             .retry(2);
     }
 
-    public getSession(sessionId : number) : Observable<Response> {
-        return this._authHttp
-            .get(SessionService.endPoint + sessionId);
-    }
-
-    public getSessions():Observable<Response>{
+    public getSessions() : Observable<Response>{
         return this._authHttp.get(SessionService.endPoint);
     }
 
+    public getCardDetailsOfSession(sessionId:Number):Observable<Response>{
+        return this._authHttp.get(SessionService.endPoint+"/"+sessionId+"/all-cards")  ;
+    }
 }

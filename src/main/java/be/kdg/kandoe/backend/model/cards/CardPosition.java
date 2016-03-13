@@ -26,11 +26,12 @@ public class CardPosition {
     @Setter(AccessLevel.NONE)
     private Session session;
 
-    @Min(0)
+    @Min(1)
     private int priority;
 
     public CardPosition(CardDetails cardDetails, Session session) {
         this.cardDetails = cardDetails;
         this.session = session;
+        this.priority = 1;
     }
 }

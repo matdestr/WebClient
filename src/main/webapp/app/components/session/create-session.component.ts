@@ -14,18 +14,23 @@ import {HttpStatus} from "../../util/http/http-status";
 import {CreateSessionModel} from "../../entities/session/dto/create-session-model";
 import {SessionService} from "../../services/session.service";
 import {isNumber} from "angular2/src/facade/lang";
+import {OnInit} from "angular2/core";
 
 @Component({
     selector: 'create-session',
     templateUrl: 'html/create-session.html',
     directives: [ToolbarComponent]
 })
-export class CreateSessionComponent {
+export class CreateSessionComponent implements OnInit {
     private categoryId:number;
     private topicId:number;
     private model:CreateSessionModel = CreateSessionModel.createEmptyCreateSession();
     private errors:Array<string> = [];
 
+    private syncDateElement : HTMLElement;
+    private syncDateElementOriginalDisplay : string;
+    private asyncTimeElement : HTMLElement;
+    private asyncTimeElementOriginalDisplay : string;
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
@@ -33,11 +38,20 @@ export class CreateSessionComponent {
 
         this.categoryId = +this._routeArgs.params["categoryId"];
         this.topicId = +this._routeArgs.params["topicId"];
+    }
+
+    ngOnInit() : any {
+        this.syncDateElement = document.getElementById('date');
+        this.syncDateElementOriginalDisplay = this.syncDateElement.style.display;
+        this.asyncTimeElement = document.getElementById('time');
+        this.asyncTimeElementOriginalDisplay = this.asyncTimeElement.style.display;
+
+        document.getElementById('radio-button-sync').click();
 
     }
 
-
     public onSubmit():void {
+
         this.model.categoryId = this.categoryId;
         this.model.topicId = this.topicId;
         this._sessionService.saveSession(this.model).subscribe(
@@ -82,5 +96,17 @@ export class CreateSessionComponent {
     public resetForm():void {
         this.errors = [];
         this.model = CreateSessionModel.createEmptyCreateSession()
+    }
+
+    public async():void {
+        this.syncDateElement.style.display='none';
+        this.asyncTimeElement.style.removeProperty('display');
+        this.model.type = "async";
+    }
+
+    public sync():void{
+        this.model.type = "sync";
+        this.asyncTimeElement.style.display = 'none';
+        this.syncDateElement.style.removeProperty('display');
     }
 }

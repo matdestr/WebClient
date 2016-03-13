@@ -24,14 +24,29 @@ export class DashboardComponent {
     public user: User = User.createEmptyUser();
     private organizations: Organization[]=[];
     private organizationsSubSet:Organization[]=[];
-    public counterBegin:number=0;
-    public counterEnd:number=4;
+    private counterBegin:number=0;
+    private counterEnd:number=4;
+    private counterActBegin:number=0;
+    private counterActEnd:number=4;
+    private counterFutBegin:number=0;
+    private counterFutEnd:number=4;
+    private counterPrevBegin:number=0;
+    private counterPrevEnd:number=4;
     private myLeftDisplay:string="block";
     private myRightDisplay:string="block";
+    private myLeftActDisplay: string="block";
+    private myRightActDisplay:string="block";
+    private myLeftFutDisplay: string="block";
+    private myRightFutDisplay:string="block";
+    private myLeftPrevDisplay: string="block";
+    private myRightPrevDisplay:string="block";
     private sessions:SessionListItem[]=[];
     private activeSessions: SessionListItem[]=[];
+    private activeSessionsSubset: SessionListItem[]=[];
     private futureSessions: SessionListItem[]=[];
+    private futureSessionsSubset: SessionListItem[]=[];
     private previousSessions: SessionListItem[]=[];
+    private previousSessionsSubset: SessionListItem[]=[];
 
     constructor(private _router:Router,
                 private _organizationService: OrganizationService,
@@ -40,19 +55,38 @@ export class DashboardComponent {
 
     ngOnInit():any {
         var token = localStorage.getItem('token');
-
         this._userService.getUser(getUsername(token)).subscribe((user:User) => {
             this.user = this.user.deserialize(user);
             this.getOrganizations();
             this.getSessions();
         });
+    }
 
-        if(this.organizations.length<=4) {
-            this.myLeftDisplay = "none";
-            this.myRightDisplay = "none";
+    public updateDisplays(){
+
+
+        if(this.activeSessions.length<=4) {
+            this.myLeftActDisplay = "none";
+            this.myRightActDisplay = "none";
         }else {
-            this.myLeftDisplay = "block";
-            this.myRightDisplay = "block";
+            this.myLeftActDisplay = "none";
+            this.myRightActDisplay = "block";
+        }
+
+        if(this.futureSessions.length<=4) {
+            this.myLeftFutDisplay = "none";
+            this.myRightFutDisplay = "none";
+        }else {
+            this.myLeftFutDisplay = "none";
+            this.myRightFutDisplay = "block";
+        }
+
+        if(this.previousSessions.length<=4) {
+            this.myLeftPrevDisplay = "none";
+            this.myRightPrevDisplay = "none";
+        }else {
+            this.myLeftPrevDisplay = "none";
+            this.myRightPrevDisplay = "block";
         }
     }
 
@@ -60,7 +94,14 @@ export class DashboardComponent {
         this._organizationService.getOrganizationsByUser(this.user.username).subscribe(
             data => {
                 this.organizations = data.json();
-                this.updateSubSet();
+                this.organizationsSubSet = this.organizations.slice(0,4);
+                if(this.organizations.length<=4) {
+                    this.myLeftDisplay = "none";
+                    this.myRightDisplay = "none";
+                }else {
+                    this.myLeftDisplay = "none";
+                    this.myRightDisplay = "block";
+                }
             } , error => {console.log(error); this.organizations = []});
     }
 
@@ -71,8 +112,6 @@ export class DashboardComponent {
                     let session:SessionListItem = SessionListItem.createEmptySessionListItem().deserialize(sessionObject);
                     this.sessions.push(session);
                     switch (session.sessionStatus){
-                        case SessionStatus.CREATED:
-                            this.futureSessions.push(session); break;
                         case SessionStatus.FINISHED:
                             this.previousSessions.push(session);break;
                         case SessionStatus.IN_PROGRESS:
@@ -80,19 +119,24 @@ export class DashboardComponent {
                         default: this.futureSessions.push(session); break;
                     }
                 }
+                this.updateSubSet();
+                this.updateDisplays();
             } , error => {console.log(error)}
-        )
+        ) ;
     }
 
     public updateSubSet(){
-        this.organizationsSubSet = this.organizations.slice(0,4);
-        if(this.organizations.length>4){
-            this.myRightDisplay = "block";
-        }
+        this.activeSessionsSubset = this.activeSessions.slice(0,4);
+        this.futureSessionsSubset = this.futureSessions.slice(0,4);
+        this.previousSessionsSubset = this.previousSessions.slice(0,4);
     }
 
     public toOrganization(organizationId: number){
         this._router.navigate(["/OrganizationDetail", { organizationId : organizationId }])
+    }
+
+    public toSession(sessionId: number){
+        this._router.navigate(["/ActiveSession"],{sessionId:sessionId})
     }
 
     public nextOrgPage(){
@@ -125,11 +169,90 @@ export class DashboardComponent {
     }
 
     public nextActiveSesPage(){
-
+        this.myLeftActDisplay = "block";
+        if(this.counterActEnd >= this.activeSessions.length-1){
+            this.myRightActDisplay="none";
+        }
+        if(this.counterActEnd >= this.activeSessions.length){
+            return;
+        }
+        else{
+            this.counterActBegin++;
+            this.counterActEnd++;
+            this.activeSessionsSubset = this.activeSessions.slice(this.counterActBegin,this.counterActEnd);
+        }
     }
 
     public previousActiveSesPage(){
+        this.myRightActDisplay = "block";
+        if(this.counterActBegin <= 1){
+            this.myLeftActDisplay="none";
+        }
+        if(this.counterActBegin <= 0){
+            return;
+        }  else {
+            this.counterActBegin--;
+            this.counterActEnd--;
+            this.activeSessionsSubset = this.activeSessions.slice(this.counterActBegin, this.counterActEnd);
+        }
+    }
 
+    public nextFutSesPage(){
+        this.myLeftFutDisplay = "block";
+        if(this.counterFutEnd >= this.futureSessions.length-1){
+            this.myRightFutDisplay="none";
+        }
+        if(this.counterFutEnd >= this.futureSessions.length){
+            return;
+        }
+        else{
+            this.counterFutBegin++;
+            this.counterFutEnd++;
+            this.futureSessionsSubset = this.futureSessions.slice(this.counterFutBegin,this.counterFutEnd);
+        }
+    }
+
+    public previousFutSesPage(){
+        this.myRightFutDisplay = "block";
+        if(this.counterFutBegin <= 1){
+            this.myLeftFutDisplay="none";
+        }
+        if(this.counterFutBegin <= 0){
+            return;
+        }  else {
+            this.counterFutBegin--;
+            this.counterFutEnd--;
+            this.futureSessionsSubset = this.futureSessions.slice(this.counterFutBegin, this.counterFutEnd);
+        }
+    }
+
+    public nextPrevSesPage(){
+        this.myLeftPrevDisplay = "block";
+        if(this.counterPrevEnd >= this.previousSessions.length-1){
+            this.myRightPrevDisplay="none";
+        }
+        if(this.counterPrevEnd >= this.previousSessions.length){
+            return;
+        }
+        else{
+            this.counterPrevBegin++;
+            this.counterPrevEnd++;
+            this.futureSessionsSubset = this.futureSessions.slice(this.counterPrevBegin,this.counterPrevEnd);
+        }
+    }
+
+    public previousPrevSesPage(){
+        this.myRightPrevDisplay = "block";
+        if(this.counterPrevBegin <= 1){
+            this.myLeftPrevDisplay="none";
+        }
+        if(this.counterPrevBegin <= 0){
+            return;
+        }  else {
+            this.counterPrevBegin--;
+            this.counterPrevEnd--;
+            this.previousSessionsSubset = this.previousSessions.slice(this.counterPrevBegin, this.counterPrevEnd);
+        }
     }
 
 }

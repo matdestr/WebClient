@@ -1,3 +1,3 @@
 export class Email {
-    public email:String = "";
+    public email:string = "";
 }
