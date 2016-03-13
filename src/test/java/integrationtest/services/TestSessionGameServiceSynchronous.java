@@ -477,7 +477,7 @@ public class TestSessionGameServiceSynchronous {
 
         cardPositionList = session.getCardPositions();
         CardPosition cardPositionOfCard1 = cardPositionList.stream().filter(c -> c.getCardDetails().getCardDetailsId() == cardDetails1.getCardDetailsId()).findFirst().get();
-        Assert.assertEquals(1, cardPositionOfCard1.getPriority());
+        Assert.assertEquals(2, cardPositionOfCard1.getPriority());
     }
 
     @Test
@@ -538,7 +538,7 @@ public class TestSessionGameServiceSynchronous {
     public void testEndGame(){
         session.setParticipantsCanAddCards(false);
         session.setCardCommentsAllowed(false);
-        session.setAmountOfCircles(3);
+        session.setAmountOfCircles(4);
 
         session = sessionService.updateSession(session);
         this.inviteTwoUsersAndLetThemJoin(session);

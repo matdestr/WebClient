@@ -982,7 +982,7 @@ public class ITSessionGameRestController {
                         .header("Authorization", authorizationHeaderParticipant1)
                         .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
         ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(jsonPath("$.priority", is(1)));
+        .andExpect(jsonPath("$.priority", is(2)));
     }
 
     @Test
@@ -1061,26 +1061,18 @@ public class ITSessionGameRestController {
                         .header("Authorization", authorizationHeaderParticipant1)
                         .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
         ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.priority", is(1)));
+                .andExpect(jsonPath("$.priority", is(2)));
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/api/sessions/" + session.getSessionId() + "/positions")
                         .header("Authorization", authorizationHeader)
                         .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
         ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.priority", is(2)));
-
-        mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/sessions/" + session.getSessionId() + "/positions")
-                        .header("Authorization", authorizationHeaderParticipant1)
-                        .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
-        ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.priority", is(3)));
 
         Assert.assertEquals(SessionStatus.FINISHED, session.getSessionStatus());
     }
-
-
+    
     @Test
     public void testIncreaseCardPositionByNotTurnUser() throws Exception {
         Session session = createDefaultSession();
@@ -1234,7 +1226,7 @@ public class ITSessionGameRestController {
                         .header("Authorization", authorizationHeaderParticipant1)
                         .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
         ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.priority", is(1)));
+                .andExpect(jsonPath("$.priority", is(2)));
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/end")
@@ -1320,12 +1312,11 @@ public class ITSessionGameRestController {
                         .header("Authorization", authorizationHeaderParticipant1)
                         .param("cardDetailsId", String.valueOf(cardDetails1.getCardDetailsId()))
         ).andDo(print()).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.priority", is(1)));
+                .andExpect(jsonPath("$.priority", is(2)));
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/end")
                         .header("Authorization", authorizationHeaderParticipant1)
         ).andDo(print()).andExpect(MockMvcResultMatchers.status().isForbidden());
-
     }
 }

@@ -16,7 +16,6 @@ public class MailJob implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Sending email...");
         mailer.sendMail(email);
     }
 }

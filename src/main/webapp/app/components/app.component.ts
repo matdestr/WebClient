@@ -44,7 +44,7 @@ import {InviteUsersComponent} from "./session/invite-users.component";
     {path: '/categories/:categoryId/addtags',   name:'AddTag',                  component:AddTagComponent} ,
     {path: '/topic/:topicId/detail',            name:'TopicDetail',             component:TopicDetailComponent} ,
     {path: '/topic/:topicId/cardChooser',       name:'TopicCardChooser',        component:TopicCardChooserComponent} ,
-    {path: '/session',                          name:'ActiveSession',           component:ActiveSessionComponent},
+    {path: '/session/:sessionId',               name:'ActiveSession',           component:ActiveSessionComponent},
     {path: '/categories/:categoryId/createCard',name:'CreateCard',              component:CreateCardComponent},
     {path: '/categories/:categoryId/createSession', name:'CreateSession',       component:CreateSessionComponent},
     {path: '/session/:sessionId/all-cards',     name:'SessionAddCards',         component:SessionAddCardsComponent},

@@ -1,17 +1,105 @@
 <toolbar></toolbar>
 <div id="main-content" >
-
     <div class="row">
-        <div id="cardcontainer" class="col-xs-12 col-lg-3">
+        <!--
+        <div id="card-container" class="col-xs-12 col-md-3">
             <h1 class="card-name">Selected card</h1>
-            <card-detail [cardClassName]="'card-large'"></card-detail>
+            <!--<card-detail [cardClassName]="'card-large'"></card-detail>-->
+            <!--
+            <div class="card-foot">
+                <div class="arrows flex-container">
+                    <div>
+                        <a class="arrow glyphicon glyphicon-arrow-left" style="margin-right: 1em;"></a>
+                        <a class="arrow glyphicon glyphicon-arrow-right"></a>
+                    </div>
+                </div>
+                <button class="upvote-button">UPVOTE</button>
+            </div>
+        </div>
+        -->
+
+        <div id="card-container" class="col-xs-12 col-md-3">
+            <h1 *ngIf="!selectedCard" class="card-name">No card selected</h1>
+            <h1 *ngIf="selectedCard" class="card-name">Selected card</h1>
+
+            <div *ngIf="selectedCard" class="card-detail-container">
+                <img *ngIf="selectedCard.cardDetails.imageUrl"
+                     [src]="selectedCard.cardDetails.imageUrl"
+                     alt="card image">
+                <p>{{selectedCard.cardDetails.text}}</p>
+            </div>
+            
+            <div class="card-foot">
+                <div class="arrows flex-container">
+                    <div>
+                        <a class="arrow glyphicon glyphicon-arrow-left" style="margin-right: 1em;" (click)="previousCard()"></a>
+                        <a class="arrow glyphicon glyphicon-arrow-right" (click)="nextCard()"></a>
+                    </div>
+                </div>
+                <button class="upvote-button" (click)="upvoteCurrentCard()">UPVOTE</button>
+            </div>
         </div>
 
-        <div id="circlecontainer" class="col-xs-12 col-lg-6">
+        <div id="circle-container" class="col-xs-12 col-md-6">
+            <div id="game-svg-container">
+                <svg id="game-svg" version="1.1" viewBox="0 0 700 700">
+                    <!--<circle cx="350" cy="350" r="100" stroke="red" stroke-width="30" fill="none"></circle>-->
+                    
+                    <circle *ngFor="#circle of circles; #i = index"
+                            [attr.cx]="viewBoxWidth / 2"
+                            [attr.cy]="viewBoxHeight / 2"
+                            [attr.r]="circle.radius"
+                            [attr.data-priority]="circle.priority"
+                            class="svg-circle"
+                            [class.inner-circle]="circles[i].priority == circles.length"
+                            fill="none"
+                            stroke="red"
+                            stroke-width="50">
+                    </circle>
+                    
+                    <!-- For some reason nesting <circle> within a component causes it to not render -->
+                    <!--<game-circle *ngFor="#circle of circles; #i = index"
+                                 [circle]="circle">
+                    </game-circle>-->
 
+                    <rect *ngFor="#c of cardPositions"
+                          class="game-card-position"
+                          [attr.x]="c.positionLeft"
+                          [attr.y]="c.positionTop"
+                          [attr.height]="c.cardHeight"
+                          [attr.width]="c.cardWidth" 
+                          [attr.stroke-width]="cardBorderThickness"
+                          (click)="onCardClicked(c)">
+                    </rect>
+
+                    <!-- Fancy stuff for card 'preview' -->
+                    <!--<rect *ngFor="#c of cardPositions"
+                          class="game-card-preview-image-icon"
+                          [attr.width]="c.cardWidth - 20"
+                          [attr.height]="c.cardHeight / 3"
+                          [attr.x]="c.positionLeft + 10"
+                          [attr.y]="c.positionTop + 10"></rect>
+
+                    <rect *ngFor="#c of cardPositions"
+                          class="game-card-preview-image-icon"
+                          [attr.width]="c.cardWidth - 20"
+                          [attr.height]="c.cardHeight / 3"
+                          [attr.x]="c.positionLeft + 10"
+                          [attr.y]="c.positionTop + 10"></rect>-->
+                </svg>
+
+                <!--<div *ngFor="#c of cardPositions; #i = index"
+                     class="field"
+                     [style.height.px]="c.cardHeight"
+                     [style.width.px]="c.cardWidth"
+                     [style.left.px]="c.positionLeft"
+                     [style.top.px]="c.positionTop">
+
+                </div>-->
+            </div>
         </div>
 
-        <div id="chatcontainer" class="col-xs-12 col-lg-3">
+        <div id="chat-container" class="col-xs-12 col-md-3">
             <h1 class="chat-title">Chat</h1>
             <div #chatbox id="chatbox">
                 <div id="messagebox" *ngFor="#message of messages; #i = index">

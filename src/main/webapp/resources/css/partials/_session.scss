@@ -1,7 +1,11 @@
+$card-position-corner-radius: 10;
+$card-position-card-color: white;
+$card-position-card-border-color: $color-accent;
+$card-position-card-border-thickness: 5;
 
-.field {
-  /*width: 20px;
-  height: 20px;*/
+/*.field {
+  //width: 20px;
+  //height: 20px;
   position: absolute;
   background: #f00;
 
@@ -9,28 +13,66 @@
   height: 2em;
   cursor: pointer;
   transition: left 0.75s ease-in-out, top 0.75s ease-in-out;
+}*/
+
+.game-card-position {
+  cursor: pointer;
+  //transition: left 0.75s ease-in-out, top 0.75s ease-in-out;
+  transition: x 0.75s ease-in-out, y 0.75s ease-in-out;
+  
+  // ignore the warnings, this works on SVG elements
+  rx: $card-position-corner-radius;
+  ry: $card-position-corner-radius;
+  fill: $card-position-card-color;
+  stroke: $card-position-card-border-color;
 }
 
-#cardcontainer{
-  height: 95vh;
+.game-card-preview-image-icon {
+  fill: $color-accent;
+}
+
+#card-container{
+  //height: 95vh;
   background-color: #f2f2f2;
   -webkit-box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
   -moz-box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
   box-shadow: 21px 10px 32px -12px rgba(173,173,173,0.94);
   //margin-top:-$navbar-margin-bottom;
   //padding: 1em;
+  text-align: center;
 }
 
-#circlecontainer {
+.card-detail-container {
+  border: 0.25em solid $color-accent;
+  border-radius: 5%;
+  //min-height: 25em;
+  min-height: 50vh;
+  background-color: white;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  padding-top: 0.75em;
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1em;
+  }
+  
+  p {
+    font-size: 120%;
+  }
+}
+
+/*#circle-container {
   height:95vh;
   display: block;
-}
+}*/
 
 .row {
   margin: 0 !important;
 }
 
-#chatcontainer {
+#chat-container {
   height: 400px;
   background-color: #f2f2f2;
 
@@ -55,8 +97,9 @@
   margin: 0 auto;
 }
 
-.chat-title {
-  padding-top: 1em !important;
+.card-name, .chat-title {
+  padding-top: 0.5em !important;
+  margin-bottom: 0.5em;
 }
 
 #chat-input-box {
@@ -116,16 +159,12 @@
   display:block;
 }
 
-.card-name{
-  margin-top: 1em !important;
-}
-
-.cardFoot{
+.card-foot{
   width:80%;
   margin-left: auto;
   margin-right: auto;
   display:block;
-  margin-top: 1em;
+  margin-top: 2em;
 }
 
 .card-description{
@@ -133,7 +172,7 @@
   margin-right: 2em;
 }
 
-.upVoteButton{
+.upvote-button{
   cursor: pointer;
   padding: 0;
   background: #dc3522;
@@ -142,6 +181,7 @@
   margin-left: auto;
   margin-right: auto;
   margin-top: 1em;
+  margin-bottom: 0.5em;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -159,8 +199,9 @@
   -ms-transition: all 0.2s ease;
 }
 
-.circle {
+#game-svg-container {
   position: relative;
+  line-height: 0;
   //padding-bottom: 100%;
   //vertical-align: middle;
   max-width: 40em;
@@ -175,12 +216,15 @@
   
   .svg-circle {
     stroke:$primary-color-dark;
-    stroke-width: 20px;
+    //stroke-width: 20px;
+    stroke-width: 40;
     fill:none;
   }
   
   .inner-circle{
-     fill:$primary-color-dark;
+     //fill:$primary-color-dark;
+    /*stroke: $color-accent;
+    fill: $color-accent;*/
   }
 
   .sessionCheckBox{
