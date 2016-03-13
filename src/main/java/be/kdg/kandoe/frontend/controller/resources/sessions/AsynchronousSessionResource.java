@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class AsynchronousSessionResource extends SessionResource {
-    private int timeBetweenMoves;
+    private int secondsBetweenMoves;
 }

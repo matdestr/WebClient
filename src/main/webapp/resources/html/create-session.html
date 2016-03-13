@@ -23,6 +23,26 @@
                     <section class="forms-section">
                         <h2>General information</h2>
 
+                        <div class="input-group forms-input-group" id="radio-button-group-session">
+
+                            <div>
+                                <label>
+                                    <input id="radio-button-async" name="type" type="radio" value="async"
+                                           (click)="async()"
+                                           required/>
+                                    Asynchronous
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input id="radio-button-sync" name="type" type="radio" value="sync" (click)="sync()"
+                                    />
+                                    Synchronous
+                                </label>
+                            </div>
+                        </div>
+
+
                         <div class="input-group forms-input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-minus"></i></span>
                             <input id="minNumberOfCardsPerParticipant"
@@ -61,9 +81,31 @@
                                    [(ngModel)]="model.amountOfCircles">
                         </div>
 
+                        <div id="date" class="input-group forms-input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            <input id="startDateTime"
+                                   name="startDateTime-name"
+                                   class="form-control"
+                                   type="datetime-local"
+                                   placeholder="Date of the start of the session"
+                                   #categoryName="ngForm"
+                                   [(ngModel)]="model.startDateTime">
+                        </div>
+
+                        <div id="time" class="input-group forms-input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                            <input id="secondsBetweenMoves"
+                                   name="secondsBetweenMoves-name"
+                                   class="form-control"
+                                   type="number"
+                                   placeholder="Seconds between the moves"
+                                   #categoryName="ngForm"
+                                   [(ngModel)]="model.secondsBetweenMoves">
+                        </div>
+
                         <hr>
 
-                        <label><input id="participantsCanAddCards"
+                        <label class="sessionCheckBox"><input id="participantsCanAddCards"
                                       name="participantsCanAddCards-name"
                                       class="sessionCheckBox"
                                       type="checkbox"
@@ -72,16 +114,14 @@
                                       [(ngModel)]="model.participantsCanAddCards">Participants can add cards</label>
 
                         <label class="sessionCheckBox"><input id="cardCommentsAllowed"
-                                      name="cardCommentsAllowed-name"
-                                      type="checkbox"
-                                      placeholder="Card comments allowed"
-                                      #categoryName="ngForm"
-                                      [(ngModel)]="model.cardCommentsAllowed">Card comments allowed</label>
+                                                              name="cardCommentsAllowed-name"
+                                                              type="checkbox"
+                                                              placeholder="Card comments allowed"
+                                                              #categoryName="ngForm"
+                                                              [(ngModel)]="model.cardCommentsAllowed">Card comments
+                            allowed</label>
 
 
-
-
-                        <!-- TODO: @mathisse type session field -->
 
 
                     </section>

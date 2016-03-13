@@ -3,13 +3,16 @@ package be.kdg.kandoe.frontend.controller.rest;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.sessions.Session;
+import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.CategoryService;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
 import be.kdg.kandoe.backend.service.api.SessionService;
 import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CategoryResource;
 import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CreateCategoryResource;
+import be.kdg.kandoe.frontend.controller.resources.sessions.AsynchronousSessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.SessionResource;
+import be.kdg.kandoe.frontend.controller.resources.sessions.SynchronousSessionResource;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -70,9 +74,23 @@ public class CategoryRestController {
     @RequestMapping(value = "/{categoryId}/sessions", method = RequestMethod.GET)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<SessionResource>> getSessionsFromCategory(@PathVariable("categoryId") int categoryId) {
-
         List<Session> sessions = sessionService.getSessionsFromCategory(categoryId);
+        List<SessionResource> sessionResources = new ArrayList<>();
 
-        return new ResponseEntity<>(mapper.mapAsList(sessions, SessionResource.class), HttpStatus.OK);
+        // Workaround for NullPointerException due to casting issues with mapper
+        for (Session session : sessions) {
+            SessionResource resource;
+
+            if (session instanceof SynchronousSession) {
+                resource = mapper.map(session, SynchronousSessionResource.class);
+            } else {
+                resource = mapper.map(session, AsynchronousSessionResource.class);
+            }
+
+            sessionResources.add(resource);
+        }
+
+        //return new ResponseEntity<>(mapper.mapAsList(sessions, SessionResource.class), HttpStatus.OK);
+        return new ResponseEntity<>(sessionResources, HttpStatus.OK);
     }
 }

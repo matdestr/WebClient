@@ -6637,6 +6637,11 @@ form.invitation-accept-form {
     fill: none; }
   .circle .inner-circle {
     fill: #B71C1C; }
+  .circle .sessionCheckBox {
+    margin-right: auto;
+    margin-left: auto; }
+  .circle #radio-button-group-session {
+    display: none; }
 
 #container {
   margin-top: 2em;
