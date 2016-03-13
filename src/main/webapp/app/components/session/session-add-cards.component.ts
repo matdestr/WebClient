@@ -22,20 +22,14 @@ export class SessionAddCardsComponent{
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
-                private _sessionService: SessionService,
-                private _cardDetailsService:CardDetailsService) {
+                private _sessionService: SessionService) {
 
     }
 
     ngOnInit():any {
         var sessionId:number = +this._routeArgs.params["sessionId"];
-        this._sessionService.getSession(sessionId).subscribe(
-            data => {
-                this.session = data.json();
-            }
-        )  ;
 
-        this._cardDetailsService.getCardDetailsOfSession(sessionId).subscribe(
+        this._sessionService.getCardDetailsOfSession(sessionId).subscribe(
             data => {
                 for (let card of data.json())
                     this.cards.push(CardDetails.createEmptyCard().deserialize(card));
@@ -45,10 +39,6 @@ export class SessionAddCardsComponent{
 
     public onSessionCardClick(card:CardDetails):void {
         this.currentCard = card;
-    }
-
-    public toAddNewSession(categoryId:number, topicId:number) {
-        this._router.navigate(["/CreateSession", {categoryId: categoryId, topicId: topicId}])
     }
 
 }

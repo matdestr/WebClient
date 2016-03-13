@@ -47,4 +47,8 @@ export class SessionService {
         return this._authHttp.get(SessionService.endPoint);
     }
 
+    public getCardDetailsOfSession(sessionId:Number):Observable<Response>{
+        return this._authHttp.get(SessionService.endPoint+"/"+sessionId+"/all-cards")  ;
+    }
+
 }
