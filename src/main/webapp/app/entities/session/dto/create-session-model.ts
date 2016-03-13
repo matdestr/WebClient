@@ -1,3 +1,4 @@
+import DateTimeFormat = Intl.DateTimeFormat;
 export class CreateSessionModel {
     categoryId: number = 0;
     topicId: number = null;
@@ -6,10 +7,12 @@ export class CreateSessionModel {
     participantsCanAddCards:boolean = false;
     cardCommentsAllowed:boolean = false;
     amountOfCircles:number = null;
-    type: string = "sync";
+    type:string = "";
+    startDateTime:string = null;
+    secondsBetweenMoves:number = null;
 
 
-    constructor(minNumberOfCardsPerParticipant:number,maxNumberOfCardsPerParticipant:number,participantsCanAddCards:boolean,cardCommentsAllowed:boolean,amountOfCircles:number, categoryId:number, topicId:number) {
+    constructor(minNumberOfCardsPerParticipant:number,maxNumberOfCardsPerParticipant:number,participantsCanAddCards:boolean,cardCommentsAllowed:boolean,amountOfCircles:number, categoryId:number, topicId:number, type:string,startDateTime:string,secondsBetweenMoves:number) {
         this.minNumberOfCardsPerParticipant = minNumberOfCardsPerParticipant;
         this.maxNumberOfCardsPerParticipant = maxNumberOfCardsPerParticipant;
         this.participantsCanAddCards = participantsCanAddCards;
@@ -17,9 +20,12 @@ export class CreateSessionModel {
         this.amountOfCircles = amountOfCircles;
         this.categoryId = categoryId;
         this.topicId = topicId;
+        this.type = type;
+        this.startDateTime = startDateTime;
+        this.secondsBetweenMoves = secondsBetweenMoves;
     }
 
     public static createEmptyCreateSession():CreateSessionModel {
-        return new CreateSessionModel(null,null,false,false,null,0,null);
+        return new CreateSessionModel(null,null,false,false,null,0,null,"","",null);
     }
 }

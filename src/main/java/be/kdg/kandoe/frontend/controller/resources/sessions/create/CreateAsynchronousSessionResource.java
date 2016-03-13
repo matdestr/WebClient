@@ -9,7 +9,7 @@ public class CreateAsynchronousSessionResource extends CreateSessionResource {
     public static final String TYPE = "async";
     
     @Range(min = 1, message = "{session.wrong.time-between-moves}")
-    private int timeBetweenMoves;
+    private int secondsBetweenMoves;
 
     public CreateAsynchronousSessionResource() {
         super(CreateSynchronousSessionResource.TYPE);
