@@ -8,6 +8,8 @@ import be.kdg.kandoe.backend.model.users.User;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.*;
@@ -69,9 +71,9 @@ public abstract class Session {
     @OneToMany(targetEntity = CardPosition.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CardPosition> cardPositions;
 
-    @OneToMany(targetEntity = ChatMessage.class, mappedBy = "session", fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = ChatMessage.class, mappedBy = "session", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT) // Hibernate workaround: fixes duplicate entities when retrieved
     private List<ChatMessage> chatMessages;
-
 
     private int minNumberOfCardsPerParticipant;
     private int maxNumberOfCardsPerParticipant;

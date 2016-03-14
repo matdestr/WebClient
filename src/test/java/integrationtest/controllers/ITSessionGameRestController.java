@@ -44,7 +44,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
+ 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootContextConfig.class, WebContextConfig.class})
 @WebAppConfiguration

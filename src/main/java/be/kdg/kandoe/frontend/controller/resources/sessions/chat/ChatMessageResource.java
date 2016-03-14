@@ -8,6 +8,6 @@ import java.util.Date;
 @Data
 public class ChatMessageResource {
     private UserResource user;
-    private String message;
-    private Date date;
+    private String content;
+    private Date dateTime;
 }

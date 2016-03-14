@@ -6492,16 +6492,17 @@ form.invitation-accept-form {
       line-height: 1.4;
       min-height: 15em; }
 
-.field {
-  /*width: 20px;
-  height: 20px;*/
+/*.field {
+  //width: 20px;
+  //height: 20px;
   position: absolute;
   background: #f00;
+
   width: 2em;
   height: 2em;
   cursor: pointer;
-  transition: left 0.75s ease-in-out, top 0.75s ease-in-out; }
-
+  transition: left 0.75s ease-in-out, top 0.75s ease-in-out;
+}*/
 .game-card-position {
   cursor: pointer;
   transition: x 0.75s ease-in-out, y 0.75s ease-in-out;
@@ -6510,24 +6511,14 @@ form.invitation-accept-form {
   fill: white;
   stroke: #2a2c2b; }
 
-#cardcontainer {
-  height: 70vh;
+.game-card-preview-image-icon {
+  fill: #2a2c2b; }
+
+#card-container {
   background-color: #f2f2f2;
   -webkit-box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94);
   -moz-box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94);
-  box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94); }
-  #cardcontainer .game-card-preview-image-icon {
-    fill: #2a2c2b; }
-  @media only screen and (min-width: 1024px) {
-    #cardcontainer {
-      height: 100vh; } }
-
-div.card-large {
-  width: 80% !important;
-  height: 40vh; }
-
-.card-text {
-  font-size: 1em;
+  box-shadow: 21px 10px 32px -12px rgba(173, 173, 173, 0.94);
   text-align: center; }
 
 .card-detail-container {
@@ -6545,28 +6536,19 @@ div.card-large {
   .card-detail-container p {
     font-size: 120%; }
 
-#circle-container {
-  height: 95vh; }
-
-#circlecontainer {
-  height: 50vh;
-  display: block; }
-
+/*#circle-container {
+  height:95vh;
+  display: block;
+}*/
 .row {
   margin: 0 !important; }
 
-#chatcontainer {
-  height: 60vh;
+#chat-container {
+  height: 400px;
   background-color: #f2f2f2; }
   @media only screen and (min-width: 600px) {
-    #chatcontainer {
-      height: 55vh; } }
-  @media only screen and (min-width: 1024px) {
-    #chatcontainer {
-      height: 100vh; } }
-
-.session-active-card {
-  width: 80%; }
+    #chat-container {
+      height: 95vh; } }
 
 #chatbox {
   overflow-y: scroll;
@@ -6574,12 +6556,8 @@ div.card-large {
   height: 200px; }
   @media only screen and (min-width: 600px) {
     #chatbox {
-      max-height: 25vh;
-      height: 25vh; } }
-  @media only screen and (min-width: 1024px) {
-    #chatbox {
-      max-height: 65vh;
-      height: 65vh; } }
+      max-height: 480px;
+      height: 480px; } }
 
 #messagebox {
   display: block;

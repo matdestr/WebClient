@@ -11,6 +11,12 @@ export class SessionGameService {
     
     constructor (private _authHttp : AuthHttp) { }
     
+    public getChatMessages(sessionId : number) : Observable<Response> {
+        return this._authHttp
+            .get(SessionGameService.endpoint + '/' + sessionId + '/chat')
+            .retry(2);
+    }
+    
     public getCardPositions(sessionId : number) : Observable<Response> {
         return this._authHttp
             .get(SessionGameService.endpoint + '/' + sessionId + '/positions')

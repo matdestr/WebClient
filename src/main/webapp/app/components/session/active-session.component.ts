@@ -30,11 +30,11 @@ export class ActiveSessionComponent implements OnInit {
     private cardBorderThickness : number = 5;
     
     @ViewChild("chatbox")
-    private chatContainer:ElementRef;
+    private chatContainer : ElementRef;
     
-    private currentMessage:string = "";
-    private messages:ChatMessage[] = [];
-    private stompClient:any = null;
+    private currentMessage : string = "";
+    private messages : ChatMessage[] = [];
+    private stompClient : any = null;
     
     private sessionId : number;
     private session : Session = Session.createEmptySession();
@@ -59,6 +59,8 @@ export class ActiveSessionComponent implements OnInit {
                 private _gameService : SessionGameService) {
         
         this.sessionId = parseInt(_routeArgs.get('sessionId'));
+        
+        this.loadChat();
         this.initSockets();
     }
     
@@ -76,7 +78,8 @@ export class ActiveSessionComponent implements OnInit {
         this.stompClient = Stomp.over(socket);
         
         this.stompClient.connect({}, function(){
-            self.stompClient.subscribe('/topic/session/messages', function (data) {
+            self.stompClient.subscribe('/topic/sessions/' + self.sessionId + '/messages', function (data) {
+                console.log('Received web socket chat message');
                 var message:ChatMessage = JSON.parse(data.body);
                 self.messages.push(message);
                 self.chatContainer.nativeElement.scrollTop = self.chatContainer.nativeElement.scrollHeight;
@@ -87,6 +90,17 @@ export class ActiveSessionComponent implements OnInit {
                 self.updateCardPositions();
             })
         });
+    }
+    
+    private loadChat() : void {
+        this.messages = [];
+
+        this._gameService.getChatMessages(this.sessionId)
+            .subscribe(data => {
+                for (let chatMessage of data.json()) {
+                    this.messages.push(chatMessage);
+                }
+            }, error => console.error(error));
     }
     
     private initCircles() : void {
@@ -239,10 +253,12 @@ export class ActiveSessionComponent implements OnInit {
     }
 
     public send() : void {
-        if (this.stompClient)
+        if (this.stompClient) {
             if (this.currentMessage || this.currentMessage.length != 0) {
-                this.stompClient.send("/messages", null, JSON.stringify({'sessionId': this.sessionId,'message': this.currentMessage}));
+                console.log(this.currentMessage.length);
+                this.stompClient.send('/sessions/' + this.sessionId + '/messages', null, JSON.stringify({'message': this.currentMessage}));
                 this.currentMessage = "";
             }
+        }
     }
 }

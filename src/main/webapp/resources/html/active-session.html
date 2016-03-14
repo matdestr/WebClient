@@ -1,10 +1,43 @@
 <toolbar></toolbar>
 <div id="main-content" >
-
     <div class="row">
-        <div id="cardcontainer" class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
+        <!--
+        <div id="card-container" class="col-xs-12 col-md-3">
             <h1 class="card-name">Selected card</h1>
-            <card-detail [cardClassName]="'card-large'"></card-detail>
+            <!--<card-detail [cardClassName]="'card-large'"></card-detail>-->
+        <!--
+        <div class="card-foot">
+            <div class="arrows flex-container">
+                <div>
+                    <a class="arrow glyphicon glyphicon-arrow-left" style="margin-right: 1em;"></a>
+                    <a class="arrow glyphicon glyphicon-arrow-right"></a>
+                </div>
+            </div>
+            <button class="upvote-button">UPVOTE</button>
+        </div>
+    </div>
+    -->
+
+        <div id="card-container" class="col-xs-12 col-md-3">
+            <h1 *ngIf="!selectedCard" class="card-name">No card selected</h1>
+            <h1 *ngIf="selectedCard" class="card-name">Selected card</h1>
+
+            <div *ngIf="selectedCard" class="card-detail-container">
+                <img *ngIf="selectedCard.cardDetails.imageUrl"
+                     [src]="selectedCard.cardDetails.imageUrl"
+                     alt="card image">
+                <p>{{selectedCard.cardDetails.text}}</p>
+            </div>
+
+            <div class="card-foot">
+                <div class="arrows flex-container">
+                    <div>
+                        <a class="arrow glyphicon glyphicon-arrow-left" style="margin-right: 1em;" (click)="previousCard()"></a>
+                        <a class="arrow glyphicon glyphicon-arrow-right" (click)="nextCard()"></a>
+                    </div>
+                </div>
+                <button class="upvote-button" (click)="upvoteCurrentCard()">UPVOTE</button>
+            </div>
         </div>
 
         <div id="circle-container" class="col-xs-12 col-md-6">
@@ -66,17 +99,17 @@
             </div>
         </div>
 
-        <div id="chatcontainer" class="col-xs-12 col-sm-12 col-md-12 col-lg-3">
+        <div id="chat-container" class="col-xs-12 col-md-3">
             <h1 class="chat-title">Chat</h1>
             <div #chatbox id="chatbox">
                 <div id="messagebox" *ngFor="#message of messages; #i = index">
                     <p class="chatmessage">
-<!--
-                        <span><img class="chat-picture" src="{{ message.user.profilePictureUrl }}"></span>
--->
-                        <span>{{ message.date | date:"HH:mm" }}</span>
-                        <span class="chat-username">{{ message.user.username }}:</span>
-                        <span>{{ message.message }}</span></p>
+                        <!--
+                                                <span><img class="chat-picture" src="{{ message.user.profilePictureUrl }}"></span>
+                        -->
+                        <span>{{ message.dateTime | date:"HH:mm" }}</span>
+                        <span class="chat-username">{{ message.user.username }} : </span>
+                        <span>{{ message.content }}</span></p>
                 </div>
             </div>
             <div>

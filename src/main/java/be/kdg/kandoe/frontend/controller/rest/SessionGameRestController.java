@@ -12,6 +12,7 @@ import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.controller.resources.cards.CardDetailsResource;
 import be.kdg.kandoe.frontend.controller.resources.cards.CreateCardDetailsResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.CardPositionResource;
+import be.kdg.kandoe.frontend.controller.resources.sessions.chat.ChatMessageResource;
 import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -241,6 +242,20 @@ public class SessionGameRestController {
 
         this.sendSessionCardPositionUpdate(sessionId, cardPositionResource);
         return new ResponseEntity<>(cardPositionResource, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/{sessionId}/chat", method = RequestMethod.GET)
+    public ResponseEntity<List<ChatMessageResource>> getChatMessagesOfSession(@AuthenticationPrincipal User user,
+                                                                        @PathVariable("sessionId") int sessionId) {
+        Session session = sessionService.getSessionById(sessionId);
+        
+        if (session == null)
+            throw new CanDoControllerRuntimeException("Could not find session with ID " + sessionId, HttpStatus.NOT_FOUND);
+
+        checkUserIsParticipant(user, session);
+        List<ChatMessageResource> chatMessageResources = mapperFacade.mapAsList(session.getChatMessages(), ChatMessageResource.class);
+        
+        return new ResponseEntity<>(chatMessageResources, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{sessionId}/end", method = RequestMethod.POST)
