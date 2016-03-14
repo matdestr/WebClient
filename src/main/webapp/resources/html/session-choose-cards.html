@@ -1,0 +1,17 @@
+<toolbar></toolbar>
+<div id="main-content">
+    <ul>
+        <card-detail *ngFor="#card of cards"
+                     [card]="card"
+                     [cardClassName]="'card-small'"
+                     (click)="onSessionCardClick(card)">
+        </card-detail>
+    </ul>
+
+    <button class="profile-button"
+                type="submit"
+                name="add-card"
+                (click)="onAddCardsClick()">
+        <i class="glyphicon glyphicon-plus"></i> ADD CARDS
+    </button>
+</div>

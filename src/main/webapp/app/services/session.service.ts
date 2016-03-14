@@ -10,6 +10,7 @@ import {URLSearchParams} from "angular2/http";
 
 import {CreateTopicModel} from "../entities/topic/create-topic-model";
 import {CreateSessionModel} from "../entities/session/dto/create-session-model";
+import {CreateCardModel} from "../entities/category/dto/create-card-model";
 
 @Injectable()
 export class SessionService {
@@ -44,7 +45,22 @@ export class SessionService {
         return this._authHttp.get(SessionService.endPoint);
     }
 
-    public getCardDetailsOfSession(sessionId:Number):Observable<Response>{
-        return this._authHttp.get(SessionService.endPoint+"/"+sessionId+"/all-cards")  ;
+    public getCardDetailsOfSession(sessionId:number):Observable<Response>{
+        return this._authHttp.get(SessionService.endPoint+"/"+sessionId+"/all-cards");
+    }
+
+    public addCardToSession(sessionId:number,card:CreateCardModel):Observable<Response>{
+        var searchParams:URLSearchParams = new URLSearchParams();
+        searchParams.append("sessionId", sessionId.toString());
+
+        var headers:Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        var options:RequestOptions = new RequestOptions();
+        options.search = searchParams;
+        options.headers = headers;
+
+        return this._authHttp.post(SessionService.endPoint+"/"+sessionId+"/all-cards", JSON.stringify(card), options).retry(2);
+
     }
 }

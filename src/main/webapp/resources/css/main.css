@@ -6674,6 +6674,9 @@ form.invitation-accept-form {
   #game-svg-container #radio-button-group-session {
     display: none; }
 
+#radio-button-group-session {
+  color: red; }
+
 #container {
   margin-top: 2em;
   margin-left: 2em; }

@@ -6,6 +6,7 @@ import {User} from "../../entities/user/user";
 import {Email} from "../../entities/user/email";
 import {SessionService} from "../../services/session.service";
 import {InvitationService} from "../../services/invitation.service";
+import {SessionInvitationService} from "../../services/session-invitation.service";
 
 @Component({
     selector: 'invite-users',
@@ -18,7 +19,7 @@ export class InviteUsersComponent{
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
-                private _invitationService:InvitationService) {
+                private _sessionInvitationService: SessionInvitationService) {
         this.sessionid= +_routeArgs.params["sessionId"];
     }
 
@@ -30,7 +31,7 @@ export class InviteUsersComponent{
     private onSubmit(form) {
         for(let user of this.usersToInvite){
             let userEmail:string = user.email;
-            this._invitationService.getInvitationsForUser(userEmail);
+            this._sessionInvitationService.inviteUsersToSession(this.sessionid,userEmail);
         }
 
         this._router.navigate(["/SessionAddCards",{sessionId:this.sessionid}])

@@ -1,5 +1,5 @@
-System.register(['angular2/platform/browser', './components/app.component', "angular2/router", "angular2/http", "angular2/core", "./libraries/angular2-jwt", "./services/token.service", "./services/user.service", "./services/category.service", "./services/organization.service", "./components/widget/toolbar.component", "./services/tag.service", "./services/topic.service", "./services/invitation.service", "./services/card-details.service", "./services/session.service", "./services/session-game.service"], function(exports_1) {
-    var browser_1, app_component_1, router_1, http_1, core_1, angular2_jwt_1, token_service_1, user_service_1, category_service_1, organization_service_1, toolbar_component_1, tag_service_1, topic_service_1, invitation_service_1, card_details_service_1, session_service_1, session_game_service_1;
+System.register(['angular2/platform/browser', './components/app.component', "angular2/router", "angular2/http", "angular2/core", "./libraries/angular2-jwt", "./services/token.service", "./services/user.service", "./services/category.service", "./services/organization.service", "./components/widget/toolbar.component", "./services/tag.service", "./services/topic.service", "./services/invitation.service", "./services/card-details.service", "./services/session.service", "./services/session-invitation.service"], function(exports_1) {
+    var browser_1, app_component_1, router_1, http_1, core_1, angular2_jwt_1, token_service_1, user_service_1, category_service_1, organization_service_1, toolbar_component_1, tag_service_1, topic_service_1, invitation_service_1, card_details_service_1, session_service_1, session_invitation_service_1;
     return {
         setters:[
             function (browser_1_1) {
@@ -50,15 +50,15 @@ System.register(['angular2/platform/browser', './components/app.component', "ang
             function (session_service_1_1) {
                 session_service_1 = session_service_1_1;
             },
-            function (session_game_service_1_1) {
-                session_game_service_1 = session_game_service_1_1;
+            function (session_invitation_service_1_1) {
+                session_invitation_service_1 = session_invitation_service_1_1;
             }],
         execute: function() {
             browser_1.bootstrap(app_component_1.AppComponent, [
                 router_1.ROUTER_PROVIDERS,
                 http_1.HTTP_PROVIDERS,
                 token_service_1.TokenService, user_service_1.UserService, organization_service_1.OrganizationService, category_service_1.CategoryService,
-                tag_service_1.TagService, topic_service_1.TopicService, invitation_service_1.InvitationService, card_details_service_1.CardDetailsService, session_service_1.SessionService, session_game_service_1.SessionGameService,
+                tag_service_1.TagService, topic_service_1.TopicService, invitation_service_1.InvitationService, card_details_service_1.CardDetailsService, session_service_1.SessionService, session_invitation_service_1.SessionInvitationService,
                 toolbar_component_1.ToolbarComponent,
                 core_1.provide(angular2_jwt_1.AuthHttp, {
                     useFactory: function (http) {

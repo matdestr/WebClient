@@ -1,15 +1,70 @@
 <toolbar></toolbar>
-<ul>
-    <card-detail *ngFor="#sessionCard of sessionCards"
-                 [card]="sessionCard"
-                 [cardClassName]="'card-small'"
-                 (click)="onSessionCardClick(sessionCard)">
-    </card-detail>
-</ul>
 
-<button (click)="onAddCardsClick()"
-        name="add-card"
-        class="btn btn-default"
-        data-dismiss="modal">
-    <i class="glyphicon glyphicon-floppy-disk"></i> Choose Cards
-</button>
+<div id="main-content">
+    <div class="forms container-fluid flex-container">
+        <div class="forms-panel panel col-sm-6 flex-item" style="margin-top:3em">
+
+            <div class="panel-heading">
+                <h1 class="separator-dotted">Add a new card</h1>
+
+                <div id="error" *ngIf="errors.length > 0" class="alert alert-danger">
+                    <ul>
+                        <li *ngFor="#error of errors; #i = index">
+                            {{error}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form #cardForm="ngForm"
+                      name="form-new-topic"
+                      role="form">
+                    <section class="forms-section">
+                        <h2>Text</h2>
+                        <div class="input-group forms-input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                            <input id="cardText"
+                                   name="card-text"
+                                   class="form-control"
+                                   type="text"
+                                   placeholder="Card text"
+                                   required
+                                   #categoryName="ngForm"
+                                   [(ngModel)]="form.text"> </div>
+                        <h2>ImageUrl</h2>
+                        <div class="input-group forms-input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                            <input id="cardImage"
+                                   name="card-image"
+                                   class="form-control"
+                                   type="text"
+                                   placeholder="Url of your image"
+                                   required
+                                   #categoryName="ngForm"
+                                   [(ngModel)]="form.imageUrl"> </div>
+                        <img class="cardImage" src="{{form.imageUrl}}">
+
+
+                    </section>
+
+                    <section>
+                        <div class="forms-input-group clear-both text-center">
+                            <button type="submit"
+                                    name="add-topic"
+                                    (click)="addThisCard()">
+                                <i class="glyphicon glyphicon-floppy-disk"></i> ADD & CONTINUE
+                            </button>
+                        </div>
+                        <div class="forms-input-group clear-both text-center">
+                            <button type="submit"
+                                    name="add-topic"
+                                    (click)="addAnotherCard()">
+                                <i class="glyphicon glyphicon-plus-sign"></i> ADD ANOTHER CARD
+                            </button>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
