@@ -133,6 +133,8 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                             var sessionObject = _a[_i];
                             var session = session_list_item_1.SessionListItem.createEmptySessionListItem().deserialize(sessionObject);
                             _this.sessions.push(session);
+                            console.log(session.sessionStatus);
+                            console.log(JSON.stringify(session));
                             switch (session.sessionStatus) {
                                 case session_status_1.SessionStatus.FINISHED:
                                     _this.previousSessions.push(session);

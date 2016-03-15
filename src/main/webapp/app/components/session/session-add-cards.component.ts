@@ -48,13 +48,9 @@ export class SessionAddCardsComponent{
         }
     }
 
-    public addAnotherCard():void{
-        this._sessionService.addCardToSession(this.sessionId,this.form)
-            .subscribe(
-                data => console.log('hoera'),
-                error => this.handleErrors(error)
-            );
-        this._router.navigate(["/SessionAddCards", {sessionId:this.sessionId}])
+    public confirmCards():void{
+        this._sessionService.confirmAddedCards(this.sessionId);
+        this._router.navigate(["/SessionReviewCards", {sessionId:this.sessionId}])
     }
 
     public addThisCard():void{
@@ -62,6 +58,6 @@ export class SessionAddCardsComponent{
             .subscribe(
                 error => this.handleErrors(error)
             );
-        this._router.navigate(["/SessionReviewCards",{sessionId:this.sessionId}])
+        this._router.navigate(["/SessionAddCards",{sessionId:this.sessionId}])
     }
 }

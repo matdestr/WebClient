@@ -111,6 +111,8 @@ export class DashboardComponent {
                 for(let sessionObject of data.json()) {
                     let session:SessionListItem = SessionListItem.createEmptySessionListItem().deserialize(sessionObject);
                     this.sessions.push(session);
+                    console.log(session.sessionStatus);
+                    console.log(JSON.stringify(session));
                     switch (session.sessionStatus){
                         case SessionStatus.FINISHED:
                             this.previousSessions.push(session);break;
@@ -136,7 +138,7 @@ export class DashboardComponent {
     }
 
     public toSession(sessionId: number){
-        this._router.navigate(["/ActiveSession"],{sessionId:sessionId})
+        this._router.navigate(["/ActiveSession"],{sessionId:sessionId}) ;
     }
 
     public nextOrgPage(){

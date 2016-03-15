@@ -1,17 +1,29 @@
 <toolbar></toolbar>
-<div id="main-content">
-    <ul>
-        <card-detail *ngFor="#card of cards"
-                     [card]="card"
-                     [cardClassName]="'card-small'"
-                     (click)="onSessionCardClick(card)">
-        </card-detail>
-    </ul>
+<div id="main-content-detail">
+    <h1 style="margin-left: 2em">Choose Card</h1>
+    <div class="margin-container-4 text-center">
+        <ul>
+            <div  *ngFor="#card of sessionCards" style="width: 20%;display: inline-block">
+                <card-detail
+                             [card]="card"
+                             [cardClassName]="'card-small'"
+                             [selectable]="true"
+                             [clickable]="true"
+                             (cardClick)="onSessionCardClick($event)">
+                </card-detail>
+                <h3>Reviews</h3>
+                <p *ngFor="#review of cardReviews">{{review.message}}</p>
+            </div>
+        </ul>
 
-    <button class="profile-button"
-                type="submit"
-                name="add-card"
-                (click)="onAddCardsClick()">
-        <i class="glyphicon glyphicon-plus"></i> ADD CARDS
-    </button>
+
+        <div class="margin-container-6">
+            <button (click)="onContinueClick()"
+                    type="submit"
+                    name="review-card"
+                    class="add-new-button">
+                <i class="glyphicon glyphicon-arrow-right"></i> CHOOSE CARD
+            </button>
+        </div>
+    </div>
 </div>

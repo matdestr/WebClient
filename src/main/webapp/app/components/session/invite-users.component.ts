@@ -28,25 +28,24 @@ export class InviteUsersComponent{
         this.usersToInvite.push(new Email());
     }
 
-    private onSubmit(form) {
-        for(let user of this.usersToInvite){
-            let userEmail:string = user.email;
+    public onSubmit(form) {
+        for(let email of this.usersToInvite){
+            let userEmail:string = email.email;
             this._sessionInvitationService.inviteUsersToSession(this.sessionid,userEmail);
         }
-
         this._router.navigate(["/SessionAddCards",{sessionId:this.sessionid}])
     }
 
 
-    private addUserEntry() {
+    public addUserEntry() {
         this.usersToInvite.push(new Email());
     }
 
-    private filterEmails() {
+    public filterEmails() {
         return this.usersToInvite.filter(u => {return u && u.email.length > 0});
     }
 
-    private removeUserFromUsersToInvite(index : number) {
+    public removeUserFromUsersToInvite(index : number) {
         this.usersToInvite.splice(index, 1);
     }
 }

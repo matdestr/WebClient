@@ -2,6 +2,7 @@ import {Serializable} from "../../util/serializable";
 import {User} from "../user/user";
 import {Category} from "./category";
 import {Topic} from "../topic/topic";
+import {Comment} from "./comment";
 
 export class CardDetails implements Serializable<CardDetails> {
 
@@ -9,14 +10,14 @@ export class CardDetails implements Serializable<CardDetails> {
     public text:string;
     public imageUrl:string;
     public active:boolean;
-    // todo when comments needed, add comments array here!
-
+    public comments:Comment[];
 
     constructor(cardDetailsId:number, text:string, imageUrl:string, active:boolean) {
         this.cardDetailsId = cardDetailsId;
         this.text = text;
         this.imageUrl = imageUrl;
         this.active = active;
+        this.comments= [];
     }
 
     public static createEmptyCard():CardDetails {

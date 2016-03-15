@@ -16,12 +16,13 @@ import {InvitationService} from "./services/invitation.service";
 import {CardDetailsService} from "./services/card-details.service";
 import {SessionService} from  "./services/session.service";
 import {SessionInvitationService} from "./services/session-invitation.service";
+import {SessionGameService} from "./services/session-game.service";
 
 bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     TokenService, UserService, OrganizationService, CategoryService,
-    TagService, TopicService, InvitationService, CardDetailsService,SessionService,SessionInvitationService,
+    TagService, TopicService, InvitationService, CardDetailsService,SessionService,SessionInvitationService, SessionGameService,
     ToolbarComponent,
     provide(AuthHttp, {
         useFactory: (http) => {

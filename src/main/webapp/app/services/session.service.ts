@@ -63,4 +63,24 @@ export class SessionService {
         return this._authHttp.post(SessionService.endPoint+"/"+sessionId+"/all-cards", JSON.stringify(card), options).retry(2);
 
     }
+
+    public confirmAddedCards(sessionId:number){
+        return this._authHttp.post(SessionService.endPoint+"/"+sessionId+"/all-cards/confirm");
+    }
+
+    public chooseCardsForSession(sessionId:number,cardDetailsIds:number[]){
+        var searchParams:URLSearchParams = new URLSearchParams();
+        searchParams.append("sessionId", sessionId.toString());
+        searchParams.append("cardDetailsId", cardDetailsIds.toString());
+
+        var headers:Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        var options:RequestOptions = new RequestOptions();
+        options.search = searchParams;
+        options.headers = headers;
+
+        return this._authHttp.post(SessionService.endPoint+"/"+sessionId+"/chosen-cards", "",options);
+
+    }
 }

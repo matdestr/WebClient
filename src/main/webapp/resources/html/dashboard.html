@@ -25,6 +25,8 @@
         <div *ngFor="#session of activeSessionsSubset">
         <div class="red-block" (click)="toSession()">
             <h3 class="text-center">Session {{session.sessionId}}</h3>
+            <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}} Participant(s)</h6>
+            <h6 class="text-center"><i class="glyphicon glyphicon-globe"></i> {{session.organizationTitle}}</h6>
             <!-- <div  class="progressdiv">
                 <div class="progress">
                     <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar"
@@ -64,6 +66,8 @@
         <div *ngFor="#session of previousSessionsSubset">
             <div class="red-block" (click)="toSession()">
                 <h3 class="text-center">Session {{session.sessionId}}</h3>
+                <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}} Participant(s)</h6>
+                <h6 class="text-center"><i class="glyphicon glyphicon-globe"></i> {{session.organizationTitle}}</h6>
             </div>
         </div>
         <div class="organization-arrow">

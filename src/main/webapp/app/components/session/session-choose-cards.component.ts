@@ -7,6 +7,7 @@ import {CardDetailComponent} from "../cards/card-detail.component";
 import {TopicService} from "../../services/topic.service";
 import {SessionService} from "../../services/session.service";
 import {Session} from "../../entities/session/session";
+import {CreateReviewModel} from "../../entities/category/dto/create-review-model";
 
 @Component({
     selector: 'session-choose-cards',
@@ -15,27 +16,29 @@ import {Session} from "../../entities/session/session";
 })
 export class SessionChooseCardsComponent{
     private session: Session = Session.createEmptySession();
-    private cards:CardDetails[] = [];
+    private sessionCards:CardDetails[] = [];
     private sessionCardsToAdd:CardDetails[] = [];
-    private currentCard:CardDetails;
+    private sessionId: number;
+    private cardDetailIds:number[]=[];
+    private cardReviews:CreateReviewModel[]=[];
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
-                private _sessionService: SessionService,
-                private _cardDetailService: CardDetailsService) {
+                private _sessionService: SessionService) {
 
     }
 
     ngOnInit():any {
-        var sessionId:number = +this._routeArgs.params["sessionId"];
+         this.sessionId= +this._routeArgs.params["sessionId"];
 
-        this._sessionService.getCardDetailsOfSession(sessionId).subscribe(
+        this._sessionService.getCardDetailsOfSession(this.sessionId).subscribe(
             data => {
                 for (let card of data.json()) {
-                    this.cards.push(CardDetails.createEmptyCard().deserialize(card));
+                    this.sessionCards.push(CardDetails.createEmptyCard().deserialize(card));
                 }
             }
-        )
+        );
+
     }
 
     public onSessionCardClick(card:CardDetails):void {
@@ -45,21 +48,23 @@ export class SessionChooseCardsComponent{
 
         if (index < 0) {
             this.sessionCardsToAdd.push(card);
-
         } else {
             if (!card.active)
                 this.sessionCardsToAdd.splice(index, 1);
         }
     }
 
-    public onAddCardsClick() {
-        for (let sessionCard of this.sessionCardsToAdd) {
 
+    public onContinueClick() {
+        for (let catCard of this.sessionCardsToAdd) {
+           this.cardDetailIds.push(catCard.cardDetailsId);
         }
+        this._sessionService.chooseCardsForSession(this.sessionId,this.cardDetailIds);
+        this.navigateUp();
     }
 
     public navigateUp() {
-        this._router.navigate(["/TopicDetail", {topicId: this.topic.topicId}])
+        this._router.navigate(["/ActiveSession", {sessionId: this.sessionId}])
     }
 
 }

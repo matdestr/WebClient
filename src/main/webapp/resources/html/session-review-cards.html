@@ -1,0 +1,34 @@
+<toolbar></toolbar>
+<div id="main-content-detail">
+    <h1 style="margin-left: 2em">Review Cards</h1>
+    <div class="margin-container-4 text-center">
+            <ul>
+                <div  *ngFor="#card of sessionCards" style="width: 20%;display: inline-block">
+                <card-detail
+                             [card]="card"
+                             [cardClassName]="'card-small'"
+                             [selectable]="true"
+                             [clickable]="true">
+                </card-detail>
+
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input name="card-review"
+                           class="form-control"
+                           type="text"
+                           placeholder="Review this card"
+                            [(ngModel)]="getCreateReviewModel(card.cardDetailsId).message">
+                </div>
+
+            </ul>
+
+
+            <div class="margin-container-6">
+                <button (click)="onContinueClick()"
+                        type="submit"
+                        name="review-card"
+                        class="add-new-button">
+                    <i class="glyphicon glyphicon-arrow-right"></i> REVIEW CARDS
+                </button>
+            </div>
+           </div>
+</div>

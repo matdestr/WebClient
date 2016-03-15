@@ -53,7 +53,7 @@
   .card-block {
     margin: $default-margin $margin-side-card-block;
     display: block;
-    height: 60vh;
+    height: 30vh;
     overflow-y: scroll;
 
     .card-text {
@@ -62,7 +62,7 @@
       display: block; /* Fallback for non-webkit */
       display: -webkit-box;
       max-width: $card-width - $margin-side-card-block * 2;
-      height: $card-text-size * $card-line-height * $card-lines-amount; /* Fallback for non-webkit */
+      height: 30vh; /* Fallback for non-webkit */
       margin: 0 auto;
       font-size: $card-text-size;
       line-height: $card-line-height;
@@ -73,13 +73,13 @@
 
       @media screen and (min-width: $breakpoint-tablet) {
         max-width: $card-width-tablet - $margin-side-card-block * 2;
-        height: $card-text-size * $card-line-height * $card-lines-amount-tablet; /* Fallback for non-webkit */
+        /*height: $card-text-size * $card-line-height * $card-lines-amount-tablet; /* Fallback for non-webkit */
         -webkit-line-clamp: $card-lines-amount-tablet;
       }
 
       @media screen and (min-width: $breakpoint-desktop) {
         max-width: $card-width-desktop - $margin-side-card-block * 2;
-        height: $card-text-size * $card-line-height * $card-lines-amount-desktop; /* Fallback for non-webkit */
+        /*height: $card-text-size * $card-line-height * $card-lines-amount-desktop; /* Fallback for non-webkit */
         -webkit-line-clamp: $card-lines-amount-desktop;
       }
     }

@@ -230,6 +230,7 @@ public class DatabaseSeeder {
         session1.setTopic(topic1);
         session1.setAmountOfCircles(5);
         session1.setSessionStatus(SessionStatus.ADDING_CARDS);
+        session1.setParticipantsCanAddCards(true);
 
         ParticipantInfo participantInfo2 = new ParticipantInfo();
         Set<ParticipantInfo> participantInfos2 = new HashSet<>();
