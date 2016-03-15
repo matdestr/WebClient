@@ -20,7 +20,7 @@ export class SessionChooseCardsComponent{
     private sessionCardsToAdd:CardDetails[] = [];
     private sessionId: number;
     private cardDetailIds:number[]=[];
-    private cardReviews:CreateReviewModel[]=[];
+    private cardReviews:string[]=[];
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
@@ -38,6 +38,12 @@ export class SessionChooseCardsComponent{
                 }
             }
         );
+
+        for (let card of this.sessionCards){
+            for (let comment of card.comments){
+                this.cardReviews.push(comment.message);
+            }
+        }
 
     }
 

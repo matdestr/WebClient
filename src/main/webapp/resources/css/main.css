@@ -6401,15 +6401,16 @@ form.invitation-accept-form {
 .card-small {
   display: inline-block;
   margin: 1.5em 0.5em;
+  margin-right: 2em;
   width: 10em; }
   @media screen and (min-width: 600px) {
     .card-small {
       width: 15em;
-      margin: 0 auto; } }
+      margin-right: 2em; } }
   @media screen and (min-width: 1024px) {
     .card-small {
       width: 20em;
-      margin: 0 auto; } }
+      margin-right: 2em; } }
   .card-small .card-img {
     max-height: 7.5em;
     overflow: hidden;
@@ -6509,6 +6510,15 @@ form.invitation-accept-form {
   fill: white;
   stroke: #2a2c2b; }
 
+.game-card-number {
+  transition: x 0.75s ease-in-out, y 0.75s ease-in-out; }
+
+.game-card-position-overlay {
+  cursor: pointer; }
+
+.game-card-position-selected {
+  stroke: #FF8A00; }
+
 .game-card-preview-image-icon {
   fill: #2a2c2b; }
 
@@ -6561,7 +6571,7 @@ form.invitation-accept-form {
   display: block;
   margin: 0 auto; }
 
-.card-name, .chat-title {
+.card-name, .current-user-name, .chat-title {
   padding-top: 0.5em !important;
   margin-bottom: 0.5em; }
 
@@ -6675,9 +6685,6 @@ form.invitation-accept-form {
 .sessionCheckBox {
   margin-right: auto;
   margin-left: auto; }
-  #game-svg-container .sessionCheckBox {
-    margin-right: auto;
-    margin-left: auto; }
 
 .sessionCheckBox {
   margin-right: 2em;

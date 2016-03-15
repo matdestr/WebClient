@@ -41,6 +41,8 @@
         </div>
 
         <div id="circle-container" class="col-xs-12 col-md-6">
+            <h1 *ngIf="currentParticipant" class="current-user-name text-center">{{currentParticipant.username}}</h1>
+            
             <div id="game-svg-container">
                 <svg id="game-svg" version="1.1" viewBox="0 0 700 700">
                     <!--<circle cx="350" cy="350" r="100" stroke="red" stroke-width="30" fill="none"></circle>-->
@@ -69,8 +71,45 @@
                           [attr.height]="c.cardHeight"
                           [attr.width]="c.cardWidth"
                           [attr.stroke-width]="cardBorderThickness"
+                          [class.game-card-position-selected]="c == selectedCard">
+                    </rect>
+                    
+                    <!--<image *ngFor="#c of cardPositions"
+                           [attr.x]="c.positionLeft + 5"
+                           [attr.y]="c.positionTop + 5"
+                           [attr.height]="c.cardHeight - 10"
+                           [attr.width]="c.cardWidth - 10"
+                           [attr.xlink:href]="c.cardDetails.imageUrl">
+                    </image>-->
+                    
+                    <text *ngFor="#c of cardPositions; #i = index"
+                          class="game-card-number"
+                          style="font-size: 200%;"
+                          [attr.x]="c.positionLeft + 10"
+                          [attr.y]="c.positionTop + 30">
+                        {{i + 1}}
+                    </text>
+
+                    <rect *ngFor="#c of cardPositions"
+                          class="game-card-position-overlay"
+                          [attr.x]="c.positionLeft"
+                          [attr.y]="c.positionTop"
+                          [attr.height]="c.cardHeight"
+                          [attr.width]="c.cardWidth"
+                          fill-opacity="0"
                           (click)="onCardClicked(c)">
                     </rect>
+
+                    <!--<rect *ngFor="#c of cardPositions"
+                          class="game-card-position"
+                          [attr.x]="c.positionLeft"
+                          [attr.y]="c.positionTop"
+                          [attr.height]="c.cardHeight"
+                          [attr.width]="c.cardWidth"
+                          [attr.stroke-width]="cardBorderThickness"
+                          [class.game-card-position-selected]="c == selectedCard"
+                          (click)="onCardClicked(c)">
+                    </rect>-->
 
                     <!-- Fancy stuff for card 'preview' -->
                     <!--<rect *ngFor="#c of cardPositions"

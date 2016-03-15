@@ -27,7 +27,8 @@ public class SessionResource {
     private Integer topicId;
     private UserResource organizer;
     private List<ParticipantInfoResource> participantInfo;
-    private int currentParticipantPlayingUserId;
+    //private int currentParticipantPlayingUserId;
+    private UserResource currentParticipantPlaying;
     //private List<CardPositionResource> cardPositions;
     private int minNumberOfCardsPerParticipant;
     private int maxNumberOfCardsPerParticipant;

@@ -22,7 +22,7 @@ bootstrap(AppComponent, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
     TokenService, UserService, OrganizationService, CategoryService,
-    TagService, TopicService, InvitationService, CardDetailsService,SessionService,SessionInvitationService, SessionGameService,
+    TagService, TopicService, InvitationService, CardDetailsService,SessionService, SessionGameService, SessionInvitationService,
     ToolbarComponent,
     provide(AuthHttp, {
         useFactory: (http) => {

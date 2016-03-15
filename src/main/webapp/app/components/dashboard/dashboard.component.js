@@ -160,7 +160,7 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                     this._router.navigate(["/OrganizationDetail", { organizationId: organizationId }]);
                 };
                 DashboardComponent.prototype.toSession = function (sessionId) {
-                    this._router.navigate(["/ActiveSession"], { sessionId: sessionId });
+                    this._router.navigate(["/ActiveSession", { sessionId: sessionId }]);
                 };
                 DashboardComponent.prototype.nextOrgPage = function () {
                     this.myLeftDisplay = "block";
