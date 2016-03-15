@@ -1,9 +1,19 @@
 <toolbar></toolbar>
 <div id="main-content-detail">
     <h1 style="margin-left: 2em">Review Cards</h1>
-    <div class="margin-container-4 text-center">
+    <div id="timeline" class="col-sm-1">
+        <ul>
+            <li><i class="glyphicon glyphicon-user"></i></li>
+            <li><i class="glyphicon glyphicon-plus"></i></li>
+            <li class="active"><i class="glyphicon glyphicon-comment"></i></li>
+            <li><i class="glyphicon glyphicon-ok"></i></li>
+            <li><i class="glyphicon glyphicon-send"></i></li>
+        </ul>
+    </div>
+
+    <div class="margin-container-4 text-center col-sm-6">
             <ul>
-                <div  *ngFor="#card of sessionCards" style="width: 20%;display: inline-block;margin-right: 2em">
+                <div  *ngFor="#card of sessionCards" style="width:300px;display: inline-block;margin-right: 2em">
                 <card-detail
                              [card]="card"
                              [cardClassName]="'card-small'">

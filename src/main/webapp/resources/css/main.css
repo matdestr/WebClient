@@ -6683,12 +6683,43 @@ form.invitation-accept-form {
   margin-bottom: 1em; }
 
 .sessionCheckBox {
-  margin-right: auto;
-  margin-left: auto; }
-
-.sessionCheckBox {
   margin-right: 2em;
   margin-top: 1em; }
+
+#timeline {
+  display: inline-block;
+  margin-top: 10%;
+  margin-left: 5%;
+  margin-right: 10%; }
+  #timeline li {
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    line-height: 70px;
+    background: dimgray;
+    color: white;
+    position: relative;
+    margin-bottom: 1em;
+    border-radius: 35px;
+    margin-top: 30px;
+    font-size: 20px;
+    padding-top: 5px; }
+  #timeline li:first-child {
+    margin-top: 0; }
+  #timeline li:before {
+    position: absolute;
+    border: 1px solid rgba(156, 156, 156, 0.81);
+    width: 0;
+    height: 30px;
+    display: block;
+    content: '';
+    left: 50%;
+    z-index: 1;
+    top: -30px; }
+  #timeline li:first-child:before {
+    display: none; }
+  #timeline .active {
+    background: #B71C1C; }
 
 #container {
   margin-top: 2em;

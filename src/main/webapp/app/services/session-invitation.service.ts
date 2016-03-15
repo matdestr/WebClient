@@ -18,12 +18,12 @@ export class SessionInvitationService{
     }
 
     public inviteUsersToSession(sessionId: number,email: string): Observable<Response> {
-        var searchParams: URLSearchParams = new URLSearchParams();
+        var searchParams:URLSearchParams = new URLSearchParams();
+        var requestOptions:RequestOptions = new RequestOptions();
         searchParams.append("email", "" + email);
 
-        var options: RequestOptions = new RequestOptions();
-        options.search = searchParams;
+        requestOptions.search = searchParams;
 
-        return this._authHttp.get(SessionInvitationService.endPoint+"/"+sessionId+"/invite",options);
+        return this._authHttp.post(SessionInvitationService.endPoint+"/"+sessionId+"/invite","",requestOptions);
     }
 }
