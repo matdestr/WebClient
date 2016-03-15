@@ -2,12 +2,10 @@ package be.kdg.kandoe.backend.service.api;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.cards.CardPosition;
-import be.kdg.kandoe.backend.model.cards.Comment;
 import be.kdg.kandoe.backend.model.sessions.ParticipantInfo;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.users.User;
 
-import java.util.List;
 import java.util.Set;
 
 public interface SessionGameService {
@@ -25,8 +23,7 @@ public interface SessionGameService {
     //void confirmCardsChosen(Session session, User user);
     void confirmChoosingCards(Session session);
 
-    void addReview(User user, CardDetails cardDetails, Comment comment);
-    void confirmReviews(Session session);
+    void confirmReviews(Session session, User user);
 
     ParticipantInfo getNextParticipant(Session session);
 

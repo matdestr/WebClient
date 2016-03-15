@@ -42,6 +42,6 @@ public class CardDetails {
     @Size(min = 0)
     private Set<Topic> topics = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 }

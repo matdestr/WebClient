@@ -2,18 +2,17 @@ package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.cards.CardPosition;
-import be.kdg.kandoe.backend.model.cards.Comment;
 import be.kdg.kandoe.backend.model.sessions.CardsChoice;
 import be.kdg.kandoe.backend.model.sessions.ParticipantInfo;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.sessions.SessionStatus;
 import be.kdg.kandoe.backend.model.users.User;
-import be.kdg.kandoe.backend.service.api.CardService;
 import be.kdg.kandoe.backend.service.api.EmailService;
 import be.kdg.kandoe.backend.service.api.SessionGameService;
 import be.kdg.kandoe.backend.service.api.SessionService;
 import be.kdg.kandoe.backend.service.exceptions.SessionGameServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,21 +22,17 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class SessionGameServiceImpl implements SessionGameService {
-    private final CardService cardService;
     private final SessionService sessionService;
     private final EmailService emailService;
 
     @Autowired
-    public SessionGameServiceImpl(SessionService sessionService, EmailService emailService, CardService cardService) {
+    public SessionGameServiceImpl(SessionService sessionService, EmailService emailService) {
         this.sessionService = sessionService;
         this.emailService = emailService;
-        this.cardService = cardService;
     }
 
     @Override
     public void inviteUserForSession(Session session, User user) {
-        // TODO : Max amount or players or not?
-        
         if (session.getSessionStatus() != SessionStatus.CREATED && session.getSessionStatus() != SessionStatus.USERS_JOINING)
             throw new SessionGameServiceException("Cannot invite user when the session has already started");
 
@@ -275,44 +270,25 @@ public class SessionGameServiceImpl implements SessionGameService {
         }
     }
 
-    /*@Override
-    public void confirmCardsChosen(Session session, User user) {
-        if (session.getSessionStatus() != SessionStatus.CHOOSING_CARDS) {
-            throw new SessionGameServiceException("Session not in choosing cards modus");
-        }
-        if (!isUserInSession(session, user)) {
+
+    @Override
+    public void confirmReviews(Session session, User user) {
+        Optional<ParticipantInfo> optional = session.getParticipantInfo().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
+
+        if (optional.isPresent()){
+            optional.get().setReviewingCardsCompleted(true);
+        } else {
             throw new SessionGameServiceException("User not in session");
         }
-        Optional<CardsChoice> cardChoiceOptional = session.getParticipantCardChoices().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
-        if (cardChoiceOptional.isPresent()) {
-            CardsChoice cardsChoice = cardChoiceOptional.get();
-            if (cardsChoice.getChosenCards().size() >= session.getMinNumberOfCardsPerParticipant() && cardsChoice.getChosenCards().size() <= session.getMaxNumberOfCardsPerParticipant()) {
-                cardsChoice.setCardsChosen(true);
-            } else {
-                throw new SessionGameServiceException("User has more/less cards than allowed");
-            }
-        } else {
-            throw new SessionGameServiceException("User didn't choose any cards yet.");
-        }
 
-        if (session.getParticipantCardChoices().stream().allMatch(p -> p.isCardsChosen())) {
-            confirmChoosingCards(session);
-        }
-    }*/
-
-    @Override
-    public void addReview(User user, CardDetails cardDetails, Comment comment) {
-        throw new SessionGameServiceException("Method not implemented");
-    }
-
-    @Override
-    public void confirmReviews(Session session) {
         if (session.getSessionStatus() == SessionStatus.REVIEWING_CARDS && session.isCardCommentsAllowed()) {
-            session.setSessionStatus(SessionStatus.CHOOSING_CARDS);
-            sessionService.updateSession(session);
+            if (session.getParticipantInfo().stream().allMatch(p -> p.isReviewingCardsCompleted())){
+                session.setSessionStatus(SessionStatus.CHOOSING_CARDS);
+            }
         } else {
             throw new SessionGameServiceException("Session not in reviewing cards modus");
         }
+        sessionService.updateSession(session);
     }
 
     @Override

@@ -4,10 +4,13 @@ import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 public class CommentResource {
     private int commentId;
+    private String message;
     private UserResource user;
-    // TODO : Custom mapper for LocalDateTime ?
+    private LocalDateTime datePosted;
 }

@@ -2,6 +2,7 @@ package be.kdg.kandoe.frontend.controller.rest;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.cards.CardPosition;
+import be.kdg.kandoe.backend.model.cards.Comment;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.sessions.SessionStatus;
 import be.kdg.kandoe.backend.model.users.User;
@@ -10,9 +11,11 @@ import be.kdg.kandoe.backend.service.api.SessionGameService;
 import be.kdg.kandoe.backend.service.api.SessionService;
 import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.controller.resources.cards.CardDetailsResource;
+import be.kdg.kandoe.frontend.controller.resources.cards.CommentResource;
 import be.kdg.kandoe.frontend.controller.resources.cards.CreateCardDetailsResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.CardPositionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.chat.ChatMessageResource;
+import be.kdg.kandoe.frontend.controller.resources.sessions.reviews.CreateCardReviewOverview;
 import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
 import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import ma.glasnost.orika.MapperFacade;
@@ -25,6 +28,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -230,6 +234,48 @@ public class SessionGameRestController {
         List<CardPositionResource> cardPositionResources = mapperFacade.mapAsList(cardPositions, CardPositionResource.class);
 
         return new ResponseEntity<>(cardPositionResources, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{sessionId}/reviews", method = RequestMethod.POST)
+    public ResponseEntity addReview(@AuthenticationPrincipal User user, @PathVariable("sessionId") int sessionId, @Valid @RequestBody CreateCardReviewOverview createCardReviewOverview) {
+        Session session = sessionService.getSessionById(sessionId);
+
+        if (session == null)
+            throw new CanDoControllerRuntimeException("Could not find session with ID " + sessionId, HttpStatus.NOT_FOUND);
+
+        if (session.getSessionStatus() != SessionStatus.REVIEWING_CARDS || !session.isCardCommentsAllowed()){
+            throw new CanDoControllerRuntimeException("Session is not in review modus or comments allowed");
+        }
+
+        this.checkUserIsParticipant(user, session);
+
+        CardDetails cardDetails = cardService.getCardDetailsById(createCardReviewOverview.getCardDetailsId());
+        if (cardDetails == null){
+            throw new CanDoControllerRuntimeException("Could not find carddetails with ID " + createCardReviewOverview.getCardDetailsId(), HttpStatus.NOT_FOUND);
+        }
+
+        Comment comment = cardService.addReview(user, cardDetails, createCardReviewOverview.getMessage() );
+        CommentResource commentResource = mapperFacade.map(comment, CommentResource.class);
+
+        return new ResponseEntity<>(commentResource, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{sessionId}/reviews/confirm", method = RequestMethod.POST)
+    public ResponseEntity confirmReviews(@AuthenticationPrincipal User user, @PathVariable("sessionId") int sessionId) {
+        Session session = sessionService.getSessionById(sessionId);
+
+        if (session == null)
+            throw new CanDoControllerRuntimeException("Could not find session with ID " + sessionId, HttpStatus.NOT_FOUND);
+
+        if (session.getSessionStatus() != SessionStatus.REVIEWING_CARDS || !session.isCardCommentsAllowed()){
+            throw new CanDoControllerRuntimeException("Session is not in review modus or comments allowed");
+        }
+
+        this.checkUserIsParticipant(user, session);
+
+        sessionGameService.confirmReviews(session, user);
+
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{sessionId}/positions", method = RequestMethod.PUT)
