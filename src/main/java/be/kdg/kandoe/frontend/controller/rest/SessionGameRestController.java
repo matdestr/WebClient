@@ -33,14 +33,7 @@ import java.util.Set;
 @RequestMapping("/api/sessions")
 @PreAuthorize("isAuthenticated()")
 public class SessionGameRestController {
-    // TODO : GET   /{sessionId}/all-cards
-    // TODO : POST  /{sessionId}/all-cards
-    // TODO : GET   /{sessionId}/chosen-cards
-    // TODO : POST  /{sessionId}/chosen-cards
-    // TODO : GET   /{sessionId}/reviews
-    // TODO : POST  /{sessionId}/reviews
-    // TODO : GET   /{sessionId}/positions
-    // TODO : PUT   /{sessionId}/positions
+
 
     private UserService userService;
     private SessionService sessionService;

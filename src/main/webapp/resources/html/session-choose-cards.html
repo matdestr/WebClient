@@ -3,7 +3,7 @@
     <h1 style="margin-left: 2em">Choose Card</h1>
     <div class="margin-container-4 text-center">
         <ul>
-            <div  *ngFor="#card of sessionCards" style="width: 20%;display: inline-block">
+            <div  *ngFor="#card of sessionCards" style="width: 20%;display: inline-block;margin-right: 2em">
                 <card-detail
                              [card]="card"
                              [cardClassName]="'card-small'"
@@ -13,7 +13,7 @@
                 </card-detail>
                 <h3>Reviews</h3>
                 <ul>
-                <li *ngFor="#review of cardReviews">{{review.message}}</li>
+                <li *ngFor="#review of cardReviews">{{review}}</li>
                 </ul>
             </div>
         </ul>
