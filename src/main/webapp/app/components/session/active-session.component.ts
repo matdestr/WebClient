@@ -41,6 +41,7 @@ export class ActiveSessionComponent implements OnInit {
     private circles : Circle[];
     private cardPositions : CardPosition[];
     private selectedCard : CardPosition;
+    private currentParticipant : User;
     
     private circleSpaceHeight : number = 700;
     private circleSpaceWidth : number = 700;
@@ -69,6 +70,7 @@ export class ActiveSessionComponent implements OnInit {
             .subscribe(data => {
                 this.session = this.session.deserialize(data.json());
                 this.initCircles();
+                this.currentParticipant = this.session.currentParticipantPlaying;
             }, error => console.error(error));
     }
     
@@ -88,7 +90,12 @@ export class ActiveSessionComponent implements OnInit {
             self.stompClient.subscribe('/topic/sessions/' + self.sessionId + '/positions', function (data) {
                 console.log('Received web socket message for card position update');
                 self.updateCardPositions();
-            })
+            });
+            
+            self.stompClient.subscribe('/topic/sessions/' + self.sessionId + '/current-participant', function (data) {
+                let currentUser : User = JSON.parse(data.body);
+                self.updateCurrentParticipant(currentUser);
+            });
         });
     }
     
@@ -251,7 +258,11 @@ export class ActiveSessionComponent implements OnInit {
                 this.spreadCardsOnCircles();
             }, error => console.error(error));
     }
-
+    
+    private updateCurrentParticipant(user : User) : void {
+        this.currentParticipant = user;
+    }
+    
     public send() : void {
         if (this.stompClient) {
             if (this.currentMessage || this.currentMessage.length != 0) {

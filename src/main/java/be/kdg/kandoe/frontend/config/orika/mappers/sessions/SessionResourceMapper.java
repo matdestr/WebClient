@@ -6,6 +6,7 @@ import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.frontend.controller.resources.sessions.AsynchronousSessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.SessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.SynchronousSessionResource;
+import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 import org.springframework.stereotype.Component;
@@ -24,8 +25,14 @@ public class SessionResourceMapper extends CustomMapper<Session, SessionResource
         if (session.getTopic() != null)
             sessionResource.setTopicId(session.getTopic().getTopicId());
 
-        if (session.getCurrentParticipantPlaying() != null)
-            sessionResource.setCurrentParticipantPlayingUserId(session.getCurrentParticipantPlaying().getParticipant().getUserId());
+        /*if (session.getCurrentParticipantPlaying() != null)
+            sessionResource.setCurrentParticipantPlayingUserId(session.getCurrentParticipantPlaying().getParticipant().getUserId());*/
+        
+        if (session.getCurrentParticipantPlaying() != null) {
+            UserResource currentParticipantResource = 
+                    mapperFacade.map(session.getCurrentParticipantPlaying().getParticipant(), UserResource.class);
+            sessionResource.setCurrentParticipantPlaying(currentParticipantResource);
+        }
 
         if (session instanceof SynchronousSession) {
             // Needed to prevent NullPointerException

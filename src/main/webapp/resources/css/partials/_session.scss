@@ -1,5 +1,6 @@
 $card-position-corner-radius: 10;
 $card-position-card-color: white;
+$card-position-selected-color: #FF8A00;
 $card-position-card-border-color: $color-accent;
 $card-position-card-border-thickness: 5;
 
@@ -25,6 +26,18 @@ $card-position-card-border-thickness: 5;
   ry: $card-position-corner-radius;
   fill: $card-position-card-color;
   stroke: $card-position-card-border-color;
+}
+
+.game-card-number {
+  transition: x 0.75s ease-in-out, y 0.75s ease-in-out;
+}
+
+.game-card-position-overlay {
+  cursor: pointer;
+}
+
+.game-card-position-selected {
+  stroke: $card-position-selected-color;
 }
 
 .game-card-preview-image-icon {
@@ -97,7 +110,7 @@ $card-position-card-border-thickness: 5;
   margin: 0 auto;
 }
 
-.card-name, .chat-title {
+.card-name, .current-user-name, .chat-title {
   padding-top: 0.5em !important;
   margin-bottom: 0.5em;
 }
@@ -235,11 +248,6 @@ $card-position-card-border-thickness: 5;
   margin-right: 2em;
   margin-bottom: 1em;
 }
-
-  .sessionCheckBox{
-    margin-right: auto;
-    margin-left: auto;
-  }
 
 .sessionCheckBox{
   margin-right: 2em;

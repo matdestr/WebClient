@@ -178,6 +178,7 @@ public class DatabaseSeeder {
         sessionInProgress2.setCategory(category1);
         sessionInProgress2.setAmountOfCircles(4);
         sessionInProgress2.setMinNumberOfCardsPerParticipant(2);
+        sessionInProgress2.setMaxNumberOfCardsPerParticipant(6);
 
         sessionInProgress2.setCardCommentsAllowed(false);
         sessionInProgress2.setParticipantsCanAddCards(false);
@@ -192,11 +193,15 @@ public class DatabaseSeeder {
         CardDetails cardsChoice2CardDetails1 = category1CardIterator.next();
         CardDetails cardsChoice2CardDetails2 = category1CardIterator.next();
         CardDetails cardsChoice2CardDetails3 = category1CardIterator.next();
+        CardDetails cardsChoice2CardDetails4 = category1CardIterator.next();
+        CardDetails cardsChoice2CardDetails5 = category1CardIterator.next();
+        CardDetails cardsChoice2CardDetails6 = category1CardIterator.next();
         
         List<CardDetails> cardsChoice2ChosenCards = new ArrayList<>();
-        cardsChoice2ChosenCards.add(cardsChoice2CardDetails1);
+        /*cardsChoice2ChosenCards.add(cardsChoice2CardDetails1);
         cardsChoice2ChosenCards.add(cardsChoice2CardDetails2);
-        cardsChoice2ChosenCards.add(cardsChoice2CardDetails3);
+        cardsChoice2ChosenCards.add(cardsChoice2CardDetails3);*/
+        cardsChoice2ChosenCards.addAll(category1.getCards());
 
         CardsChoice cardsChoice2 = new CardsChoice();
         cardsChoice2.setParticipant(testUser);
@@ -206,11 +211,17 @@ public class DatabaseSeeder {
         CardPosition sessionInProgress2CardPosition1 = new CardPosition(cardsChoice2CardDetails1, sessionInProgress2);
         CardPosition sessionInProgress2CardPosition2 = new CardPosition(cardsChoice2CardDetails2, sessionInProgress2);
         CardPosition sessionInProgress2CardPosition3 = new CardPosition(cardsChoice2CardDetails3, sessionInProgress2);
+        CardPosition sessionInProgress2CardPosition4 = new CardPosition(cardsChoice2CardDetails4, sessionInProgress2);
+        CardPosition sessionInProgress2CardPosition5 = new CardPosition(cardsChoice2CardDetails5, sessionInProgress2);
+        CardPosition sessionInProgress2CardPosition6 = new CardPosition(cardsChoice2CardDetails6, sessionInProgress2);
 
         sessionInProgress2.getParticipantCardChoices().add(cardsChoice2);
         sessionInProgress2.getCardPositions().add(sessionInProgress2CardPosition1);
         sessionInProgress2.getCardPositions().add(sessionInProgress2CardPosition2);
         sessionInProgress2.getCardPositions().add(sessionInProgress2CardPosition3);
+        sessionInProgress2.getCardPositions().add(sessionInProgress2CardPosition4);
+        sessionInProgress2.getCardPositions().add(sessionInProgress2CardPosition5);
+        sessionInProgress2.getCardPositions().add(sessionInProgress2CardPosition6);
         
         sessionInProgress2.setCurrentParticipantPlaying(participantInfoOrganizer2);
 
@@ -284,13 +295,34 @@ public class DatabaseSeeder {
         cardDetails3.setText("Harry the cactus");
         cardDetails3.setImageUrl("http://i4.mirror.co.uk/incoming/article5704312.ece/ALTERNATES/s615b/waving-cactus.jpg");
         
+        CardDetails cardDetails4 = new CardDetails();
+        cardDetails4.setCategory(category);
+        cardDetails4.setCreator(creator);
+        cardDetails4.setText("Some other card");
+        
+        CardDetails cardDetails5 = new CardDetails();
+        cardDetails5.setCategory(category);
+        cardDetails5.setCreator(creator);
+        cardDetails5.setText("Another one without image");
+        
+        CardDetails cardDetails6 = new CardDetails();
+        cardDetails6.setCategory(category);
+        cardDetails6.setCreator(creator);
+        cardDetails6.setText("Another card with a bit more textual information");
+        
         cardDetails1 = cardDetailsRepository.save(cardDetails1);
         cardDetails2 = cardDetailsRepository.save(cardDetails2);
         cardDetails3 = cardDetailsRepository.save(cardDetails3);
+        cardDetails4 = cardDetailsRepository.save(cardDetails4);
+        cardDetails5 = cardDetailsRepository.save(cardDetails5);
+        cardDetails6 = cardDetailsRepository.save(cardDetails6);
         
         category.getCards().add(cardDetails1);
         category.getCards().add(cardDetails2);
         category.getCards().add(cardDetails3);
+        category.getCards().add(cardDetails4);
+        category.getCards().add(cardDetails5);
+        category.getCards().add(cardDetails6);
         
         category = categoryRepository.save(category);
         
@@ -300,14 +332,23 @@ public class DatabaseSeeder {
         cardDetails1.setTopics(new HashSet<>());
         cardDetails2.setTopics(new HashSet<>());
         cardDetails3.setTopics(new HashSet<>());
+        cardDetails4.setTopics(new HashSet<>());
+        cardDetails5.setTopics(new HashSet<>());
+        cardDetails6.setTopics(new HashSet<>());
         
         cardDetails1.getTopics().add(topic);
         cardDetails2.getTopics().add(topic);
         cardDetails3.getTopics().add(topic);
+        cardDetails4.getTopics().add(topic);
+        cardDetails5.getTopics().add(topic);
+        cardDetails6.getTopics().add(topic);
 
         cardDetails1 = cardDetailsRepository.save(cardDetails1);
         cardDetails2 = cardDetailsRepository.save(cardDetails2);
         cardDetails3 = cardDetailsRepository.save(cardDetails3);
+        cardDetails4 = cardDetailsRepository.save(cardDetails4);
+        cardDetails5 = cardDetailsRepository.save(cardDetails5);
+        cardDetails6 = cardDetailsRepository.save(cardDetails6);
         
         topic.getCards().addAll(category.getCards());
         return topicRepository.save(topic);

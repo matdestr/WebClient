@@ -6355,6 +6355,15 @@ form.invitation-accept-form {
   fill: white;
   stroke: #2a2c2b; }
 
+.game-card-number {
+  transition: x 0.75s ease-in-out, y 0.75s ease-in-out; }
+
+.game-card-position-overlay {
+  cursor: pointer; }
+
+.game-card-position-selected {
+  stroke: #FF8A00; }
+
 .game-card-preview-image-icon {
   fill: #2a2c2b; }
 
@@ -6407,7 +6416,7 @@ form.invitation-accept-form {
   display: block;
   margin: 0 auto; }
 
-.card-name, .chat-title {
+.card-name, .current-user-name, .chat-title {
   padding-top: 0.5em !important;
   margin-bottom: 0.5em; }
 
@@ -6512,21 +6521,11 @@ form.invitation-accept-form {
   #game-svg-container .inner-circle {
     /*stroke: $color-accent;
     fill: $color-accent;*/ }
-  #game-svg-container .sessionCheckBox {
-    margin-right: auto;
-    margin-left: auto; }
-
-#radio-button-group-session {
-  color: red; }
 
 .radio-button-type {
   display: inline-block;
   margin-right: 2em;
   margin-bottom: 1em; }
-
-.sessionCheckBox {
-  margin-right: auto;
-  margin-left: auto; }
 
 .sessionCheckBox {
   margin-right: 2em;

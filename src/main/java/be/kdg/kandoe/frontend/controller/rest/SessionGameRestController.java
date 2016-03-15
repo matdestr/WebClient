@@ -212,6 +212,11 @@ public class SessionGameRestController {
         Session session = sessionService.getSessionById(sessionId);
         checkUserIsOrganizer(user, session);
         sessionGameService.startGame(session);
+        
+        UserResource currentParticipantResource = 
+                mapperFacade.map(session.getCurrentParticipantPlaying().getParticipant(), UserResource.class);
+        
+        this.sendSessionCurrentParticipantUpdate(sessionId, currentParticipantResource);
 
         return new ResponseEntity(HttpStatus.CREATED);
     }
@@ -244,8 +249,13 @@ public class SessionGameRestController {
 
         CardPosition cardPosition = sessionGameService.increaseCardPriority(session, user, cardDetails);
         CardPositionResource cardPositionResource = mapperFacade.map(cardPosition, CardPositionResource.class);
+        
+        UserResource currentParticipantResource = 
+                mapperFacade.map(session.getCurrentParticipantPlaying().getParticipant(), UserResource.class);
 
         this.sendSessionCardPositionUpdate(sessionId, cardPositionResource);
+        this.sendSessionCurrentParticipantUpdate(sessionId, currentParticipantResource);
+        
         return new ResponseEntity<>(cardPositionResource, HttpStatus.OK);
     }
     
@@ -287,6 +297,12 @@ public class SessionGameRestController {
     private void sendSessionParticipantJoined(int sessionId, UserResource participant) {
         this.simpMessagingTemplate.convertAndSend(
                 "/topic/sessions/" + sessionId + "/participants", participant
+        );
+    }
+    
+    private void sendSessionCurrentParticipantUpdate(int sessionId, UserResource participant) {
+        this.simpMessagingTemplate.convertAndSend(
+                "/topic/sessions/" + sessionId + "/current-participant", participant
         );
     }
     

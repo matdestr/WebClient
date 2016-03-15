@@ -61,7 +61,7 @@ System.register(['angular2/platform/browser', './components/app.component', "ang
                 router_1.ROUTER_PROVIDERS,
                 http_1.HTTP_PROVIDERS,
                 token_service_1.TokenService, user_service_1.UserService, organization_service_1.OrganizationService, category_service_1.CategoryService,
-                tag_service_1.TagService, topic_service_1.TopicService, invitation_service_1.InvitationService, card_details_service_1.CardDetailsService, session_service_1.SessionService, session_invitation_service_1.SessionInvitationService, session_game_service_1.SessionGameService,
+                tag_service_1.TagService, topic_service_1.TopicService, invitation_service_1.InvitationService, card_details_service_1.CardDetailsService, session_service_1.SessionService, session_game_service_1.SessionGameService, session_invitation_service_1.SessionInvitationService,
                 toolbar_component_1.ToolbarComponent,
                 core_1.provide(angular2_jwt_1.AuthHttp, {
                     useFactory: function (http) {

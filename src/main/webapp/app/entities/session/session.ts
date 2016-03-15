@@ -1,4 +1,5 @@
 import {Serializable} from "../../util/serializable";
+import {User} from "../user/user";
 
 export class Session implements Serializable<Session>{
     sessionId: number;
@@ -7,6 +8,7 @@ export class Session implements Serializable<Session>{
     minNumberOfCardsPerParticipant:number;
     maxNumberOfCardsPerParticipant:number;
     participantsCanAddCards:boolean;
+    currentParticipantPlaying : User;
     cardCommentsAllowed:boolean;
     amountOfCircles:number;
     type: string;
@@ -37,6 +39,7 @@ export class Session implements Serializable<Session>{
         this.type = object.type;
         this.participantsCanAddCards = object.participantsCanAddCards;
         this.cardCommentsAllowed = object.cardCommentsAllowed;
+        this.currentParticipantPlaying = object.currentParticipantPlaying;
         this.sessionId = object.sessionId;
 
         return this;
