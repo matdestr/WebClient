@@ -12,7 +12,9 @@
                              (cardClick)="onSessionCardClick($event)">
                 </card-detail>
                 <h3>Reviews</h3>
-                <p *ngFor="#review of cardReviews">{{review.message}}</p>
+                <ul>
+                <li *ngFor="#review of cardReviews">{{review.message}}</li>
+                </ul>
             </div>
         </ul>
 
