@@ -6675,11 +6675,12 @@ form.invitation-accept-form {
   margin-bottom: 1em; }
 
 .sessionCheckBox {
+  margin-right: auto;
+  margin-left: auto; }
+
+.sessionCheckBox {
   margin-right: 2em;
   margin-top: 1em; }
-
-#radio-button-group-session {
-  color: red; }
 
 #container {
   margin-top: 2em;
