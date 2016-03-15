@@ -25,7 +25,7 @@
 
                         <div class="input-group forms-input-group" id="radio-button-group-session">
 
-                            <div>
+                            <div class="radio-button-type">
                                 <label>
                                     <input id="radio-button-async" name="type" type="radio" value="async"
                                            (click)="async()"
@@ -33,7 +33,7 @@
                                     Asynchronous
                                 </label>
                             </div>
-                            <div>
+                            <div class="radio-button-type">
                                 <label>
                                     <input id="radio-button-sync" name="type" type="radio" value="sync" (click)="sync()"
                                     />
@@ -103,25 +103,19 @@
                                    [(ngModel)]="model.secondsBetweenMoves">
                         </div>
 
-                        <hr>
 
                         <label class="sessionCheckBox"><input id="participantsCanAddCards"
-                                      name="participantsCanAddCards-name"
-                                      class="sessionCheckBox"
-                                      type="checkbox"
-                                      placeholder="Participants can add cards"
-                                      #categoryName="ngForm"
-                                      [(ngModel)]="model.participantsCanAddCards">Participants can add cards</label>
+                                                              name="participantsCanAddCards-name"
+                                                              class="sessionCheckBox"
+                                                              type="checkbox"
+                                                              #categoryName="ngForm"
+                                                              [(ngModel)]="model.participantsCanAddCards">Add cards</label>
 
                         <label class="sessionCheckBox"><input id="cardCommentsAllowed"
                                                               name="cardCommentsAllowed-name"
                                                               type="checkbox"
-                                                              placeholder="Card comments allowed"
                                                               #categoryName="ngForm"
-                                                              [(ngModel)]="model.cardCommentsAllowed">Card comments
-                            allowed</label>
-
-
+                                                              [(ngModel)]="model.cardCommentsAllowed">Card comments</label>
 
 
                     </section>

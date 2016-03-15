@@ -22,6 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -236,5 +237,26 @@ public class TestSessionService {
         Session savedSession = sessionService.addSession(session);
         assertEquals(savedSession.getTopic().getName(), topic.getName());
         assertEquals(savedSession.getOrganizer().getUserId(), this.user.getUserId());
+    }
+
+    @Test(expected = SessionServiceException.class)
+    public void testAddSyncSessionWithDateBeforeToday(){
+        SynchronousSession session = new SynchronousSession();
+        session.setOrganizer(user);
+        session.setCategory(category);
+        session.setStartDateTime(LocalDateTime.now().minusDays(5));
+
+        sessionService.addSession(session);
+    }
+
+    @Test
+    public void testAddSyncSessionWithDateAfterToday(){
+        SynchronousSession session = new SynchronousSession();
+        session.setOrganizer(user);
+        session.setCategory(category);
+        session.setStartDateTime(LocalDateTime.now().plusDays(1));
+
+        Session savedSession = sessionService.addSession(session);
+        assertEquals(session.getSessionId(), savedSession.getSessionId());
     }
 }

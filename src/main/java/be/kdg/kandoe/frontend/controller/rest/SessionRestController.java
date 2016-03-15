@@ -57,14 +57,15 @@ public class SessionRestController {
 
         if (!session.isUserParticipant(user.getUserId()) && session.getOrganizer().getUserId() != user.getUserId())
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        
+
         SessionResource sessionResource = null;
-        
+
         if (session instanceof SynchronousSession) {
             sessionResource = mapper.map(session, SynchronousSessionResource.class);
         } else {
-            sessionResource = mapper.map(session, AsynchronousSessionResource.class);
+           sessionResource = mapper.map(session,AsynchronousSessionResource.class);
         }
+
 
         return new ResponseEntity<>(sessionResource, HttpStatus.OK);
     }
