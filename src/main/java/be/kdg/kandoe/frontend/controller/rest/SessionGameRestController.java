@@ -13,6 +13,7 @@ import be.kdg.kandoe.frontend.controller.resources.cards.CardDetailsResource;
 import be.kdg.kandoe.frontend.controller.resources.cards.CreateCardDetailsResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.CardPositionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.chat.ChatMessageResource;
+import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
 import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +107,11 @@ public class SessionGameRestController {
         checkUserIsParticipant(user, session);
 
         sessionGameService.setUserJoined(session, user);
-
+        this.sendSessionParticipantJoined(sessionId, this.mapperFacade.map(user, UserResource.class));
+        
+        if (session.getSessionStatus() != SessionStatus.USERS_JOINING)
+            this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
+        
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -276,6 +281,18 @@ public class SessionGameRestController {
     private void sendSessionCardPositionUpdate(int sessionId, CardPositionResource cardPositionResource) {
         this.simpMessagingTemplate.convertAndSend(
                 "/topic/sessions/" + sessionId + "/positions", cardPositionResource
+        );
+    }
+    
+    private void sendSessionParticipantJoined(int sessionId, UserResource participant) {
+        this.simpMessagingTemplate.convertAndSend(
+                "/topic/sessions/" + sessionId + "/participants", participant
+        );
+    }
+    
+    private void sendSessionStatusUpdate(int sessionId, SessionStatus sessionStatus) {
+        this.simpMessagingTemplate.convertAndSend(
+                "/topic/sessions/" + sessionId + "/status", sessionStatus
         );
     }
 }

@@ -59,12 +59,12 @@ export class ActiveSessionComponent implements OnInit {
                 private _gameService : SessionGameService) {
         
         this.sessionId = parseInt(_routeArgs.get('sessionId'));
-        
-        this.loadChat();
-        this.initSockets();
     }
     
     ngOnInit() : any {
+        this.loadChat();
+        this.initSockets();
+        
         this._sessionService.getSession(this.sessionId)
             .subscribe(data => {
                 this.session = this.session.deserialize(data.json());

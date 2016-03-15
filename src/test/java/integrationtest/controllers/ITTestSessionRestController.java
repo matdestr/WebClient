@@ -205,18 +205,19 @@ public class ITTestSessionRestController {
         createSynchronousSessionResource.setCategoryId(category.getCategoryId());
         createSynchronousSessionResource.setMinNumberOfCardsPerParticipant(3);
         createSynchronousSessionResource.setMaxNumberOfCardsPerParticipant(5);
-        createSynchronousSessionResource.setStartDateTime(LocalDateTime.now());
+        createSynchronousSessionResource.setStartDateTime(LocalDateTime.now().plusMonths(2));
 
         JSONObject jsonObject = new JSONObject(createSynchronousSessionResource);
         //jsonObject.put("startDateTime", "2016-03-05 20:00");
         jsonObject.put("type", "sync");
+
 
         String stringResponse = mockMvc.perform(
                 post(baseApiUrl)
                         .header("Authorization", authorizationHeader)
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
-        )//.andDo(print())
+        ).andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.sessionId").exists())
                 .andExpect(jsonPath("$.sessionId").isNotEmpty())

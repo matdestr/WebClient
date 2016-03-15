@@ -95,7 +95,9 @@ export class CreateSessionComponent implements OnInit {
 
     public resetForm():void {
         this.errors = [];
-        this.model = CreateSessionModel.createEmptyCreateSession()
+        this.model = CreateSessionModel.createEmptyCreateSession();
+        document.getElementById('radio-button-sync').click();
+
     }
 
     public async():void {

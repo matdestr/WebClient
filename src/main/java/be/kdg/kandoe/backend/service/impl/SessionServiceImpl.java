@@ -3,6 +3,7 @@ package be.kdg.kandoe.backend.service.impl;
 import be.kdg.kandoe.backend.model.sessions.ParticipantInfo;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.sessions.SessionStatus;
+import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.persistence.api.SessionRepository;
 import be.kdg.kandoe.backend.service.api.SessionService;
 import be.kdg.kandoe.backend.service.exceptions.SessionServiceException;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +24,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public Session getSessionById(int sessionId) {
         Session fetchedSession = sessionRepository.findOne(sessionId);
-        
+
         if (fetchedSession == null)
             throw new SessionServiceException(String.format("No session found with id %d", sessionId));
 
@@ -63,7 +65,7 @@ public class SessionServiceImpl implements SessionService {
         return updatedSession;
     }
 
-    private Session validateSession(Session session){
+    private Session validateSession(Session session) {
         if (session.getTopic() != null) {
             if (session.getTopic().getCards().size() <= session.getMinNumberOfCardsPerParticipant()) {
                 throw new SessionServiceException("Cannot create a session with less cards than the minimum required per participant");
@@ -91,6 +93,17 @@ public class SessionServiceImpl implements SessionService {
         if (session.getAmountOfCircles() > Session.MAX_CIRCLE_AMOUNT)
             session.setAmountOfCircles(Session.MAX_CIRCLE_AMOUNT);
 
+
+        //TODO: Check fixen! @matdestr
+        if (session instanceof SynchronousSession) {
+            if (((SynchronousSession) session).getStartDateTime() != null) {
+
+                if (((SynchronousSession) session).getStartDateTime().isBefore(LocalDateTime.now())) {
+                    throw new SessionServiceException("Cannot add a synchronous session with a start date before today");
+                }
+            }
+        }
+
         return session;
     }
 
@@ -98,7 +111,7 @@ public class SessionServiceImpl implements SessionService {
     public List<Session> getSessionsFromCategory(int categoryId) {
         List<Session> sessionList = sessionRepository.findSessionsByCategoryCategoryId(categoryId);
 
-        if(sessionList.isEmpty()){
+        if (sessionList.isEmpty()) {
             throw new SessionServiceException(String.format("No sessions found for category id %d", categoryId));
         }
 
@@ -109,11 +122,12 @@ public class SessionServiceImpl implements SessionService {
     public List<Session> getSessionsFromTopic(int topicId) {
         List<Session> sessionList = sessionRepository.findSessionsByTopicTopicId(topicId);
 
-        if(sessionList.isEmpty()){
+        if (sessionList.isEmpty()) {
             throw new SessionServiceException(String.format("No sessions found for topic id %d", topicId));
         }
 
-        return sessionList;    }
+        return sessionList;
+    }
 
     @Override
     public List<Session> getSessionsUser(int userId) {

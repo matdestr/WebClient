@@ -226,13 +226,23 @@ $card-position-card-border-thickness: 5;
     /*stroke: $color-accent;
     fill: $color-accent;*/
   }
+}
+
+
+
+.radio-button-type{
+  display: inline-block;
+  margin-right: 2em;
+  margin-bottom: 1em;
+}
 
   .sessionCheckBox{
     margin-right: auto;
     margin-left: auto;
   }
 }
-
-#radio-button-group-session{
-  color:red;
+.sessionCheckBox{
+  margin-right: 2em;
+  margin-top: 1em;
 }
+

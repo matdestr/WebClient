@@ -6514,11 +6514,15 @@ form.invitation-accept-form {
   #game-svg-container .inner-circle {
     /*stroke: $color-accent;
     fill: $color-accent;*/ }
-  #game-svg-container .sessionCheckBox {
-    margin-right: auto;
-    margin-left: auto; }
-  #game-svg-container #radio-button-group-session {
-    display: none; }
+
+.radio-button-type {
+  display: inline-block;
+  margin-right: 2em;
+  margin-bottom: 1em; }
+
+.sessionCheckBox {
+  margin-right: 2em;
+  margin-top: 1em; }
 
 span.primary {
   color: #D32F2F; }
