@@ -25,9 +25,14 @@ export class CategoryDetailComponent implements OnInit {
     private category:Category = Category.createEmptyCategory();
     private cards:CardDetails[] = [];
     private topics:Topic[] = [];
+    private topicSubSet:Topic[] = [];
     private sessions:Session[] = [];
     private tags:Tag[] = [];
     private currentCard:CardDetails = CardDetails.createEmptyCard();
+    private counterTopBegin:number=0;
+    private counterTopEnd:number=4;
+    private myLeftTopDisplay:string="block";
+    private myRightTopDisplay:string="block";
 
 
     constructor(private _router:Router,
@@ -56,8 +61,17 @@ export class CategoryDetailComponent implements OnInit {
 
         this._topicService.getTopicsFromCategory(categoryId).subscribe(
             data => {
-                for (let topic of data.json())
+                for (let topic of data.json()){
                     this.topics.push(Topic.createEmptyTopic().deserialize(topic));
+                }
+                this.topicSubSet = this.topics.slice(0,4);
+                if(this.topics.length<=4) {
+                    this.myLeftTopDisplay = "none";
+                    this.myRightTopDisplay = "none";
+                }else {
+                    this.myLeftTopDisplay = "none";
+                    this.myRightTopDisplay = "block";
+                }
             },
             error => console.log(error),
             () => console.log("Topics fetched")
@@ -103,6 +117,35 @@ export class CategoryDetailComponent implements OnInit {
 
     public toSession(sessionId:number) {
         this._router.navigate(["/InviteUsers", {sessionId: sessionId}])
+    }
+
+    public nextTopPage(){
+        this.myLeftTopDisplay = "block";
+        if(this.counterTopEnd >= this.topics.length-1){
+            this.myRightTopDisplay="none";
+        }
+        if(this.counterTopEnd >= this.topics.length){
+            return;
+        }
+        else{
+            this.counterTopBegin++;
+            this.counterTopEnd++;
+            this.topicSubSet= this.topics.slice(this.counterTopBegin,this.counterTopEnd);
+        }
+    }
+
+    public previousTopPage(){
+        this.myRightTopDisplay = "block";
+        if(this.counterTopBegin <= 1){
+            this.myLeftTopDisplay="none";
+        }
+        if(this.counterTopBegin <= 0){
+            return;
+        }  else {
+            this.counterTopBegin--;
+            this.counterTopEnd--;
+            this.topicSubSet = this.topics.slice(this.counterTopBegin, this.counterTopEnd);
+        }
     }
 
 }

@@ -59,22 +59,25 @@
 
 
             <h2>Topics</h2>
-            <ul>
-                <div class="row" *ngFor="#topic of topics">
 
-                    <div class="col-md-2 spaceUnder">
-                        <p class="categoryName" (click)="toTopic(topic.topicId)">{{topic.name}}</p>
-                    </div>
-                    <div class="col-md-3 spaceUnder">
-                        <p class="description" style="margin-left: 3em">{{topic.description}}</p>
-                    </div>
+            <div class="organization-arrow" >
+                <button class="paginate left" (click)="previousTopPage()"  [style.display]="myLeftTopDisplay"><i></i><i></i></button>
+            </div>
+            <div *ngFor="#topic of topicSubSet">
+                <div class="black-block" (click)="toTopic(topic.topicId)">
+                    <h3 class="text-center">{{topic.name}}</h3>
+                    <h6 class="text-center"><i class="glyphicon glyphicon-pencil"></i> {{topic.description}}</h6>
                 </div>
-            </ul>
+            </div>
+            <div class="organization-arrow">
+                <button class="paginate right" style="float: right" (click)="nextTopPage()"  [style.display]="myRightTopDisplay"><i></i><i></i></button>
+            </div>
 
-
+                <div style="margin-top: 12em">
             <button class="add-new-button" (click)="toAddNewTopic(category.categoryId)"><i
                     class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Topic
             </button>
+                </div>
 
             <hr>
 

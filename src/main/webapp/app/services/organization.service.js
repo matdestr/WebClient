@@ -60,6 +60,13 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
                 OrganizationService.prototype.getOrganizationsByUser = function (username) {
                     return this._http.get(OrganizationService.endPoint + "user/" + username);
                 };
+                OrganizationService.prototype.setOrganizationName = function (organizationId, organizationName) {
+                    var searchParams = new http_3.URLSearchParams();
+                    searchParams.append("organizationName", organizationName);
+                    var options = new http_2.RequestOptions();
+                    options.search = searchParams;
+                    return this._authHttp.post(OrganizationService.endPoint + "edit/" + organizationId, "", options);
+                };
                 OrganizationService.endPoint = "./api/organizations/";
                 OrganizationService = __decorate([
                     core_1.Injectable(), 

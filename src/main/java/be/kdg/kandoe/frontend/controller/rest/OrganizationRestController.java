@@ -136,6 +136,15 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/edit/{organizationId}", method = RequestMethod.POST)
+    public ResponseEntity setOrganizationName(@PathVariable("organizationId") int organizationId, @RequestParam(value="organizationName")String organizationName){
+        Organization organization = organizationService.getOrganizationById(organizationId);
+        organization.setName(organizationName);
+        OrganizationResource resource = mapperFacade.map(organization, OrganizationResource.class);
+
+        return new ResponseEntity<>(resource,HttpStatus.OK);
+    }
+
     private void inviteUsers(Organization organization, User user, List<EmailResource> emailResources){
         List<String> emails = new ArrayList<>();
         List<User> users = new ArrayList<>();

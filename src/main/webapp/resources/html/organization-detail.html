@@ -48,7 +48,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="onEditClick(organization.name)">Save</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -126,21 +126,25 @@
 
             <hr>
 
-            <h2>Categories</h2>
-        <ul>
-            <div class="row" *ngFor="#category of categories">
+            <h2 style="margin-bottom: 1em">Categories</h2>
 
-                <div class="col-md-2 spaceUnder">
-                    <p class="categoryName" (click)="toCategory(category.categoryId)">{{category.name}}</p>
-                </div>
-                <div class="col-md-5 spaceUnder">
-                    <p class="description" >{{category.description}}</p>
+            <div class="organization-arrow" >
+                <button class="paginate left" (click)="previousCatPage()"  [style.display]="myLeftCatDisplay"><i></i><i></i></button>
+            </div>
+            <div *ngFor="#category of categoriesSubSet">
+                <div class="black-block" (click)="toCategory(category.categoryId)">
+                    <h3 class="text-center">{{category.name}}</h3>
+                    <h6 class="text-center"><i class="glyphicon glyphicon-pencil"></i> {{category.description}}</h6>
                 </div>
             </div>
-        </ul>
+            <div class="organization-arrow">
+                <button class="paginate right" style="float: right" (click)="nextCatPage()"  [style.display]="myRightCatDisplay"><i></i><i></i></button>
+            </div>
 
 
-        <button class="add-new-button" (click)="toAddNewCategory(organization.organizationId)"><i class="glyphicon glyphicon-plus"></i>Create new Category</button>
-        </div>
+            <div style="margin-top:12em">
+            <button class="add-new-button" (click)="toAddNewCategory(organization.organizationId)" ><i class="glyphicon glyphicon-plus"></i>Create new Category</button>
+            </div>
+            </div>
     </div>
 </div>

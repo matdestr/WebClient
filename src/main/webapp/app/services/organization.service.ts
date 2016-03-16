@@ -56,4 +56,14 @@ export class OrganizationService {
         return this._http.get(OrganizationService.endPoint + "user/" + username);
     }
 
+    public setOrganizationName(organizationId:number,organizationName:string):Observable<Response>{
+        var searchParams: URLSearchParams = new URLSearchParams();
+        searchParams.append("organizationName", organizationName);
+
+        var options: RequestOptions = new RequestOptions();
+        options.search = searchParams;
+
+        return this._authHttp.post(OrganizationService.endPoint+"edit/"+organizationId,"",options);
+    }
+
 }

@@ -63,8 +63,6 @@ export class DashboardComponent {
     }
 
     public updateDisplays(){
-
-
         if(this.activeSessions.length<=4) {
             this.myLeftActDisplay = "none";
             this.myRightActDisplay = "none";
@@ -111,8 +109,7 @@ export class DashboardComponent {
                 for(let sessionObject of data.json()) {
                     let session:SessionListItem = SessionListItem.createEmptySessionListItem().deserialize(sessionObject);
                     this.sessions.push(session);
-                    console.log(session.sessionStatus);
-                    console.log(JSON.stringify(session));
+
                     switch (session.sessionStatus){
                         case SessionStatus.FINISHED:
                             this.previousSessions.push(session);break;

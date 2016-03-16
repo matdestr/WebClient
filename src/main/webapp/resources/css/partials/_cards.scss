@@ -35,25 +35,38 @@
   }
 
   // Card image
-  .card-img {
-    max-height: $card-img-height;
-    overflow: hidden;
-    width: 100%;
-    @include border-top-radius(0.5em);
 
+  .img-container{
+    width: 100%;
+    height: $card-img-height;
     @media screen and (min-width: $breakpoint-tablet) {
-      max-height: $card-img-height-tablet;
+      height: $card-img-height-tablet;
     }
 
     @media screen and (min-width: $breakpoint-desktop) {
-      max-height: $card-img-height-desktop;
+      height: $card-img-height-desktop;
+    }
+  }
+  .card-img {
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    max-width: 100%;
+    @include border-top-radius(0.5em);
+    height: $card-img-height;
+    @media screen and (min-width: $breakpoint-tablet) {
+      height: $card-img-height-tablet;
+    }
+
+    @media screen and (min-width: $breakpoint-desktop) {
+      height: $card-img-height-desktop;
     }
   }
 
   .card-block {
     margin: $default-margin $margin-side-card-block;
     display: block;
-    height: 30vh;
+    height: 20vh;
     overflow-y: scroll;
 
     .card-text {
@@ -62,7 +75,7 @@
       display: block; /* Fallback for non-webkit */
       display: -webkit-box;
       max-width: $card-width - $margin-side-card-block * 2;
-      height: 30vh; /* Fallback for non-webkit */
+      height: 20vh; /* Fallback for non-webkit */
       margin: 0 auto;
       font-size: $card-text-size;
       line-height: $card-line-height;

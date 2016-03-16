@@ -22,7 +22,12 @@ export class OrganizationDetailComponent {
     private organization:Organization = new Organization();
     private members: User[]=[];
     private categories: Category[]=[];
+    private categoriesSubSet: Category[]=[];
     private usersToInvite : Email[] = [];
+    private counterCatBegin:number=0;
+    private counterCatEnd:number=4;
+    private myLeftCatDisplay:string="block";
+    private myRightCatDisplay:string="block";
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
@@ -36,16 +41,26 @@ export class OrganizationDetailComponent {
             data => {
                 this.organization = data.json();
                 this.members = this.organization.members;
+                this.getCategories();
             });
-        this._categoryService.getCategoriesFromOrganization(organizationId)
-            .subscribe(
-                data => this.categories = data.json(),
-                error => console.log(error),
-                () => console.log("Categories fetched")
-            );
     }
 
-    private addUsers() : void {
+    public getCategories():void{
+        this._categoryService.getCategoriesFromOrganization(this.organization.organizationId)
+            .subscribe(data => {
+                this.categories = data.json();
+                this.categoriesSubSet = this.categories.slice(0,4);
+                if(this.categories.length<=4) {
+                    this.myLeftCatDisplay = "none";
+                    this.myRightCatDisplay = "none";
+                }else {
+                    this.myLeftCatDisplay = "none";
+                    this.myRightCatDisplay = "block";
+                }
+            });
+    }
+
+    public addUsers() : void {
         console.log("adding " + this.usersToInvite.length + " users");
         this._organizationService.addUsersToOrganization(this.organization.organizationId, this.usersToInvite).subscribe(
             (data) => {
@@ -68,16 +83,51 @@ export class OrganizationDetailComponent {
         this._router.navigate(["/CategoryDetail",{categoryId:categoryId}])
     }
 
-    private addUserEntry() {
+
+    public addUserEntry() {
         this.usersToInvite.push(new Email());
     }
 
-    private filterEmails() {
+    public filterEmails() {
         return this.usersToInvite.filter(u => {return u && u.email.length > 0});
     }
 
-    private removeUserFromUsersToInvite(index : number) {
+    public removeUserFromUsersToInvite(index : number) {
         this.usersToInvite.splice(index, 1);
+    }
+
+    public onEditClick(organizationName:string){
+        this._organizationService.setOrganizationName(this.organization.organizationId,organizationName);
+    }
+
+
+    public nextCatPage(){
+        this.myLeftCatDisplay = "block";
+        if(this.counterCatEnd >= this.categories.length-1){
+            this.myRightCatDisplay="none";
+        }
+        if(this.counterCatEnd >= this.categories.length){
+            return;
+        }
+        else{
+            this.counterCatBegin++;
+            this.counterCatEnd++;
+            this.categoriesSubSet= this.categories.slice(this.counterCatBegin,this.counterCatEnd);
+        }
+    }
+
+    public previousCatPage(){
+        this.myRightCatDisplay = "block";
+        if(this.counterCatBegin <= 1){
+            this.myLeftCatDisplay="none";
+        }
+        if(this.counterCatBegin <= 0){
+            return;
+        }  else {
+            this.counterCatBegin--;
+            this.counterCatEnd--;
+            this.categoriesSubSet = this.categories.slice(this.counterCatBegin, this.counterCatEnd);
+        }
     }
 
 }
