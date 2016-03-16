@@ -2,38 +2,46 @@ package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.cards.CardPosition;
+import be.kdg.kandoe.backend.model.cards.Comment;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.sessions.Session;
+import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.persistence.api.CardDetailsRepository;
 import be.kdg.kandoe.backend.persistence.api.CategoryRepository;
+import be.kdg.kandoe.backend.persistence.api.CommentRepository;
 import be.kdg.kandoe.backend.persistence.api.TopicRepository;
 import be.kdg.kandoe.backend.service.api.CardService;
 import be.kdg.kandoe.backend.service.exceptions.CardServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
 @Transactional
 public class CardServiceImpl implements CardService {
-    private CardDetailsRepository cardDetailsRepository;
-    private CategoryRepository categoryRepository;
-    private TopicRepository topicRepository;
+    private final CardDetailsRepository cardDetailsRepository;
+    private final CategoryRepository categoryRepository;
+    private final TopicRepository topicRepository;
+    private final CommentRepository commentRepository;
 
     private Logger logger;
 
     @Autowired
-    public CardServiceImpl(CardDetailsRepository cardDetailsRepository, CategoryRepository categoryRepository, TopicRepository topicRepository) {
+    public CardServiceImpl(CardDetailsRepository cardDetailsRepository, CategoryRepository categoryRepository, TopicRepository topicRepository, CommentRepository commentRepository) {
         this.cardDetailsRepository = cardDetailsRepository;
         this.categoryRepository = categoryRepository;
         this.topicRepository = topicRepository;
+        this.commentRepository = commentRepository;
         this.logger = LogManager.getLogger(this.getClass());
     }
 
@@ -129,6 +137,27 @@ public class CardServiceImpl implements CardService {
         return cardDetailsRepository.findOne(cardDetailsId);
     }
 
+    @Override
+    public Comment addReview(User user, CardDetails cardDetails, String message) {
+        Comment comment = new Comment();
+        comment.setUser(user);
+        comment.setMessage(message);
+        comment.setDatePosted(LocalDateTime.now());
+        List<Comment> commentList = cardDetails.getComments();
+        commentList.add(comment);
+        cardDetails.setComments(commentList);
+
+        Comment updatedComment = commentRepository.save(comment);
+        if (updatedComment == null){
+            throw new CardServiceException("Comment can't be updated");
+        }
+
+        CardDetails updatedCardDetails = cardDetailsRepository.save(cardDetails);
+        if (updatedCardDetails == null){
+            throw new CardServiceException("Card couldn't be updated");
+        }
+        return updatedComment;
+    }
 
 
     private void validateCardDetails(CardDetails cardDetails) {

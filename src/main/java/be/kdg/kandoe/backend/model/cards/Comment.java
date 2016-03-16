@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue
-    @Setter(AccessLevel.NONE)
+    //@Setter(AccessLevel.NONE)
     private int commentId;
 
     @OneToOne

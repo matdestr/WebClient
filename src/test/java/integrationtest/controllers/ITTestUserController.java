@@ -68,6 +68,9 @@ public class ITTestUserController {
         this.clientDetails = oAuthClientDetailsService.addClientsDetails(newClientDetails);
 
         User user = new User("username", unencryptedPassword);
+        user.setSurname("surname");
+        user.setName("name");
+        user.setEmail("test@mail.com");
         this.user = userService.addUser(user);
     }
 
@@ -293,6 +296,7 @@ public class ITTestUserController {
     public void testGetExistingUser() throws Exception {
         mockMvc.perform(
                 get(String.format("/api/users/%s", user.getUsername())))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.email", is(user.getEmail())))

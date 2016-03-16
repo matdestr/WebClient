@@ -140,7 +140,7 @@ public class TestSessionGameServiceSynchronous {
     @Test
     public void inviteUsersAndJoin() {
         EmailService mockedEmailService = Mockito.mock(EmailService.class);
-        sessionGameService = new SessionGameServiceImpl(sessionService, mockedEmailService, cardService);
+        sessionGameService = new SessionGameServiceImpl(sessionService, mockedEmailService);
 
         sessionGameService.inviteUserForSession(session, player1);
         Assert.assertEquals(SessionStatus.USERS_JOINING, session.getSessionStatus());
@@ -169,7 +169,7 @@ public class TestSessionGameServiceSynchronous {
     @Test
     public void inviteTwoUsersAndLetOneJoinKeepsUsersJoiningStatus() {
         EmailService mockedEmailService = Mockito.mock(EmailService.class);
-        sessionGameService = new SessionGameServiceImpl(sessionService, mockedEmailService, cardService);
+        sessionGameService = new SessionGameServiceImpl(sessionService, mockedEmailService);
 
         sessionGameService.inviteUserForSession(session, player1);
         sessionGameService.inviteUserForSession(session, player2);
@@ -187,7 +187,7 @@ public class TestSessionGameServiceSynchronous {
         session = this.sessionService.updateSession(session);
 
         EmailService mockedEmailService = Mockito.mock(EmailService.class);
-        sessionGameService = new SessionGameServiceImpl(sessionService, mockedEmailService, cardService);
+        sessionGameService = new SessionGameServiceImpl(sessionService, mockedEmailService);
 
         sessionGameService.inviteUserForSession(session, player1);
         sessionGameService.inviteUserForSession(session, player2);
@@ -202,7 +202,7 @@ public class TestSessionGameServiceSynchronous {
     @Test
     public void joinAllUsersWithNothingAllowedResultsInSessionStatusChoosingCards() {
         EmailService mockedEmailService = Mockito.mock(EmailService.class);
-        sessionGameService = new SessionGameServiceImpl(sessionService, mockedEmailService, cardService);
+        sessionGameService = new SessionGameServiceImpl(sessionService, mockedEmailService);
 
         session.setParticipantsCanAddCards(false);
         session.setCardCommentsAllowed(false);

@@ -14,9 +14,9 @@ import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
 import be.kdg.kandoe.frontend.controller.resources.cards.CreateCardDetailsResource;
+import be.kdg.kandoe.frontend.controller.resources.sessions.reviews.CreateCardReviewOverview;
 import integrationtest.IntegrationTestHelpers;
 import integrationtest.TokenProvider;
-import org.hamcrest.core.Is;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -24,7 +24,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.ContextConfiguration;
@@ -32,19 +31,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.TreeSet;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
- 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootContextConfig.class, WebContextConfig.class})
 @WebAppConfiguration
@@ -772,23 +768,6 @@ public class ITSessionGameRestController {
     }
 
 
-    /*
-    @Test
-    public void reviewCardsAsParticipantWhenReviewingResultsInCreated() {
-        Assert.fail();
-    }
-    
-    @Test
-    public void reviewCardsAsParticipantWhenInProgressResultsInBadRequest() {
-        Assert.fail();
-    }
-    
-    @Test
-    public void reviewCardsAsNonParticipantResultsInForbidden() {
-        Assert.fail();
-    }
-
-    */
     @Test
     public void joinSessionWithoutInvitationResultsInForbidden() throws Exception {
 
@@ -1318,5 +1297,581 @@ public class ITSessionGameRestController {
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/end")
                         .header("Authorization", authorizationHeaderParticipant1)
         ).andDo(print()).andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @Test
+    public void testAddReviewToSessionInReviewingStage() throws Exception {
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
+        participant1 = userService.addUser(participant1);
+
+        Session session = createDefaultSession();
+        session.setCardCommentsAllowed(true);
+        session.setParticipantsCanAddCards(true);
+        session.setMinNumberOfCardsPerParticipant(1);
+        session.setMaxNumberOfCardsPerParticipant(2);
+        session = sessionService.updateSession(session);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("email", participant1.getEmail())
+        )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("Added card 1");
+
+        String cardAddedJson = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new JSONObject(createCardDetailsResource).toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        Assert.assertEquals(SessionStatus.REVIEWING_CARDS, session.getSessionStatus());
+
+        JSONObject cardAddedObject = new JSONObject(cardAddedJson);
+
+        CreateCardReviewOverview cardReview = new CreateCardReviewOverview();
+        cardReview.setCardDetailsId(cardAddedObject.getInt("cardDetailsId"));
+        cardReview.setMessage("card-test-review");
+
+        JSONObject reviewCard1 = new JSONObject(cardReview);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(reviewCard1.toString())
+        ).andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(jsonPath("$.commentId").exists())
+                .andExpect(jsonPath("$.commentId").isNotEmpty());
+    }
+
+    @Test
+    public void testAddReviewToSessionInReviewingStageByUserNotInSession() throws Exception {
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
+        participant1 = userService.addUser(participant1);
+
+        Session session = createDefaultSession();
+        session.setCardCommentsAllowed(true);
+        session.setParticipantsCanAddCards(true);
+        session.setMinNumberOfCardsPerParticipant(1);
+        session.setMaxNumberOfCardsPerParticipant(2);
+        session = sessionService.updateSession(session);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("email", participant1.getEmail())
+        )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("Added card 1");
+
+        String cardAddedJson = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new JSONObject(createCardDetailsResource).toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        Assert.assertEquals(SessionStatus.REVIEWING_CARDS, session.getSessionStatus());
+
+        JSONObject cardAddedObject = new JSONObject(cardAddedJson);
+
+        CreateCardReviewOverview cardReview = new CreateCardReviewOverview();
+        cardReview.setCardDetailsId(cardAddedObject.getInt("cardDetailsId"));
+        cardReview.setMessage("card-test-review");
+
+        JSONObject reviewCard1 = new JSONObject(cardReview);
+
+        User nonUser = new User("nonparticipant", "pass");
+        userService.addUser(nonUser);
+
+        String tokenNonParticipant = TokenProvider.getToken(mockMvc, clientDetails, nonUser.getUsername(), "pass");
+        String authorizationHeaderNonParticipant = String.format("Bearer %s", tokenNonParticipant);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews")
+                        .header("Authorization", authorizationHeaderNonParticipant)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(reviewCard1.toString())
+        ).andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @Test
+    public void testAddReviewToSessionThatDoesntAllowReviewingCards() throws Exception {
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
+        participant1 = userService.addUser(participant1);
+
+        Session session = createDefaultSession();
+        session.setCardCommentsAllowed(false);
+        session.setParticipantsCanAddCards(true);
+        session.setMinNumberOfCardsPerParticipant(1);
+        session.setMaxNumberOfCardsPerParticipant(2);
+        session = sessionService.updateSession(session);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("email", participant1.getEmail())
+        )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("Added card 1");
+
+        String cardAddedJson = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new JSONObject(createCardDetailsResource).toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
+
+        JSONObject cardAddedObject = new JSONObject(cardAddedJson);
+
+        CreateCardReviewOverview cardReview = new CreateCardReviewOverview();
+        cardReview.setCardDetailsId(cardAddedObject.getInt("cardDetailsId"));
+        cardReview.setMessage("card-test-review");
+
+        JSONObject reviewCard1 = new JSONObject(cardReview);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(reviewCard1.toString())
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testConfirmReviewAndProgressToChoosingCards() throws Exception {
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
+        participant1 = userService.addUser(participant1);
+
+        Session session = createDefaultSession();
+        session.setCardCommentsAllowed(true);
+        session.setParticipantsCanAddCards(true);
+        session.setMinNumberOfCardsPerParticipant(1);
+        session.setMaxNumberOfCardsPerParticipant(2);
+        session = sessionService.updateSession(session);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("email", participant1.getEmail())
+        )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("Added card 1");
+
+        String cardAddedJson = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new JSONObject(createCardDetailsResource).toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        Assert.assertEquals(SessionStatus.REVIEWING_CARDS, session.getSessionStatus());
+
+        JSONObject cardAddedObject = new JSONObject(cardAddedJson);
+
+        CreateCardReviewOverview cardReview1 = new CreateCardReviewOverview();
+        cardReview1.setCardDetailsId(cardAddedObject.getInt("cardDetailsId"));
+        cardReview1.setMessage("card-test-review");
+
+        JSONObject reviewCard1 = new JSONObject(cardReview1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(reviewCard1.toString())
+        )
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(jsonPath("$.commentId").exists())
+                .andExpect(jsonPath("$.commentId").isNotEmpty());
+
+        CreateCardReviewOverview cardReview2 = new CreateCardReviewOverview();
+        cardReview2.setCardDetailsId(cardAddedObject.getInt("cardDetailsId"));
+        cardReview2.setMessage("card-test-review");
+
+        JSONObject reviewCard2 = new JSONObject(cardReview2);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews")
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(reviewCard2.toString())
+        )
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(jsonPath("$.commentId").exists())
+                .andExpect(jsonPath("$.commentId").isNotEmpty());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews/confirm")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        )
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews/confirm")
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isCreated());
+    }
+
+    @Test
+    public void testConfirmReviewBySessionNotInReviewCardStatus() throws Exception {
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
+        participant1 = userService.addUser(participant1);
+
+        Session session = createDefaultSession();
+        session.setCardCommentsAllowed(true);
+        session.setParticipantsCanAddCards(true);
+        session.setMinNumberOfCardsPerParticipant(1);
+        session.setMaxNumberOfCardsPerParticipant(2);
+        session = sessionService.updateSession(session);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("email", participant1.getEmail())
+        )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("Added card 1");
+
+        String cardAddedJson = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new JSONObject(createCardDetailsResource).toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        Assert.assertEquals(SessionStatus.REVIEWING_CARDS, session.getSessionStatus());
+
+        JSONObject cardAddedObject = new JSONObject(cardAddedJson);
+
+        CreateCardReviewOverview cardReview1 = new CreateCardReviewOverview();
+        cardReview1.setCardDetailsId(cardAddedObject.getInt("cardDetailsId"));
+        cardReview1.setMessage("card-test-review");
+
+        JSONObject reviewCard1 = new JSONObject(cardReview1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(reviewCard1.toString())
+        )
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(jsonPath("$.commentId").exists())
+                .andExpect(jsonPath("$.commentId").isNotEmpty());
+
+        CreateCardReviewOverview cardReview2 = new CreateCardReviewOverview();
+        cardReview2.setCardDetailsId(cardAddedObject.getInt("cardDetailsId"));
+        cardReview2.setMessage("card-test-review");
+
+        JSONObject reviewCard2 = new JSONObject(cardReview2);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews")
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(reviewCard2.toString())
+        )
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(jsonPath("$.commentId").exists())
+                .andExpect(jsonPath("$.commentId").isNotEmpty());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews/confirm")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        )
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews/confirm")
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews/confirm")
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isBadRequest());
+    }
+
+
+    @Test
+    public void testConfirmReviewByNonUser() throws Exception {
+        String participant1Username = "participant-1";
+        String participant1Password = "participant-1-pass";
+
+        User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("test@mail.com");
+        participant1 = userService.addUser(participant1);
+
+        Session session = createDefaultSession();
+        session.setCardCommentsAllowed(true);
+        session.setParticipantsCanAddCards(true);
+        session.setMinNumberOfCardsPerParticipant(1);
+        session.setMaxNumberOfCardsPerParticipant(2);
+        session = sessionService.updateSession(session);
+
+        String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
+        String authorizationHeaderParticipant1 = String.format("Bearer %s", tokenParticipant1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
+                        .header("Authorization", authorizationHeader)
+                        .param("email", participant1.getEmail())
+        )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        CreateCardDetailsResource createCardDetailsResource = new CreateCardDetailsResource();
+        createCardDetailsResource.setText("Added card 1");
+
+        String cardAddedJson = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new JSONObject(createCardDetailsResource).toString())
+        ).andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/all-cards/confirm")
+                        .header("Authorization", authorizationHeaderParticipant1)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+
+        Assert.assertEquals(SessionStatus.REVIEWING_CARDS, session.getSessionStatus());
+
+        JSONObject cardAddedObject = new JSONObject(cardAddedJson);
+
+        CreateCardReviewOverview cardReview1 = new CreateCardReviewOverview();
+        cardReview1.setCardDetailsId(cardAddedObject.getInt("cardDetailsId"));
+        cardReview1.setMessage("card-test-review");
+
+        JSONObject reviewCard1 = new JSONObject(cardReview1);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(reviewCard1.toString())
+        )
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(jsonPath("$.commentId").exists())
+                .andExpect(jsonPath("$.commentId").isNotEmpty());
+
+        CreateCardReviewOverview cardReview2 = new CreateCardReviewOverview();
+        cardReview2.setCardDetailsId(cardAddedObject.getInt("cardDetailsId"));
+        cardReview2.setMessage("card-test-review");
+
+        JSONObject reviewCard2 = new JSONObject(cardReview2);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews")
+                        .header("Authorization", authorizationHeader)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(reviewCard2.toString())
+        )
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(jsonPath("$.commentId").exists())
+                .andExpect(jsonPath("$.commentId").isNotEmpty());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews/confirm")
+                        .header("Authorization", authorizationHeaderParticipant1)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        )
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+
+        User nonUser = new User("nonparticipant", "pass");
+        userService.addUser(nonUser);
+
+        String tokenNonParticipant = TokenProvider.getToken(mockMvc, clientDetails, nonUser.getUsername(), "pass");
+        String authorizationHeaderNonParticipant = String.format("Bearer %s", tokenNonParticipant);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/reviews/confirm")
+                        .header("Authorization", authorizationHeaderNonParticipant)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        )
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 }
