@@ -6,6 +6,7 @@ import {AuthHttp} from '../libraries/angular2-jwt';
 
 import {CreateCategoryModel} from "../entities/category/dto/create-category-model";
 import {Category} from "../entities/category/category";
+import {Tag} from "../entities/tag";
 
 @Injectable()
 export class CategoryService {
@@ -25,7 +26,25 @@ export class CategoryService {
         options.search = searchParams;
         options.headers = headers;
 
+        console.log(JSON.stringify(category));
         return this._authHttp.post(CategoryService.endPoint, JSON.stringify(category), options);
+    }
+
+    public addTags(tagIds:number[],categoryId:number):Observable<Response> {
+
+        var headers: Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        var options:RequestOptions = new RequestOptions();
+        options.headers = headers;
+
+        var url = CategoryService.endPoint + categoryId + "/tags"
+
+        console.log("json:" + JSON.stringify(tagIds));
+        console.log(url);
+
+        return this._authHttp.post(CategoryService.endPoint  + categoryId + "/tags", JSON.stringify(tagIds),options);
+
     }
 
 

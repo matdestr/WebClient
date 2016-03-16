@@ -46,6 +46,7 @@ export class CreateSessionComponent implements OnInit {
         this.asyncTimeElement = document.getElementById('time');
         this.asyncTimeElementOriginalDisplay = this.asyncTimeElement.style.display;
 
+
         document.getElementById('radio-button-sync').click();
 
     }
@@ -72,6 +73,7 @@ export class CreateSessionComponent implements OnInit {
             }
         }
     }
+
 
 
     public handleErrors(error:Response):void {

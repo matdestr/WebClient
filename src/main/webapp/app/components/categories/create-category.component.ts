@@ -12,6 +12,7 @@ import {CreateCategoryModel} from "../../entities/category/dto/create-category-m
 import {Tag} from "../../entities/tag";
 import {TagService} from "../../services/tag.service";
 import {HttpStatus} from "../../util/http/http-status";
+import {link} from "fs";
 
 @Component({
     selector: 'create-category',
@@ -20,6 +21,7 @@ import {HttpStatus} from "../../util/http/http-status";
 })
 export class CreateCategoryComponent {
     private organizationId:number;
+    private listTagId:number[] = [];
     private form:CreateCategoryModel = CreateCategoryModel.createEmptyCreateCategory();
     private errors:Array<string> = [];
     private tags:Tag[] = [];
@@ -77,5 +79,14 @@ export class CreateCategoryComponent {
     public resetForm():void {
         this.errors = [];
         this.form = CreateCategoryModel.createEmptyCreateCategory();
+    }
+
+    public onTagClick(tag: Tag): void{
+        this.listTagId.push(tag.tagId)
+        console.log(this.listTagId);
+
+        this.form.listTagId = this.listTagId;
+        console.log(this.form.listTagId);
+
     }
 }

@@ -2,6 +2,7 @@ package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
+import be.kdg.kandoe.backend.model.organizations.Tag;
 import be.kdg.kandoe.backend.persistence.api.CategoryRepository;
 import be.kdg.kandoe.backend.service.api.CategoryService;
 import be.kdg.kandoe.backend.service.exceptions.CategoryServiceException;
@@ -77,5 +78,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategoryByName(String categoryName, Organization organization) {
         return repository.findCategoryByNameAndOrganization(categoryName, organization);
+    }
+
+    @Override
+    public List<Tag> addTagsToCategory(Category category, List<Tag> tags) {
+        List<Tag> currentTags = category.getTags();
+        currentTags.addAll(tags);
+        category.setTags(currentTags);
+
+        repository.save(category);
+
+        return currentTags;
     }
 }

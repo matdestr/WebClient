@@ -20,4 +20,8 @@ public class TagServiceImpl implements TagService {
     public List<Tag> getTags() {
         return tagRepository.findAll();
     }
+
+    public Tag getTag(int tagId){
+        return tagRepository.findOne(tagId);
+    }
 }

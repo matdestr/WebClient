@@ -60,7 +60,7 @@
                                     <form role="form">
                                         <div *ngFor="#tag of tags" class="checkbox">
                                             <label class="tagCheckbox">
-                                                <input type="checkbox">{{tag.name}}
+                                                <input (change)="onTagClick(tag)"type="checkbox">{{tag.name}}
                                             </label>
                                         </div>
                                     </form>

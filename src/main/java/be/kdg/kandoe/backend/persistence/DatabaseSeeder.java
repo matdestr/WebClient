@@ -110,11 +110,13 @@ public class DatabaseSeeder {
         Organization organization = new Organization("Pain hiders", testUser);
         organization.addOrganizer(harold);
         organization = organizationRepository.save(organization);
+
         
         Category category1 = new Category();
         category1.setOrganization(organization);
         category1.setName("Category 1");
         category1.setDescription("Description of the first category");
+        //category1.setTags(tagRepository.findAll());
         category1 = categoryRepository.save(category1);
         
         Topic topic1 = new Topic();
@@ -390,7 +392,7 @@ public class DatabaseSeeder {
 
         tagRepository.save(tagList);
     }
-    
+
     /*
         // TODO remove !!
     private void seedOldData() {

@@ -27,12 +27,15 @@ export class CategoryDetailComponent implements OnInit {
     private topics:Topic[] = [];
     private topicSubSet:Topic[] = [];
     private sessions:Session[] = [];
+    private selectedTags:Tag[] = [];
     private tags:Tag[] = [];
+    private listTagId:number[] = [];
     private currentCard:CardDetails = CardDetails.createEmptyCard();
-    private counterTopBegin:number=0;
-    private counterTopEnd:number=4;
-    private myLeftTopDisplay:string="block";
-    private myRightTopDisplay:string="block";
+    private categoryId:number;
+    private counterTopBegin:number = 0;
+    private counterTopEnd:number = 4;
+    private myLeftTopDisplay:string = "block";
+    private myRightTopDisplay:string = "block";
 
 
     constructor(private _router:Router,
@@ -45,30 +48,35 @@ export class CategoryDetailComponent implements OnInit {
 
 
     ngOnInit():any {
-        var categoryId = +this._routeArgs.params["categoryId"];
+        this.categoryId = +this._routeArgs.params["categoryId"];
 
-        this._categoryService.getCategory(categoryId).subscribe(
-            data => this.category = data.json()
+        this._categoryService.getCategory(this.categoryId).subscribe(
+            data => {
+                this.category = data.json()
+                for (let tag of this.category.tags) {
+                    this.selectedTags.push(Tag.createEmptyTag().deserialize(tag));
+                }
+            }
         );
 
-        this._cardDetailsService.getCardDetailsOfCategory(categoryId).subscribe(
-            data =>{
+        this._cardDetailsService.getCardDetailsOfCategory(this.categoryId).subscribe(
+            data => {
                 for (let card of data.json())
                     this.cards.push(CardDetails.createEmptyCard().deserialize(card));
             },
             error => console.log(error.json)
         );
 
-        this._topicService.getTopicsFromCategory(categoryId).subscribe(
+        this._topicService.getTopicsFromCategory(this.categoryId).subscribe(
             data => {
-                for (let topic of data.json()){
+                for (let topic of data.json()) {
                     this.topics.push(Topic.createEmptyTopic().deserialize(topic));
                 }
-                this.topicSubSet = this.topics.slice(0,4);
-                if(this.topics.length<=4) {
+                this.topicSubSet = this.topics.slice(0, 4);
+                if (this.topics.length <= 4) {
                     this.myLeftTopDisplay = "none";
                     this.myRightTopDisplay = "none";
-                }else {
+                } else {
                     this.myLeftTopDisplay = "none";
                     this.myRightTopDisplay = "block";
                 }
@@ -77,7 +85,7 @@ export class CategoryDetailComponent implements OnInit {
             () => console.log("Topics fetched")
         );
 
-        this._categoryService.getSessionsFromCategory(categoryId).subscribe(
+        this._categoryService.getSessionsFromCategory(this.categoryId).subscribe(
             data => {
                 for (let session of data.json())
                     this.sessions.push(Session.createEmptySession().deserialize(session));
@@ -120,33 +128,58 @@ export class CategoryDetailComponent implements OnInit {
         this._router.navigate(['/Session', {sessionId: sessionId}]);
     }
 
-    public nextTopPage(){
+    public nextTopPage() {
         this.myLeftTopDisplay = "block";
-        if(this.counterTopEnd >= this.topics.length-1){
-            this.myRightTopDisplay="none";
+        if (this.counterTopEnd >= this.topics.length - 1) {
+            this.myRightTopDisplay = "none";
         }
-        if(this.counterTopEnd >= this.topics.length){
+        if (this.counterTopEnd >= this.topics.length) {
             return;
         }
-        else{
+        else {
             this.counterTopBegin++;
             this.counterTopEnd++;
-            this.topicSubSet= this.topics.slice(this.counterTopBegin,this.counterTopEnd);
+            this.topicSubSet = this.topics.slice(this.counterTopBegin, this.counterTopEnd);
         }
     }
 
-    public previousTopPage(){
+    public previousTopPage() {
         this.myRightTopDisplay = "block";
-        if(this.counterTopBegin <= 1){
-            this.myLeftTopDisplay="none";
+        if (this.counterTopBegin <= 1) {
+            this.myLeftTopDisplay = "none";
         }
-        if(this.counterTopBegin <= 0){
+        if (this.counterTopBegin <= 0) {
             return;
-        }  else {
+        } else {
             this.counterTopBegin--;
             this.counterTopEnd--;
             this.topicSubSet = this.topics.slice(this.counterTopBegin, this.counterTopEnd);
         }
     }
 
+    public onTagClick(tag:Tag):void {
+        this.listTagId.push(tag.tagId)
+        console.log(this.listTagId);
+
+    }
+
+    public saveTags():void {
+        console.log("saveTags");
+        this._categoryService.addTags(this.listTagId, this.category.categoryId).subscribe(
+            () => {
+                console.log("succeed");
+                this.selectedTags = [];
+                this._categoryService.getCategory(this.categoryId).subscribe(
+                    data => {
+                        this.category = data.json();
+                        for (let tag of this.category.tags) {
+                            this.selectedTags.push(Tag.createEmptyTag().deserialize(tag));
+                        }
+                    }
+                );
+            },
+            error => console.log(error)
+        );
+        this.listTagId = [];
+    }
 }

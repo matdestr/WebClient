@@ -111,7 +111,7 @@
             <h2>Tags</h2>
             <ul>
                 <table style="width:100%">
-                    <tr class="spaceUnder" *ngFor="#tag of tags">
+                    <tr class="spaceUnder" *ngFor="#tag of selectedTags">
                         <p class="bullet-point">{{tag.name}}</p>
                     </tr>
                 </table>
@@ -135,14 +135,14 @@
                                 <form role="form">
                                     <div *ngFor="#tag of tags" class="checkbox">
                                         <label class="tagCheckbox">
-                                            <input type="checkbox">{{tag.name}}
+                                            <input (change)="onTagClick(tag)" type="checkbox">{{tag.name}}
                                         </label>
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                            <button (click)="saveTags()" type="button" class="btn btn-default" data-dismiss="modal">Save</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>

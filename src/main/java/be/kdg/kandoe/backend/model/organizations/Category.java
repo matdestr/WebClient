@@ -25,7 +25,7 @@ public class Category {
     @ManyToOne(optional = false)
     private Organization organization;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Tag> tags;
     
     //@OneToMany(targetEntity = CardDetails.class, fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE })

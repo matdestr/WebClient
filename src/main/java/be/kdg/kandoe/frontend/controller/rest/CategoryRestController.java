@@ -2,12 +2,14 @@ package be.kdg.kandoe.frontend.controller.rest;
 
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
+import be.kdg.kandoe.backend.model.organizations.Tag;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.CategoryService;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
 import be.kdg.kandoe.backend.service.api.SessionService;
+import be.kdg.kandoe.backend.service.api.TagService;
 import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CategoryResource;
 import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CreateCategoryResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.AsynchronousSessionResource;
@@ -21,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ public class CategoryRestController {
     private final CategoryService categoryService;
     private final OrganizationService organizationService;
     private final SessionService sessionService;
+    private final TagService tagService;
 
     private MapperFacade mapper;
 
@@ -39,19 +43,36 @@ public class CategoryRestController {
     public CategoryRestController(MapperFacade mapper,
                                   CategoryService categoryService,
                                   OrganizationService organizationService,
-                                  SessionService sessionService) {
+                                  SessionService sessionService,
+                                  TagService tagService) {
         this.mapper = mapper;
         this.categoryService = categoryService;
         this.organizationService = organizationService;
         this.sessionService = sessionService;
+        this.tagService = tagService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CategoryResource> createCategory(@RequestParam("organizationId") int organizationId,
-                                                                 @Valid @RequestBody CreateCategoryResource categoryResource) {
+                                                           @Valid @RequestBody CreateCategoryResource categoryResource) {
         Organization organization = organizationService.getOrganizationById(organizationId);
+
+
         Category category = mapper.map(categoryResource, Category.class);
+
+
+        List<Integer> listTagId = categoryResource.getListTagId();
+        if (listTagId != null) {
+            List<Tag> tags = new ArrayList<>();
+            for (int id : listTagId) {
+                tags.add(tagService.getTag(id));
+            }
+
+            category.setTags(tags);
+        }
+
+
         category.setOrganization(organization);
         category = categoryService.addCategory(category);
         return new ResponseEntity<>(mapper.map(category, CategoryResource.class), HttpStatus.CREATED);
@@ -93,4 +114,19 @@ public class CategoryRestController {
         //return new ResponseEntity<>(mapper.mapAsList(sessions, SessionResource.class), HttpStatus.OK);
         return new ResponseEntity<>(sessionResources, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/{categoryId}/tags", method = RequestMethod.POST)
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity addTagsToCategory(@PathVariable("categoryId") int categoryId, @RequestBody List<Integer> tagIds) {
+        Category category = categoryService.getCategoryById(categoryId);
+
+        List<Tag> selectedTags = new ArrayList<>();
+        for (int id : tagIds) {
+            selectedTags.add(tagService.getTag(id));
+        }
+        List<Tag> tags = categoryService.addTagsToCategory(category, selectedTags);
+
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
 }
