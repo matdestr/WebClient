@@ -143,6 +143,8 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService = new SessionGameServiceImpl(sessionService, mockedEmailService);
 
         sessionGameService.inviteUserForSession(session, player1);
+        sessionGameService.confirmInvitedUsers(session);
+        
         Assert.assertEquals(SessionStatus.USERS_JOINING, session.getSessionStatus());
         Assert.assertFalse(session.getParticipantInfo().iterator().next().isJoined());
         Mockito.verify(mockedEmailService).sendSessionInvitationToUser(
@@ -162,7 +164,13 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test(expected = SessionGameServiceException.class)
-    public void joinAsNonInvitedUser() {
+    public void joinAsNonInvitedUserWithoutConfirmedInvites() {
+        sessionGameService.setUserJoined(session, player1);
+    }
+    
+    @Test(expected = SessionGameServiceException.class)
+    public void joinAsNonInvitedUserWithConfirmedInvites() {
+        sessionGameService.confirmInvitedUsers(session);
         sessionGameService.setUserJoined(session, player1);
     }
 
@@ -173,12 +181,45 @@ public class TestSessionGameServiceSynchronous {
 
         sessionGameService.inviteUserForSession(session, player1);
         sessionGameService.inviteUserForSession(session, player2);
+        
+        Assert.assertEquals(SessionStatus.CREATED, session.getSessionStatus());
+        
+        sessionGameService.confirmInvitedUsers(session);
 
         sessionGameService.setUserJoined(session, organizer);
         sessionGameService.setUserJoined(session, player1);
         Assert.assertEquals(SessionStatus.USERS_JOINING, session.getSessionStatus());
         sessionGameService.setUserJoined(session, player2);
         Assert.assertEquals(SessionStatus.REVIEWING_CARDS, session.getSessionStatus());
+    }
+    
+    @Test(expected = SessionGameServiceException.class)
+    public void inviteUserAfterConfirmingInvitesThrowsException() {
+        sessionGameService.inviteUserForSession(session, player1);
+        Assert.assertEquals(SessionStatus.CREATED, session.getSessionStatus());
+        
+        sessionGameService.inviteUserForSession(session, player2);
+        Assert.assertEquals(SessionStatus.CREATED, session.getSessionStatus());
+        
+        sessionGameService.confirmInvitedUsers(session);
+        Assert.assertEquals(SessionStatus.USERS_JOINING, session.getSessionStatus());
+        
+        sessionGameService.inviteUserForSession(session, player3);
+    }
+    
+    @Test(expected = SessionGameServiceException.class)
+    public void confirmInvitedUsersMultipleTimesThrowsException() {
+        sessionGameService.inviteUserForSession(session, player1);
+        Assert.assertEquals(SessionStatus.CREATED, session.getSessionStatus());
+        
+        sessionGameService.confirmInvitedUsers(session);
+        sessionGameService.confirmInvitedUsers(session);
+    }
+    
+    @Test(expected = SessionGameServiceException.class)
+    public void joinSessionAsInvitedUserWhenNotConfirmedThrowsException() {
+        sessionGameService.inviteUserForSession(session, player1);
+        sessionGameService.setUserJoined(session, player1);
     }
 
     @Test
@@ -191,6 +232,7 @@ public class TestSessionGameServiceSynchronous {
 
         sessionGameService.inviteUserForSession(session, player1);
         sessionGameService.inviteUserForSession(session, player2);
+        sessionGameService.confirmInvitedUsers(session);
 
         sessionGameService.setUserJoined(session, organizer);
         sessionGameService.setUserJoined(session, player1);
@@ -250,7 +292,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test
-    public void chooseLessCardsThenAllowed(){
+    public void chooseLessCardsThanAllowed(){
         session.setParticipantsCanAddCards(true);
         session.setCardCommentsAllowed(false);
         session = sessionService.updateSession(session);
@@ -282,7 +324,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test(expected = SessionGameServiceException.class)
-    public void chooseMoreCardsThenAllowed(){
+    public void chooseMoreCardsThanAllowed(){
         session.setParticipantsCanAddCards(true);
         session.setCardCommentsAllowed(false);
         session = sessionService.updateSession(session);
@@ -750,6 +792,8 @@ public class TestSessionGameServiceSynchronous {
     private void inviteTwoUsersAndLetThemJoin(Session session) {
         sessionGameService.inviteUserForSession(session, player1);
         sessionGameService.inviteUserForSession(session, player2);
+        
+        sessionGameService.confirmInvitedUsers(session);
 
         sessionGameService.setUserJoined(session, player1);
         sessionGameService.setUserJoined(session, player2);

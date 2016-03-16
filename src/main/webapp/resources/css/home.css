@@ -6029,6 +6029,17 @@ button.close {
     -webkit-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
     box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset; }
 
+.cando-button {
+  background: #D32F2F;
+  color: #f8f8f8;
+  text-align: center;
+  padding: 1em;
+  font-size: 16px;
+  font-weight: bold;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px; }
+
 #container {
   margin-top: 2em;
   margin-left: 2em; }
@@ -6606,10 +6617,13 @@ span.red {
     transform: scale(0); }
   40% {
     transform: scale(1); } }
-.title {
+.title, .title-spacing-top {
   color: #B71C1C;
   font-size: 3em;
   margin-bottom: 1em; }
+
+.title-spacing-top {
+  margin-top: 0.5em !important; }
 
 .toolbar {
   box-shadow: 0 0.025em .75em #333;

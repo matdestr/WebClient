@@ -96,6 +96,18 @@ public class SessionGameRestController {
         }
     }
 
+    @RequestMapping(value = "/{sessionId}/invite/confirm", method = RequestMethod.POST)
+    public ResponseEntity inviteUser(@AuthenticationPrincipal User user,
+                                     @PathVariable("sessionId") int sessionId) {
+        Session session = sessionService.getSessionById(sessionId);
+        
+        checkUserIsOrganizer(user, session);
+        sessionGameService.confirmInvitedUsers(session);
+        this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
+        
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
     @RequestMapping(value = "/{sessionId}/join", method = RequestMethod.POST)
     public ResponseEntity joinSession(@AuthenticationPrincipal User user,
                                       @PathVariable("sessionId") int sessionId) {

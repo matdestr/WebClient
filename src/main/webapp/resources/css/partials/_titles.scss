@@ -1,5 +1,9 @@
-.title{
+.title, .title-spacing-top {
   color: $primary-color-dark;
   font-size: $text-size-title;
   margin-bottom: $title-margin;
+}
+
+.title-spacing-top {
+  margin-top: 0.5em !important;
 }

@@ -181,6 +181,11 @@ public class ITSessionGameRestControllerChat {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + defaultSession.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeaderSessionOwner)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + defaultSession.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderSessionOwner)
         ).andExpect(MockMvcResultMatchers.status().isCreated());

@@ -391,6 +391,11 @@ public class ITTestSessionRestController {
                         .param("email", String.valueOf(userToInvite.getEmail()))
         ).andExpect(status().isCreated());
 
+        mockMvc.perform(
+                post(baseApiUrl + "/" + createdSessionId + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(status().isCreated());
+
         jsonResponse = this.getSessionData(createdSessionId);
         Assert.assertEquals("USERS_JOINING", jsonResponse.getString("sessionStatus"));
 

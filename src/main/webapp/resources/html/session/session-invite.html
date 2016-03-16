@@ -1,4 +1,3 @@
-<toolbar></toolbar>
 <div id="main-content"  >
 
     <div id="timeline" class="col-sm-1">
@@ -15,6 +14,9 @@
                 <h1>Add users to join this session</h1>
             </div>
             <div class="panel-body">
+                <p *ngIf="statusMessage" class="alert alert-success">{{statusMessage}}</p>
+                <p *ngIf="errorMessage" class="alert alert-danger">{{errorMessage}}</p>
+                
                 <form #cardForm="ngForm"
                       (ngSubmit)="onSubmit(cardForm)"
                       name="form-invite-users"
@@ -52,7 +54,8 @@
                     <section>
                         <div class="forms-input-group clear-both text-center">
                             <button type="submit"
-                                    name="invite-users">
+                                    name="invite-users"
+                                    [disabled]="submitDisabled">
                                 <i class="glyphicon glyphicon-user"></i> INVITE
                             </button>
                         </div>

@@ -33,6 +33,12 @@ export class SessionGameService {
             .retry(2);
     }
     
+    public joinSession(sessionId : number) : Observable<Response> {
+        return this._authHttp
+            .post(SessionGameService.endpoint + '/' + sessionId + '/join', null)
+            .retry(2);
+    }
+    
     public chooseCards(cardDetailsIds : number[]) : Observable<Response> {
         var headers : Headers = new Headers();
         headers.append('Content-Type', 'application/json');

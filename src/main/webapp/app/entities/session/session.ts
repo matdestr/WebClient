@@ -1,5 +1,6 @@
 import {Serializable} from "../../util/serializable";
 import {User} from "../user/user";
+import {SessionStatus} from "./session-status";
 
 export class Session implements Serializable<Session>{
     sessionId: number;
@@ -12,7 +13,7 @@ export class Session implements Serializable<Session>{
     cardCommentsAllowed:boolean;
     amountOfCircles:number;
     type: string;
-
+    sessionStatus : SessionStatus;
 
     constructor(minNumberOfCardsPerParticipant:number,maxNumberOfCardsPerParticipant:number,participantsCanAddCards:boolean,cardCommentsAllowed:boolean,amountOfCircles:number, categoryId:number, topicId:number, type:string, sessionId:number) {
         this.minNumberOfCardsPerParticipant = minNumberOfCardsPerParticipant;
@@ -41,6 +42,7 @@ export class Session implements Serializable<Session>{
         this.cardCommentsAllowed = object.cardCommentsAllowed;
         this.currentParticipantPlaying = object.currentParticipantPlaying;
         this.sessionId = object.sessionId;
+        this.sessionStatus = object.sessionStatus;
 
         return this;
     }

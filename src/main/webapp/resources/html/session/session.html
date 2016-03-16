@@ -1,0 +1,16 @@
+<toolbar></toolbar>
+
+<!--<session-invite></session-invite>-->
+
+<div *ngIf="session"
+     id="session-global-container"
+     [ngSwitch]="session.sessionStatus">
+    <session-invite *ngSwitchWhen="'CREATED'" [session]="session"></session-invite>
+    <session-joining *ngSwitchWhen="'USERS_JOINING'" [session]="session"></session-joining>
+    <session-add-cards *ngSwitchWhen="'ADDING_CARDS'"></session-add-cards>
+    <session-review-cards *ngSwitchWhen="'REVIEWING_CARDS'"></session-review-cards>
+    <session-choose-cards *ngSwitchWhen="'CHOOSING_CARDS'"></session-choose-cards>
+    <session-ready *ngSwitchWhen="'READY_TO_START'"></session-ready>
+    <session-in-progress *ngSwitchWhen="'IN_PROGRESS'"></session-in-progress>
+    <session-finished *ngSwitchWhen="'FINISHED'"></session-finished>
+</div>

@@ -20,9 +20,9 @@ import {ActiveSessionComponent} from "./session/active-session.component";
 import {CreateSessionComponent} from  "./session/create-session.component"
 import {TopicCardChooserComponent} from "./topic/topic-card-chooser.component";
 import {SessionAddCardsComponent} from "./session/session-add-cards.component";
-import {InviteUsersComponent} from "./session/invite-users.component";
 import {SessionChooseCardsComponent} from "./session/session-choose-cards.component";
 import {SessionReviewCardsComponent} from "./session/review-cards.component";
+import {SessionComponent} from "./session/session.component";
 
 @Component({
     selector: 'my-app',
@@ -46,13 +46,14 @@ import {SessionReviewCardsComponent} from "./session/review-cards.component";
     {path: '/categories/:categoryId/addtags',   name:'AddTag',                  component:AddTagComponent} ,
     {path: '/topic/:topicId/detail',            name:'TopicDetail',             component:TopicDetailComponent} ,
     {path: '/topic/:topicId/cardChooser',       name:'TopicCardChooser',        component:TopicCardChooserComponent} ,
-    {path: '/session/:sessionId',               name:'ActiveSession',           component:ActiveSessionComponent},
+    //{path: '/session/:sessionId',               name:'ActiveSession',           component:ActiveSessionComponent},
     {path: '/categories/:categoryId/createCard',name:'CreateCard',              component:CreateCardComponent},
     {path: '/categories/:categoryId/createSession', name:'CreateSession',       component:CreateSessionComponent},
-    {path: '/session/:sessionId/all-cards',     name:'SessionChooseCards',         component:SessionChooseCardsComponent},
+    /*{path: '/session/:sessionId/all-cards',     name:'SessionChooseCards',         component:SessionChooseCardsComponent},
     {path:'/session/:sessionId/invite-users',   name:'InviteUsers',             component:InviteUsersComponent},
     {path:'/session/:sessionId/add-cards',      name:'SessionAddCards',         component: SessionAddCardsComponent},
-    {path:'/session/:sessionId/review-cards',   name:'SessionReviewCards',       component:SessionReviewCardsComponent}
+    {path:'/session/:sessionId/review-cards',   name:'SessionReviewCards',       component:SessionReviewCardsComponent}*/
+    {path: '/session/:sessionId',               name: 'Session',                component: SessionComponent}
 ])
 export class AppComponent {
 }

@@ -192,6 +192,7 @@ public class ITSessionGameRestController {
         session = sessionService.addSession(session);
         
         sessionGameService.inviteUserForSession(session, participant1);
+        sessionGameService.confirmInvitedUsers(session);
         sessionGameService.setUserJoined(session, sessionOwner);
         sessionGameService.setUserJoined(session, participant1);
 
@@ -282,6 +283,11 @@ public class ITSessionGameRestController {
                         .header("Authorization", authorizationHeader)
                         .param("email", String.valueOf(participant1.getEmail()))
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
         
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
@@ -350,6 +356,11 @@ public class ITSessionGameRestController {
                         .param("email",participant.getEmail())
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
         String tokenParticipant = TokenProvider.getToken(mockMvc, clientDetails, participantUsername, participantPassword);
         String authorizationHeaderParticipant = String.format("Bearer %s", tokenParticipant);
 
@@ -389,6 +400,11 @@ public class ITSessionGameRestController {
                         .header("Authorization", authorizationHeader)
                         .param("email", participant1.getEmail())
         ).andDo(print()).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
@@ -460,6 +476,11 @@ public class ITSessionGameRestController {
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                     .header("Authorization", authorizationHeader)
                         .param("email", participant1.getEmail())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
         
         mockMvc.perform(
@@ -546,6 +567,11 @@ public class ITSessionGameRestController {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
@@ -626,9 +652,19 @@ public class ITSessionGameRestController {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/start")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/chosen-cards")
@@ -671,6 +707,11 @@ public class ITSessionGameRestController {
                         .param("email", participant1.getEmail())
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
 
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+        
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)
@@ -730,6 +771,11 @@ public class ITSessionGameRestController {
                         .header("Authorization", authorizationHeader)
                         .param("email", participant1.getEmail())
         ).andDo(print()).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
@@ -829,6 +875,11 @@ public class ITSessionGameRestController {
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+        
+        mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
@@ -909,6 +960,11 @@ public class ITSessionGameRestController {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
@@ -985,6 +1041,11 @@ public class ITSessionGameRestController {
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                         .header("Authorization", authorizationHeader)
                         .param("email", participant1.getEmail())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
@@ -1075,6 +1136,11 @@ public class ITSessionGameRestController {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
@@ -1150,6 +1216,11 @@ public class ITSessionGameRestController {
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite")
                         .header("Authorization", authorizationHeader)
                         .param("email", participant1.getEmail())
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
@@ -1239,6 +1310,11 @@ public class ITSessionGameRestController {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
@@ -1325,6 +1401,11 @@ public class ITSessionGameRestController {
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+        
+        mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
@@ -1403,6 +1484,11 @@ public class ITSessionGameRestController {
                         .param("email", participant1.getEmail())
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
 
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+        
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)
@@ -1487,6 +1573,11 @@ public class ITSessionGameRestController {
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
 
         mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+
+        mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)
         ).andExpect(MockMvcResultMatchers.status().isCreated());
@@ -1562,6 +1653,11 @@ public class ITSessionGameRestController {
                         .param("email", participant1.getEmail())
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
 
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+        
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)
@@ -1670,6 +1766,11 @@ public class ITSessionGameRestController {
                         .param("email", participant1.getEmail())
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
 
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+        
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)
@@ -1785,6 +1886,11 @@ public class ITSessionGameRestController {
                         .param("email", participant1.getEmail())
         )/*.andDo(MockMvcResultHandlers.print())*/.andExpect(MockMvcResultMatchers.status().isCreated());
 
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/invite/confirm")
+                        .header("Authorization", authorizationHeader)
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
+        
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/api/sessions/" + session.getSessionId() + "/join")
                         .header("Authorization", authorizationHeaderParticipant1)

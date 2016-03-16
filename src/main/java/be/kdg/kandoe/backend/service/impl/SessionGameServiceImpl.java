@@ -2,11 +2,13 @@ package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.cards.CardPosition;
+import be.kdg.kandoe.backend.model.cards.Comment;
 import be.kdg.kandoe.backend.model.sessions.CardsChoice;
 import be.kdg.kandoe.backend.model.sessions.ParticipantInfo;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.sessions.SessionStatus;
 import be.kdg.kandoe.backend.model.users.User;
+import be.kdg.kandoe.backend.service.api.CardService;
 import be.kdg.kandoe.backend.service.api.EmailService;
 import be.kdg.kandoe.backend.service.api.SessionGameService;
 import be.kdg.kandoe.backend.service.api.SessionService;
@@ -33,11 +35,10 @@ public class SessionGameServiceImpl implements SessionGameService {
 
     @Override
     public void inviteUserForSession(Session session, User user) {
-        if (session.getSessionStatus() != SessionStatus.CREATED && session.getSessionStatus() != SessionStatus.USERS_JOINING)
+        // TODO : Max amount of players or not?
+        
+        if (session.getSessionStatus() != SessionStatus.CREATED)
             throw new SessionGameServiceException("Cannot invite user when the session has already started");
-
-        if (session.getSessionStatus() == SessionStatus.CREATED)
-            session.setSessionStatus(SessionStatus.USERS_JOINING);
 
         if (session.getParticipantInfo().stream().anyMatch(p -> p.getParticipant().getUserId() == user.getUserId()))
             throw new SessionGameServiceException("User has already been invited to join the session");
@@ -48,6 +49,15 @@ public class SessionGameServiceImpl implements SessionGameService {
         session.getParticipantInfo().add(participantInfo);
         session = sessionService.updateSession(session);
         emailService.sendSessionInvitationToUser(session, session.getOrganizer(), user);
+    }
+
+    @Override
+    public void confirmInvitedUsers(Session session) {
+        if (session.getSessionStatus() != SessionStatus.CREATED)
+            throw new SessionGameServiceException("The invited users have already been confirmed for this session");
+        
+        session.setSessionStatus(SessionStatus.USERS_JOINING);
+        sessionService.updateSession(session);
     }
 
     /*@Override
@@ -69,6 +79,12 @@ public class SessionGameServiceImpl implements SessionGameService {
         if (session.getParticipantInfo().size() <= 1)
             throw new SessionGameServiceException("Cannot join a session to which no users are invited");
 
+        if (session.getSessionStatus() == SessionStatus.CREATED)
+            throw new SessionGameServiceException("Cannot join a session that has not yet started");
+        
+        if (session.getSessionStatus() != SessionStatus.USERS_JOINING)
+            throw new SessionGameServiceException("Cannot join a session that has already started");
+        
         Optional<ParticipantInfo> firstMatchingParticipantInfo = session.getParticipantInfo().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
 
         if (!firstMatchingParticipantInfo.isPresent())
@@ -83,10 +99,10 @@ public class SessionGameServiceImpl implements SessionGameService {
         cardsChoice.setChosenCards(new ArrayList<>());
         session.getParticipantCardChoices().add(cardsChoice);
 
-        session = sessionService.updateSession(session);
-
         if (session.getParticipantInfo().stream().allMatch(p -> p.isJoined()))
             this.confirmUsersJoined(session);
+
+        session = sessionService.updateSession(session);
     }
     
     @Override

@@ -10,6 +10,7 @@ import java.util.Set;
 
 public interface SessionGameService {
     void inviteUserForSession(Session session, User user);
+    void confirmInvitedUsers(Session session);
     //void setOpenForJoining(Session session);
     void setUserJoined(Session session, User user);
     void setUserLeft(Session session, User user);
