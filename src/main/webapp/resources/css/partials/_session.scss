@@ -219,6 +219,8 @@ $card-position-card-border-thickness: 5;
   //vertical-align: middle;
   max-width: 40em;
   margin: auto;
+  padding-bottom: 1em;
+  text-align: center;
 
   /*svg {
     display: inline-block;
@@ -238,6 +240,10 @@ $card-position-card-border-thickness: 5;
     //fill:$primary-color-dark;
     /*stroke: $color-accent;
     fill: $color-accent;*/
+  }
+  
+  .cando-form-button-default {
+    margin-top: 2em;
   }
 }
 

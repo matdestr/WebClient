@@ -43,6 +43,7 @@ export class SessionInProgressComponent implements OnInit {
     
     private username : string;
     private currentParticipantUsername : string;
+    private userIsOrganizer : boolean;
 
     constructor(private _sessionService : SessionService,
                 private _sessionGameService : SessionGameService,
@@ -50,6 +51,9 @@ export class SessionInProgressComponent implements OnInit {
 
     ngOnInit() : any {
         this.username = getUsername(localStorage.getItem(this.tokenName));
+        
+        if (this.username == this.session.organizer.username)
+            this.userIsOrganizer = true;
         
         this.viewBoxWidth = this.circleSpaceWidth + ((this.cardWidth - SessionInProgressComponent.CIRCLE_THICKNESS) / 2) + this.cardBorderThickness;
         this.viewBoxHeight = this.circleSpaceHeight + ((this.cardHeight - SessionInProgressComponent.CIRCLE_THICKNESS) / 2) + this.cardBorderThickness;
@@ -251,6 +255,18 @@ export class SessionInProgressComponent implements OnInit {
     private updateCurrentParticipant(user : User) : void {
         this.currentParticipant = user;
         this.currentParticipantUsername = this.currentParticipant.username;
+    }
+    
+    private endSession() {
+        this._sessionGameService.endSession(this.session.sessionId)
+            .subscribe(
+                data => {
+                    console.log('Ended session');
+                },
+                error => {
+                    console.log('Could not end session');
+                }
+            )
     }
 
     /**

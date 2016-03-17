@@ -69,7 +69,10 @@ export class SessionAddCardsComponent implements OnInit {
     public addThisCard():void{
         this._sessionGameService.addCardToSession(this.session.sessionId, this.form)
             .subscribe(
-                () => console.log('Added card to session'),
+                () => {
+                    console.log('Added card to session');
+                    this.form = CreateCardModel.createEmptyCreateCardModel()
+                },
                 error => this.handleErrors(error)
             );
     }

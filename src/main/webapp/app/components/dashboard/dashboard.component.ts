@@ -135,7 +135,8 @@ export class DashboardComponent {
     }
 
     public toSession(sessionId: number){
-        this._router.navigate(["/ActiveSession",{sessionId:sessionId}])
+        //this._router.navigate(["/ActiveSession",{sessionId:sessionId}])
+        this._router.navigate(["/Session",{sessionId : sessionId}])
     }
 
     public nextOrgPage(){

@@ -119,6 +119,13 @@
                      [style.top.px]="c.positionTop">
 
                 </div>-->
+                
+                <button *ngIf="userIsOrganizer"
+                        class="cando-form-button-default"
+                        type="button"
+                        (click)="endSession()">
+                    End game
+                </button>
             </div>
         </div>
 

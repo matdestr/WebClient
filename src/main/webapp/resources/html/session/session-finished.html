@@ -1,0 +1,13 @@
+<div id="main-content">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 text-center">
+            <h1 class=title-spacing-top>The game has ended</h1>
+
+            <div class="panel forms-panel" style="padding: 1em;">
+                <h1>Winning cards:</h1>
+                
+                <card-detail *ngFor="#c of winningCards" [card]="c" [cardClassName]="'card-small'"></card-detail>
+            </div>
+        </div>
+    </div>
+</div>

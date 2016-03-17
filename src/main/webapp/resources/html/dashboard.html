@@ -23,7 +23,7 @@
             <button class="paginate left" (click)="previousActiveSesPage()"  [style.display]="myLeftActDisplay"><i></i><i></i></button>
         </div>
         <div *ngFor="#session of activeSessionsSubset">
-        <div class="red-block" (click)="toSession()">
+        <div class="red-block" (click)="toSession(session.sessionId)">
             <h3 class="text-center">Session {{session.sessionId}}</h3>
             <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}} Participant(s)</h6>
             <h6 class="text-center"><i class="glyphicon glyphicon-globe"></i> {{session.organizationTitle}}</h6>
@@ -49,7 +49,7 @@
             <button class="paginate left" (click)="previousFutSesPage()"  [style.display]="myLeftFutDisplay"><i></i><i></i></button>
         </div>
         <div *ngFor="#session of futureSessionsSubset">
-            <div class="red-block" (click)="toSession()">
+            <div class="red-block" (click)="toSession(session.sessionId)">
                 <h3 class="text-center">Session {{session.sessionId}}</h3>
                 <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}} Participant(s)</h6>
                 <h6 class="text-center"><i class="glyphicon glyphicon-globe"></i> {{session.organizationTitle}}</h6>
@@ -64,7 +64,7 @@
             <button class="paginate left" (click)="previousPrevSesPage()"  [style.display]="myLeftPrevDisplay"><i></i><i></i></button>
         </div>
         <div *ngFor="#session of previousSessionsSubset">
-            <div class="red-block" (click)="toSession()">
+            <div class="red-block" (click)="toSession(session.sessionId)">
                 <h3 class="text-center">Session {{session.sessionId}}</h3>
                 <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}} Participant(s)</h6>
                 <h6 class="text-center"><i class="glyphicon glyphicon-globe"></i> {{session.organizationTitle}}</h6>

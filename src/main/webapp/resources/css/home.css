@@ -6536,6 +6536,8 @@ form.invitation-accept-form {
   line-height: 0;
   max-width: 40em;
   margin: auto;
+  padding-bottom: 1em;
+  text-align: center;
   /*svg {
     display: inline-block;
     position: absolute;
@@ -6549,6 +6551,8 @@ form.invitation-accept-form {
   #game-svg-container .inner-circle {
     /*stroke: $color-accent;
     fill: $color-accent;*/ }
+  #game-svg-container .cando-form-button-default {
+    margin-top: 2em; }
 
 .radio-button-type {
   display: inline-block;

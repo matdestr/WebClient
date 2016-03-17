@@ -66,6 +66,7 @@ public abstract class Session {
             targetEntity = CardDetails.class,
             cascade = {CascadeType.REFRESH, CascadeType.MERGE},
             fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT) // Hibernate workaround: fixes duplicate entities when retrieved
     private List<CardDetails> winners;
 
     @OneToMany(targetEntity = CardsChoice.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)

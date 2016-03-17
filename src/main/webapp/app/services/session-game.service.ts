@@ -83,4 +83,14 @@ export class SessionGameService {
             .post(SessionGameService.endpoint + '/' + sessionId + '/start', null)
             .retry(1);
     }
+    
+    public endSession(sessionId : number) : Observable<Response> {
+        return this._authHttp
+            .post(SessionGameService.endpoint + '/' + sessionId + '/end', null);
+    }
+    
+    public getWinningCards(sessionId : number) : Observable<Response> {
+        return this._authHttp
+            .get(SessionGameService.endpoint + '/' + sessionId + '/winning-cards');
+    }
 }

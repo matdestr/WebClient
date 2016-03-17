@@ -12,5 +12,5 @@
     <session-choose-cards *ngSwitchWhen="'CHOOSING_CARDS'" [session]="session"></session-choose-cards>
     <session-ready *ngSwitchWhen="'READY_TO_START'" [session]="session"></session-ready>
     <session-in-progress *ngSwitchWhen="'IN_PROGRESS'" [session]="session"></session-in-progress>
-    <session-finished *ngSwitchWhen="'FINISHED'" [session]="session"></session-finished>
+    <session-finished *ngSwitchWhen="'FINISHED'" [session]="session" [skipSessionRefresh]="skipSessionRefreshFinishedComponent"></session-finished>
 </div>

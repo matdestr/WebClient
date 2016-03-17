@@ -14,6 +14,7 @@ import {SessionReviewCardsComponent} from "./review-cards.component";
 import {SessionChooseCardsComponent} from "./session-choose-cards.component";
 import {SessionReadyToStartComponent} from "./session-ready-to-start.component";
 import {SessionInProgressComponent} from "./session-in-progress.component";
+import {SessionFinishedComponent} from "./session-finished-component";
 
 @Component({
     selector: 'session',
@@ -21,7 +22,7 @@ import {SessionInProgressComponent} from "./session-in-progress.component";
     directives: [
         ToolbarComponent, SessionInviteComponent, SessionJoinComponent, 
         SessionAddCardsComponent, SessionReviewCardsComponent, SessionChooseCardsComponent,
-        SessionReadyToStartComponent, SessionInProgressComponent
+        SessionReadyToStartComponent, SessionInProgressComponent, SessionFinishedComponent
     ]
 })
 export class SessionComponent implements OnInit{
@@ -29,6 +30,8 @@ export class SessionComponent implements OnInit{
     
     private sessionId : number;
     private session : Session;
+    
+    private skipSessionRefreshFinishedComponent : boolean = false;
 
     constructor(private _router : Router,
                 private _routeParams : RouteParams,
@@ -47,6 +50,9 @@ export class SessionComponent implements OnInit{
         this._sessionService.getSession(this.sessionId)
             .subscribe(data => {
                 this.session = Session.createEmptySession().deserialize(data.json());
+                
+                if (this.session.sessionStatus == SessionStatus.FINISHED)
+                    this.skipSessionRefreshFinishedComponent = true;
             }, error => {
                 console.error(error);
                 this._router.navigate(['/Dashboard']);

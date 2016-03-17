@@ -317,6 +317,9 @@ public class SessionGameRestController {
         this.sendSessionCardPositionUpdate(sessionId, cardPositionResource);
         this.sendSessionCurrentParticipantUpdate(sessionId, currentParticipantResource);
         
+        if (session.getSessionStatus() != SessionStatus.IN_PROGRESS)
+            this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
+        
         return new ResponseEntity<>(cardPositionResource, HttpStatus.OK);
     }
     
@@ -343,10 +346,25 @@ public class SessionGameRestController {
             throw new CanDoControllerRuntimeException("Could not find session with ID " + sessionId, HttpStatus.NOT_FOUND);
 
         checkUserIsOrganizer(user, session);
-
         sessionGameService.endGame(session);
+        
+        this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/{sessionId}/winning-cards", method = RequestMethod.GET)
+    public ResponseEntity<List<CardDetailsResource>> getWinningCards(@AuthenticationPrincipal User user,
+                                                                     @PathVariable("sessionId") int sessionId) {
+        Session session = sessionService.getSessionById(sessionId);
+
+        if (session == null)
+            throw new CanDoControllerRuntimeException("Could not find session with ID " + sessionId, HttpStatus.NOT_FOUND);
+        
+        checkUserIsParticipant(user, session);
+        List<CardDetailsResource> cardDetailsResources = mapperFacade.mapAsList(session.getWinners(), CardDetailsResource.class);
+        
+        return new ResponseEntity<>(cardDetailsResources, HttpStatus.OK);
     }
     
     private void sendSessionCardPositionUpdate(int sessionId, CardPositionResource cardPositionResource) {
