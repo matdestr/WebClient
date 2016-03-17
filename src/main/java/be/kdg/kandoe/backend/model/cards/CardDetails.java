@@ -4,6 +4,8 @@ import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.users.User;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
@@ -43,5 +45,6 @@ public class CardDetails {
     private Set<Topic> topics = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT) // Hibernate workaround: fixes duplicate entities when retrieved
     private List<Comment> comments = new ArrayList<>();
 }

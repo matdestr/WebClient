@@ -76,7 +76,7 @@ export class ActiveSessionComponent implements OnInit {
     
     private initSockets() : void {
         var self:any = this;
-        var socket = new SockJS('/kandoe/ws?token=' + localStorage.getItem("token"));
+        var socket = new SockJS('/kandoe/ws/sockjs?token=' + localStorage.getItem("token"));
         this.stompClient = Stomp.over(socket);
         
         this.stompClient.connect({}, function(){

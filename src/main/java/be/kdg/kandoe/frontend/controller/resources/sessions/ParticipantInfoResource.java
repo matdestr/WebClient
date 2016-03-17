@@ -9,4 +9,6 @@ import lombok.NoArgsConstructor;
 public class ParticipantInfoResource {
     private UserResource participant;
     private boolean joined;
+    private boolean addedCardsCompleted;
+    private boolean reviewingCardsCompleted;
 }

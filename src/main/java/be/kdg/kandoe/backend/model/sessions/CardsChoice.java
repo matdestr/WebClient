@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -24,6 +25,10 @@ public class CardsChoice {
 
     private boolean cardsChosen;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<CardDetails> chosenCards;
+    
+    public CardsChoice() {
+        this.chosenCards = new ArrayList<>();
+    }
 }

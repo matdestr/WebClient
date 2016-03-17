@@ -5939,16 +5939,22 @@ a {
     -webkit-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
     box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset; }
 
-.cando-button {
+.cando-button, .cando-form-button-default {
   background: #D32F2F;
   color: #f8f8f8;
   text-align: center;
   padding: 1em;
   font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px; }
+
+.cando-form-button-default:disabled {
+  background: #CCCCCC;
+  color: #2a2c2b; }
 
 .toolbar {
   box-shadow: 0 0.025em .75em #333;
@@ -6082,7 +6088,7 @@ form input[type="text"], input[type="email"], input[type="password"] {
 input[type="checkbox"] {
   height: 1em; }
 
-form input[type=submit], form button[type=submit] {
+form input[type=submit], form button[type=submit], .cando-form-button-default {
   cursor: pointer;
   margin-top: 1em;
   padding: 0;
@@ -6106,16 +6112,19 @@ form input[type=submit], form button[type=submit] {
   -moz-transition: all 0.2s ease;
   -webkit-transition: all 0.2s ease;
   -ms-transition: all 0.2s ease; }
-  form input[type=submit]:hover, form button[type=submit]:hover {
+  form input[type=submit]:hover, form button[type=submit]:hover, .cando-form-button-default:hover {
     -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset;
     -webkit-box-shadow: 0 -15px 30px 0 inset;
     box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset; }
-  form input[type=submit]:active, form button[type=submit]:active {
+  form input[type=submit]:active, form button[type=submit]:active, .cando-form-button-default:active {
     -moz-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
     -webkit-box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset;
     box-shadow: 0 -15px 30px 0 rgba(255, 255, 255, 0.05) inset, 0 5px 8px 0 rgba(0, 0, 0, 0.1) inset; }
-  form input[type=submit] span, form button[type=submit] span {
+  form input[type=submit] span, form button[type=submit] span, .cando-form-button-default span {
     margin-right: 1em; }
+
+form button[type=submit]:disabled {
+  cursor: default; }
 
 .forms form {
   padding: 20px 50px 40px 50px;

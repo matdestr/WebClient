@@ -1,4 +1,3 @@
-<toolbar></toolbar>
 <div id="main-content-detail">
     <h1 style="margin-left: 2em">Choose Card</h1>
     <div id="timeline" class="col-sm-1">
@@ -10,7 +9,11 @@
             <li><i class="glyphicon glyphicon-send"></i></li>
         </ul>
     </div>
+    
     <div class="margin-container-4 text-center  col-sm-6">
+        <p *ngIf="statusMessage" class="alert alert-success">{{statusMessage}}</p>
+        <p *ngIf="errorMessage" class="alert alert-danger">{{errorMessage}}</p>
+        <p class="alert alert-info">You may choose between {{session.minNumberOfCardsPerParticipant}} and {{session.maxNumberOfCardsPerParticipant}} cards</p>
         <ul>
             <div  *ngFor="#card of sessionCards" style="width: 300px;display: inline-block;margin-right: 2em">
                 <card-detail
@@ -26,7 +29,6 @@
                 </ul>
             </div>
         </ul>
-
 
         <div class="margin-container-6">
             <button (click)="onContinueClick()"

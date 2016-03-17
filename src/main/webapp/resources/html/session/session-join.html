@@ -3,7 +3,9 @@
         <h1 class="title-spacing-top">Waiting for participants</h1>
         
         <div>
-            <button class="cando-button" (click)="join()">JOIN</button>
+            <button class="cando-button"
+                    [disabled]="joinButtonDisabled"
+                    (click)="join()">JOIN</button>
         </div>
     </div>
 </div>

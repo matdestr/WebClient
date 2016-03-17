@@ -12,6 +12,8 @@ export class SessionJoinComponent {
     @Input()
     public session : Session;
     
+    private joinButtonDisabled = false;
+    
     constructor(private _sessionGameService : SessionGameService) { }
     
     private join() : void {
@@ -19,6 +21,7 @@ export class SessionJoinComponent {
             .subscribe(
                 data => {
                     console.log('Joined session');
+                    this.joinButtonDisabled = true;
                 },
                 error => {
                     console.log('Failed to join session');

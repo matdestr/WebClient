@@ -5,12 +5,11 @@ import {Topic} from "../topic/topic";
 import {Comment} from "./comment";
 
 export class CardDetails implements Serializable<CardDetails> {
-
-    public cardDetailsId:number;
-    public text:string;
-    public imageUrl:string;
-    public active:boolean;
-    public comments:Comment[];
+    public cardDetailsId : number;
+    public text : string;
+    public imageUrl : string;
+    public active : boolean;
+    public comments : Comment[];
 
     constructor(cardDetailsId:number, text:string, imageUrl:string, active:boolean) {
         this.cardDetailsId = cardDetailsId;
@@ -29,6 +28,10 @@ export class CardDetails implements Serializable<CardDetails> {
         this.text = object.text;
         this.imageUrl = object.imageUrl;
         this.active = object.active;
+        
+        for (let c of object.comments) {
+            this.comments.push(Comment.createEmptyComment().deserialize(c));
+        }
 
         return this;
     }

@@ -269,7 +269,7 @@ public class SessionGameServiceImpl implements SessionGameService {
             cardsChoice.getChosenCards().add(cardDetails);
         }
         
-        session = sessionService.updateSession(session);
+        sessionService.updateSession(session);
         
         if (session.getParticipantInfo().size() == session.getParticipantCardChoices().size()) {
             boolean allParticipantsHaveChosenCards = true;
@@ -285,7 +285,6 @@ public class SessionGameServiceImpl implements SessionGameService {
             }
         }
     }
-
 
     @Override
     public void confirmReviews(Session session, User user) {
@@ -389,13 +388,13 @@ public class SessionGameServiceImpl implements SessionGameService {
             CardPosition cardPosition = cardPositionOptional.get();
             cardPosition.setPriority(cardPosition.getPriority() + 1);
 
-            sessionService.updateSession(session);
-
             if (anyWinners(session)) {
                 endGame(session);
             }
 
             session.setCurrentParticipantPlaying(getNextParticipant(session));
+            sessionService.updateSession(session);
+            
             return cardPosition;
         } else {
             throw new SessionGameServiceException("Card is not on the board");

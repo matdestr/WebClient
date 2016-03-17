@@ -37,8 +37,6 @@ import java.util.Set;
 @RequestMapping("/api/sessions")
 @PreAuthorize("isAuthenticated()")
 public class SessionGameRestController {
-
-
     private UserService userService;
     private SessionService sessionService;
     private SessionGameService sessionGameService;
@@ -183,6 +181,10 @@ public class SessionGameRestController {
             throw new CanDoControllerRuntimeException("Participants are not allowed to add cards for this session", HttpStatus.FORBIDDEN);
 
         sessionGameService.confirmUserAddedCards(session, user);
+        
+        if (session.getSessionStatus() != SessionStatus.ADDING_CARDS)
+            this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
+        
         return new ResponseEntity(HttpStatus.CREATED);
     }
     
@@ -212,6 +214,9 @@ public class SessionGameRestController {
 
         sessionGameService.chooseCards(session, user, cardDetails);
 
+        if (session.getSessionStatus() != SessionStatus.CHOOSING_CARDS)
+            this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
+
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -225,6 +230,7 @@ public class SessionGameRestController {
         UserResource currentParticipantResource = 
                 mapperFacade.map(session.getCurrentParticipantPlaying().getParticipant(), UserResource.class);
         
+        this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
         this.sendSessionCurrentParticipantUpdate(sessionId, currentParticipantResource);
 
         return new ResponseEntity(HttpStatus.CREATED);
@@ -247,7 +253,9 @@ public class SessionGameRestController {
     }
 
     @RequestMapping(value = "/{sessionId}/reviews", method = RequestMethod.POST)
-    public ResponseEntity addReview(@AuthenticationPrincipal User user, @PathVariable("sessionId") int sessionId, @Valid @RequestBody CreateCardReviewOverview createCardReviewOverview) {
+    public ResponseEntity addReview(@AuthenticationPrincipal User user,
+                                    @PathVariable("sessionId") int sessionId,
+                                    @Valid @RequestBody CreateCardReviewOverview createCardReviewOverview) {
         Session session = sessionService.getSessionById(sessionId);
 
         if (session == null)
@@ -260,9 +268,9 @@ public class SessionGameRestController {
         this.checkUserIsParticipant(user, session);
 
         CardDetails cardDetails = cardService.getCardDetailsById(createCardReviewOverview.getCardDetailsId());
-        if (cardDetails == null){
+        
+        if (cardDetails == null)
             throw new CanDoControllerRuntimeException("Could not find carddetails with ID " + createCardReviewOverview.getCardDetailsId(), HttpStatus.NOT_FOUND);
-        }
 
         Comment comment = cardService.addReview(user, cardDetails, createCardReviewOverview.getMessage() );
         CommentResource commentResource = mapperFacade.map(comment, CommentResource.class);
@@ -282,8 +290,10 @@ public class SessionGameRestController {
         }
 
         this.checkUserIsParticipant(user, session);
-
         sessionGameService.confirmReviews(session, user);
+        
+        if (session.getSessionStatus() != SessionStatus.REVIEWING_CARDS)
+            this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
 
         return new ResponseEntity(HttpStatus.CREATED);
     }

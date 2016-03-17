@@ -9,12 +9,20 @@ import {SessionService} from "../../services/session.service";
 import {ToolbarComponent} from "../widget/toolbar.component";
 import {SessionInviteComponent} from "./session-invite.component";
 import {SessionJoinComponent} from "./session-join.component";
+import {SessionAddCardsComponent} from "./session-add-cards.component";
+import {SessionReviewCardsComponent} from "./review-cards.component";
+import {SessionChooseCardsComponent} from "./session-choose-cards.component";
+import {SessionReadyToStartComponent} from "./session-ready-to-start.component";
+import {SessionInProgressComponent} from "./session-in-progress.component";
 
-// TODO : Add needed directives
 @Component({
     selector: 'session',
     templateUrl: 'html/session/session.html',
-    directives: [ToolbarComponent, SessionInviteComponent, SessionJoinComponent]
+    directives: [
+        ToolbarComponent, SessionInviteComponent, SessionJoinComponent, 
+        SessionAddCardsComponent, SessionReviewCardsComponent, SessionChooseCardsComponent,
+        SessionReadyToStartComponent, SessionInProgressComponent
+    ]
 })
 export class SessionComponent implements OnInit{
     private tokenName : string;

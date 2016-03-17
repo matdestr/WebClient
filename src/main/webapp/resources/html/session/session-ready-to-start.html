@@ -1,0 +1,22 @@
+<div id="main-content">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <h1 class=title-spacing-top>Waiting for organizer to start game</h1>
+            
+            <div class="panel forms-panel" style="padding: 1em;">
+                <p *ngFor="#p of participantUsernames">
+                    <span class="glyphicon glyphicon-user"></span> {{p}}
+                </p>
+                
+                <div class="text-center">
+                    <button *ngIf="isOrganizer"
+                            type="button"
+                            class="cando-form-button-default"
+                            (click)="startGame()">
+                        Start game
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

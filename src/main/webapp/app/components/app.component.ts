@@ -53,7 +53,8 @@ import {SessionComponent} from "./session/session.component";
     {path:'/session/:sessionId/invite-users',   name:'InviteUsers',             component:InviteUsersComponent},
     {path:'/session/:sessionId/add-cards',      name:'SessionAddCards',         component: SessionAddCardsComponent},
     {path:'/session/:sessionId/review-cards',   name:'SessionReviewCards',       component:SessionReviewCardsComponent}*/
-    {path: '/session/:sessionId',               name: 'Session',                component: SessionComponent}
+    {path: '/session/:sessionId',               name: 'Session',                component: SessionComponent},
+    {path: '/active-session/:sessionId',        name: 'ActiveSession',          component: ActiveSessionComponent}
 ])
 export class AppComponent {
 }

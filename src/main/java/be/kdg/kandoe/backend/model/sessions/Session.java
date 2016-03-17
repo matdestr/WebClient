@@ -66,9 +66,11 @@ public abstract class Session {
 
     @OneToMany(targetEntity = CardsChoice.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "Session_CardsChoice")
+    @Fetch(FetchMode.SELECT) // Hibernate workaround: fixes duplicate entities when retrieved
     private List<CardsChoice> participantCardChoices;
 
     @OneToMany(targetEntity = CardPosition.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT) // Hibernate workaround: fixes duplicate entities when retrieved
     private List<CardPosition> cardPositions;
 
     @OneToMany(targetEntity = ChatMessage.class, mappedBy = "session", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

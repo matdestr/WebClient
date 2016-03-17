@@ -49,7 +49,7 @@ export class SessionService {
         return this._authHttp.get(SessionService.endPoint+"/"+sessionId+"/all-cards");
     }
 
-    public addCardToSession(sessionId:number,card:CreateCardModel):Observable<Response>{
+    /*public addCardToSession(sessionId:number,card:CreateCardModel):Observable<Response>{
         var searchParams:URLSearchParams = new URLSearchParams();
         searchParams.append("sessionId", sessionId.toString());
 
@@ -65,8 +65,10 @@ export class SessionService {
     }
 
     public confirmAddedCards(sessionId:number){
-        return this._authHttp.post(SessionService.endPoint+"/"+sessionId+"/all-cards/confirm");
-    }
+        return this._authHttp
+            .post(SessionService.endPoint + "/" + sessionId + "/all-cards/confirm", null)
+            .retry(1);
+    }*/
 
     public chooseCardsForSession(sessionId:number,cardDetailsIds:number[]){
         var searchParams:URLSearchParams = new URLSearchParams();

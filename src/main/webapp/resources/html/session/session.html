@@ -7,10 +7,10 @@
      [ngSwitch]="session.sessionStatus">
     <session-invite *ngSwitchWhen="'CREATED'" [session]="session"></session-invite>
     <session-joining *ngSwitchWhen="'USERS_JOINING'" [session]="session"></session-joining>
-    <session-add-cards *ngSwitchWhen="'ADDING_CARDS'"></session-add-cards>
-    <session-review-cards *ngSwitchWhen="'REVIEWING_CARDS'"></session-review-cards>
-    <session-choose-cards *ngSwitchWhen="'CHOOSING_CARDS'"></session-choose-cards>
-    <session-ready *ngSwitchWhen="'READY_TO_START'"></session-ready>
-    <session-in-progress *ngSwitchWhen="'IN_PROGRESS'"></session-in-progress>
-    <session-finished *ngSwitchWhen="'FINISHED'"></session-finished>
+    <session-add-cards *ngSwitchWhen="'ADDING_CARDS'" [session]="session"></session-add-cards>
+    <session-review-cards *ngSwitchWhen="'REVIEWING_CARDS'" [session]="session"></session-review-cards>
+    <session-choose-cards *ngSwitchWhen="'CHOOSING_CARDS'" [session]="session"></session-choose-cards>
+    <session-ready *ngSwitchWhen="'READY_TO_START'" [session]="session"></session-ready>
+    <session-in-progress *ngSwitchWhen="'IN_PROGRESS'" [session]="session"></session-in-progress>
+    <session-finished *ngSwitchWhen="'FINISHED'" [session]="session"></session-finished>
 </div>

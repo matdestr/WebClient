@@ -53,12 +53,12 @@ export class SessionInviteComponent {
                     data => {
                         console.log('Sent invitation for session to ' + userEmail);
                         invitedUsers += 1;
-                        this.confirmUserInvites(invitedUsers, invitedUsersFailed);
+                        this.confirmUserInvites(filteredEmails.length, invitedUsers, invitedUsersFailed);
                     },
                     error => {
                         console.log('Could not send invitation to ' + userEmail);
                         invitedUsersFailed += 1;
-                        this.confirmUserInvites(invitedUsers, invitedUsersFailed);
+                        this.confirmUserInvites(filteredEmails.length, invitedUsers, invitedUsersFailed);
                     }
                 );
         }
@@ -76,7 +76,10 @@ export class SessionInviteComponent {
         this.usersToInvite.splice(index, 1);
     }
     
-    private confirmUserInvites(amountOfInvitesSucceeded : number, amountOfInvitesFailed : number) : void {
+    private confirmUserInvites(totalAmountOfInvites : number, amountOfInvitesSucceeded : number, amountOfInvitesFailed : number) : void {
+        if (totalAmountOfInvites > amountOfInvitesSucceeded + amountOfInvitesFailed)
+            return;
+        
         this.statusMessage = '';
         this.errorMessage = '';
         

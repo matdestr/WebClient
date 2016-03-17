@@ -1,19 +1,25 @@
 import {Serializable} from "../../util/serializable";
+
 import {User} from "../user/user";
 import {SessionStatus} from "./session-status";
+import {ParticipantInfo} from "./participant-info";
 
 export class Session implements Serializable<Session>{
-    sessionId: number;
-    categoryId: number;
-    topicId: number;
-    minNumberOfCardsPerParticipant:number;
-    maxNumberOfCardsPerParticipant:number;
-    participantsCanAddCards:boolean;
+    sessionId : number;
+    categoryId : number;
+    topicId : number;
+    organizer : User;
+    participantInfo : ParticipantInfo[];
     currentParticipantPlaying : User;
-    cardCommentsAllowed:boolean;
-    amountOfCircles:number;
-    type: string;
+    
+    minNumberOfCardsPerParticipant : number;
+    maxNumberOfCardsPerParticipant : number;
+    participantsCanAddCards : boolean;
+    cardCommentsAllowed : boolean;
+
     sessionStatus : SessionStatus;
+    amountOfCircles : number;
+    type : string;
 
     constructor(minNumberOfCardsPerParticipant:number,maxNumberOfCardsPerParticipant:number,participantsCanAddCards:boolean,cardCommentsAllowed:boolean,amountOfCircles:number, categoryId:number, topicId:number, type:string, sessionId:number) {
         this.minNumberOfCardsPerParticipant = minNumberOfCardsPerParticipant;
@@ -31,18 +37,29 @@ export class Session implements Serializable<Session>{
         return new Session(0,0,false,false,0,0,0,"",0);
     }
 
-    deserialize(object:Session):Session {
-        this.categoryId = object.categoryId
+    deserialize(object : Session):Session {
+        this.participantInfo = [];
+        
+        this.sessionId = object.sessionId;
+        this.categoryId = object.categoryId;
         this.topicId = object.topicId;
+        this.organizer = User.createEmptyUser().deserialize(object.organizer);
+        
+        for (let p of object.participantInfo) {
+            this.participantInfo.push(new ParticipantInfo().deserialize(p));
+        }
+        
+        if (object.currentParticipantPlaying != null)
+            this.currentParticipantPlaying = User.createEmptyUser().deserialize(object.currentParticipantPlaying);
+        
         this.minNumberOfCardsPerParticipant = object.minNumberOfCardsPerParticipant;
         this.maxNumberOfCardsPerParticipant = object.maxNumberOfCardsPerParticipant;
-        this.amountOfCircles = object.amountOfCircles;
-        this.type = object.type;
         this.participantsCanAddCards = object.participantsCanAddCards;
         this.cardCommentsAllowed = object.cardCommentsAllowed;
-        this.currentParticipantPlaying = object.currentParticipantPlaying;
-        this.sessionId = object.sessionId;
+
         this.sessionStatus = object.sessionStatus;
+        this.amountOfCircles = object.amountOfCircles;
+        this.type = object.type;
 
         return this;
     }

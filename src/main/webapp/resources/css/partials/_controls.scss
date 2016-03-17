@@ -28,12 +28,19 @@
   }
 }
 
-.cando-button {
+.cando-button, .cando-form-button-default {
   background: $primary-color;
   color: $text-color-light;
   text-align: center;
   padding: 1em;
   font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
   @include border-radius(3px);
+}
+
+.cando-form-button-default:disabled {
+  background: #CCCCCC;
+  color: $color-accent;
 }

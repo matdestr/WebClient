@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 public class CreateCardReviewOverview {
-    @Range(min = 0)
+    @Range(min = 1)
     private int cardDetailsId;
 
     @NotEmpty

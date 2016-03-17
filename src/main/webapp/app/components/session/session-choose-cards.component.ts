@@ -1,5 +1,5 @@
-import {Component} from "angular2/core";
-import {Router, RouteParams} from "angular2/router";
+import {Component, Input, Inject} from "angular2/core";
+import {Response} from "angular2/http";
 import {CardDetails} from "../../entities/category/card-details";
 import {CardDetailsService} from "../../services/card-details.service";
 import {ToolbarComponent} from "../widget/toolbar.component";
@@ -8,47 +8,55 @@ import {TopicService} from "../../services/topic.service";
 import {SessionService} from "../../services/session.service";
 import {Session} from "../../entities/session/session";
 import {CreateReviewModel} from "../../entities/category/dto/create-review-model";
+import {SessionGameService} from "../../services/session-game.service";
 
 @Component({
     selector: 'session-choose-cards',
-    templateUrl: 'html/session-choose-cards.html',
+    templateUrl: 'html/session/session-choose-cards.html',
     directives: [ToolbarComponent, CardDetailComponent]
 })
 export class SessionChooseCardsComponent{
-    private session: Session = Session.createEmptySession();
-    private sessionCards:CardDetails[] = [];
-    private sessionCardsToAdd:CardDetails[] = [];
-    private sessionId: number;
-    private cardDetailIds:number[]=[];
-    private cardReviews:string[]=[];
+    @Input()
+    public session : Session;
+    
+    private sessionCards : CardDetails[] = [];
+    private sessionCardsToAdd : CardDetails[] = [];
+    private cardDetailIds : number[] = [];
+    
+    private statusMessage : string;
+    private errorMessage : string;
 
-    constructor(private _router:Router,
-                private _routeArgs:RouteParams,
-                private _sessionService: SessionService) {
+    constructor(private _sessionService : SessionService,
+                private _sessionGameService : SessionGameService,
+                @Inject('App.TokenName') private tokenName : string) { }
 
-    }
-
-    ngOnInit():any {
-         this.sessionId= +this._routeArgs.params["sessionId"];
-
-        this._sessionService.getCardDetailsOfSession(this.sessionId).subscribe(
+    ngOnInit() : any {
+        this._sessionService.getCardDetailsOfSession(this.session.sessionId).subscribe(
             data => {
                 for (let card of data.json()) {
                     this.sessionCards.push(CardDetails.createEmptyCard().deserialize(card));
                 }
             }
         );
-
-        for (let card of this.sessionCards){
-            for (let comment of card.comments){
-                this.cardReviews.push(comment.message);
-            }
-        }
-
     }
 
-    public onSessionCardClick(card:CardDetails):void {
-        var index = this.sessionCardsToAdd.indexOf(card);
+    /*public onSessionCardClick(card : CardDetails) : void {
+        let index = this.sessionCardsToAdd.indexOf(card);
+        
+        console.log(index);
+        console.log(JSON.stringify(card));
+
+        if (index < 0) {
+            this.sessionCardsToAdd.push(card);
+        } else {
+            if (!card.active)
+                this.sessionCardsToAdd.splice(index, 1);
+        }
+    }*/
+
+    public onSessionCardClick(card : CardDetails) : void {
+        let index = this.sessionCardsToAdd.indexOf(card);
+
         console.log(index);
         console.log(JSON.stringify(card));
 
@@ -60,17 +68,24 @@ export class SessionChooseCardsComponent{
         }
     }
 
-
     public onContinueClick() {
-        for (let catCard of this.sessionCardsToAdd) {
-           this.cardDetailIds.push(catCard.cardDetailsId);
+        this.errorMessage = '';
+        this.cardDetailIds = [];
+        
+        for (let card of this.sessionCardsToAdd) {
+           this.cardDetailIds.push(card.cardDetailsId);
         }
-        this._sessionService.chooseCardsForSession(this.sessionId,this.cardDetailIds);
-        this.navigateUp();
+        
+        this._sessionService.chooseCardsForSession(this.session.sessionId, this.cardDetailIds)
+            .subscribe(
+                data => {
+                    console.log('Chose ' + this.sessionCardsToAdd.length + ' cards');
+                    this.statusMessage = 'Waiting for other participants ...';
+                },
+                (error) => {
+                    console.log('Failed to choose cards');
+                    this.errorMessage = JSON.parse(error._body).message;
+                }
+            );
     }
-
-    public navigateUp() {
-        this._router.navigate(["/ActiveSession", {sessionId: this.sessionId}])
-    }
-
 }
