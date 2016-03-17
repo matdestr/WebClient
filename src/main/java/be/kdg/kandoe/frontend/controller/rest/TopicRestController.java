@@ -99,4 +99,14 @@ public class TopicRestController
         return new ResponseEntity<>(sessionResources, HttpStatus.OK);
         //return new ResponseEntity<>(mapper.mapAsList(sessions, SessionResource.class), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/{topicId}", method = RequestMethod.PUT)
+    public ResponseEntity setOrganizationName(@PathVariable("topicId") int topicId, @RequestParam(value="topicName")String topicName){
+        Topic topic = topicService.getTopicByTopicId(topicId);
+        topic.setName(topicName);
+        topicService.updateTopic(topic);
+        TopicResource resource = mapper.map(topic, TopicResource.class);
+
+        return new ResponseEntity<>(resource,HttpStatus.OK);
+    }
 }

@@ -25,9 +25,14 @@ export class TopicDetailComponent implements OnInit {
     private topic:Topic = Topic.createEmptyTopic();
     private cards:CardDetails[] = [];
     private sessions:Session[] = [];
+    private sessionSubset:Session[]=[];
     private currentCard:CardDetails;
     private categoryCards:CardDetails[] = [];
     private categoryCardsToAdd:CardDetails[] = [];
+    private counterSesBegin:number=0;
+    private counterSesEnd:number=4;
+    private myLeftSesDisplay:string="block";
+    private myRightSesDisplay:string="block";
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
@@ -55,8 +60,17 @@ export class TopicDetailComponent implements OnInit {
 
         this._topicService.getSessionsFromTopic(topicId).subscribe(
             data => {
-                for (let session of data.json())
+                for (let session of data.json()){
                     this.sessions.push(Session.createEmptySession().deserialize(session));
+                }
+                this.sessionSubset = this.sessions.slice(0,4);
+                if(this.sessions.length<=4) {
+                    this.myLeftSesDisplay = "none";
+                    this.myRightSesDisplay = "none";
+                }else {
+                    this.myLeftSesDisplay = "none";
+                    this.myRightSesDisplay = "block";
+                }
             },
             error => console.log(error),
             () => console.log("Sessions fetched")
@@ -77,5 +91,40 @@ export class TopicDetailComponent implements OnInit {
 
     public toSession(sessionId:number) {
         this._router.navigate(["/InviteUsers", {sessionId: sessionId}])
+    }
+
+    public nextSesPage(){
+        this.myLeftSesDisplay = "block";
+        if(this.counterSesEnd >= this.sessions.length-1){
+            this.myRightSesDisplay="none";
+        }
+        if(this.counterSesEnd >= this.sessions.length){
+            return;
+        }
+        else{
+            this.counterSesBegin++;
+            this.counterSesEnd++;
+            this.sessionSubset= this.sessions.slice(this.counterSesBegin,this.counterSesEnd);
+        }
+    }
+
+    public previousSesPage(){
+        this.myRightSesDisplay = "block";
+        if(this.counterSesBegin <= 1){
+            this.myLeftSesDisplay="none";
+        }
+        if(this.counterSesBegin <= 0){
+            return;
+        }  else {
+            this.counterSesBegin--;
+            this.counterSesEnd--;
+            this.sessionSubset = this.sessions.slice(this.counterSesBegin, this.counterSesEnd);
+        }
+    }
+
+    public onEditClick(topicName:string){
+        this._topicService.setTopicName(this.topic.topicId,topicName).subscribe(
+            () => console.log("Succeeeeeed"),
+            error => console.log(error));
     }
 }

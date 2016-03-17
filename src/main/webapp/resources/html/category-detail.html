@@ -1,12 +1,13 @@
 <toolbar></toolbar>
 
-<div id="main-content">
+<div id="main-content-detail">
     <div class="container-fluid">
         <div id="organization-detail">
             <div class="row">
-                <div class="col-md-10 ptop">
-
+                <div class="col-md-9 marDetailLeftTitle">
                     <h1>{{category.name}}</h1>
+                    <p class="description">{{category.description}}</p>
+
                 </div>
                 <div class="col-md-2 ptop">
                     <p class="profile-button" data-toggle="modal" data-target="#myEditModal"><span
@@ -53,37 +54,34 @@
                 </div>
             </div>
 
-            <p class="description">{{category.description}}</p>
             <br>
-            <hr>
+
+            <h2 class="marDetailLeft">Topics</h2>
 
 
-            <h2>Topics</h2>
-
-            <div class="organization-arrow" >
-                <button class="paginate left" (click)="previousTopPage()"  [style.display]="myLeftTopDisplay"><i></i><i></i></button>
-            </div>
-            <div *ngFor="#topic of topicSubSet">
-                <div class="black-block" (click)="toTopic(topic.topicId)">
-                    <h3 class="text-center">{{topic.name}}</h3>
-                    <h6 class="text-center"><i class="glyphicon glyphicon-pencil"></i> {{topic.description}}</h6>
+                <div class="organization-arrow">
+                    <button class="paginate left" (click)="previousTopPage()" [style.display]="myLeftTopDisplay">
+                        <i></i><i></i></button>
                 </div>
-            </div>
-            <div class="organization-arrow">
-                <button class="paginate right" style="float: right" (click)="nextTopPage()"  [style.display]="myRightTopDisplay"><i></i><i></i></button>
-            </div>
-
-                <div style="margin-top: 12em">
-            <button class="add-new-button" (click)="toAddNewTopic(category.categoryId)"><i
-                    class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Topic
-            </button>
+                <div *ngFor="#topic of topicSubSet">
+                    <div class="black-block" (click)="toTopic(topic.topicId)">
+                        <h3 class="text-center">{{topic.name}}</h3>
+                        <h6 class="text-center"><i class="glyphicon glyphicon-pencil"></i> {{topic.description}}</h6>
+                    </div>
+                </div>
+                <div class="organization-arrow">
+                    <button class="paginate right" style="float: right" (click)="nextTopPage()"
+                            [style.display]="myRightTopDisplay"><i></i><i></i></button>
                 </div>
 
-            <hr>
+            <div style="margin-top:12em">
+                <a class=" marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
+                   (click)="toAddNewTopic(category.categoryId)"><i class="material-icons">add</i></a>
+            </div>
 
-            <h2>Cards</h2>
+            <h2 class="marDetailLeft" style="margin-top: 5em">Cards</h2>
 
-            <ul>
+            <ul style="margin-left: 3em">
                 <card-detail *ngFor="#card of cards" data-toggle="modal" data-target="#cardModal"
                              [card]="card"
                              [cardClassName]="'card-small'"
@@ -94,32 +92,26 @@
 
             <div id="cardModal" class="modal fade" tabindex="-1" role="dialog">
                 <div class="modal-dialog flex-container">
-                        <card-detail [card]="currentCard"
-                                     [cardClassName]="'card-large'"
-                                     class="flex-item"></card-detail>
+                    <card-detail [card]="currentCard"
+                                 [cardClassName]="'card-large'"
+                                 class="flex-item"></card-detail>
                 </div><!-- /.modal-dialog -->
             </div>
 
+            <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
+               (click)="toAddNewCard(category.categoryId)"><i class="material-icons">add</i></a>
 
-            <button class="add-new-button" (click)="toAddNewCard(category.categoryId)">
-                <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Card
-            </button>
+            <h2 class="marDetailLeft">Tags</h2>
 
-            <hr>
+            <div class="tagContainer">
+                <div *ngFor="#tag of tags" class="tagBlock">
+                    <p class="text-center"><i class="glyphicon glyphicon-tag tagIcon"
+                                              style="font-size: 12px;padding-right: 0.5em"></i>{{tag.name}}</p>
+                </div>
+            </div>
 
-
-            <h2>Tags</h2>
-            <ul>
-                <table style="width:100%">
-                    <tr class="spaceUnder" *ngFor="#tag of selectedTags">
-                        <p class="bullet-point">{{tag.name}}</p>
-                    </tr>
-                </table>
-            </ul>
-
-            <button class="add-new-button" data-toggle="modal" data-target="#tagModal"><i
-                    class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add More Tags
-            </button>
+            <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
+               data-toggle="modal" data-target="#tagModal"><i class="material-icons">add</i></a>
 
             <div id="tagModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -142,30 +134,40 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button (click)="saveTags()" type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" (click)="onEditClick(category.name)"
+                                    data-dismiss="modal">Save
+                            </button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <hr>
 
-            <h2>Sessions</h2>
+            <h2 class="marDetailLeft">Sessions</h2>
 
-            <ul>
-                <div class="row" *ngFor="#session of sessions">
 
-                    <div class="col-md-2 spaceUnder">
-                        <p class="categoryName" (click)="toSession(session.sessionId)">{{session.sessionId}}</p>
-                    </div>
-
+            <div class="organization-arrow" style="margin-top: -80px">
+                <button class="paginate left" (click)="previousSesPage()" [style.display]="myLeftSesDisplay">
+                    <i></i><i></i></button>
+            </div>
+            <div *ngFor="#session of sessionSubset">
+                <div class="black-block" (click)="toSession(session.sessionId)">
+                    <h3 class="text-center">Session {{session.sessionId}}</h3>
+                    <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}}
+                        Participant(s)</h6>
+                    <h6 class="text-center"></h6>
                 </div>
-            </ul>
+            </div>
+            <div class="organization-arrow" style="margin-top: -80px">
+                <button class="paginate right" style="float: right" (click)="nextSesPage()"
+                        [style.display]="myRightSesDisplay"><i></i><i></i></button>
+            </div>
 
-            <button class="add-new-button" (click)="toAddNewSession(category.categoryId)">
-                <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Session
-            </button>
+            <div style="margin-top:12em">
+                <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
+                   (click)="toAddNewSession(category.categoryId)"><i class="material-icons">add</i></a>
+            </div>
 
         </div>
     </div>

@@ -81,6 +81,17 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public void updateCategory(Category category) throws CategoryServiceException {
+        if (category == null)
+            throw new CategoryServiceException("Category cannot be null");
+        try {
+            repository.save(category);
+        } catch (Exception e) {
+            throw new CategoryServiceException("Couldn't save category", e);
+        }
+    }
+
+    @Override
     public List<Tag> addTagsToCategory(Category category, List<Tag> tags) {
         List<Tag> currentTags = category.getTags();
         currentTags.addAll(tags);

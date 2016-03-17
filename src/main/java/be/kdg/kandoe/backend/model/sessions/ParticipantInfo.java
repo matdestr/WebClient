@@ -1,3 +1,6 @@
+/**
+ * The information about the status of a participant in a session
+ */
 package be.kdg.kandoe.backend.model.sessions;
 
 import be.kdg.kandoe.backend.model.users.User;

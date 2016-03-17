@@ -1,3 +1,6 @@
+/**
+ * Authorization of a user using a token
+ */
 package be.kdg.kandoe.backend.model.oauth;
 
 import lombok.Data;

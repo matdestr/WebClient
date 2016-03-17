@@ -1,10 +1,10 @@
 <toolbar></toolbar>
 
-<div id="main-content">
+<div id="main-content-detail">
     <div class="container-fluid">
         <div id="organization-detail">
             <div class="row">
-                <div class="col-md-10 ptop">
+                <div class="col-md-9 ptop marDetailLeftTitle">
                     <h1>{{topic.name}}</h1>
                     <p class="description">{{topic.description}}</p>
                 </div>
@@ -45,7 +45,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn btn-default" (click)="onEditClick(topic.name)" data-dismiss="modal">Save</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -53,11 +53,10 @@
                 </div>
             </div>
 
-            <br>
-            <hr>
 
-            <h2 style="padding-top: 1em">Cards</h2>
+            <h2 class="marDetailLeft">Cards</h2>
 
+            <div style="margin-left: 4em">
             <ul>
                 <card-detail *ngFor="#card of cards"
                              [card]="card"
@@ -66,29 +65,35 @@
                              (cardClick)="onCategoryCardClick($event)">
                 </card-detail>
             </ul>
-
-            <button (click)="openCardChooser()" class="add-new-button"><i
-                    class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add new Card
-            </button>
-
-            <hr>
-
-            <h2>Sessions</h2>
-
-            <ul>
-                <div class="row" *ngFor="#session of sessions">
-
-                    <div class="col-md-2 spaceUnder">
-                        <p class="categoryName" (click)="toSession(session.sessionId)">{{session.sessionId}}</p>
-                    </div>
-
-                </div>
-            </ul>
-
-            <button class="add-new-button" (click)="toAddNewSession(topic.categoryId,topic.topicId)">
-                <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Create new Session
-            </button>
         </div>
+
+            <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
+               (click)="openCardChooser()"><i class="material-icons">add</i></a>
+
+            <h2 class="marDetailLeft">Sessions</h2>
+
+             <div style="margin-top: 5em;margin-left: 4em">
+            <div class="organization-arrow" style="margin-top: -80px">
+                <button class="paginate left" (click)="previousSesPage()" [style.display]="myLeftSesDisplay">
+                    <i></i><i></i></button>
+            </div>
+            <div *ngFor="#session of sessionSubset">
+                <div class="black-block" (click)="toSession(session.sessionId)">
+                    <h3 class="text-center">Session {{session.sessionId}}</h3>
+                    <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}} Participant(s)</h6>
+                    <h6 class="text-center"></h6>
+                </div>
+            </div>
+            <div class="organization-arrow" style="margin-top: -80px">
+                <button class="paginate right" style="float: right" (click)="nextSesPage()"
+                        [style.display]="myRightSesDisplay"><i></i><i></i></button>
+            </div>
+             </div>
+            <div style="margin-top:8em">
+            <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
+               (click)="toAddNewSession(topic.categoryId,topic.topicId)"><i class="material-icons">add</i></a>
+            </div>
+            </div>
     </div>
 </div>
 

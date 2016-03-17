@@ -1,3 +1,6 @@
+/**
+ * The status of a session in the right order
+ */
 package be.kdg.kandoe.backend.model.sessions;
 
 public enum SessionStatus {

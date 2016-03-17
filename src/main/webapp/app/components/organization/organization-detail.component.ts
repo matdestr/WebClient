@@ -97,7 +97,10 @@ export class OrganizationDetailComponent {
     }
 
     public onEditClick(organizationName:string){
-        this._organizationService.setOrganizationName(this.organization.organizationId,organizationName);
+        this._organizationService.setOrganizationName(this.organization.organizationId,organizationName).subscribe(
+            () => console.log("Succeeeeeed"),
+            error => console.log(error)
+        );
     }
 
 

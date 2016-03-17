@@ -15,6 +15,7 @@ import {error} from "util";
 import {CardDetailComponent} from "../cards/card-detail.component";
 import {Session} from "../../entities/session/session";
 import {SessionService} from "../../services/session.service";
+import {SessionListItem} from "../../entities/session/session-list-item";
 
 @Component({
     selector: 'category-detail',
@@ -26,17 +27,21 @@ export class CategoryDetailComponent implements OnInit {
     private cards:CardDetails[] = [];
     private topics:Topic[] = [];
     private topicSubSet:Topic[] = [];
-    private sessions:Session[] = [];
+    private sessions:SessionListItem[] = [];
+    private sessionSubset:SessionListItem[]=[];
     private selectedTags:Tag[] = [];
     private tags:Tag[] = [];
     private listTagId:number[] = [];
     private currentCard:CardDetails = CardDetails.createEmptyCard();
     private categoryId:number;
-    private counterTopBegin:number = 0;
-    private counterTopEnd:number = 4;
-    private myLeftTopDisplay:string = "block";
-    private myRightTopDisplay:string = "block";
-
+    private counterTopBegin:number=0;
+    private counterTopEnd:number=4;
+    private myLeftTopDisplay:string="block";
+    private myRightTopDisplay:string="block";
+    private counterSesBegin:number=0;
+    private counterSesEnd:number=4;
+    private myLeftSesDisplay:string="block";
+    private myRightSesDisplay:string="block";
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
@@ -87,8 +92,17 @@ export class CategoryDetailComponent implements OnInit {
 
         this._categoryService.getSessionsFromCategory(this.categoryId).subscribe(
             data => {
-                for (let session of data.json())
-                    this.sessions.push(Session.createEmptySession().deserialize(session));
+                for (let session of data.json()){
+                    this.sessions.push(SessionListItem.createEmptySessionListItem().deserialize(session));
+                }
+                this.sessionSubset = this.sessions.slice(0,4);
+                if(this.sessions.length<=4) {
+                    this.myLeftSesDisplay = "none";
+                    this.myRightSesDisplay = "none";
+                }else {
+                    this.myLeftSesDisplay = "none";
+                    this.myRightSesDisplay = "block";
+                }
             },
             error => console.log(error),
             () => console.log("Sessions fetched")
@@ -182,4 +196,40 @@ export class CategoryDetailComponent implements OnInit {
         );
         this.listTagId = [];
     }
+
+    public nextSesPage(){
+        this.myLeftSesDisplay = "block";
+        if(this.counterSesEnd >= this.sessions.length-1){
+            this.myRightSesDisplay="none";
+        }
+        if(this.counterSesEnd >= this.sessions.length){
+            return;
+        }
+        else{
+            this.counterSesBegin++;
+            this.counterSesEnd++;
+            this.sessionSubset= this.sessions.slice(this.counterSesBegin,this.counterSesEnd);
+        }
+    }
+
+    public previousSesPage(){
+        this.myRightSesDisplay = "block";
+        if(this.counterSesBegin <= 1){
+            this.myLeftSesDisplay="none";
+        }
+        if(this.counterSesBegin <= 0){
+            return;
+        }  else {
+            this.counterSesBegin--;
+            this.counterSesEnd--;
+            this.sessionSubset = this.sessions.slice(this.counterSesBegin, this.counterSesEnd);
+        }
+    }
+
+    public onEditClick(categoryName:string){
+        this._categoryService.setCategoryName(this.category.categoryId,categoryName).subscribe(
+            () => console.log("Succeeeeeed"),
+            error => console.log(error));
+    }
+
 }

@@ -90,6 +90,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public void updateOrganization(Organization organization) throws OrganizationServiceException {
+        if (organization == null)
+            throw new OrganizationServiceException("Organization cannot be null");
         try {
             organizationRepository.save(organization);
         } catch (Exception e) {

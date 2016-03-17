@@ -136,10 +136,11 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/edit/{organizationId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{organizationId}", method = RequestMethod.PUT)
     public ResponseEntity setOrganizationName(@PathVariable("organizationId") int organizationId, @RequestParam(value="organizationName")String organizationName){
         Organization organization = organizationService.getOrganizationById(organizationId);
         organization.setName(organizationName);
+        organizationService.updateOrganization(organization);
         OrganizationResource resource = mapperFacade.map(organization, OrganizationResource.class);
 
         return new ResponseEntity<>(resource,HttpStatus.OK);

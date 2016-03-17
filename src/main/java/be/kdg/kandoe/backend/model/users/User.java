@@ -1,3 +1,6 @@
+/**
+ * A user has a username, name, surname, email and password
+ */
 package be.kdg.kandoe.backend.model.users;
 
 import be.kdg.kandoe.backend.model.users.roles.Role;

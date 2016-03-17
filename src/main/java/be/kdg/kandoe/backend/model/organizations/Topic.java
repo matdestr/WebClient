@@ -1,3 +1,9 @@
+/**
+ * A Topic belongs to one category
+ * Consists of a name and a description
+ * Has a list of cards
+ */
+
 package be.kdg.kandoe.backend.model.organizations;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;

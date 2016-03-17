@@ -1,3 +1,8 @@
+/**
+ * A Catgory is part of one organization
+ * Consists of a name and description
+ * Has a list of tags, cards and topics
+ */
 package be.kdg.kandoe.backend.model.organizations;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;

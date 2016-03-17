@@ -1,3 +1,8 @@
+/**
+ * A message in the chat
+ * Has a content and a time
+ * Belongs to a session and a user
+ */
 package be.kdg.kandoe.backend.model.sessions;
 
 import be.kdg.kandoe.backend.model.users.User;

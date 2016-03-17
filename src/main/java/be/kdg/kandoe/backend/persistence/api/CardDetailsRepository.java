@@ -1,3 +1,7 @@
+/**
+ * Interface
+ */
+
 package be.kdg.kandoe.backend.persistence.api;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;

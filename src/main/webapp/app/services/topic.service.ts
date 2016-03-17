@@ -57,4 +57,17 @@ export class TopicService {
             .get(TopicService.endPoint + topicId +"/sessions");
     }
 
+    public setTopicName(topicId:number,topicName:string):Observable<Response>{
+        var searchParams: URLSearchParams = new URLSearchParams();
+        searchParams.append("topicName", topicName);
+
+        var headers:Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        var options: RequestOptions = new RequestOptions();
+        options.search = searchParams;
+        options.headers = headers;
+
+        return this._authHttp.put(TopicService.endPoint+topicId,"",options);
+    }
 }

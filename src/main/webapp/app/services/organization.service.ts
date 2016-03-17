@@ -60,10 +60,14 @@ export class OrganizationService {
         var searchParams: URLSearchParams = new URLSearchParams();
         searchParams.append("organizationName", organizationName);
 
+        var headers:Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
         var options: RequestOptions = new RequestOptions();
         options.search = searchParams;
+        options.headers = headers;
 
-        return this._authHttp.post(OrganizationService.endPoint+"edit/"+organizationId,"",options);
+        return this._authHttp.put(OrganizationService.endPoint+organizationId,"",options);
     }
 
 }

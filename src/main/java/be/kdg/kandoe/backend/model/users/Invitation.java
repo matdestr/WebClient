@@ -1,3 +1,6 @@
+/**
+ * An invitation for a user to join an organization
+ */
 package be.kdg.kandoe.backend.model.users;
 
 import be.kdg.kandoe.backend.model.organizations.Organization;

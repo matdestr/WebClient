@@ -7,7 +7,7 @@ import {CardDetails} from "../../entities/category/card-details";
     template: `
                 <div [className]="cardClassName" [class.card-active]="active" (click)="onClick()">
 
-                    <div class="img-container"><img *ngIf="card.imageUrl != null"  class="card-img" [src]="card.imageUrl" alt="Card image"> </div>
+                    <img *ngIf="card.imageUrl != null"  class="card-img" [src]="card.imageUrl" alt="Card image">
                     <div class="card-block">
                         <p class="card-text">{{card.text}}</p>
                     </div>

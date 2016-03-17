@@ -1,3 +1,6 @@
+/**
+ * An invitation to join a session for a certain user
+ */
 package be.kdg.kandoe.backend.model.sessions;
 
 import be.kdg.kandoe.backend.model.users.User;

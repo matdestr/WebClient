@@ -1,3 +1,6 @@
+/**
+ * A SynchronousSession means that all the users are active at the same time and has a startTime
+ */
 package be.kdg.kandoe.backend.model.sessions;
 
 import lombok.Data;

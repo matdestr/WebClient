@@ -1,3 +1,8 @@
+/**
+ * CardDetails consist of a text, image, creator and a list of comments
+ * A CardDetail can belong to one category and multiple topics
+ */
+
 package be.kdg.kandoe.backend.model.cards;
 
 import be.kdg.kandoe.backend.model.organizations.Category;

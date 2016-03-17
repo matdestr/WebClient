@@ -129,4 +129,14 @@ public class CategoryRestController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+
+    @RequestMapping(value = "/{categoryId}", method = RequestMethod.PUT)
+    public ResponseEntity setOrganizationName(@PathVariable("categoryId") int categoryId, @RequestParam(value="categoryName")String categoryName){
+        Category category = categoryService.getCategoryById(categoryId);
+        category.setName(categoryName);
+        categoryService.updateCategory(category);
+        CategoryResource resource = mapper.map(category, CategoryResource.class);
+
+        return new ResponseEntity<>(resource,HttpStatus.OK);
+    }
 }

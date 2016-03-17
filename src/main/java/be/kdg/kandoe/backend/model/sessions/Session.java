@@ -1,3 +1,7 @@
+/**
+ *  A sesion belongs to a category or topic and has an organizer
+ *  A session contains information about the participants, the cardpositions and chatmessages
+ */
 package be.kdg.kandoe.backend.model.sessions;
 
 import be.kdg.kandoe.backend.model.cards.CardDetails;

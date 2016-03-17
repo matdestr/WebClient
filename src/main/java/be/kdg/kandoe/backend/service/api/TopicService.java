@@ -13,4 +13,5 @@ public interface TopicService {
     List<Topic> getTopicsByCategoryId(int categoryId);
 
     Topic getTopicByTopicId(int topicId);
+    void updateTopic(Topic topic) throws TopicServiceException;
 }

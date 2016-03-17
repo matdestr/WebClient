@@ -63,8 +63,21 @@ export class CategoryService {
     }
 
     public getSessionsFromCategory(categoryId: number): Observable<Response>{
-
         return this._authHttp
             .get(CategoryService.endPoint + categoryId +"/sessions");
+    }
+
+    public setCategoryName(categoryId:number,categoryName:string):Observable<Response>{
+        var searchParams: URLSearchParams = new URLSearchParams();
+        searchParams.append("categoryName", categoryName);
+
+        var headers:Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        var options: RequestOptions = new RequestOptions();
+        options.search = searchParams;
+        options.headers = headers;
+
+        return this._authHttp.put(CategoryService.endPoint+categoryId,"",options);
     }
 }

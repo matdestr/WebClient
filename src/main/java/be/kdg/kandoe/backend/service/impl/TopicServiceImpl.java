@@ -51,4 +51,15 @@ public class TopicServiceImpl implements TopicService {
     public Topic getTopicByTopicId(int topicId) {
         return topicRepository.findTopicByTopicId(topicId);
     }
+
+    @Override
+    public void updateTopic(Topic topic) throws TopicServiceException {
+        if (topic == null)
+            throw new TopicServiceException("Topic cannot be null");
+        try {
+            topicRepository.save(topic);
+        } catch (Exception e) {
+            throw new TopicServiceException("Couldn't save topic", e);
+        }
+    }
 }

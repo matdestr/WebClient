@@ -1,3 +1,7 @@
+/**
+ * A comment on a CardDetail by a user
+ * Consist of a message and datetime
+ */
 package be.kdg.kandoe.backend.model.cards;
 
 import be.kdg.kandoe.backend.model.users.User;
