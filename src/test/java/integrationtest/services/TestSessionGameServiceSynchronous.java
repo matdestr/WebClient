@@ -68,20 +68,28 @@ public class TestSessionGameServiceSynchronous {
 
     @Before
     public void initializeSessions() {
+        /*
         user = new User("test-user", "test-pass");
-        organizer = userService.addUser(user);
+        user.setEmail("teserinot@localhost");
+        user = userService.addUser(user);
+        */
 
-        player1 = userService.addUser(
-                new User("test-player-1", "test-pass")
-        );
+        organizer = new User("test-organizer", "test-pass");
+        organizer.setEmail("organizer@localhost");
+        organizer = userService.addUser(organizer);
+        user = organizer;
 
-        player2 = userService.addUser(
-                new User("test-player-2", "test-pass")
-        );
+        player1 = new User("test-player-1", "test-pass");
+        player1.setEmail("player1@localhost");
+        player1 = userService.addUser(player1);
 
-        player3 = userService.addUser(
-                new User("test-player-3", "test-pass")
-        );
+        player2 = new User("test-player-2", "test-pass");
+        player2.setEmail("player2@localhost");
+        player2 = userService.addUser(player2);
+
+        player3 = new User("test-player-3", "test-pass");
+        player3.setEmail("player3@localhost");
+        player3 = userService.addUser(player3);
 
         Organization organization = new Organization("test-organization", user);
         organization = organizationService.addOrganization(organization);
@@ -144,7 +152,7 @@ public class TestSessionGameServiceSynchronous {
 
         sessionGameService.inviteUserForSession(session, player1);
         sessionGameService.confirmInvitedUsers(session);
-        
+
         Assert.assertEquals(SessionStatus.USERS_JOINING, session.getSessionStatus());
         Assert.assertFalse(session.getParticipantInfo().iterator().next().isJoined());
         Mockito.verify(mockedEmailService).sendSessionInvitationToUser(
@@ -167,7 +175,7 @@ public class TestSessionGameServiceSynchronous {
     public void joinAsNonInvitedUserWithoutConfirmedInvites() {
         sessionGameService.setUserJoined(session, player1);
     }
-    
+
     @Test(expected = SessionGameServiceException.class)
     public void joinAsNonInvitedUserWithConfirmedInvites() {
         sessionGameService.confirmInvitedUsers(session);
@@ -181,9 +189,9 @@ public class TestSessionGameServiceSynchronous {
 
         sessionGameService.inviteUserForSession(session, player1);
         sessionGameService.inviteUserForSession(session, player2);
-        
+
         Assert.assertEquals(SessionStatus.CREATED, session.getSessionStatus());
-        
+
         sessionGameService.confirmInvitedUsers(session);
 
         sessionGameService.setUserJoined(session, organizer);
@@ -192,30 +200,30 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.setUserJoined(session, player2);
         Assert.assertEquals(SessionStatus.REVIEWING_CARDS, session.getSessionStatus());
     }
-    
+
     @Test(expected = SessionGameServiceException.class)
     public void inviteUserAfterConfirmingInvitesThrowsException() {
         sessionGameService.inviteUserForSession(session, player1);
         Assert.assertEquals(SessionStatus.CREATED, session.getSessionStatus());
-        
+
         sessionGameService.inviteUserForSession(session, player2);
         Assert.assertEquals(SessionStatus.CREATED, session.getSessionStatus());
-        
+
         sessionGameService.confirmInvitedUsers(session);
         Assert.assertEquals(SessionStatus.USERS_JOINING, session.getSessionStatus());
-        
+
         sessionGameService.inviteUserForSession(session, player3);
     }
-    
+
     @Test(expected = SessionGameServiceException.class)
     public void confirmInvitedUsersMultipleTimesThrowsException() {
         sessionGameService.inviteUserForSession(session, player1);
         Assert.assertEquals(SessionStatus.CREATED, session.getSessionStatus());
-        
+
         sessionGameService.confirmInvitedUsers(session);
         sessionGameService.confirmInvitedUsers(session);
     }
-    
+
     @Test(expected = SessionGameServiceException.class)
     public void joinSessionAsInvitedUserWhenNotConfirmedThrowsException() {
         sessionGameService.inviteUserForSession(session, player1);
@@ -271,20 +279,20 @@ public class TestSessionGameServiceSynchronous {
 
         Set<CardDetails> cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails3);
-        
+
         sessionGameService.chooseCards(session, organizer, cardDetailsSet);
         //sessionGameService.confirmCardsChosen(session, organizer);
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails1);
-        
+
         sessionGameService.chooseCards(session, player1, cardDetailsSet);
         //sessionGameService.confirmCardsChosen(session, player1);
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails1);
         cardDetailsSet.add(cardDetails2);
-        
+
         sessionGameService.chooseCards(session, player2, cardDetailsSet);
         //sessionGameService.confirmCardsChosen(session, player2);
 
@@ -292,7 +300,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test
-    public void chooseLessCardsThanAllowed(){
+    public void chooseLessCardsThanAllowed() {
         session.setParticipantsCanAddCards(true);
         session.setCardCommentsAllowed(false);
         session = sessionService.updateSession(session);
@@ -307,24 +315,24 @@ public class TestSessionGameServiceSynchronous {
 
         Set<CardDetails> cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails3);
-        
+
         sessionGameService.chooseCards(session, organizer, cardDetailsSet);
         //sessionGameService.confirmCardsChosen(session, organizer);
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails1);
-        
+
         //sessionGameService.chooseCards(session, player1, cardDetailsSet);
         //sessionGameService.confirmCardsChosen(session, player1);
 
         //sessionGameService.confirmCardsChosen(session, player2);
-        
+
         session = sessionService.getSessionById(session.getSessionId());
         Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
     }
 
     @Test(expected = SessionGameServiceException.class)
-    public void chooseMoreCardsThanAllowed(){
+    public void chooseMoreCardsThanAllowed() {
         session.setParticipantsCanAddCards(true);
         session.setCardCommentsAllowed(false);
         session = sessionService.updateSession(session);
@@ -339,34 +347,34 @@ public class TestSessionGameServiceSynchronous {
 
         Set<CardDetails> cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails3);
-        
+
         sessionGameService.chooseCards(session, organizer, cardDetailsSet);
         //sessionGameService.confirmCardsChosen(session, organizer);
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails1);
-        
+
         sessionGameService.chooseCards(session, player1, cardDetailsSet);
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails2);
-        
+
         sessionGameService.chooseCards(session, player1, cardDetailsSet);
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails4);
-        
+
         sessionGameService.chooseCards(session, player1, cardDetailsSet);
 
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails3);
-        
+
         sessionGameService.chooseCards(session, player1, cardDetailsSet);
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails5);
-        
+
         sessionGameService.chooseCards(session, player1, cardDetailsSet);
         //sessionGameService.confirmCardsChosen(session, player1);
     }
@@ -387,7 +395,7 @@ public class TestSessionGameServiceSynchronous {
 
         Set<CardDetails> cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails3);
-        
+
         sessionGameService.chooseCards(session, organizer, cardDetailsSet);
 
         cardDetailsSet = new HashSet<>();
@@ -395,12 +403,12 @@ public class TestSessionGameServiceSynchronous {
         cardDetailsSet.add(cardDetails2);
 
         sessionGameService.chooseCards(session, player1, cardDetailsSet);
-        
+
         sessionGameService.chooseCards(session, player2, cardDetailsSet);
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();
-        Comparator comparator  = new Comparator<CardPosition>() {
+        Comparator comparator = new Comparator<CardPosition>() {
             @Override
             public int compare(CardPosition o1, CardPosition o2) {
                 return Integer.compare(o1.getCardPositionId(), o2.getCardPositionId());
@@ -415,7 +423,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test
-    public void testStartGame(){
+    public void testStartGame() {
         session.setParticipantsCanAddCards(true);
         session.setCardCommentsAllowed(false);
         session = sessionService.updateSession(session);
@@ -430,7 +438,7 @@ public class TestSessionGameServiceSynchronous {
 
         Set<CardDetails> cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails3);
-        
+
         sessionGameService.chooseCards(session, organizer, cardDetailsSet);
         //sessionGameService.confirmCardsChosen(session, organizer);
 
@@ -450,7 +458,7 @@ public class TestSessionGameServiceSynchronous {
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();
-        Comparator comparator  = new Comparator<CardPosition>() {
+        Comparator comparator = new Comparator<CardPosition>() {
             @Override
             public int compare(CardPosition o1, CardPosition o2) {
                 return Integer.compare(o1.getCardPositionId(), o2.getCardPositionId());
@@ -468,7 +476,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test
-    public void testIncreaseCardPriority(){
+    public void testIncreaseCardPriority() {
         session.setParticipantsCanAddCards(true);
         session.setCardCommentsAllowed(false);
         session = sessionService.updateSession(session);
@@ -499,7 +507,7 @@ public class TestSessionGameServiceSynchronous {
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();
-        Comparator comparator  = new Comparator<CardPosition>() {
+        Comparator comparator = new Comparator<CardPosition>() {
             @Override
             public int compare(CardPosition o1, CardPosition o2) {
                 return Integer.compare(o1.getCardPositionId(), o2.getCardPositionId());
@@ -523,7 +531,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test
-    public void testParticipantsSequence(){
+    public void testParticipantsSequence() {
         session.setParticipantsCanAddCards(false);
         session.setCardCommentsAllowed(false);
 
@@ -535,7 +543,7 @@ public class TestSessionGameServiceSynchronous {
 
         Set<CardDetails> cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails3);
-        
+
         sessionGameService.chooseCards(session, organizer, cardDetailsSet);
         //sessionGameService.confirmCardsChosen(session, organizer);
 
@@ -549,7 +557,8 @@ public class TestSessionGameServiceSynchronous {
         cardDetailsSet.add(cardDetails1);
         cardDetailsSet.add(cardDetails2);
 
-        sessionGameService.chooseCards(session, player2, cardDetailsSet);;
+        sessionGameService.chooseCards(session, player2, cardDetailsSet);
+        ;
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
 
@@ -577,7 +586,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test
-    public void testEndGame(){
+    public void testEndGame() {
         session.setParticipantsCanAddCards(false);
         session.setCardCommentsAllowed(false);
         session.setAmountOfCircles(4);
@@ -603,7 +612,7 @@ public class TestSessionGameServiceSynchronous {
         cardDetailsSet.add(cardDetails1);
         cardDetailsSet.add(cardDetails2);
 
-        sessionGameService.chooseCards(session, player2, cardDetailsSet);;
+        sessionGameService.chooseCards(session, player2, cardDetailsSet);
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
 
@@ -632,7 +641,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test
-    public void testForceEndGame(){
+    public void testForceEndGame() {
         session.setParticipantsCanAddCards(false);
         session.setCardCommentsAllowed(false);
         session.setAmountOfCircles(3);
@@ -658,7 +667,8 @@ public class TestSessionGameServiceSynchronous {
         cardDetailsSet.add(cardDetails1);
         cardDetailsSet.add(cardDetails2);
 
-        sessionGameService.chooseCards(session, player2, cardDetailsSet);;
+        sessionGameService.chooseCards(session, player2, cardDetailsSet);
+        ;
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
 
@@ -679,7 +689,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test(expected = SessionGameServiceException.class)
-    public void testIncreaseCardPriorityByUserNotInTurn(){
+    public void testIncreaseCardPriorityByUserNotInTurn() {
         session.setParticipantsCanAddCards(true);
         session.setCardCommentsAllowed(false);
         session = sessionService.updateSession(session);
@@ -694,18 +704,18 @@ public class TestSessionGameServiceSynchronous {
 
         Set<CardDetails> cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails1);
-        
+
         sessionGameService.chooseCards(session, player1, cardDetailsSet);
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails1);
         cardDetailsSet.add(cardDetails2);
-        
+
         sessionGameService.chooseCards(session, player2, cardDetailsSet);
-        
+
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails3);
-        
+
         sessionGameService.chooseCards(session, organizer, cardDetailsSet);
 
 
@@ -715,7 +725,7 @@ public class TestSessionGameServiceSynchronous {
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();
-        Comparator comparator  = new Comparator<CardPosition>() {
+        Comparator comparator = new Comparator<CardPosition>() {
             @Override
             public int compare(CardPosition o1, CardPosition o2) {
                 return Integer.compare(o1.getCardPositionId(), o2.getCardPositionId());
@@ -735,7 +745,7 @@ public class TestSessionGameServiceSynchronous {
     }
 
     @Test(expected = SessionGameServiceException.class)
-    public void testIncreaseCardPriorityByUserThatIsntInSession(){
+    public void testIncreaseCardPriorityByUserThatIsntInSession() {
         session.setParticipantsCanAddCards(true);
         session.setCardCommentsAllowed(false);
         session = sessionService.updateSession(session);
@@ -750,18 +760,18 @@ public class TestSessionGameServiceSynchronous {
 
         Set<CardDetails> cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails1);
-        
+
         sessionGameService.chooseCards(session, player1, cardDetailsSet);
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails1);
         cardDetailsSet.add(cardDetails2);
-        
+
         sessionGameService.chooseCards(session, player2, cardDetailsSet);
 
         cardDetailsSet = new HashSet<>();
         cardDetailsSet.add(cardDetails3);
-        
+
         sessionGameService.chooseCards(session, organizer, cardDetailsSet);
 
         /*sessionGameService.confirmCardsChosen(session, player1);
@@ -770,7 +780,7 @@ public class TestSessionGameServiceSynchronous {
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();
-        Comparator comparator  = new Comparator<CardPosition>() {
+        Comparator comparator = new Comparator<CardPosition>() {
             @Override
             public int compare(CardPosition o1, CardPosition o2) {
                 return Integer.compare(o1.getCardPositionId(), o2.getCardPositionId());
@@ -792,7 +802,7 @@ public class TestSessionGameServiceSynchronous {
     private void inviteTwoUsersAndLetThemJoin(Session session) {
         sessionGameService.inviteUserForSession(session, player1);
         sessionGameService.inviteUserForSession(session, player2);
-        
+
         sessionGameService.confirmInvitedUsers(session);
 
         sessionGameService.setUserJoined(session, player1);

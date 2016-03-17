@@ -6,6 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
+/**
+ * Proxy interface for the CRUD Repository for the {@link Topic} model
+ */
+
 public interface TopicRepository extends JpaRepository<Topic,Integer> {
     Topic findTopicByNameAndCategory(String name, Category category);
 

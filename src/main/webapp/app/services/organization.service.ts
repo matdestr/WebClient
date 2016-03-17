@@ -53,7 +53,7 @@ export class OrganizationService {
     }
 
     public getOrganizationsByUser(username:string) : Observable<Response> {
-        return this._http.get(OrganizationService.endPoint + "user/" + username);
+        return this._authHttp.get(OrganizationService.endPoint + "user/" + username);
     }
 
     public setOrganizationName(organizationId:number,organizationName:string):Observable<Response>{

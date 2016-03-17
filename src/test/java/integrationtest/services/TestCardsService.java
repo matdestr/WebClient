@@ -51,6 +51,7 @@ public class TestCardsService {
     @Before
     public void setUp(){
         User user = new User("username", "pass");
+        user.setEmail("test@localhost");
         this.user = userService.addUser(user);
 
         Organization organization = new Organization("test-organization1", user);

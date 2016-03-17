@@ -5,6 +5,7 @@ import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
+import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.CategoryService;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
 import be.kdg.kandoe.backend.service.api.SessionService;
@@ -16,11 +17,13 @@ import be.kdg.kandoe.frontend.controller.resources.organizations.topic.TopicReso
 import be.kdg.kandoe.frontend.controller.resources.sessions.AsynchronousSessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.SessionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.SynchronousSessionResource;
+import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,8 +32,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/topics")
-public class TopicRestController
-{
+@PreAuthorize("isAuthenticated()")
+public class TopicRestController {
 
     private final TopicService topicService;
     private final CategoryService categoryService;
@@ -39,9 +42,9 @@ public class TopicRestController
     private MapperFacade mapper;
 
     @Autowired
-    public TopicRestController(MapperFacade mapper,TopicService topicService,
-                                  CategoryService categoryService, SessionService sessionService
-                                  ) {
+    public TopicRestController(MapperFacade mapper, TopicService topicService,
+                               CategoryService categoryService, SessionService sessionService
+    ) {
         this.mapper = mapper;
         this.topicService = topicService;
         this.categoryService = categoryService;
@@ -50,9 +53,14 @@ public class TopicRestController
 
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<TopicResource> createTopic(@RequestParam("categoryId") int categoryId,
-                                                        @Valid @RequestBody CreateTopicResource topicResource) {
+    public ResponseEntity<TopicResource> createTopic(@AuthenticationPrincipal User user,
+                                                     @RequestParam("categoryId") int categoryId,
+                                                     @Valid @RequestBody CreateTopicResource topicResource) {
         Category category = categoryService.getCategoryById(categoryId);
+        if (!category.getOrganization().isOrganizer(user)){
+            throw new CanDoControllerRuntimeException("User is not organizer of category");
+        }
+
         Topic topic = mapper.map(topicResource, Topic.class);
         topic.setCategory(category);
         topic = topicService.addTopic(topic);
@@ -61,7 +69,6 @@ public class TopicRestController
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<TopicResource>> getTopics(@RequestParam("categoryId") int categoryId) {
         List<Topic> topics = topicService.getTopicsByCategoryId(categoryId);
 
@@ -69,7 +76,6 @@ public class TopicRestController
     }
 
     @RequestMapping(value = "/{topicId}", method = RequestMethod.GET)
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<TopicResource> getTopic(@PathVariable("topicId") int topicId) {
         Topic topic = topicService.getTopicByTopicId(topicId);
 
@@ -77,7 +83,6 @@ public class TopicRestController
     }
 
     @RequestMapping(value = "/{topicId}/sessions", method = RequestMethod.GET)
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<SessionResource>> getSessionsFromTopic(@PathVariable("topicId") int topicId) {
 
         List<Session> sessions = sessionService.getSessionsFromTopic(topicId);

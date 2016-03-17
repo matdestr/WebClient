@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tags")
+@PreAuthorize("isAuthenticated()")
 public class TagsRestController {
     private final TagService tagService;
 
@@ -29,11 +30,8 @@ public class TagsRestController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<TagResource>> getTags()  {
+    public ResponseEntity<List<TagResource>> getTags() {
         List<Tag> tags = tagService.getTags();
-
-        return new ResponseEntity<>(mapper.mapAsList(tags,TagResource.class),HttpStatus.OK);
-
+        return new ResponseEntity<>(mapper.mapAsList(tags, TagResource.class), HttpStatus.OK);
     }
 }

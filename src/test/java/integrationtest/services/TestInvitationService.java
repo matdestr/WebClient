@@ -36,6 +36,7 @@ public class TestInvitationService {
     @Before
     public void setUp(){
         User user = new User("username", "pass");
+        user.setEmail("test@localhost");
         userService.addUser(user);
 
         Organization organization = new Organization("TestOrganization", user);

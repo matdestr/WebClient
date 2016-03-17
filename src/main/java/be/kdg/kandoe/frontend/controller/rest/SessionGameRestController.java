@@ -85,7 +85,7 @@ public class SessionGameRestController {
 
         if (userToInvite == null) {
             //todo user inviten
-
+            //sessionGameService.inviteNonExisitingUserForSession();
             return new ResponseEntity(HttpStatus.NOT_IMPLEMENTED);
         } else {
             checkUserIsOrganizer(user, session);

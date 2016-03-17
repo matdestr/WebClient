@@ -68,6 +68,7 @@ public class ITTestOAuthEndpoints {
         newClientDetails.setSecret("secret");
 
         User testUser = new User("oauthtestuser", unencryptedPassword);
+        testUser.setEmail("test-user@localhost");
         this.user = userService.addUser(testUser);
 
         this.clientDetails = oAuthClientDetailsService.addClientsDetails(newClientDetails);

@@ -13,6 +13,7 @@ import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,8 @@ public class OrganizationRestController {
     
     @Autowired
     private MapperFacade mapperFacade;
-    
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createOrganization(@AuthenticationPrincipal User user,
                                              @Valid @RequestBody CreateOrganizationResource organizationResource) {
@@ -58,12 +60,13 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resultResource, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity updateOrganization(@AuthenticationPrincipal User user,
                                              @Valid @RequestBody OrganizationResource resource){
         Organization organization = mapperFacade.map(resource, Organization.class);
 
-        if (! user.equals(organization.getOwner())){
+        if (user.getUserId() != organization.getOwner().getUserId()){
             throw new CanDoControllerRuntimeException("User is not owner of organization and isn't allowed to update it.", HttpStatus.BAD_REQUEST);
         }
 
@@ -71,17 +74,22 @@ public class OrganizationRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/add/{organizationId}", method = RequestMethod.POST)
     public ResponseEntity addUsersToOrganization(@AuthenticationPrincipal User user,
                                                  @PathVariable("organizationId") int organizationId,
                                                  @Valid @RequestBody List<EmailResource> emails){
+
         Organization organization = organizationService.getOrganizationById(organizationId);
 
         if (organization == null)
             throw new CanDoControllerRuntimeException("no organization with id " + organizationId, HttpStatus.NOT_FOUND);
 
-        if (! emails.isEmpty()) {
+        if (user.getUserId() != organization.getOwner().getUserId()){
+            throw new CanDoControllerRuntimeException("User is not owner of organization and isn't allowed to update it.", HttpStatus.BAD_REQUEST);
+        }
 
+        if (! emails.isEmpty()) {
             AtomicBoolean canAdd = new AtomicBoolean(false);
             int ownerId = organization.getOwner().getUserId();
             if (ownerId == user.getUserId())
@@ -105,11 +113,13 @@ public class OrganizationRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.GET)
     public List<OrganizationResource> getOrganizations(){
         return mapperFacade.mapAsList(organizationService.getOrganizations(), OrganizationResource.class);
     }
-    
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{organizationId}", method = RequestMethod.GET)
     public ResponseEntity<OrganizationResource> findOrganization(@PathVariable("organizationId") int organizationId) {
         Organization organization = organizationService.getOrganizationById(organizationId);
@@ -118,6 +128,7 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/user/{user}", method = RequestMethod.GET)
     public ResponseEntity<List<OrganizationResource>> findOrganizationsByUser(@PathVariable("user") String username, @RequestParam(value = "owner", defaultValue = "false", required = false) boolean isOwner) {
         User user = userService.getUserByUsername(username);
@@ -136,7 +147,8 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{organizationId}", method = RequestMethod.PUT)
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/edit/{organizationId}", method = RequestMethod.PUT)
     public ResponseEntity setOrganizationName(@PathVariable("organizationId") int organizationId, @RequestParam(value="organizationName")String organizationName){
         Organization organization = organizationService.getOrganizationById(organizationId);
         organization.setName(organizationName);

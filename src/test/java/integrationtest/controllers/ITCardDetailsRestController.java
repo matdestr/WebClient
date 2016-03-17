@@ -82,6 +82,7 @@ public class ITCardDetailsRestController {
     @Before
     public void setup() throws Exception {
         User user = new User(username, password);
+        user.setEmail("test-user@localhost");
         this.user = this.userService.addUser(user);
 
         OAuthClientDetails clientDetails = IntegrationTestHelpers.getOAuthClientDetails();
@@ -170,6 +171,7 @@ public class ITCardDetailsRestController {
     @Test
     public void createNewCardDetailsAsOrganizer() throws Exception {
         User organizer = new User("test-organizer", "pass");
+        organizer.setEmail("test-organizer@localhost");
         organizer = this.userService.addUser(organizer);
 
         this.token = TokenProvider.getToken(mockMvc, clientDetails, organizer.getUsername(), "pass");
@@ -225,6 +227,7 @@ public class ITCardDetailsRestController {
     @Test
     public void createNewCardDetailsAsNonOrganizer() throws Exception {
         User user = new User("test-non-organizer", "pass");
+        user.setEmail("test-user2@localhost");
         user = this.userService.addUser(user);
 
         this.token = TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), "pass");

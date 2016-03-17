@@ -70,6 +70,7 @@ public class TestSessionService {
     @Before
     public void setup() {
         user = new User("test-user", "pass");
+        user.setEmail("test@localhost");
         user = userRepository.save(user);
         
         organization = new Organization("test-organization", user);
@@ -171,6 +172,7 @@ public class TestSessionService {
     @Test(expected = SessionServiceException.class)
     public void addSessionAsNonOrganizerThrowsException() {
         User nonOrganizer = new User("test-non-organizer", "pass");
+        nonOrganizer.setEmail("nonorganizer@localhost");
         nonOrganizer = userRepository.save(nonOrganizer);
         
         Session session = new SynchronousSession();

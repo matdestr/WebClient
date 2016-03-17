@@ -79,6 +79,7 @@ public class ITTestTopicRestController {
         public void setup() throws Exception {
             String unencryptedPassword = "test-password";
             User user = new User("test-user", unencryptedPassword);
+            user.setEmail("test@localhost");
             user = userService.addUser(user);
 
             OAuthClientDetails newClientDetails = new OAuthClientDetails("test-client-id");

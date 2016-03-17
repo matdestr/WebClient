@@ -76,6 +76,7 @@ public class ITTagsRestController {
     public void setup() throws Exception {
         String unencryptedPassword = "test-password";
         User user = new User("test-user", unencryptedPassword);
+        user.setEmail("test-user@localhost");
         user = userService.addUser(user);
 
         OAuthClientDetails newClientDetails = new OAuthClientDetails("test-client-id");
@@ -118,8 +119,6 @@ public class ITTagsRestController {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$" ,hasSize(tagList.size()) ))
                 .andReturn().getResponse().getContentAsString();
-
-        System.out.println(response);
     }
 
 }

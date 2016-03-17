@@ -13,6 +13,10 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Set;
 
+/**
+ * Proxy interface for the CRUD Repository for the {@link CardDetails} model
+ */
+
 public interface CardDetailsRepository extends JpaRepository<CardDetails, Integer> {
     @Query("SELECT cd FROM CardDetails cd JOIN cd.topics t WHERE t.topicId = (:topicId)")
     Set<CardDetails> findCardDetailsByTopicId(@Param("topicId") int topicId);

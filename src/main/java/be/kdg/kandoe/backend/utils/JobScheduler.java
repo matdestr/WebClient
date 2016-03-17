@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.concurrent.Executors;
 
+/**
+ * Wrapper class
+ */
+
 @Component
 public class JobScheduler {
     private TaskScheduler taskScheduler;

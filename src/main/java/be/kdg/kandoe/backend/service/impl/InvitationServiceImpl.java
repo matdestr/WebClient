@@ -8,11 +8,13 @@ import be.kdg.kandoe.backend.service.api.InvitationService;
 import be.kdg.kandoe.backend.service.exceptions.InvitationServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class InvitationServiceImpl implements InvitationService {
     @Autowired
     private InvitationRepository invitationRepository;

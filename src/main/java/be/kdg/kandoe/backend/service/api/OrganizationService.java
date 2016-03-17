@@ -9,6 +9,10 @@ import be.kdg.kandoe.backend.service.exceptions.OrganizationServiceException;
 
 import java.util.List;
 
+/**
+ * Interface contract for Service of the {@link Organization} model
+ */
+
 public interface OrganizationService {
     Organization addOrganization(Organization organization) throws OrganizationServiceException;
     Organization getOrganizationById(int id) throws OrganizationServiceException;

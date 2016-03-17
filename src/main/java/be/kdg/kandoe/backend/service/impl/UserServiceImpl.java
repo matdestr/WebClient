@@ -1,7 +1,6 @@
 package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.users.User;
-import be.kdg.kandoe.backend.model.users.roles.RoleType;
 import be.kdg.kandoe.backend.persistence.api.UserRepository;
 import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.backend.service.exceptions.UserServiceException;
@@ -26,19 +25,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(User user) {
-        if (user == null)
-            throw new UserServiceException("User cannot be null");
-        
+        validateUser(user);
         try {
             String unencryptedPassword = user.getPassword();
             String encryptedPassword = passwordEncoder.encode(unencryptedPassword);
             user.setPassword(encryptedPassword);
 
-            user.addRole(RoleType.ROLE_CLIENT);
-
             return userRepository.save(user);
         } catch (Exception e) {
             throw new UserServiceException(String.format("Could not save user with username %s", user.getUsername()));
+        }
+    }
+
+    private void validateUser(User user){
+        if (user == null)
+            throw new UserServiceException("User cannot be null");
+
+        if (user.getUsername() == null || user.getUsername().trim().isEmpty()){
+            throw new UserServiceException("username of user cannot be null or empty");
+        }
+
+        if (user.getEmail() == null || user.getUsername().trim().isEmpty()){
+            throw new UserServiceException("email of user cannot be null or empty");
         }
     }
 
@@ -59,6 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
+        validateUser(user);
         return userRepository.save(user);
     }
 
@@ -71,10 +80,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void isUsernameAvailable(String username) {
+    public void checkUsernameAvailable(String username) {
         User u = userRepository.findUserByUsername(username);
         if (u != null)
             throw new UserServiceException("Username is already taken.");
+    }
+
+    @Override
+    public void checkEmailAvailable(String email) {
+        User u = userRepository.findUserByEmail(email);
+        if (u != null)
+            throw new UserServiceException("Email is already taken.");
     }
 
     @Override

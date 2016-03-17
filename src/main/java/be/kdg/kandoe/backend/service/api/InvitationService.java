@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+/**
+ * Interface contract for service of {@link Invitation} model
+ */
+
 public interface InvitationService {
     /**
      * Generates an invitation for an existing user to an organization

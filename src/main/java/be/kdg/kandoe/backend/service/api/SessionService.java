@@ -5,6 +5,10 @@ import be.kdg.kandoe.backend.model.sessions.Session;
 
 import java.util.List;
 
+/**
+ * Interface contract for the {@link Session} model
+ */
+
 public interface SessionService {
     Session getSessionById(int sessionId);
     Session addSession(Session session);
@@ -12,6 +16,4 @@ public interface SessionService {
     Session updateSession(Session session);
     List<Session> getSessionsFromCategory(int categoryId);
     List<Session> getSessionsFromTopic(int topicId);
-    //void updateSession(Session session);
-    //void endSession(int sessionId);
 }

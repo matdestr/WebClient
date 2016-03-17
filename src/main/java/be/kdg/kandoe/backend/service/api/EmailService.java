@@ -3,12 +3,17 @@
  */
 package be.kdg.kandoe.backend.service.api;
 
+import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.exceptions.EmailServiceException;
 
 import java.util.List;
+
+/**
+ * Interface contract for service that invites users using an email protocol.
+ */
 
 public interface EmailService {
     /**

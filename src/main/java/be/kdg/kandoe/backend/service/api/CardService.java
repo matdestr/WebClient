@@ -11,6 +11,9 @@ import be.kdg.kandoe.backend.model.users.User;
 
 import java.util.Set;
 
+/**
+ * Interface contract for service of the {@link CardDetails} model
+ */
 public interface CardService {
     CardDetails addCardDetailsToCategory(Category category, CardDetails cardDetails);
 

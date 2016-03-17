@@ -13,6 +13,10 @@ import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Configures the {@code transaction management} and the {@code entity management}.
+ */
+
 @Configuration
 @EnableTransactionManagement
 public class EntityTransactionManagerConfig

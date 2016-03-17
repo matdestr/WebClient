@@ -36,6 +36,7 @@ public class TestOrganizationService {
     @Before
     public void initialize(){
         User user = new User("username", "pass");
+        user.setEmail("test@localhost");
         userService.addUser(user);
     }
 
@@ -92,14 +93,16 @@ public class TestOrganizationService {
         String organizationTwo = "Organization 2";
         
         //User user = userService.getUserByUsername("user");
-        User user = userService.addUser(new User("test-user", "pass"));
+        User user = new User("usertest", "pass");
+        user.setEmail("testuser@localhost");
+        userService.addUser(user);
 
         Organization organization1 = new Organization(organizationOne, user);
         Organization organization2 = new Organization(organizationTwo, user);
         organizationService.addOrganization(organization1);
         organizationService.addOrganization(organization2);
 
-        List<Organization> existing = organizationService.getOrganizationsByOwner("test-user");
+        List<Organization> existing = organizationService.getOrganizationsByOwner(user.getUsername());
 
         assertEquals("list should contain 2 items", 2, existing.size());
     }
@@ -124,6 +127,7 @@ public class TestOrganizationService {
     @Test
     public void getOrganizationsByUser(){
         User organizationUser = new User("user-in-organisation", "password");
+        organizationUser.setEmail("userorganization@localhost");
         userService.addUser(organizationUser);
 
         Organization organization = new Organization("Organization 1", organizationUser);

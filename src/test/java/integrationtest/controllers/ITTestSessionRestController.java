@@ -94,9 +94,9 @@ public class ITTestSessionRestController {
 
     @Before
     public void setup() throws Exception {
-        this.user = userService.addUser(new User("test-user", unencryptedPassword));
-        this.user.setEmail("cando-user@localhost.com");
-        this.user = userService.updateUser(user);
+        User user = new User("test-user", unencryptedPassword);
+        user.setEmail("test-user@localhost");
+        this.user = userService.addUser(user);
 
         OAuthClientDetails clientDetails = IntegrationTestHelpers.getOAuthClientDetails();
         this.clientDetails = oAuthClientDetailsService.addClientsDetails(clientDetails);
@@ -125,33 +125,33 @@ public class ITTestSessionRestController {
         this.category = categoryService.addCategory(category);
         this.topic = topicService.addTopic(topic);
     }
-    
+
     private void addCardDetailsToCategory() {
         cardDetails1 = new CardDetails();
         cardDetails1.setCategory(category);
         cardDetails1.setCreator(user);
         cardDetails1.setText("Card 1");
-        
+
         cardDetails2 = new CardDetails();
         cardDetails2.setCategory(category);
         cardDetails2.setCreator(user);
         cardDetails2.setText("Card 2");
-        
+
         cardDetails3 = new CardDetails();
         cardDetails3.setCategory(category);
         cardDetails3.setCreator(user);
         cardDetails3.setText("Card 3");
-        
+
         cardDetails4 = new CardDetails();
         cardDetails4.setCategory(category);
         cardDetails4.setCreator(user);
         cardDetails4.setText("Card 4");
-        
+
         cardDetails5 = new CardDetails();
         cardDetails5.setCategory(category);
         cardDetails5.setCreator(user);
         cardDetails5.setText("Card 5");
-        
+
         cardDetails1 = cardService.addCardDetailsToCategory(category, cardDetails1);
         cardDetails2 = cardService.addCardDetailsToCategory(category, cardDetails2);
         cardDetails3 = cardService.addCardDetailsToCategory(category, cardDetails3);
@@ -188,19 +188,19 @@ public class ITTestSessionRestController {
     private JSONObject getSessionData(int sessionId) throws Exception {
         String stringResponse = mockMvc.perform(
                 MockMvcRequestBuilders.get(baseApiUrl + "/" + sessionId)
-                .header("Authorization", authorizationHeader)
+                        .header("Authorization", authorizationHeader)
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.sessionId").exists())
                 .andExpect(jsonPath("$.sessionId").isNotEmpty())
                 .andReturn().getResponse().getContentAsString();
-        
+
         return new JSONObject(stringResponse);
     }
 
     @Test
     public void testCreateSynchronousSessionOfCategory() throws Exception {
         addCardDetailsToCategory();
-        
+
         CreateSynchronousSessionResource createSynchronousSessionResource = new CreateSynchronousSessionResource();
         createSynchronousSessionResource.setCategoryId(category.getCategoryId());
         createSynchronousSessionResource.setMinNumberOfCardsPerParticipant(3);
@@ -222,13 +222,13 @@ public class ITTestSessionRestController {
                 .andExpect(jsonPath("$.sessionId").exists())
                 .andExpect(jsonPath("$.sessionId").isNotEmpty())
                 .andReturn().getResponse().getContentAsString();
-        
+
         JSONObject jsonResponse = new JSONObject(stringResponse);
         int createdSessionId = jsonResponse.getInt("sessionId");
-        
+
         JSONObject getResult = getSessionData(createdSessionId);
         JSONArray jsonArrayParticipants = getResult.getJSONArray("participantInfo");
-        
+
         Assert.assertEquals(category.getCategoryId(), getResult.getInt("categoryId"));
         Assert.assertEquals(3, getResult.getInt("minNumberOfCardsPerParticipant"));
         Assert.assertEquals(5, getResult.getInt("maxNumberOfCardsPerParticipant"));
@@ -279,13 +279,13 @@ public class ITTestSessionRestController {
 
         JSONObject getResult = getSessionData(createdSessionId);
         JSONArray jsonArrayParticipants = getResult.getJSONArray("participantInfo");
-        
+
         Assert.assertEquals(1, jsonArrayParticipants.length());
 
-        User userToInvite = userService.addUser(new User("participant-1", "pass"));
+        User userToInvite =new User("participant-1", "pass");
         userToInvite.setEmail("localhost@localhost.com");
-        userToInvite = userService.updateUser(userToInvite);
-        
+        userToInvite = userService.addUser(userToInvite);
+
         mockMvc.perform(
                 post(baseApiUrl + "/" + createdSessionId + "/invite")
                         .header("Authorization", authorizationHeader)
@@ -296,18 +296,18 @@ public class ITTestSessionRestController {
         jsonArrayParticipants = getResult.getJSONArray("participantInfo");
 
         System.out.println("JSON Array : " + jsonArrayParticipants);
-        
+
         Assert.assertEquals(2, jsonArrayParticipants.length());
-        
+
         int matchingUserIdCounter = 0;
-        
+
         for (Object o : jsonArrayParticipants) {
             int id = ((JSONObject) o).getJSONObject("participant").getInt("userId");
-            
+
             if (id == userToInvite.getUserId())
                 matchingUserIdCounter++;
         }
-        
+
         Assert.assertEquals(1, matchingUserIdCounter);
     }
 
@@ -352,7 +352,7 @@ public class ITTestSessionRestController {
 
         Assert.assertEquals(1, jsonArrayParticipants.length());
     }
-    
+
     @Test
     public void testJoinSessionAsInvitedUser() throws Exception {
         addCardDetailsToCategory();
@@ -373,17 +373,17 @@ public class ITTestSessionRestController {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
-        
+
         JSONObject createdJsonResponse = new JSONObject(createdStringResponse);
         int createdSessionId = createdJsonResponse.getInt("sessionId");
-        
+
         JSONObject jsonResponse = this.getSessionData(createdSessionId);
-        
+
         Assert.assertEquals("CREATED", jsonResponse.getString("sessionStatus"));
 
-        User userToInvite = userService.addUser(new User("participant-1", "pass"));
-        userToInvite.setEmail("localhost@localhost.com");
-        userToInvite = userService.updateUser(userToInvite);
+        User userToInvite = new User("participant-1", "pass");
+        userToInvite.setEmail("localhost@localhost");
+        userToInvite = userService.addUser(userToInvite);
 
         mockMvc.perform(
                 post(baseApiUrl + "/" + createdSessionId + "/invite")
@@ -427,7 +427,7 @@ public class ITTestSessionRestController {
         jsonResponse = this.getSessionData(createdSessionId);
         Assert.assertEquals("ADDING_CARDS", jsonResponse.getString("sessionStatus"));
     }
-    
+
     @Test
     public void testJoinSessionAsNonInvitedUserResultsInForbidden() throws Exception {
         addCardDetailsToCategory();
@@ -454,11 +454,13 @@ public class ITTestSessionRestController {
         JSONObject jsonResponse = this.getSessionData(createdSessionId);
         Assert.assertEquals("CREATED", jsonResponse.getString("sessionStatus"));
 
-        User nonInvitedUser = userService.addUser(new User("not-invited-user-1", "pass"));
-        
+        User nonInvitedUser = new User("not-invited-user-1", "pass");
+        nonInvitedUser.setEmail("test@localhost");
+        userService.addUser(nonInvitedUser);
+
         String token = TokenProvider.getToken(mockMvc, clientDetails, nonInvitedUser.getUsername(), "pass");
         authorizationHeader = String.format("Bearer %s", token);
-        
+
         mockMvc.perform(
                 post(baseApiUrl + "/" + createdSessionId + "/join")
                         .header("Authorization", authorizationHeader)

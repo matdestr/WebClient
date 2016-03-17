@@ -38,6 +38,7 @@ public class TestCategoryService {
     @Before
     public void setUp(){
         User user = new User("test-user", "test-password");
+        user.setEmail("test@localhost");
         userService.addUser(user);
 
         organization1 = new Organization("test-organization-1", userService.getUserByUsername(user.getUsername()));

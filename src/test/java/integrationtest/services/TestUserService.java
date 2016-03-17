@@ -26,6 +26,7 @@ public class TestUserService {
     @Test
     public void testAddNewUser() {
         User user = new User("username", "password");
+        user.setEmail("test@localhost");
         userService.addUser(user);
         User fetchedUser = userService.getUserByUsername("username");
         assertEquals(user, fetchedUser);
@@ -34,6 +35,7 @@ public class TestUserService {
     @Test(expected = UserServiceException.class)
     public void testTryAddExistingUser() {
         User user = new User("username", "password");
+        user.setEmail("test@localhost");
         userService.addUser(user);
 
         // Need to create new user, otherwise the repository sees the ID and updates the record
@@ -45,10 +47,11 @@ public class TestUserService {
     public void testUpdateUser() throws Exception
     {
         User user = new User("username", "password");
+        user.setEmail("test@localhost");
         userService.addUser(user);
         User fetchedUser = userService.getUserByUsername("username");
 
-        String email = "test@mail.com";
+        String email = "test@localhost.com";
         fetchedUser.setEmail(email);
 
         userService.updateUser(fetchedUser);
@@ -59,6 +62,7 @@ public class TestUserService {
     @Test
     public void testAddRoleToUser() throws Exception {
         User user = new User("username", "password");
+        user.setEmail("testroluser@localhost");
         user.addRole(RoleType.ROLE_ADMIN);
 
         User savedUser = userService.addUser(user);

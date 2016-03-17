@@ -62,6 +62,7 @@ public class ITTestOrganizationRestController {
         unencryptedPassword = "ownerpasswd";
 
         User user = new User("owner", unencryptedPassword);
+        user.setEmail("test-user@localhost");
         this.user = userService.addUser(user);
 
         OAuthClientDetails newClientDetails = new OAuthClientDetails("test");
@@ -119,6 +120,7 @@ public class ITTestOrganizationRestController {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/organizations/user/" + user.getUsername())
                         .param("owner", String.valueOf(true))
+                        .header("Authorization", authorizationHeader)
         ).andExpect(status().isOk())
                 //.andExpect(jsonPath("$.organizations").exists())
                 //.andExpect(jsonPath("$.organizations[0].name", is("Karel de Grote")))
@@ -147,6 +149,7 @@ public class ITTestOrganizationRestController {
     public void testGetOrganizationsOfNonExistingUser() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/organizations/user/" + "notexistinguser")
+                        .header("Authorization", authorizationHeader)
         ).andExpect(status().isNotFound());
     }
 
@@ -154,6 +157,7 @@ public class ITTestOrganizationRestController {
     public void testGetOrganizationsOfUser() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/api/organizations/user/" + user.getUsername())
+                        .header("Authorization", authorizationHeader)
         )/*.andDo(print())*/.andExpect(status().isOk());
     }
     

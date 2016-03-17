@@ -35,8 +35,6 @@ public class SessionGameServiceImpl implements SessionGameService {
 
     @Override
     public void inviteUserForSession(Session session, User user) {
-        // TODO : Max amount of players or not?
-        
         if (session.getSessionStatus() != SessionStatus.CREATED)
             throw new SessionGameServiceException("Cannot invite user when the session has already started");
 

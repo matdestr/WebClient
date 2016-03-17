@@ -290,7 +290,9 @@ public class ITSessionGameRestControllerChat {
         String nonParticipantUsername = "test-non-participant";
         String nonParticipantPassword = "pass";
         
-        User nonParticipant = userService.addUser(new User(nonParticipantUsername, nonParticipantPassword));
+        User nonParticipant =new User(nonParticipantUsername, nonParticipantPassword);
+        nonParticipant.setEmail("test-user@localhost");
+        userService.addUser(nonParticipant);
 
         String token = TokenProvider.getToken(mockMvc, clientDetails, nonParticipantUsername, nonParticipantPassword);
         String authorizationHeaderNonParticipant = String.format("Bearer %s", token);

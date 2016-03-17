@@ -10,6 +10,10 @@ import be.kdg.kandoe.backend.service.exceptions.CategoryServiceException;
 
 import java.util.List;
 
+/**
+ * Interface contract for service of the {@link Category} model
+ */
+
 public interface CategoryService {
     Category addCategory(Category category) throws CategoryServiceException;
 

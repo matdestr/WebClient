@@ -18,6 +18,7 @@ public interface SessionGameService {
      * @param user = The user who wants to join the session
      */
     void inviteUserForSession(Session session, User user);
+    //void inviteNonExisitingUserForSession();
     void confirmInvitedUsers(Session session);
     void setUserJoined(Session session, User user);
     void setUserLeft(Session session, User user);
@@ -36,4 +37,5 @@ public interface SessionGameService {
 
     void startGame(Session session);
     void endGame(Session session);
+
 }

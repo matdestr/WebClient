@@ -7,8 +7,10 @@ import be.kdg.kandoe.backend.service.api.SessionService;
 import be.kdg.kandoe.frontend.controller.resources.sessions.chat.ChatMessageResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.chat.CreateChatMessageResource;
 import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
+import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -30,19 +32,18 @@ public class ChatSocketController {
         this.sessionService = sessionService;
         this.mapperFacade = mapperFacade;
     }
-
-    // TODO : Find more performant way of saving chat messages
     @PreAuthorize("isAuthenticated()")
     @MessageMapping("/sessions/{sessionId}/messages")
     @SendTo("/topic/sessions/{sessionId}/messages")
     public ChatMessageResource onReceiveMessage(@AuthenticationPrincipal User user,
                                                 @DestinationVariable("sessionId") int sessionId,
                                                 CreateChatMessageResource message){
+
+
         Session session = sessionService.getSessionById(sessionId);
-        
-        if (session == null)
-            return null;
-        
+
+        checkUserIsParticipant(user, session);
+
         Date dateCreated = new Date();
 
         ChatMessage chatMessage = new ChatMessage();
@@ -55,11 +56,22 @@ public class ChatSocketController {
         
         session.getChatMessages().add(chatMessage);
         session = sessionService.updateSession(session);
-        
+
         resource.setContent(message.getMessage());
         resource.setUser(mapperFacade.map(user, UserResource.class));
         resource.setDateTime(dateCreated);
         
         return resource;
+    }
+
+    private void checkUserIsParticipant(User user, Session session) {
+        if (session == null)
+            throw new CanDoControllerRuntimeException("Invalid session ID");
+
+        if (user == null)
+            throw new CanDoControllerRuntimeException("Invalid user ID");
+
+        if (!session.isUserParticipant(user.getUserId()))
+            throw new CanDoControllerRuntimeException("You must be a participant of the session to perform this action", HttpStatus.FORBIDDEN);
     }
 }

@@ -70,7 +70,7 @@ public class ITTestUserController {
         User user = new User("username", unencryptedPassword);
         user.setSurname("surname");
         user.setName("name");
-        user.setEmail("test@mail.com");
+        user.setEmail("test@localhost");
         this.user = userService.addUser(user);
     }
 
@@ -125,13 +125,13 @@ public class ITTestUserController {
 
     @Test
     public void testCreateUserWithWrongVerifyPassword() throws Exception {
-        CreateUserResource userResource = new CreateUserResource("test", "pass", "pass2", "test@email.com");
+        CreateUserResource userResource = new CreateUserResource("test", "pass", "pass2", "test@localhost");
         JSONObject jsonObject = new JSONObject(userResource);
         mockMvc.perform(
                 post("/api/users/")
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON))
-                //.andDo(print())
+                .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.fieldErrors[0].field", is("valid")))
                 .andExpect(jsonPath("$.fieldErrors[0].message", is(notNullValue())));
@@ -245,7 +245,7 @@ public class ITTestUserController {
                 .header("Authorization", String.format("Bearer %s", TokenProvider.getToken(mockMvc, clientDetails, user.getUsername(), unencryptedPassword )))
                 .content(new JSONObject(updateUserResource).toString())
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-        )/*.andDo(print())*/.andExpect(status().isOk());
+        ).andDo(print()).andExpect(status().isOk());
     }
 
 
@@ -269,18 +269,19 @@ public class ITTestUserController {
 
     @Test
     public void testChangeUsernameWithNonUniqueUsername() throws Exception {
-        CreateUserResource userResource = new CreateUserResource("testusername", "pass", "pass", "test@email.com");
+        CreateUserResource userResource = new CreateUserResource("testuniqueusername", "pass", "pass", "free-email@localhost");
         JSONObject jsonObject = new JSONObject(userResource);
         String jsonResult = mockMvc.perform(
                 post("/api/users/")
                         .content(jsonObject.toString())
                         .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8)).andReturn().getResponse().getContentAsString();
 
         UpdateUserResource updateUserResource = new UpdateUserResource();
         updateUserResource.setUsername(userResource.getUsername());
-        updateUserResource.setEmail("newemail@email.com");
+        updateUserResource.setEmail("newemail@localhost");
         updateUserResource.setName("newname");
         updateUserResource.setSurname("newsurname");
         updateUserResource.setVerifyPassword(unencryptedPassword);

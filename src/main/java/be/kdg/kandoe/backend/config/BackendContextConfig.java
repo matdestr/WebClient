@@ -4,6 +4,10 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+/**
+ * Configures the backend and scans the entire package for Spring beans
+ */
+
 @Configuration
 @ComponentScan(basePackages = "be.kdg.kandoe.backend",
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION,

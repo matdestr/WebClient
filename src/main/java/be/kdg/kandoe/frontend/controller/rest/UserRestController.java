@@ -5,7 +5,6 @@ import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.controller.resources.users.CreateUserResource;
 import be.kdg.kandoe.frontend.controller.resources.users.UpdateUserResource;
 import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
-import be.kdg.kandoe.frontend.controller.rest.exceptions.CanDoControllerRuntimeException;
 import ma.glasnost.orika.MapperFacade;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -39,9 +38,10 @@ public class UserRestController {
     
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserResource> createUser(@Valid @RequestBody CreateUserResource createUserResource){
-        userService.isUsernameAvailable(createUserResource.getUsername());
         User userIn = mapper.map(createUserResource, User.class);
         userIn.setProfilePictureUrl("profilepictures/default.png");
+        userService.checkUsernameAvailable(userIn.getUsername());
+        userService.checkEmailAvailable(userIn.getEmail());
         User userOut = userService.addUser(userIn);
         return new ResponseEntity<UserResource>(mapper.map(userOut, UserResource.class), HttpStatus.CREATED);
     }
@@ -109,10 +109,13 @@ public class UserRestController {
         }
         userService.checkLogin(userId, resource.getVerifyPassword());
         if (!user.getUsername().equals(resource.getUsername())){
-            userService.isUsernameAvailable(resource.getUsername());
+            userService.checkUsernameAvailable(resource.getUsername());
             user.setUsername(resource.getUsername());
         }
-        user.setEmail(resource.getEmail());
+        if (!user.getEmail().equals(resource.getEmail())){
+            userService.checkEmailAvailable(resource.getEmail());
+            user.setEmail(resource.getEmail());
+        }
         user.setName(resource.getName());
         user.setSurname(resource.getSurname());
         User updatedUser = userService.updateUser(user);

@@ -58,7 +58,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
                     return this._authHttp.get(OrganizationService.endPoint + "user/" + username, options);
                 };
                 OrganizationService.prototype.getOrganizationsByUser = function (username) {
-                    return this._http.get(OrganizationService.endPoint + "user/" + username);
+                    return this._authHttp.get(OrganizationService.endPoint + "user/" + username);
                 };
                 OrganizationService.prototype.setOrganizationName = function (organizationId, organizationName) {
                     var searchParams = new http_3.URLSearchParams();

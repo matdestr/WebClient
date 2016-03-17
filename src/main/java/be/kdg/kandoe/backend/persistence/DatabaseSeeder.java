@@ -23,6 +23,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Fills the database with dummy data
+ */
+
 @Component
 public class DatabaseSeeder {
     @Autowired

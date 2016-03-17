@@ -97,6 +97,7 @@ public class ITSessionGameRestController {
     @Before
     public void setup() throws Exception {
         this.sessionOwner = new User(sessionOwnerUsername, sessionOwnerPassword);
+        this.sessionOwner.setEmail("test-user2@localhost");
         this.sessionOwner = userService.addUser(sessionOwner);
 
         OAuthClientDetails clientDetails = IntegrationTestHelpers.getOAuthClientDetails();
@@ -174,6 +175,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
         
         User participant1 = new User(participant1Username, participant1Password);
+        participant1.setEmail("participant@localhost");
         participant1 = userService.addUser(participant1);
         
         Session session = new SynchronousSession();
@@ -217,6 +219,7 @@ public class ITSessionGameRestController {
         String nonParticipantPassword = "non-participant-1";
         
         User nonParticipant = new User(nonParticipantUsername, nonParticipantPassword);
+        nonParticipant.setEmail("non-participant@localhost");
         nonParticipant = userService.addUser(nonParticipant);
 
         Session session = new SynchronousSession();
@@ -341,10 +344,11 @@ public class ITSessionGameRestController {
         
         User participant = new User(participantUsername, participantPassword);
         User userToInvite = new User(userToInviteUsername, userToInvitePassword);
-        
-        participant = userService.addUser(participant);
+
         participant.setEmail("test3@mail.com");
         userToInvite.setEmail("test@mail.com");
+
+        participant = userService.addUser(participant);
         userToInvite = userService.addUser(userToInvite);
         userToInvite.setEmail("test2@mail.com");
         
@@ -736,7 +740,7 @@ public class ITSessionGameRestController {
         createCardDetailsResource.setText("Added card 1");
 
         User nonUser = new User("not-joined-user", "pass");
-
+        nonUser.setEmail("nonuser@localhost");
         userService.addUser(nonUser);
 
         String tokenNonUser = TokenProvider.getToken(mockMvc, clientDetails, nonUser.getUsername(), "pass");
@@ -798,7 +802,7 @@ public class ITSessionGameRestController {
         Assert.assertEquals(SessionStatus.CHOOSING_CARDS, session.getSessionStatus());
 
         User nonUser = new User("not-joined-user", "pass");
-
+        nonUser.setEmail("non-participant@localhost");
         userService.addUser(nonUser);
 
         String tokenNonUser = TokenProvider.getToken(mockMvc, clientDetails, nonUser.getUsername(), "pass");
@@ -837,7 +841,7 @@ public class ITSessionGameRestController {
         ).andExpect(MockMvcResultMatchers.status().isCreated());
 
         User nonUser = new User("not-joined-user", "pass");
-
+        nonUser.setEmail("non-participant@localhost");
         userService.addUser(nonUser);
 
         String tokenNonUser = TokenProvider.getToken(mockMvc, clientDetails, nonUser.getUsername(), "pass");
@@ -1533,6 +1537,7 @@ public class ITSessionGameRestController {
         JSONObject reviewCard1 = new JSONObject(cardReview);
 
         User nonUser = new User("nonparticipant", "pass");
+        nonUser.setEmail("nonuser@localhost");
         userService.addUser(nonUser);
 
         String tokenNonParticipant = TokenProvider.getToken(mockMvc, clientDetails, nonUser.getUsername(), "pass");
@@ -1968,6 +1973,7 @@ public class ITSessionGameRestController {
                 .andExpect(MockMvcResultMatchers.status().isCreated());
 
         User nonUser = new User("nonparticipant", "pass");
+        nonUser.setEmail("non-participant@localhost");
         userService.addUser(nonUser);
 
         String tokenNonParticipant = TokenProvider.getToken(mockMvc, clientDetails, nonUser.getUsername(), "pass");
