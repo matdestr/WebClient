@@ -108,7 +108,62 @@ public class DatabaseSeeder {
         
         users.add(testUser);
         users.add(harold);
-        
+
+        User vincent = new User();
+        vincent.setUsername("Vincent");
+        vincent.setName("Vincent");
+        vincent.setSurname("Polfliet");
+        vincent.setEmail("vincent.polfliet@student.kdg.be");
+        vincent.setPassword(passwordEncoder.encode("vincent"));
+        vincent.setProfilePictureUrl("profilepictures/vincent.jpg");
+
+        User wannes = new User();
+        wannes.setUsername("Wannes");
+        wannes.setName("Wannes");
+        wannes.setSurname("Van Regenmortel");
+        wannes.setEmail("wannes.vanregenmortel@student.kdg.be");
+        wannes.setPassword(passwordEncoder.encode("wannes"));
+        wannes.setProfilePictureUrl("profilepictures/wannes.jpg");
+
+        User mathisse = new User();
+        mathisse.setUsername("Mathisse");
+        mathisse.setName("Mathisse");
+        mathisse.setSurname("De Strooper");
+        mathisse.setEmail("mathisse.destrooper@student.kdg.be");
+        mathisse.setPassword(passwordEncoder.encode("mathisse"));
+        mathisse.setProfilePictureUrl("profilepictures/mathisse.jpg");
+
+        User jelle = new User();
+        jelle.setUsername("Jelle");
+        jelle.setName("Jelle");
+        jelle.setSurname("Spoelders");
+        jelle.setEmail("jelle.spoelders@student.kdg.be");
+        jelle.setPassword(passwordEncoder.encode("jelle"));
+        jelle.setProfilePictureUrl("profilepictures/jelle.jpg");
+
+        User thanee = new User();
+        thanee.setUsername("Thanee");
+        thanee.setName("Thanee");
+        thanee.setSurname("Stevens");
+        thanee.setEmail("thanee.stevens@student.kdg.be");
+        thanee.setPassword(passwordEncoder.encode("thanee"));
+        thanee.setProfilePictureUrl("profilepictures/thanee.jpg");
+
+        User arne = new User();
+        arne.setUsername("Arne");
+        arne.setName("Arne");
+        arne.setSurname("De Cock");
+        arne.setEmail("arne.decock.1@student.kdg.be");
+        arne.setPassword(passwordEncoder.encode("arne"));
+        arne.setProfilePictureUrl("profilepictures/arne.jpg");
+
+        users.add(vincent);
+        users.add(arne);
+        users.add(wannes);
+        users.add(jelle);
+        users.add(mathisse);
+        users.add(thanee);
+
         userRepository.save(users);
 
         Organization organization = new Organization("Pain hiders", testUser);
@@ -193,7 +248,11 @@ public class DatabaseSeeder {
         ParticipantInfo participantInfoOrganizer2 = new ParticipantInfo();
         participantInfoOrganizer2.setParticipant(testUser);
 
+        ParticipantInfo participantForSession2 = new ParticipantInfo();
+        participantForSession2.setParticipant(harold);
+
         sessionInProgress2.getParticipantInfo().add(participantInfoOrganizer2);
+        sessionInProgress2.getParticipantInfo().add(participantForSession2);
         
         category1CardIterator = category1.getCards().iterator();
         CardDetails cardsChoice2CardDetails1 = category1CardIterator.next();
@@ -246,7 +305,7 @@ public class DatabaseSeeder {
         session1.setCategory(category1);
         session1.setTopic(topic1);
         session1.setAmountOfCircles(5);
-        session1.setSessionStatus(SessionStatus.ADDING_CARDS);
+        session1.setSessionStatus(SessionStatus.CHOOSING_CARDS);
         session1.setParticipantsCanAddCards(true);
 
         ParticipantInfo participantInfo2 = new ParticipantInfo();
