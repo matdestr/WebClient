@@ -62,7 +62,7 @@ public class InvitationServiceImpl implements InvitationService {
         try {
             return invitationRepository.save(invitation);
         } catch (Exception e){
-            throw new InvitationServiceException(String.format("Couldn't save invitation %s", invitation.getInvitationId()), e);
+            throw new InvitationServiceException("Couldn't save invitation", e);
         }
     }
 

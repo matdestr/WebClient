@@ -111,9 +111,9 @@ public class SessionServiceImpl implements SessionService {
     public List<Session> getSessionsFromCategory(int categoryId) {
         List<Session> sessionList = sessionRepository.findSessionsByCategoryCategoryId(categoryId);
 
-        if (sessionList.isEmpty()) {
+        /*if (sessionList.isEmpty()) {
             throw new SessionServiceException(String.format("No sessions found for category id %d", categoryId));
-        }
+        }*/
 
         return sessionList;
     }
@@ -122,9 +122,9 @@ public class SessionServiceImpl implements SessionService {
     public List<Session> getSessionsFromTopic(int topicId) {
         List<Session> sessionList = sessionRepository.findSessionsByTopicTopicId(topicId);
 
-        if (sessionList.isEmpty()) {
+        /*if (sessionList.isEmpty()) {
             throw new SessionServiceException(String.format("No sessions found for topic id %d", topicId));
-        }
+        }*/
 
         return sessionList;
     }
