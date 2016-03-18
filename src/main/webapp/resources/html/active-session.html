@@ -153,8 +153,10 @@
             </div>
             <div>
                 <div class="chat-input-area form-group">
-                    <input [(ngModel)]="currentMessage" class="form-control" id="chat-input-box" type="text">
-                    <input (keydown)="send()" (click)="send()" class="form-control chat-send-button" type="submit" value="Send">
+                    <form (ngSubmit)="send()">
+                        <input [(ngModel)]="currentMessage" class="form-control" id="chat-input-box" type="text">
+                        <input (click)="send()" class="form-control chat-send-button" type="submit" value="Send">
+                    </form>
                 </div>
             </div>
         </div>

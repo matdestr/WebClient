@@ -182,10 +182,10 @@ public class SessionGameServiceImpl implements SessionGameService {
             throw new SessionGameServiceException("Cannot choose any cards as there are no cards available for the session");
         
         if (cardDetailsToChoose.size() < session.getMinNumberOfCardsPerParticipant())
-            throw new SessionGameServiceException("Cannot choose less cards than the minimum required per participant");
+            throw new SessionGameServiceException("You are required to select a minimum of " + session.getMinNumberOfCardsPerParticipant() + " cards for this session.");
         
         if (cardDetailsToChoose.size() > session.getMaxNumberOfCardsPerParticipant())
-            throw new SessionGameServiceException("Cannot choose more cards than the maximum allowed per participant");
+            throw new SessionGameServiceException("You cannot select more than " + session.getMaxNumberOfCardsPerParticipant() + " cards for this session.");
         
         Optional<CardsChoice> optionalCardsChoice = session.getParticipantCardChoices().stream()
                 .filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();

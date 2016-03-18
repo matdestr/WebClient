@@ -122,6 +122,90 @@ public class CardServiceImpl implements CardService {
         }
     }
 
+
+    @Override
+    public List<CardDetails> addAllCardDetailsToTopic(Topic topic, List<CardDetails> allCardDetails) {
+        if (topic == null){
+            logger.warn("Received null instead of valid topic");
+            throw new CardServiceException("Topic cannot be null");
+        }
+
+        for (CardDetails allCardDetail : allCardDetails) {
+            this.validateCardDetails(allCardDetail);
+            this.validateCardDetailsExistence(topic, allCardDetail);
+
+            if (allCardDetail.getCategory() == null) {
+                this.addCardDetailsToCategory(topic.getCategory(), allCardDetail);
+            }
+
+            if (!allCardDetail.getCategory().equals(topic.getCategory())) {
+                logger.warn("Tried to add card details to topic, but topic was of different category");
+                throw new CardServiceException("Cannot add card details to topics of different categories");
+            }
+
+            if (allCardDetail.getTopics() == null)
+                allCardDetail.setTopics(new HashSet<>());
+
+            Set<Topic> allCardDetailTopics = allCardDetail.getTopics();
+            allCardDetailTopics.add(topic);
+        }
+
+        try {
+            allCardDetails = cardDetailsRepository.save(allCardDetails);
+
+            if (topic.getCategory().getCards() == null)
+                topic.getCategory().setCards(new HashSet<>());
+
+            if (topic.getCards() == null)
+                topic.setCards(new HashSet<>());
+
+            for (CardDetails allCardDetail : allCardDetails) {
+                topic.getCategory().getCards().add(allCardDetail);
+                topic.getCards().add(allCardDetail);
+
+                categoryRepository.save(topic.getCategory());
+                topicRepository.save(topic);
+            }
+        } catch (Exception e) {
+            logger.warn("Could not persist card details: " + e.getMessage());
+            throw new CardServiceException("Could not save card details");
+        }
+
+
+        return allCardDetails;
+    }
+
+    @Override
+    public List<CardDetails> addAllCardDetailsToCategory(Category category, List<CardDetails> allCardDetails) {
+        if (category == null) {
+            logger.warn("Received null instead of valid category");
+            throw new CardServiceException("Category cannot be null");
+        }
+
+        allCardDetails.stream().forEach(c -> {
+            c.setCategory(category);
+            this.validateCardDetails(c);
+            this.validateCardDetailsExistence(category, c);
+        });
+
+        try {
+            allCardDetails = cardDetailsRepository.save(allCardDetails);
+            if (category.getCards() == null)
+                category.setCards(new HashSet<>());
+
+            allCardDetails.stream().forEach(c -> {
+                category.getCards().add(c);
+            });
+
+            categoryRepository.save(category);
+        } catch (Exception e){
+            logger.warn("Could not persist card details: " + e.getMessage());
+            throw new CardServiceException("Could not save card details");
+        }
+
+        return allCardDetails;
+    }
+
     @Override
     public Set<CardDetails> getCardDetailsOfTopic(int topicId) {
         return cardDetailsRepository.findCardDetailsByTopicId(topicId);
@@ -158,6 +242,7 @@ public class CardServiceImpl implements CardService {
         }
         return updatedComment;
     }
+
 
 
     private void validateCardDetails(CardDetails cardDetails) {

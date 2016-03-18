@@ -65,6 +65,6 @@ public class FacebookController {
         user.setSurname(profile.getLastName());
         user.setEmail(profile.getEmail());
 
-        response.sendRedirect("http://localhost:8080/kandoe/#/?firstname=" + user.getName() + "&lastname=" + user.getSurname() + "&email=" + user.getEmail());
+        response.sendRedirect("http://localhost:8080/kandoe/#/");
     }
 }

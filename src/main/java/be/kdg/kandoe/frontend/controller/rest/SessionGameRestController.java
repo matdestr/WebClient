@@ -122,6 +122,22 @@ public class SessionGameRestController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    //Todo reset status
+    @RequestMapping(value = "/{sessionId}/decline", method= RequestMethod.POST)
+    public ResponseEntity declineSession(@AuthenticationPrincipal User user,
+                                         @PathVariable("sessionId") int sessionId){
+        Session session = sessionService.getSessionById(sessionId);
+
+        checkUserIsParticipant(user, session);
+
+        sessionGameService.setUserLeft(session, user);
+
+        if (session.getSessionStatus() != SessionStatus.USERS_JOINING)
+            this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{sessionId}/all-cards", method = RequestMethod.GET)
     public ResponseEntity<List<CardDetailsResource>> getCardDetailsOfSession(@AuthenticationPrincipal User user,
                                                                              @PathVariable("sessionId") int sessionId) {
@@ -139,6 +155,30 @@ public class SessionGameRestController {
         List<CardDetailsResource> resources = mapperFacade.mapAsList(sessionCardDetails, CardDetailsResource.class);
 
         return new ResponseEntity<List<CardDetailsResource>>(resources, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{sessionId}/all-cards/addall")
+    public ResponseEntity addCardsToSession(@AuthenticationPrincipal User user,
+                                            @PathVariable("sessionId") int sessionId,
+                                            @Valid @RequestBody List<CreateCardDetailsResource> resources) {
+        Session session = sessionService.getSessionById(sessionId);
+        checkUserIsParticipant(user, session);
+
+        if (!session.isParticipantsCanAddCards())
+            throw new CanDoControllerRuntimeException("Participants are not allowed to add cards for this session", HttpStatus.FORBIDDEN);
+
+        if (session.getSessionStatus() != SessionStatus.ADDING_CARDS)
+            throw new CanDoControllerRuntimeException("The session is not in the 'adding cards' mode");
+
+        List<CardDetails> allCardDetails = mapperFacade.mapAsList(resources, CardDetails.class);
+        allCardDetails.stream().forEach(c -> c.setCreator(user));
+
+        if (session.getTopic() != null)
+            cardService.addAllCardDetailsToTopic(session.getTopic(), allCardDetails);
+        else
+            cardService.addAllCardDetailsToCategory(session.getCategory(), allCardDetails);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{sessionId}/all-cards", method = RequestMethod.POST)

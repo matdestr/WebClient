@@ -1,5 +1,5 @@
 import {Component, OnInit} from "angular2/core";
-import {NgIf, NgFor, NgSwitch, NgSwitchWhen} from "angular2/common";
+import {NgIf, NgFor, NgSwitch, NgSwitchWhen, NgClass} from "angular2/common";
 import {RouteParams} from "angular2/router";
 import {Response} from "angular2/http";
 import {getUsername} from "../../libraries/angular2-jwt";
@@ -19,14 +19,16 @@ import {ErrorDialogComponent} from "../widget/error-dialog.component";
 @Component({
     selector: 'profile',
     templateUrl: 'html/userprofile-edit.html',
-    directives: [ToolbarComponent, ErrorDialogComponent]
+    directives: [ToolbarComponent, ErrorDialogComponent, NgClass]
 })
 
 export class UserProfileEditComponent implements OnInit{
     private errorMessages:string[] = [];
     private fileChanged:boolean = false;
     private file:File = null;
+    private updatingClass:string = "hide";
     public user:User = User.createEmptyUser();
+    public imageUrl:string = "";
     public updateModel:UpdateUserModel = new UpdateUserModel();
 
     public constructor(
@@ -49,6 +51,8 @@ export class UserProfileEditComponent implements OnInit{
         this._userService.getUser(username).subscribe((user:User) => {
             this.user = this.user.deserialize(user);
 
+            this.imageUrl = user.profilePictureUrl;
+
             this.updateModel.name = this.user.name;
             this.updateModel.surname = this.user.surname;
             this.updateModel.email = this.user.email;
@@ -59,25 +63,32 @@ export class UserProfileEditComponent implements OnInit{
     public saveChanges():void {
         this.onError(null); //Reset errors
 
-        if (this.updateModel.verifyPassword != "")
-            if (this.fileChanged){
+        if (this.updateModel.verifyPassword != "") {
+            this.updatingClass = "show";
+            var fileUploadFailed = false;
+            if (this.fileChanged) {
                 var request = this._userService.uploadPhoto(this.user.userId, this.file);
                 request.onreadystatechange = (event) => {
                     var target = event.target || event.srcElement;
 
                     //Ignore the errors on status and readyState, it just works.
-                    if (target.status == 200){
+                    if (target.status == 200) {
                         if (target.readyState == 4)
                             this.updateUser();
                     } else {
-                        var obj = JSON.parse(target.responseText);
-                        this.onError(obj.message);
+                        if (!fileUploadFailed) {
+                            this.updatingClass = "hide";
+                            fileUploadFailed = true;
+                            //target.response is empty?
+                            var message = this.messageToJson("Image is too large (max. 500kb).");
+                            this.onError(message);
+                        }
                     }
-                }
-            } else {
+                };
+            } else
                 this.updateUser();
-            }
-        else {
+        } else {
+            this.updatingClass = "hide";
             var message = this.messageToJson("Fill in your password.");
             this.onError(message);
         }
@@ -90,6 +101,7 @@ export class UserProfileEditComponent implements OnInit{
                     console.log(data);
                 },
             (error) => {
+                this.updatingClass = "hide";
                 var obj = JSON.parse(error.text());
 
                 if (obj.fieldErrors){
@@ -131,7 +143,14 @@ export class UserProfileEditComponent implements OnInit{
     }
 
     public onFileChanged(event):void {
+        var self:any = this;
+
         this.file = event.srcElement.files[0];
+        var reader:FileReader = new FileReader();
+        reader.readAsDataURL(this.file);
+        reader.onload = function() {
+            self.imageUrl = reader.result;
+        };
         this.fileChanged = true;
     }
 

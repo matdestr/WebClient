@@ -6280,7 +6280,7 @@ form button[type=submit]:disabled {
 #userprofile-picture {
   max-height: 100%;
   max-width: 100%;
-  width: 200px;
+  width: 100%;
   height: 200px; }
 
 h2 {
@@ -6309,6 +6309,10 @@ h2 {
   .profile-button span {
     margin-right: 1em; }
 
+.alert {
+  margin-top: 20px;
+  margin-bottom: 0; }
+
 .organizations-item {
   padding-left: 1em;
   padding-right: 1em; }
@@ -6322,6 +6326,12 @@ table.organizations-item {
 .ptop {
   margin-top: 20px;
   margin-bottom: 10px; }
+  @media only screen and (min-width: 1024px) {
+    .ptop {
+      margin-top: 50px; } }
+
+.pbot {
+  margin-bottom: 20px; }
 
 .profile-edit-name {
   margin-top: 20px;
@@ -6346,6 +6356,12 @@ div.profile-edit-name {
 
 .profile-organization-item {
   margin-right: 1em; }
+
+.show {
+  display: block; }
+
+.hide {
+  display: none; }
 
 span.primary {
   color: #D32F2F; }
@@ -6695,7 +6711,7 @@ form.invitation-accept-form {
 .chat-send-button {
   width: 40% !important;
   float: right;
-  margin-top: 1em; }
+  margin-top: 0 !important; }
 
 .chatmessage {
   padding: 0.5em; }
