@@ -92,9 +92,7 @@ public class SessionServiceImpl implements SessionService {
 
         if (session.getAmountOfCircles() > Session.MAX_CIRCLE_AMOUNT)
             session.setAmountOfCircles(Session.MAX_CIRCLE_AMOUNT);
-
-
-        //TODO: Check fixen! @matdestr
+        
         if (session instanceof SynchronousSession) {
             if (((SynchronousSession) session).getStartDateTime() != null) {
 

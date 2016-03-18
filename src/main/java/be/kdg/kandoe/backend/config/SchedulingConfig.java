@@ -13,6 +13,7 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 @Configuration
 @EnableAsync
@@ -27,7 +28,8 @@ public class SchedulingConfig implements AsyncConfigurer {
 
     @Override
     public Executor getAsyncExecutor() {
-        return new SimpleAsyncTaskExecutor();
+        //return new SimpleAsyncTaskExecutor();
+        return new ScheduledThreadPoolExecutor(8);
     }
 
     @Override
