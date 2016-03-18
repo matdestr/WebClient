@@ -80,7 +80,6 @@ public class OrganizationServiceImpl implements OrganizationService {
         if (username == null || username.isEmpty())
             throw new OrganizationServiceException("username cannot be null or empty");
 
-
         try {
             return organizationRepository.findOrganizationsByOrganizersUsernameOrOwnerUsername(username, username);
         } catch (Exception e) {
@@ -92,6 +91,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     public void updateOrganization(Organization organization) throws OrganizationServiceException {
         if (organization == null)
             throw new OrganizationServiceException("Organization cannot be null");
+        
         try {
             organizationRepository.save(organization);
         } catch (Exception e) {

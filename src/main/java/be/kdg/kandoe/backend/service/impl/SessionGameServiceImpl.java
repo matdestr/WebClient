@@ -58,20 +58,6 @@ public class SessionGameServiceImpl implements SessionGameService {
         sessionService.updateSession(session);
     }
 
-    /*@Override
-    public void setOpenForJoining(Session session) {
-        if (session.getSessionStatus() != SessionStatus.CREATED)
-            throw new SessionGameServiceException("Cannot open session for joining, session must be in status CREATED");
-
-        session.setSessionStatus(SessionStatus.USERS_JOINING);
-        
-        try {
-            sessionRepository.save(session);
-        } catch (Exception e) {
-            throw new SessionGameServiceException("Could not update session status");
-        }
-    }*/
-
     @Override
     public void setUserJoined(Session session, User user) {
         if (session.getParticipantInfo().size() <= 1)
@@ -113,8 +99,7 @@ public class SessionGameServiceImpl implements SessionGameService {
         firstMatchingParticipantInfo.setJoined(false);
         session = sessionService.updateSession(session);
     }
-
-    //@Override
+    
     private void confirmUsersJoined(Session session) {
         if (session.getSessionStatus() != SessionStatus.USERS_JOINING) {
             if (session.getSessionStatus() == SessionStatus.CREATED)
@@ -179,42 +164,6 @@ public class SessionGameServiceImpl implements SessionGameService {
             throw new SessionGameServiceException("Session not in adding cards mode");
         }
     }
-
-    /*@Override
-    public void chooseCards(Session session, User user, CardDetails cardDetails) {
-        if (session.getSessionStatus() != SessionStatus.CHOOSING_CARDS) {
-            throw new SessionGameServiceException("Session not in choosing card modus");
-        }
-        if (!isUserInSession(session, user)) {
-            throw new SessionGameServiceException("User is not in session");
-        }
-        Set<CardDetails> availableCards = new HashSet<>();
-        if (session.getTopic() != null) {
-            availableCards = session.getTopic().getCards();
-        } else {
-            availableCards = session.getCategory().getCards();
-        }
-        if (!availableCards.stream().anyMatch(c -> c.getCardDetailsId() == cardDetails.getCardDetailsId())) {
-            throw new SessionGameServiceException("Card doesn't exist in topic/category");
-        }
-
-        Optional<CardsChoice> cardsChoiceOptional = session.getParticipantCardChoices().stream().filter(p -> p.getParticipant().getUserId() == user.getUserId()).findFirst();
-        CardsChoice cardsChoice;
-        if (cardsChoiceOptional.isPresent()) {
-            cardsChoice = cardsChoiceOptional.get();
-        } else {
-            throw new SessionGameServiceException("User has no CardChoice. This shouldn't happen");
-        }
-
-        if (session.getMaxNumberOfCardsPerParticipant() < cardsChoice.getChosenCards().size()) {
-            throw new SessionGameServiceException(String.format("User has exceeded the max threshold of cards (%d)", session.getMaxNumberOfCardsPerParticipant()));
-        }
-
-        if (!cardsChoice.getChosenCards().stream().anyMatch(c -> c.getCardDetailsId() == cardDetails.getCardDetailsId())) {
-            cardsChoice.getChosenCards().add(cardDetails);
-            sessionService.updateSession(session);
-        }
-    }*/
 
     @Override
     public void chooseCards(Session session, User user, Set<CardDetails> cardDetailsToChoose) {

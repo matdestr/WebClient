@@ -84,9 +84,11 @@ public class CategoryServiceImpl implements CategoryService {
     public void updateCategory(Category category) throws CategoryServiceException {
         if (category == null)
             throw new CategoryServiceException("Category cannot be null");
+        
         try {
             repository.save(category);
         } catch (Exception e) {
+            logger.warn("Could not update category: " + e.getMessage());
             throw new CategoryServiceException("Couldn't save category", e);
         }
     }
