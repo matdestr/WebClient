@@ -95,7 +95,7 @@ public class EmailServiceImpl implements EmailService {
             throw new EmailServiceException("Email can't be empty");
         }
 
-        String invitationUrl = baseUrl + String.format("sessions/%s/join", session.getSessionId());
+        String invitationUrl = baseUrl + String.format("session/%d", session.getSessionId());
 
         Email email = new Email();
 
@@ -118,7 +118,7 @@ public class EmailServiceImpl implements EmailService {
         if (emailString == null || emailString.isEmpty())
             throw new EmailServiceException("Email can't be empty");;
 
-        String invitationUrl = baseUrl + String.format("sessions/%s/join", session.getSessionId());
+        String invitationUrl = baseUrl + String.format("session/%d", session.getSessionId());
 
         Email email = new Email();
 

@@ -1,10 +1,14 @@
+$card-border-thickness: 3px;
+$card-border-radius: 8px;
+
 .card{
   background-color: $background-color;
   box-shadow: 0 0 1.25em #333;
   border: solid 1px ;
   @include border-radius(2px);
+  /*border: solid black 3px;
+  @include border-radius(10px);*/
 }
-
 
 .card-clickable{
   cursor: pointer;
@@ -24,6 +28,9 @@
   margin-right:2em;
   width: $card-width;
 
+  /*border: solid black $card-border-thickness;
+  @include border-radius($card-border-radius);*/
+
   @media screen and (min-width: $breakpoint-tablet) {
     width: $card-width-tablet;
     margin-right:2em;
@@ -39,6 +46,8 @@
     overflow: hidden;
     width: 100%;
     height: $card-img-height;
+    /*border-top-left-radius: $card-border-radius;
+    border-top-right-radius: $card-border-radius;*/
 
     @media screen and (min-width: $breakpoint-tablet) {
       height: $card-img-height-tablet;

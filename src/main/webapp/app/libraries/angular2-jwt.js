@@ -1,6 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(exports_1, context_1) {
-    "use strict";
-    var __moduleName = context_1 && context_1.id;
+System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -84,7 +82,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                     };
                 };
                 return AuthConfig;
-            }());
+            })();
             exports_1("AuthConfig", AuthConfig);
             /**
              * Allows for explicit authenticated HTTP requests.
@@ -156,7 +154,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                     __metadata('design:paramtypes', [AuthConfig, http_1.Http])
                 ], AuthHttp);
                 return AuthHttp;
-            }());
+            })();
             exports_1("AuthHttp", AuthHttp);
             /**
              * Helper class to decode and find JWT expiration.
@@ -219,7 +217,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                     return !(date.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)));
                 };
                 return JwtHelper;
-            }());
+            })();
             exports_1("JwtHelper", JwtHelper);
         }
     }
