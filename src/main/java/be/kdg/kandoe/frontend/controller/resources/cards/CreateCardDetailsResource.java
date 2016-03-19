@@ -5,12 +5,14 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
 
+import javax.annotation.Nullable;
+
 @Data
 @NoArgsConstructor
 public class CreateCardDetailsResource {
     @NotEmpty(message = "{carddetails.wrong.text}")
     private String text;
-    
-    @URL(regexp = ".*\\.(jpg|jpeg|png)$", message = "{carddetails.wrong.imageurl}")
+
+    @URL(regexp = "^$|.*\\.(jpg|jpeg|png)$", message = "{carddetails.wrong.imageurl}")
     private String imageUrl;
 }

@@ -40,6 +40,7 @@ export class OrganizationDetailComponent {
         this._organizationService.getOrganization(organizationId).subscribe(
             data => {
                 this.organization = data.json();
+                console.log(data.json());
                 this.members = this.organization.members;
                 this.getCategories();
             });
@@ -70,7 +71,7 @@ export class OrganizationDetailComponent {
                 console.log(error);
             },
             () => {
-                console.log("XD");
+                console.log("done");
             }
         );
     }

@@ -1,9 +1,6 @@
 package be.kdg.kandoe.backend.service.impl;
 
-import be.kdg.kandoe.backend.model.sessions.ParticipantInfo;
-import be.kdg.kandoe.backend.model.sessions.Session;
-import be.kdg.kandoe.backend.model.sessions.SessionStatus;
-import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
+import be.kdg.kandoe.backend.model.sessions.*;
 import be.kdg.kandoe.backend.persistence.api.SessionRepository;
 import be.kdg.kandoe.backend.service.api.SessionService;
 import be.kdg.kandoe.backend.service.exceptions.SessionServiceException;
@@ -99,6 +96,13 @@ public class SessionServiceImpl implements SessionService {
                 if (((SynchronousSession) session).getStartDateTime().isBefore(LocalDateTime.now())) {
                     throw new SessionServiceException("Cannot add a synchronous session with a start date before today");
                 }
+            }
+        }
+
+        if (session instanceof AsynchronousSession){
+            AsynchronousSession asynchronousSession = (AsynchronousSession) session;
+            if (asynchronousSession.getSecondsBetweenMoves() <= 0){
+                throw new SessionServiceException("Cannot add a asynchronous session with time between moves equals or less than zero");
             }
         }
 

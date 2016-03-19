@@ -1,9 +1,5 @@
-/**
- * Interface to manage invitation emails
- */
 package be.kdg.kandoe.backend.service.api;
 
-import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.users.User;
@@ -35,10 +31,18 @@ public interface EmailService {
     void inviteUsersToOrganization(Organization organization, User requester, List<User> users) throws EmailServiceException;
 
     /**
-     * Send an inivitation to an existing user to join a session
+     * Send an invitation to an existing user to join a session
      * @param session = The session they want to join
      * @param organizer = The person who owns the session
      * @param user = The user who has to join the session
      */
     void sendSessionInvitationToUser(Session session, User organizer, User user);
+
+    /**
+     * Send an invitation to an unexisting user to register and join a session
+     * @param session = The session they want to join
+     * @param organizer = The person who owns the session
+     * @param email = The email of the invited participant
+     */
+    void sendSessionInvitationToUnexistingUser(Session session, User organizer, String email);
 }

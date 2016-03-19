@@ -1245,7 +1245,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
 
         User participant1 = new User(participant1Username, participant1Password);
-        participant1.setEmail("test@mail.com");
+        participant1.setEmail("test@localhost");
         participant1 = userService.addUser(participant1);
 
         String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);

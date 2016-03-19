@@ -6,6 +6,7 @@ import be.kdg.kandoe.backend.service.api.OAuthClientDetailsService;
 import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.config.RootContextConfig;
 import be.kdg.kandoe.frontend.config.WebContextConfig;
+import be.kdg.kandoe.frontend.controller.resources.organizations.CreateOrganizationResource;
 import be.kdg.kandoe.frontend.controller.resources.organizations.OrganizationResource;
 import integrationtest.TokenProvider;
 import org.json.JSONObject;
@@ -73,7 +74,6 @@ public class ITTestOrganizationRestController {
 
         this.clientDetails = oAuthClientDetailsService.addClientsDetails(newClientDetails);
 
-        //MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .addFilter(springSecurityFilterChain)
@@ -85,7 +85,7 @@ public class ITTestOrganizationRestController {
 
     @Test
     public void testCreateNewOrganizationAndGetCreatedOrganization() throws Exception {
-        OrganizationResource organizationResource = new OrganizationResource();
+        CreateOrganizationResource organizationResource = new CreateOrganizationResource();
         organizationResource.setName("Karel de Grote");
 
         JSONObject jsonObject = new JSONObject(organizationResource);
@@ -132,7 +132,7 @@ public class ITTestOrganizationRestController {
 
     @Test
     public void testCreateOrganizationWithEmptyName() throws Exception {
-        OrganizationResource organizationResource = new OrganizationResource();
+        CreateOrganizationResource organizationResource = new CreateOrganizationResource();
         organizationResource.setName("");
 
         JSONObject jsonObject = new JSONObject(organizationResource);
@@ -160,30 +160,4 @@ public class ITTestOrganizationRestController {
                         .header("Authorization", authorizationHeader)
         )/*.andDo(print())*/.andExpect(status().isOk());
     }
-    
-    /*@Test
-    public void assignOrganizerToUser() throws Exception {
-        OrganizationResource organizationResource = new OrganizationResource();
-        organizationResource.setName("Test organization");
-
-        JSONObject jsonObject = new JSONObject(organizationResource);
-
-        String response = mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/organizations")
-                        .header("Authorization", authorizationHeader)
-                        .content(jsonObject.toString())
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isCreated())
-                .andReturn().getResponse().getContentAsString();
-        
-        JSONObject jsonResponse = new JSONObject(response);
-        
-        Assert.assertEquals(0, jsonResponse.getJSONObject("organizers").length());
-        
-        String response = mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/organization/owners")
-                .header("Authorization", authorizationHeader)
-                
-        )
-    }*/
 }

@@ -48,9 +48,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
-                                    (click)="onEditClick(organization.name)">Save
-                            </button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="onEditClick(organization.name)">Save</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -74,6 +72,8 @@
                     </tr>
                 </table>
             </ul>
+
+            <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red" data-toggle="modal" data-target="#myMemberModal"><i class="material-icons">add</i></a>
 
             <div id="myMemberModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -123,9 +123,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="addUsers()">
-                                Save
-                            </button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="addUsers()">Save</button>
 
                         </div>
                     </div>
@@ -142,7 +140,7 @@
 
             <div class="organization-arrow">
                 <button class="paginate left" (click)="previousCatPage()" [style.display]="myLeftCatDisplay">
-                    <i></i><i></i></button>
+                    </button>
             </div>
             <div *ngFor="#category of categoriesSubSet">
                 <div class="black-block" (click)="toCategory(category.categoryId)">

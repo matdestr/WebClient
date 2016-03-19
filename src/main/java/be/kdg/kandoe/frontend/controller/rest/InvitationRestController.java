@@ -2,7 +2,7 @@
 package be.kdg.kandoe.frontend.controller.rest;
 
 import be.kdg.kandoe.backend.model.organizations.Organization;
-import be.kdg.kandoe.backend.model.users.Invitation;
+import be.kdg.kandoe.backend.model.invitations.OrganizationInvitation;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.InvitationService;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
@@ -34,10 +34,10 @@ public class InvitationRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity acceptInvite(@AuthenticationPrincipal User user, @RequestParam("acceptId") String acceptId, @RequestParam("organizationId") int organizationId){
-        Invitation invitation = invitationService.getInvitationByAcceptId(acceptId);
+        OrganizationInvitation invitation = invitationService.getInvitationByAcceptId(acceptId);
 
         if (invitation == null) {
-            throw new CanDoControllerRuntimeException("Invitation does not exist.");
+            throw new CanDoControllerRuntimeException("OrganizationInvitation does not exist.");
         }
 
         int invitationOrganizationId = invitation.getOrganization().getOrganizationId();
@@ -75,10 +75,10 @@ public class InvitationRestController {
 
     @RequestMapping(value = "/decline", method = RequestMethod.GET)
     public ResponseEntity declineInvite(@AuthenticationPrincipal User user, @RequestParam("acceptId") String acceptId, @RequestParam("organizationId") int organizationId){
-        Invitation invitation = invitationService.getInvitationByAcceptId(acceptId);
+        OrganizationInvitation invitation = invitationService.getInvitationByAcceptId(acceptId);
 
         if (invitation == null){
-            throw new CanDoControllerRuntimeException("Invitation does not exist.");
+            throw new CanDoControllerRuntimeException("OrganizationInvitation does not exist.");
         }
 
         int invitationOrganizationId = invitation.getOrganization().getOrganizationId();
@@ -103,7 +103,7 @@ public class InvitationRestController {
             throw new CanDoControllerRuntimeException("Logged in user and the invited user don't match.", HttpStatus.UNAUTHORIZED);
         }
 
-        List<Invitation> invitations = invitationService.getInvitationsByEmail(email);
+        List<OrganizationInvitation> invitations = invitationService.getInvitationsByEmail(email);
         return mapperFacade.mapAsList(invitations, InvitationResource.class);
     }
 }

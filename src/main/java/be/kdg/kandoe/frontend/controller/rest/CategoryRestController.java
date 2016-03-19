@@ -117,7 +117,6 @@ public class CategoryRestController {
                 sessionResources.add(resource);
             }
         }
-        //return new ResponseEntity<>(mapper.mapAsList(sessions, SessionResource.class), HttpStatus.OK);
         return new ResponseEntity<>(sessionResources, HttpStatus.OK);
     }
 

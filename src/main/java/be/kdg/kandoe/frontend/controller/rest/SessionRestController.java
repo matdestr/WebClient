@@ -71,7 +71,9 @@ public class SessionRestController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createSession(@AuthenticationPrincipal User user,
                                         @Valid @RequestBody CreateSessionResource createSessionResource) {
-        //TODO check if user is part of any organisation
+        if (organizationService.getOrganizationsOfMember(user.getUsername()).isEmpty()){
+            return new ResponseEntity("User is not owner or member of any organization", HttpStatus.BAD_REQUEST);
+        }
         Category category = categoryService.getCategoryById(createSessionResource.getCategoryId());
         Topic topic = null;
 
@@ -109,7 +111,6 @@ public class SessionRestController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<SessionListItemResource>> getSessionsUser(@AuthenticationPrincipal User user){
         List<Session> sessions = sessionService.getSessionsUser(user.getUserId());
-
         return new ResponseEntity<>(mapper.mapAsList(sessions, SessionListItemResource.class), HttpStatus.OK);
     }
 }

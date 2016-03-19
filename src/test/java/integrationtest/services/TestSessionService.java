@@ -195,32 +195,12 @@ public class TestSessionService {
 
     @Test
     public void testCreateAsynchronousSessionSession(){
-        Session session = new AsynchronousSession();
+        AsynchronousSession session = new AsynchronousSession();
         session.setOrganizer(user);
         session.setCategory(category);
+        session.setSecondsBetweenMoves(15);
         Session savedSession = sessionService.addSession(session);
         assertEquals(session.getSessionId(), savedSession.getSessionId());
-    }
-
-    @Test
-    public void testFetchSessionsOfDifferentTypes(){
-        Session asynchronousSession = new AsynchronousSession();
-        Session synchronousSession = new SynchronousSession();
-
-        asynchronousSession.setOrganizer(user);
-        asynchronousSession.setCategory(category);
-
-        synchronousSession.setOrganizer(user);
-        synchronousSession.setCategory(category);
-
-        Session savedAsynchronousSession = sessionService.addSession(asynchronousSession);
-        Session savedSynchronousSession = sessionService.addSession(synchronousSession);
-
-        Session fetchedAsynchronousSession = sessionService.getSessionById(savedAsynchronousSession.getSessionId());
-        Session fetchedSynchronousSession = sessionService.getSessionById(savedSynchronousSession.getSessionId());
-
-        assertThat(fetchedAsynchronousSession, instanceOf(AsynchronousSession.class));
-        assertThat(fetchedSynchronousSession, instanceOf(SynchronousSession.class));
     }
 
     @Test

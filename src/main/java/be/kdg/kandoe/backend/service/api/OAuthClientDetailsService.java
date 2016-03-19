@@ -4,7 +4,6 @@
 package be.kdg.kandoe.backend.service.api;
 
 import be.kdg.kandoe.backend.model.oauth.OAuthClientDetails;
-import be.kdg.kandoe.backend.model.users.Invitation;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 
 /**

@@ -148,7 +148,7 @@ public class OrganizationRestController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/edit/{organizationId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "{organizationId}", method = RequestMethod.PUT)
     public ResponseEntity setOrganizationName(@PathVariable("organizationId") int organizationId, @RequestParam(value="organizationName")String organizationName){
         Organization organization = organizationService.getOrganizationById(organizationId);
         organization.setName(organizationName);

@@ -1,25 +1,22 @@
 /**
  * An invitation for a user to join an organization
  */
-package be.kdg.kandoe.backend.model.users;
+package be.kdg.kandoe.backend.model.invitations;
 
 import be.kdg.kandoe.backend.model.organizations.Organization;
+import be.kdg.kandoe.backend.model.users.User;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.UUID;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class Invitation implements Serializable {
+public class OrganizationInvitation implements Serializable {
     @Id
     @GeneratedValue
     @Setter(value = AccessLevel.NONE)

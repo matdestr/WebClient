@@ -1,7 +1,8 @@
 package be.kdg.kandoe.backend.service.impl;
 
+import be.kdg.kandoe.backend.model.invitations.OrganizationInvitation;
 import be.kdg.kandoe.backend.model.organizations.Organization;
-import be.kdg.kandoe.backend.model.users.Invitation;
+import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.persistence.api.InvitationRepository;
 import be.kdg.kandoe.backend.service.api.InvitationService;
@@ -20,7 +21,7 @@ public class InvitationServiceImpl implements InvitationService {
     private InvitationRepository invitationRepository;
 
     @Override
-    public Invitation generateInvitation(User user, Organization organization) {
+    public OrganizationInvitation generateInvitation(User user, Organization organization) {
         if (user == null)
             throw new InvitationServiceException("user cannot be null");
 
@@ -29,7 +30,7 @@ public class InvitationServiceImpl implements InvitationService {
 
         String uuid = UUID.randomUUID().toString();
 
-        Invitation invitation = new Invitation();
+        OrganizationInvitation invitation = new OrganizationInvitation();
         invitation.setOrganization(organization);
         invitation.setInvitedUser(user);
         invitation.setAcceptId(uuid);
@@ -39,7 +40,7 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public Invitation generateInvitationForUnexistingUser(String email, Organization organization) {
+    public OrganizationInvitation generateInvitationForUnexistingUser(String email, Organization organization) {
         if (email == null)
             throw new InvitationServiceException("email cannot be null");
 
@@ -48,7 +49,7 @@ public class InvitationServiceImpl implements InvitationService {
 
         String uuid = UUID.randomUUID().toString();
 
-        Invitation invitation = new Invitation();
+        OrganizationInvitation invitation = new OrganizationInvitation();
         invitation.setAcceptId(uuid);
         invitation.setOrganization(organization);
         invitation.setEmail(email);
@@ -58,7 +59,12 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public Invitation saveInvitation(Invitation invitation) {
+    public OrganizationInvitation generateInvitationForUnexistingUser(String email, Session session) {
+        return null;
+    }
+
+    @Override
+    public OrganizationInvitation saveInvitation(OrganizationInvitation invitation) {
         try {
             return invitationRepository.save(invitation);
         } catch (Exception e){
@@ -67,12 +73,12 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public List<Invitation> getInvitationsByUserId(int userId) {
+    public List<OrganizationInvitation> getInvitationsByUserId(int userId) {
         return invitationRepository.findInvitationsByInvitedUserUserId(userId);
     }
 
     @Override
-    public Invitation getInvitationByAcceptId(String acceptId) {
+    public OrganizationInvitation getInvitationByAcceptId(String acceptId) {
         if (acceptId == null){
             throw new InvitationServiceException("acceptId cannot be null");
         }
@@ -81,12 +87,12 @@ public class InvitationServiceImpl implements InvitationService {
     }
 
     @Override
-    public void invalidateInvitation(Invitation invitation) {
+    public void invalidateInvitation(OrganizationInvitation invitation) {
         invitationRepository.delete(invitation);
     }
 
     @Override
-    public List<Invitation> getInvitationsByEmail(String email) {
+    public List<OrganizationInvitation> getInvitationsByEmail(String email) {
         if (email == null)
             throw new InvitationServiceException("email cannot be null");
 
