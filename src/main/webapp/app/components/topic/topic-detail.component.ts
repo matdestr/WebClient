@@ -26,9 +26,7 @@ export class TopicDetailComponent implements OnInit {
     private cards:CardDetails[] = [];
     private sessions:Session[] = [];
     private sessionSubset:Session[]=[];
-    private currentCard:CardDetails;
-    private categoryCards:CardDetails[] = [];
-    private categoryCardsToAdd:CardDetails[] = [];
+    private currentCard:CardDetails = CardDetails.createEmptyCard();
     private counterSesBegin:number=0;
     private counterSesEnd:number=4;
     private myLeftSesDisplay:string="block";

@@ -85,7 +85,7 @@ h2{
 .tagBlock{
   background-color:$color-accent;
   color: white;
-  width:6em;
+  width:7.5em;
   height: 2em;
   display: inline-block;
   margin-right: 1em;
@@ -100,7 +100,7 @@ h2{
 }
 
 .tagContainer{
-  width: 50%;
+  width: 60%;
   margin-bottom: 2em;
   margin-left: 4em;
 }
@@ -112,6 +112,16 @@ h2{
   margin-left: 1em;
 }
 .marButtonLeft{
-  margin-left:4em;
-  margin-bottom: 1em;
+  display: inline-block
+}
+
+.marDetailLeftSubTitle{
+  margin-left: 1em;
+  display: inline-block;
+  width:5em;
+}
+
+.fabsContainer{
+  margin-bottom: 2.5em;
+  display: block;
 }

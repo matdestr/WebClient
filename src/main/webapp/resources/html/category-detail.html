@@ -56,30 +56,32 @@
 
             <br>
 
-            <h2 class="marDetailLeft">Topics</h2>
-
-
-                <div class="organization-arrow">
-                    <button class="paginate left" (click)="previousTopPage()" [style.display]="myLeftTopDisplay">
-                        <i></i><i></i></button>
-                </div>
-                <div *ngFor="#topic of topicSubSet">
-                    <div class="black-block" (click)="toTopic(topic.topicId)">
-                        <h3 class="text-center">{{topic.name}}</h3>
-                        <h6 class="text-center"><i class="glyphicon glyphicon-pencil"></i> {{topic.description}}</h6>
-                    </div>
-                </div>
-                <div class="organization-arrow">
-                    <button class="paginate right" style="float: right" (click)="nextTopPage()"
-                            [style.display]="myRightTopDisplay"><i></i><i></i></button>
-                </div>
-
-            <div style="margin-top:12em">
+            <div class="fabsContainer">
+                <h2 class="marDetailLeftSubTitle">Topics</h2>
                 <a class=" marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
                    (click)="toAddNewTopic(category.categoryId)"><i class="material-icons">add</i></a>
             </div>
 
-            <h2 class="marDetailLeft" style="margin-top: 5em">Cards</h2>
+            <div class="organization-arrow">
+                <button class="paginate left" (click)="previousTopPage()" [style.display]="myLeftTopDisplay">
+                    <i></i><i></i></button>
+            </div>
+            <div *ngFor="#topic of topicSubSet">
+                <div class="black-block" (click)="toTopic(topic.topicId)">
+                    <h3 class="text-center">{{topic.name}}</h3>
+                    <h6 class="text-center"><i class="glyphicon glyphicon-pencil"></i> {{topic.description}}</h6>
+                </div>
+            </div>
+            <div class="organization-arrow">
+                <button class="paginate right" style="float: right" (click)="nextTopPage()"
+                        [style.display]="myRightTopDisplay"><i></i><i></i></button>
+            </div>
+
+            <div class="fabsContainer" style="margin-top: 12em">
+                <h2 class="marDetailLeftSubTitle">Cards</h2>
+                <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
+                   (click)="toAddNewCard(category.categoryId)"><i class="material-icons">add</i></a>
+            </div>
 
             <ul style="margin-left: 3em">
                 <card-detail *ngFor="#card of cards" data-toggle="modal" data-target="#cardModal"
@@ -98,10 +100,11 @@
                 </div><!-- /.modal-dialog -->
             </div>
 
-            <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
-               (click)="toAddNewCard(category.categoryId)"><i class="material-icons">add</i></a>
-
-            <h2 class="marDetailLeft">Tags</h2>
+            <div class="fabsContainer">
+                <h2 class="marDetailLeftSubTitle">Tags</h2>
+                <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
+                   data-toggle="modal" data-target="#tagModal"><i class="material-icons">add</i></a>
+            </div>
 
             <div class="tagContainer">
                 <div *ngFor="#tag of tags" class="tagBlock">
@@ -109,9 +112,6 @@
                                               style="font-size: 12px;padding-right: 0.5em"></i>{{tag.name}}</p>
                 </div>
             </div>
-
-            <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
-               data-toggle="modal" data-target="#tagModal"><i class="material-icons">add</i></a>
 
             <div id="tagModal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -143,8 +143,11 @@
                 </div>
             </div>
 
-
-            <h2 class="marDetailLeft">Sessions</h2>
+            <div class="fabsContainer">
+                <h2 class="marDetailLeftSubTitle">Sessions</h2>
+                <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
+                   (click)="toAddNewSession(category.categoryId)"><i class="material-icons">add</i></a>
+            </div>
 
 
             <div class="organization-arrow" style="margin-top: -80px">
@@ -162,11 +165,6 @@
             <div class="organization-arrow" style="margin-top: -80px">
                 <button class="paginate right" style="float: right" (click)="nextSesPage()"
                         [style.display]="myRightSesDisplay"><i></i><i></i></button>
-            </div>
-
-            <div style="margin-top:12em">
-                <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
-                   (click)="toAddNewSession(category.categoryId)"><i class="material-icons">add</i></a>
             </div>
 
         </div>
