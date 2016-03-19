@@ -1,6 +1,7 @@
 package be.kdg.kandoe.frontend.config.security.interceptors;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,11 +60,19 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
 
                 params.put("exp", claims.getLong("exp"));
 
-                JSONArray authoritiesJsonArray = claims.getJSONArray("authorities");
+                /*JSONArray authoritiesJsonArray;
+                
+                try {
+                    authoritiesJsonArray = claims.getJSONArray("authorities");
+                } catch (JSONException e) {
+                    logger.warn("Received JSON web token without authorities");
+                    return false;
+                }
+                
                 List<String> authorities = new ArrayList<>();
                 authoritiesJsonArray.forEach(s -> authorities.add(s.toString()));
 
-                params.put("authorities", authorities);
+                params.put("authorities", authorities);*/
                 params.put("jti", claims.getString("jti"));
                 params.put("client_id", claims.getString("client_id"));
 
