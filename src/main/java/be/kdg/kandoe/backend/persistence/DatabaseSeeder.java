@@ -23,10 +23,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Fills the database with dummy data
- */
 
+/**
+ * Fills the database with seed data
+ * */
 @Component
 public class DatabaseSeeder {
     @Autowired
@@ -52,7 +52,7 @@ public class DatabaseSeeder {
 
     @Autowired
     private CardDetailsRepository cardDetailsRepository;
-    
+
     @Autowired
     private SessionRepository sessionRepository;
 
@@ -62,7 +62,7 @@ public class DatabaseSeeder {
         seedUsersCategoriesTopicsAndSessions();
         seedTags();
     }
-    
+
     private void seedOAuthClientDetails() {
         OAuthClientDetails clientDetails = new OAuthClientDetails("webapp");
 
@@ -86,10 +86,10 @@ public class DatabaseSeeder {
 
         clientDetailsRepository.save(clientDetailsAndroid);
     }
-    
+
     private void seedUsersCategoriesTopicsAndSessions() {
         val users = new ArrayList<User>();
-        
+
         User testUser = new User("user", passwordEncoder.encode("pass"));
         testUser.setName("Test");
         testUser.setSurname("User");
@@ -105,107 +105,98 @@ public class DatabaseSeeder {
         harold.setEmail("harold@haroldmail.pain");
         harold.setProfilePictureUrl("profilepictures/harold.jpg");
         harold.addRole(RoleType.ROLE_CLIENT);
-        
-        users.add(testUser);
-        users.add(harold);
-
-        User vincent = new User();
-        vincent.setUsername("Vincent");
-        vincent.setName("Vincent");
-        vincent.setSurname("Polfliet");
-        vincent.setEmail("vincent.polfliet@student.kdg.be");
-        vincent.setPassword(passwordEncoder.encode("vincent"));
-        vincent.setProfilePictureUrl("profilepictures/vincent.jpg");
-
-        User wannes = new User();
-        wannes.setUsername("Wannes");
-        wannes.setName("Wannes");
-        wannes.setSurname("Van Regenmortel");
-        wannes.setEmail("wannes.vanregenmortel@student.kdg.be");
-        wannes.setPassword(passwordEncoder.encode("wannes"));
-        wannes.setProfilePictureUrl("profilepictures/wannes.jpg");
 
         User mathisse = new User();
-        mathisse.setUsername("Mathisse");
+        mathisse.setUsername("mathisse");
+        mathisse.setPassword(passwordEncoder.encode("mathisse"));
         mathisse.setName("Mathisse");
         mathisse.setSurname("De Strooper");
-        mathisse.setEmail("mathisse.destrooper@student.kdg.be");
-        mathisse.setPassword(passwordEncoder.encode("mathisse"));
+        mathisse.setEmail("mathisse.destrooper@outlook.com");
         mathisse.setProfilePictureUrl("profilepictures/mathisse.jpg");
+        mathisse.addRole(RoleType.ROLE_CLIENT);
 
-        User jelle = new User();
-        jelle.setUsername("Jelle");
-        jelle.setName("Jelle");
-        jelle.setSurname("Spoelders");
-        jelle.setEmail("jelle.spoelders@student.kdg.be");
-        jelle.setPassword(passwordEncoder.encode("jelle"));
-        jelle.setProfilePictureUrl("profilepictures/jelle.jpg");
 
-        User thanee = new User();
-        thanee.setUsername("Thanee");
-        thanee.setName("Thanee");
-        thanee.setSurname("Stevens");
-        thanee.setEmail("thanee.stevens@student.kdg.be");
-        thanee.setPassword(passwordEncoder.encode("thanee"));
-        thanee.setProfilePictureUrl("profilepictures/thanee.jpg");
-
-        User arne = new User();
-        arne.setUsername("Arne");
-        arne.setName("Arne");
-        arne.setSurname("De Cock");
-        arne.setEmail("arne.decock.1@student.kdg.be");
-        arne.setPassword(passwordEncoder.encode("arne"));
-        arne.setProfilePictureUrl("profilepictures/arne.jpg");
-
-        users.add(vincent);
-        users.add(arne);
-        users.add(wannes);
-        users.add(jelle);
+        users.add(testUser);
+        users.add(harold);
         users.add(mathisse);
-        users.add(thanee);
 
         userRepository.save(users);
 
-        Organization organization = new Organization("Pain hiders", testUser);
+        Organization organization = new Organization("Karel De Grote", mathisse);
         organization.addOrganizer(harold);
         organization = organizationRepository.save(organization);
 
+        Organization organization1 = new Organization("Government",harold);
+        organization1.addOrganizer(mathisse);
+        organization1 = organizationRepository.save(organization1);
+
+
+        Category educationContent = new Category();
+        educationContent.setOrganization(organization);
+        educationContent.setName("Education content");
+        educationContent.setDescription("Which content needs to be in this education?");
+        educationContent = categoryRepository.save(educationContent);
+
+        Category communication = new Category();
+        communication.setOrganization(organization);
+        communication.setName("Communication");
+        communication.setDescription("Communication at Karel De Grote");
+        communication = categoryRepository.save(communication);
+
+        Category passport = new Category();
+        passport.setOrganization(organization1);
+        passport.setName("Passports, travel and living abroad");
+        passport.setDescription("Includes renewing passports and travel advice by country");
+        passport = categoryRepository.save(passport);
+
+        Category money = new Category();
+        money.setOrganization(organization1);
+        money.setName("Money and tax");
+        money.setDescription("Includes debt and Self Assessment");
+        money = categoryRepository.save(money);
+
+
+        Topic appliedIT = new Topic();
+        appliedIT.setCategory(educationContent);
+        appliedIT.setName("Applied Informatics");
+        appliedIT.setDescription("What do you think is important in the eduction of IT?");
+        appliedIT = topicRepository.save(appliedIT);
+
+        Topic tax = new Topic();
+        tax.setCategory(money);
+        tax.setName("Self Assessment");
+        tax.setDescription("What can we do to make the self assessment process easier?");
+        tax = topicRepository.save(tax);
+
+        Topic passportProcess = new Topic();
+        passportProcess.setCategory(passport);
+        passportProcess.setName("Apply for passport");
+        passportProcess.setDescription("What can be improved during the process of applying for a passport?");
+        passportProcess = topicRepository.save(tax);
+
+        Topic media = new Topic();
+        media.setCategory(communication);
+        media.setName("Media");
+        media.setDescription("Which type of media does KDG need to use to communicate?");
+        media = topicRepository.save(media);
+
+        seedCardDetailsKDG(educationContent, appliedIT, mathisse);
+        seedCardDetailsKDG(communication, media, mathisse);
+        seedCardDetailsGOV(money,tax,harold);
+        seedCardDetailsGOV(passport,passportProcess,harold);
+
         
-        Category category1 = new Category();
-        category1.setOrganization(organization);
-        category1.setName("Category 1");
-        category1.setDescription("Description of the first category");
-        //category1.setTags(tagRepository.findAll());
-        category1 = categoryRepository.save(category1);
-        
-        Topic topic1 = new Topic();
-        topic1.setCategory(category1);
-        topic1.setName("Topic 1");
-        topic1.setDescription("Description of the first topic");
-        topic1 = topicRepository.save(topic1);
-        
-        /*for (int i = 0; i < 10; i++) {
-            CardDetails cardDetails = new CardDetails();
-            cardDetails.setCategory(category1);
-            cardDetails.setCreator(testUser);
-            cardDetails.setText("Card " + (i + 1));
-            
-            cardDetailsRepository.save(cardDetails);
-        }*/
-        
-        topic1 = seedCardDetails(category1, topic1, testUser);
-        
-        Session session = new SynchronousSession();
+        /*Session session = new SynchronousSession();
         session.setOrganizer(testUser);
-        session.setCategory(category1);
-        session.setTopic(topic1);
+        session.setCategory(communication);
+        session.setTopic(marketing);
         session.setAmountOfCircles(5);
         session = sessionRepository.save(session);
         
         // First session in progress
         Session sessionInProgress = new SynchronousSession();
         sessionInProgress.setOrganizer(testUser);
-        sessionInProgress.setCategory(category1);
+        sessionInProgress.setCategory(communication);
         sessionInProgress.setAmountOfCircles(5);
         sessionInProgress.setCardCommentsAllowed(false);
         sessionInProgress.setParticipantsCanAddCards(false);
@@ -216,7 +207,7 @@ public class DatabaseSeeder {
 
         sessionInProgress.getParticipantInfo().add(participantInfoOrganizer);
         
-        Iterator<CardDetails> category1CardIterator = category1.getCards().iterator();
+        Iterator<CardDetails> category1CardIterator = communication.getCards().iterator();
         CardDetails cardsChoice1CardDetails1 = category1CardIterator.next();
         CardDetails cardsChoice1CardDetails2 = category1CardIterator.next();
         
@@ -231,12 +222,12 @@ public class DatabaseSeeder {
         
         sessionInProgress.getParticipantCardChoices().add(cardsChoice1);
         
-        sessionInProgress = sessionRepository.save(sessionInProgress);
+        sessionInProgress = sessionRepository.save(sessionInProgress);*/
         
-        // Second session in progress
+       /* // Second session in progress
         Session sessionInProgress2 = new SynchronousSession();
         sessionInProgress2.setOrganizer(testUser);
-        sessionInProgress2.setCategory(category1);
+        sessionInProgress2.setCategory(communication);
         sessionInProgress2.setAmountOfCircles(4);
         sessionInProgress2.setMinNumberOfCardsPerParticipant(2);
         sessionInProgress2.setMaxNumberOfCardsPerParticipant(6);
@@ -248,13 +239,9 @@ public class DatabaseSeeder {
         ParticipantInfo participantInfoOrganizer2 = new ParticipantInfo();
         participantInfoOrganizer2.setParticipant(testUser);
 
-        ParticipantInfo participantForSession2 = new ParticipantInfo();
-        participantForSession2.setParticipant(harold);
-
         sessionInProgress2.getParticipantInfo().add(participantInfoOrganizer2);
-        sessionInProgress2.getParticipantInfo().add(participantForSession2);
         
-        category1CardIterator = category1.getCards().iterator();
+        category1CardIterator = communication.getCards().iterator();
         CardDetails cardsChoice2CardDetails1 = category1CardIterator.next();
         CardDetails cardsChoice2CardDetails2 = category1CardIterator.next();
         CardDetails cardsChoice2CardDetails3 = category1CardIterator.next();
@@ -263,10 +250,10 @@ public class DatabaseSeeder {
         CardDetails cardsChoice2CardDetails6 = category1CardIterator.next();
         
         List<CardDetails> cardsChoice2ChosenCards = new ArrayList<>();
-        /*cardsChoice2ChosenCards.add(cardsChoice2CardDetails1);
+        *//*cardsChoice2ChosenCards.add(cardsChoice2CardDetails1);
         cardsChoice2ChosenCards.add(cardsChoice2CardDetails2);
-        cardsChoice2ChosenCards.add(cardsChoice2CardDetails3);*/
-        cardsChoice2ChosenCards.addAll(category1.getCards());
+        cardsChoice2ChosenCards.add(cardsChoice2CardDetails3);*//*
+        cardsChoice2ChosenCards.addAll(communication.getCards());
 
         CardsChoice cardsChoice2 = new CardsChoice();
         cardsChoice2.setParticipant(testUser);
@@ -302,10 +289,10 @@ public class DatabaseSeeder {
         Session session1 = new SynchronousSession();
         session1.setParticipantInfo(participantInfos1);
         session1.setOrganizer(testUser);
-        session1.setCategory(category1);
-        session1.setTopic(topic1);
+        session1.setCategory(communication);
+        session1.setTopic(marketing);
         session1.setAmountOfCircles(5);
-        session1.setSessionStatus(SessionStatus.CHOOSING_CARDS);
+        session1.setSessionStatus(SessionStatus.ADDING_CARDS);
         session1.setParticipantsCanAddCards(true);
 
         ParticipantInfo participantInfo2 = new ParticipantInfo();
@@ -316,8 +303,8 @@ public class DatabaseSeeder {
         Session session2 = new SynchronousSession();
         session2.setParticipantInfo(participantInfos2);
         session2.setOrganizer(testUser);
-        session2.setCategory(category1);
-        session2.setTopic(topic1);
+        session2.setCategory(communication);
+        session2.setTopic(marketing);
         session2.setAmountOfCircles(5);
 
         ParticipantInfo participantInfo3 = new ParticipantInfo();
@@ -328,69 +315,74 @@ public class DatabaseSeeder {
         Session session3 = new SynchronousSession();
         session3.setParticipantInfo(participantInfos3);
         session3.setOrganizer(testUser);
-        session3.setCategory(category1);
-        session3.setTopic(topic1);
+        session3.setCategory(communication);
+        session3.setTopic(marketing);
         session3.setAmountOfCircles(5);
         session3.setSessionStatus(SessionStatus.USERS_JOINING);
 
         sessionRepository.save(session1);
         sessionRepository.save(session2);
-        sessionRepository.save(session3);
+        sessionRepository.save(session3);*/
     }
-    
-    private Topic seedCardDetails(Category category, Topic topic, User creator) {
+
+    private Topic seedCardDetailsKDG(Category category, Topic topic, User creator) {
         if (category.getCards() == null)
             category.setCards(new HashSet<>());
-        
+
         CardDetails cardDetails1 = new CardDetails();
         cardDetails1.setCategory(category);
         cardDetails1.setCreator(creator);
-        cardDetails1.setText("Card #1");
-        cardDetails1.setImageUrl("https://s-media-cache-ak0.pinimg.com/736x/41/99/ed/4199edcef653e72fa3dd9b9bb629f2f5.jpg");
-        
+        cardDetails1.setText("KDG");
+        cardDetails1.setImageUrl("https://pbs.twimg.com/profile_images/664027982718177280/YUs5qbQb.png");
+
         CardDetails cardDetails2 = new CardDetails();
         cardDetails2.setCategory(category);
         cardDetails2.setCreator(creator);
-        cardDetails2.setText("Card #2");
-        cardDetails2.setImageUrl("http://figures.boundless.com/11036/full/cash.jpeg");
-        
+        cardDetails2.setText("ICT");
+        cardDetails2.setImageUrl("http://www.themiddleeastmagazine.com/wp-content/uploads/2014/11/ICT-image.jpg");
+
         CardDetails cardDetails3 = new CardDetails();
         cardDetails3.setCategory(category);
         cardDetails3.setCreator(creator);
-        cardDetails3.setText("Harry the cactus");
-        cardDetails3.setImageUrl("http://i4.mirror.co.uk/incoming/article5704312.ece/ALTERNATES/s615b/waving-cactus.jpg");
-        
+        cardDetails3.setText("Marketing");
+        cardDetails3.setImageUrl("http://fortunednagroup.com/wp-content/uploads/marketing1.jpg");
+
         CardDetails cardDetails4 = new CardDetails();
         cardDetails4.setCategory(category);
         cardDetails4.setCreator(creator);
-        cardDetails4.setText("Some other card");
-        
+        cardDetails4.setText("School");
+        cardDetails4.setImageUrl("http://cdn.mtlblog.com/uploads/2015/08/students-during-the-lecture.jpg");
+
         CardDetails cardDetails5 = new CardDetails();
         cardDetails5.setCategory(category);
         cardDetails5.setCreator(creator);
-        cardDetails5.setText("Another one without image");
-        
+        cardDetails5.setText("Several types of media");
+        cardDetails5.setImageUrl("http://www.wietblog.com/wp-content/uploads/2015/06/EU-Media-Futures-Forum-pic_0.jpg");
+
         CardDetails cardDetails6 = new CardDetails();
         cardDetails6.setCategory(category);
         cardDetails6.setCreator(creator);
-        cardDetails6.setText("Another card with a bit more textual information");
-        
+        cardDetails6.setText("Social media");
+        cardDetails6.setImageUrl("http://blogs-images.forbes.com/insider/files/2014/11/social_media_strategy111.jpg");
+
+
         cardDetails1 = cardDetailsRepository.save(cardDetails1);
         cardDetails2 = cardDetailsRepository.save(cardDetails2);
         cardDetails3 = cardDetailsRepository.save(cardDetails3);
         cardDetails4 = cardDetailsRepository.save(cardDetails4);
         cardDetails5 = cardDetailsRepository.save(cardDetails5);
         cardDetails6 = cardDetailsRepository.save(cardDetails6);
-        
+
         category.getCards().add(cardDetails1);
         category.getCards().add(cardDetails2);
         category.getCards().add(cardDetails3);
         category.getCards().add(cardDetails4);
         category.getCards().add(cardDetails5);
         category.getCards().add(cardDetails6);
-        
+
         category = categoryRepository.save(category);
-        
+
+
         if (topic.getCards() == null)
             topic.setCards(new HashSet<>());
 
@@ -400,7 +392,7 @@ public class DatabaseSeeder {
         cardDetails4.setTopics(new HashSet<>());
         cardDetails5.setTopics(new HashSet<>());
         cardDetails6.setTopics(new HashSet<>());
-        
+
         cardDetails1.getTopics().add(topic);
         cardDetails2.getTopics().add(topic);
         cardDetails3.getTopics().add(topic);
@@ -414,10 +406,77 @@ public class DatabaseSeeder {
         cardDetails4 = cardDetailsRepository.save(cardDetails4);
         cardDetails5 = cardDetailsRepository.save(cardDetails5);
         cardDetails6 = cardDetailsRepository.save(cardDetails6);
-        
+
         topic.getCards().addAll(category.getCards());
         return topicRepository.save(topic);
     }
+
+    private Topic seedCardDetailsGOV(Category category, Topic topic, User creator) {
+        if (category.getCards() == null)
+            category.setCards(new HashSet<>());
+
+        CardDetails cardDetails1 = new CardDetails();
+        cardDetails1.setCategory(category);
+        cardDetails1.setCreator(creator);
+        cardDetails1.setText("TAX");
+        cardDetails1.setImageUrl("http://www.udayavani.com/sites/default/files/images/english_articles/2015/09/25/tax-600.jpg");
+
+        CardDetails cardDetails2 = new CardDetails();
+        cardDetails2.setCategory(category);
+        cardDetails2.setCreator(creator);
+        cardDetails2.setText("TaxOnWeb");
+        cardDetails2.setImageUrl("http://www.didierreynders.be/wp-content/uploads/2011/10/Tax-on-web.jpg");
+
+
+        CardDetails cardDetails4 = new CardDetails();
+        cardDetails4.setCategory(category);
+        cardDetails4.setCreator(creator);
+        cardDetails4.setText("Passport");
+        cardDetails4.setImageUrl("https://www.washington.edu/studyabroad/files/2015/02/passport.jpg");
+
+        CardDetails cardDetails5 = new CardDetails();
+        cardDetails5.setCategory(category);
+        cardDetails5.setCreator(creator);
+        cardDetails5.setText("Flemish government");
+        cardDetails5.setImageUrl("http://kogge.be/images/uploads/2006-10-19_nieuwe_leeuw.jpg");
+
+
+
+        cardDetails1 = cardDetailsRepository.save(cardDetails1);
+        cardDetails2 = cardDetailsRepository.save(cardDetails2);
+        cardDetails4 = cardDetailsRepository.save(cardDetails4);
+        cardDetails5 = cardDetailsRepository.save(cardDetails5);
+
+        category.getCards().add(cardDetails1);
+        category.getCards().add(cardDetails2);
+        category.getCards().add(cardDetails4);
+        category.getCards().add(cardDetails5);
+
+        category = categoryRepository.save(category);
+
+
+        if (topic.getCards() == null)
+            topic.setCards(new HashSet<>());
+
+        cardDetails1.setTopics(new HashSet<>());
+        cardDetails2.setTopics(new HashSet<>());
+        cardDetails4.setTopics(new HashSet<>());
+        cardDetails5.setTopics(new HashSet<>());
+
+        cardDetails1.getTopics().add(topic);
+        cardDetails2.getTopics().add(topic);
+        cardDetails4.getTopics().add(topic);
+        cardDetails5.getTopics().add(topic);
+
+        cardDetails1 = cardDetailsRepository.save(cardDetails1);
+        cardDetails2 = cardDetailsRepository.save(cardDetails2);
+        cardDetails4 = cardDetailsRepository.save(cardDetails4);
+        cardDetails5 = cardDetailsRepository.save(cardDetails5);
+
+        topic.getCards().addAll(category.getCards());
+        return topicRepository.save(topic);
+    }
+
 
     private void seedTags() {
         List<Tag> tagList = new ArrayList<Tag>();
@@ -430,89 +489,30 @@ public class DatabaseSeeder {
         tag2.setName("Legals");
         Tag tag3 = new Tag();
         tagList.add(tag3);
-        tag3.setName("Medical");
+        tag3.setName("Media");
         Tag tag4 = new Tag();
         tagList.add(tag4);
-        tag4.setName("Music");
+        tag4.setName("Communication");
         Tag tag5 = new Tag();
         tagList.add(tag5);
-        tag5.setName("Business");
+        tag5.setName("Passport");
         Tag tag6 = new Tag();
         tagList.add(tag6);
-        tag6.setName("Games");
+        tag6.setName("Social");
         Tag tag7 = new Tag();
         tagList.add(tag7);
-        tag7.setName("Kids");
+        tag7.setName("Tax");
         Tag tag8 = new Tag();
         tagList.add(tag8);
-        tag8.setName("Health");
+        tag8.setName("IT");
         Tag tag9 = new Tag();
         tagList.add(tag9);
         tag9.setName("Finance");
         Tag tag10 = new Tag();
         tagList.add(tag10);
-        tag10.setName("Food");
+        tag10.setName("School");
 
         tagRepository.save(tagList);
     }
 
-    /*
-        // TODO remove !!
-    private void seedOldData() {
-        val users = new ArrayList<User>();
-
-        val testUser = new User();
-        testUser.setUsername("user");
-        testUser.setPassword(passwordEncoder.encode("pass"));
-        testUser.setName("Test");
-        testUser.setSurname("User");
-        testUser.setEmail("test@user.com");
-        testUser.setProfilePictureUrl("profilepictures/default.png");
-        testUser.addRole(RoleType.ROLE_CLIENT);
-
-        users.add(testUser);
-
-        val adminUser = new User();
-        adminUser.setUsername("admin");
-        adminUser.setPassword(passwordEncoder.encode("admin"));
-        adminUser.setName("Admin");
-        adminUser.setSurname("User");
-        adminUser.setEmail("admin@user.com");
-        adminUser.setProfilePictureUrl("profilepictures/default.png");
-        adminUser.addRole(RoleType.ROLE_ADMIN, RoleType.ROLE_CLIENT);
-
-        users.add(adminUser);
-
-        val harold = new User();
-        harold.setUsername("Harold");
-        harold.setPassword(passwordEncoder.encode("harold"));
-        harold.setName("Harold");
-        harold.setSurname("Painhider");
-        harold.setEmail("harold@haroldmail.com");
-        harold.setProfilePictureUrl("profilepictures/harold.jpg");
-        harold.addRole(RoleType.ROLE_CLIENT);
-
-        users.add(harold);
-
-        userRepository.save(users);
-
-
-        val organisation = new Organization("Organisation 1", adminUser);
-        organisation.addMember(testUser);
-        organizationRepository.save(organisation);
-
-        val category = new Category();
-        category.setName("test-category");
-        category.setDescription("test-category-description");
-        category.setOrganization(organisation);
-
-        categoryRepository.save(category);
-
-        val topic = new Topic();
-        topic.setName("test-topic");
-        topic.setDescription("test-topic-description");
-        topic.setCategory(category);
-
-        topicRepository.save(topic);
-    }*/
 }

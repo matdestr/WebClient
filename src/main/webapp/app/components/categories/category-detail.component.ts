@@ -110,8 +110,10 @@ export class CategoryDetailComponent implements OnInit {
 
         this._tagService.getTags().subscribe(
             data => {
-                for (let tag of data.json())
+                for (let tag of data.json()) {
+                    //TODO: Check if tag is already in the category
                     this.tags.push(Tag.createEmptyTag().deserialize(tag));
+                }
             }
         );
     }
