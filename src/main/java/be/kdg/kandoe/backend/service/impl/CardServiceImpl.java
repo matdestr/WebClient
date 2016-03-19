@@ -97,22 +97,26 @@ public class CardServiceImpl implements CardService {
         if (cardDetails.getTopics() == null)
             cardDetails.setTopics(new HashSet<>());
 
-        Set<Topic> cardDetailsTopics = cardDetails.getTopics();
-        cardDetailsTopics.add(topic);
+        // TODO : This has been moved inside the try block as a workaround for a Hibernate problem
+        /*Set<Topic> cardDetailsTopics = cardDetails.getTopics();
+        cardDetailsTopics.add(topic);*/
 
         try {
             cardDetails = cardDetailsRepository.save(cardDetails);
 
-            if (topic.getCategory().getCards() == null)
-                topic.getCategory().setCards(new HashSet<>());
-
+            /*if (topic.getCategory().getCards() == null)
+                topic.getCategory().setCards(new HashSet<>());*/
+            
+            Set<Topic> cardDetailsTopics = cardDetails.getTopics();
+            cardDetailsTopics.add(topic);
+            
             if (topic.getCards() == null)
                 topic.setCards(new HashSet<>());
 
-            topic.getCategory().getCards().add(cardDetails);
+            //topic.getCategory().getCards().add(cardDetails);
             topic.getCards().add(cardDetails);
 
-            categoryRepository.save(topic.getCategory());
+            //categoryRepository.save(topic.getCategory());
             topicRepository.save(topic);
 
             return cardDetails;

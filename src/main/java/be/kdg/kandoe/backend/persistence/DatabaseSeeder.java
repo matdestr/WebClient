@@ -59,8 +59,8 @@ public class DatabaseSeeder {
     @PostConstruct
     private void seed() {
         seedOAuthClientDetails();
-        seedUsersCategoriesTopicsAndSessions();
-        seedTags();
+        //seedUsersCategoriesTopicsAndSessions();
+        //seedTags();
     }
 
     private void seedOAuthClientDetails() {
