@@ -32,9 +32,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/sessions")
@@ -116,11 +113,11 @@ public class SessionGameRestController {
     public ResponseEntity inviteUser(@AuthenticationPrincipal User user,
                                      @PathVariable("sessionId") int sessionId) {
         Session session = sessionService.getSessionById(sessionId);
-
+        
         checkUserIsOrganizer(user, session);
         sessionGameService.confirmInvitedUsers(session);
         this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
-
+        
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -133,10 +130,10 @@ public class SessionGameRestController {
 
         sessionGameService.setUserJoined(session, user);
         this.sendSessionParticipantJoined(sessionId, this.mapperFacade.map(user, UserResource.class));
-
+        
         if (session.getSessionStatus() != SessionStatus.USERS_JOINING)
             this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
-
+        
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -269,10 +266,10 @@ public class SessionGameRestController {
             throw new CanDoControllerRuntimeException("Participants are not allowed to add cards for this session", HttpStatus.FORBIDDEN);
 
         sessionGameService.confirmUserAddedCards(session, user);
-
+        
         if (session.getSessionStatus() != SessionStatus.ADDING_CARDS)
             this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
-
+        
         return new ResponseEntity(HttpStatus.CREATED);
     }
     
@@ -314,10 +311,10 @@ public class SessionGameRestController {
         Session session = sessionService.getSessionById(sessionId);
         checkUserIsOrganizer(user, session);
         sessionGameService.startGame(session);
-
-        UserResource currentParticipantResource =
+        
+        UserResource currentParticipantResource = 
                 mapperFacade.map(session.getCurrentParticipantPlaying().getParticipant(), UserResource.class);
-
+        
         this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
         this.sendSessionCurrentParticipantUpdate(sessionId, currentParticipantResource);
 
@@ -356,7 +353,7 @@ public class SessionGameRestController {
         this.checkUserIsParticipant(user, session);
 
         CardDetails cardDetails = cardService.getCardDetailsById(createCardReviewOverview.getCardDetailsId());
-
+        
         if (cardDetails == null)
             throw new CanDoControllerRuntimeException("Could not find carddetails with ID " + createCardReviewOverview.getCardDetailsId(), HttpStatus.NOT_FOUND);
 

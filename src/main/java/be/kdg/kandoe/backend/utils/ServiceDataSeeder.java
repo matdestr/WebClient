@@ -4,6 +4,8 @@ import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.organizations.Topic;
+import be.kdg.kandoe.backend.model.sessions.Session;
+import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.model.users.roles.RoleType;
 import be.kdg.kandoe.backend.service.api.*;
@@ -253,5 +255,17 @@ public class ServiceDataSeeder {
         cardDetailsTopicTechnicalKnowledge.add(cardDetails12);
 
         cardService.addAllCardDetailsToTopic(topicTechnicalKnowledge, cardDetailsTopicTechnicalKnowledge);*/
+    }
+    
+    // TODO
+    private void seedSessions(Category category, User organizer) {
+        Session synchronousSessionInProgress = new SynchronousSession();
+        synchronousSessionInProgress.setCategory(category);
+        synchronousSessionInProgress.setCardCommentsAllowed(false);
+        synchronousSessionInProgress.setParticipantsCanAddCards(false);
+        synchronousSessionInProgress.setAmountOfCircles(5);
+        synchronousSessionInProgress.setMinNumberOfCardsPerParticipant(2);
+        synchronousSessionInProgress.setMaxNumberOfCardsPerParticipant(3);
+        synchronousSessionInProgress.setOrganizer(organizer);
     }
 }

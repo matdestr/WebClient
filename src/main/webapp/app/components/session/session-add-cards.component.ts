@@ -32,7 +32,7 @@ export class SessionAddCardsComponent implements OnInit {
         let token = localStorage.getItem(this.tokenName);
         
         if (this.session.participantInfo.filter(p => p.participant.username == getUsername(token))[0].addedCardsCompleted) {
-            this.statusMessage = 'Waiting for other players ...';
+            this.statusMessage = 'Waiting for other participants ...';
             this.buttonsDisabled = true;
         }
     }
@@ -54,12 +54,14 @@ export class SessionAddCardsComponent implements OnInit {
     }
 
     public confirmCards():void{
+        this.statusMessage = '';
+        
         this._sessionGameService.confirmAddedCards(this.session.sessionId)
             .subscribe(
                 data => {
                     this.errors = [];
                     this.form = CreateCardModel.createEmptyCreateCardModel();
-                    this.statusMessage = 'Waiting for other users ...';
+                    this.statusMessage = 'Waiting for other participants ...';
                     this.buttonsDisabled = true;
                 }
             );
@@ -71,7 +73,8 @@ export class SessionAddCardsComponent implements OnInit {
             .subscribe(
                 () => {
                     console.log('Added card to session');
-                    this.form = CreateCardModel.createEmptyCreateCardModel()
+                    this.form = CreateCardModel.createEmptyCreateCardModel();
+                    this.statusMessage = 'Card added';
                 },
                 error => this.handleErrors(error)
             );

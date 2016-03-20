@@ -1,6 +1,7 @@
 <div id="main-content-detail">
-    <h1 style="margin-left: 2em">Review Cards</h1>
-    <div id="timeline" class="col-sm-1">
+    <!--<h1 style="margin-left: 2em">Review Cards</h1>-->
+    <h1 class="text-center title-spacing-top">Review Cards</h1>
+    <div id="timeline" class="col-sm-1 hidden-xs">
         <ul>
             <li><i class="glyphicon glyphicon-user"></i></li>
             <li><i class="glyphicon glyphicon-plus"></i></li>
@@ -10,10 +11,11 @@
         </ul>
     </div>
 
-    <div class="margin-container-4 text-center col-sm-6">
-        <p *ngIf="statusMessage" class="alert alert-success">{{statusMessage}}</p>
+    <!--<div class="margin-container-4 text-center col-sm-6">-->
+    <div class="text-center col-sm-10">
+        <!--<p *ngIf="statusMessage" class="alert alert-success">{{statusMessage}}</p>-->
         
-        <ul>
+        <!--<ul>
             <div  *ngFor="#card of sessionCards" style="width:300px;display: inline-block;margin-right: 2em">
             <card-detail
                          [card]="card"
@@ -28,7 +30,31 @@
                         [(ngModel)]="getCreateReviewModel(card.cardDetailsId).message">
             </div>
 
-        </ul>
+        </ul>-->
+        
+        <div class="row">
+            <div class="col-md-12">
+                <p *ngIf="statusMessage" class="alert alert-success session-status-message">{{statusMessage}}</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div *ngFor="#card of sessionCards" class="col-md-6 card-reviews-card-detail">
+                <card-detail
+                        [card]="card"
+                        [cardClassName]="'card-small'">
+                </card-detail>
+
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    <input name="card-review"
+                           class="form-control"
+                           type="text"
+                           placeholder="Review this card"
+                           [(ngModel)]="getCreateReviewModel(card.cardDetailsId).message">
+                </div>
+            </div>
+        </div>
         
         <div class="margin-container-6">
             <button (click)="onContinueClick()"
