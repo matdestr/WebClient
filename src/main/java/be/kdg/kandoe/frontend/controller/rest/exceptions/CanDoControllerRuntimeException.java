@@ -2,6 +2,9 @@ package be.kdg.kandoe.frontend.controller.rest.exceptions;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * General controller exception
+ */
 public class CanDoControllerRuntimeException extends RuntimeException {
     private HttpStatus httpStatus;
 

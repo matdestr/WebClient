@@ -15,6 +15,9 @@ import {ErrorDialogComponent} from "../widget/error-dialog.component";
 import {InvitationComponent} from "../invitations/invitation.component";
 import {tokenNotExpired} from "../../libraries/angular2-jwt";
 
+/**
+ * This component is responsible for all the functionality of the user profile page.
+ */
 @Component({
     selector: 'profile',
     templateUrl: 'html/userprofile.html',

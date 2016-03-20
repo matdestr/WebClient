@@ -22,6 +22,9 @@ System.register(['angular2/core', "angular2/router"], function(exports_1) {
                 router_1 = router_1_1;
             }],
         execute: function() {
+            /**
+             * This component is responsible for all the functionality of sign out
+             */
             SignOutComponent = (function () {
                 function SignOutComponent(_router, _tokenName) {
                     this._router = _router;

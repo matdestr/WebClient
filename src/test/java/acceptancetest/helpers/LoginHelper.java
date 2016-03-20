@@ -5,8 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+/**
+ * Helper class for login and register with Sellenium.
+ */
 public class LoginHelper {
-    private static boolean registered = true;
+    private static boolean registered = false;
     private static final int DEFAULT_TIMEOUT_SECONDS = 5;
 
     public static void register(WebDriver driver, String username, String password) {
@@ -23,13 +26,6 @@ public class LoginHelper {
 
             WebElement registrationForm = driver.findElement(By.id("form-sign-up"));
 
-        /*registrationForm.findElement(By.name("username")).sendKeys(username);
-        registrationForm.findElement(By.name("name")).sendKeys("User");
-        registrationForm.findElement(By.name("surname")).sendKeys("One");
-        registrationForm.findElement(By.name("email")).sendKeys("user@kandoe.be");
-        registrationForm.findElement(By.name("password")).sendKeys(password);
-        registrationForm.findElement(By.name("verify-password")).sendKeys(password);*/
-
             InputHelper.sendKeys(driver, registrationForm.findElement(By.name("username")), username);
             InputHelper.sendKeys(driver, registrationForm.findElement(By.name("name")), "User");
             InputHelper.sendKeys(driver, registrationForm.findElement(By.name("surname")), "One");
@@ -38,6 +34,7 @@ public class LoginHelper {
             InputHelper.sendKeys(driver, registrationForm.findElement(By.name("verify-password")), password);
 
             registrationForm.submit();
+
             (new WebDriverWait(driver, timeout)).until((WebDriver d) -> d.getCurrentUrl().equals(baseUrl + "/#/dashboard"));
             LoginHelper.registered = true;
             System.out.println("User registered.");
@@ -57,8 +54,6 @@ public class LoginHelper {
 
         WebElement loginForm = driver.findElement(By.name("form-sign-in"));
 
-        //loginForm.findElement(By.name("username")).sendKeys(username);
-        //loginForm.findElement(By.name("password")).sendKeys(password);
 
         InputHelper.sendKeys(driver, loginForm.findElement(By.name("username")), username);
         InputHelper.sendKeys(driver, loginForm.findElement(By.name("password")), password);

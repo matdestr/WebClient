@@ -8,6 +8,9 @@ import {Token} from "../../entities/authenticatie/token";
 import {ErrorDialogComponent} from "../widget/error-dialog.component";
 import {ViewEncapsulation} from "angular2/core";
 
+/**
+ * This component is responsible for all the functionality of the sign in page.
+ */
 @Component({
     selector: 'sign-in',
     templateUrl: 'html/sign-in.html',

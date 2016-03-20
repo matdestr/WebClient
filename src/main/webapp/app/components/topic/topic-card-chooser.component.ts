@@ -17,6 +17,9 @@ import {CardSearchPipe} from "../../util/pipes/card-search-pipe";
 import {SearchBoxComponent} from "../widget/search-box";
 
 
+/**
+ * This component is responsible for all the functionality of the cardchooser on the topic page.
+ */
 @Component({
     selector: 'topic-card-chooser',
     templateUrl: "html/topic/topic-card-chooser.html",

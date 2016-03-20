@@ -16,6 +16,9 @@ import {CardDetailComponent} from "../cards/card-detail.component";
 import {error} from "util";
 import {Session} from "../../entities/session/session";
 
+/**
+ * This component is responsible for all the functionality of the topic detail page
+ */
 @Component({
     selector: 'topic-detail',
     templateUrl: 'html/topic/topic-detail.html',
