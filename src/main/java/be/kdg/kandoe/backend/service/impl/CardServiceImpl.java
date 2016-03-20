@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -247,7 +244,13 @@ public class CardServiceImpl implements CardService {
         return updatedComment;
     }
 
-
+    @Override
+    public void addReviews(User user, Map<CardDetails, String> reviews) {
+        for (CardDetails cardDetails : reviews.keySet()) {
+            String message = reviews.get(cardDetails);
+            this.addReview(user, cardDetails, message);
+        }
+    }
 
     private void validateCardDetails(CardDetails cardDetails) {
         if (cardDetails == null) {

@@ -9,6 +9,7 @@ import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.users.User;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -32,6 +33,8 @@ public interface CardService {
      * @param message = The message of the comment
      */
     Comment addReview(User user, CardDetails cardDetails, String message);
+    
+    void addReviews(User user, Map<CardDetails, String> reviews);
 
     List<CardDetails> addAllCardDetailsToTopic(Topic topic, List<CardDetails> allCardDetails);
 

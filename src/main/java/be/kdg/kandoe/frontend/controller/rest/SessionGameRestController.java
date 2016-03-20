@@ -29,9 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/sessions")
@@ -316,6 +314,29 @@ public class SessionGameRestController {
         CommentResource commentResource = mapperFacade.map(comment, CommentResource.class);
 
         return new ResponseEntity<>(commentResource, HttpStatus.CREATED);
+    }
+    
+    @RequestMapping(value = "/{sessionId}/reviews/add-all", method = RequestMethod.POST)
+    public ResponseEntity addReviews(@AuthenticationPrincipal User user,
+                                     @PathVariable("sessionId") int sessionId,
+                                     @Valid @RequestBody List<CreateCardReviewOverview> reviews) {
+        Session session = sessionService.getSessionById(sessionId);
+        
+        this.checkUserIsParticipant(user, session);
+        
+        if (reviews.size() == 0)
+            throw new CanDoControllerRuntimeException("Need to post at least one review");
+
+        Map<CardDetails, String> reviewsMap = new HashMap<>();
+        
+        for (CreateCardReviewOverview r : reviews) {
+            CardDetails cardDetails = cardService.getCardDetailsById(r.getCardDetailsId());
+            reviewsMap.put(cardDetails, r.getMessage());
+        }
+
+        cardService.addReviews(user, reviewsMap);
+
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{sessionId}/reviews/confirm", method = RequestMethod.POST)
