@@ -3,6 +3,9 @@ System.register([], function(exports_1) {
     return {
         setters:[],
         execute: function() {
+            /**
+             * This class contains the credentials of a user (username and password).
+             * */
             CredentialsModel = (function () {
                 function CredentialsModel() {
                 }

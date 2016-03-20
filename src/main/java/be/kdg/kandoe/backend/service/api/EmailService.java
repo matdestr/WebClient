@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * Interface contract for service that invites users using an email protocol.
  */
-
 public interface EmailService {
     /**
      * Send an invitation email to an unexisting user to join an organization

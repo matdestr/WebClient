@@ -24,6 +24,10 @@ import {SessionChooseCardsComponent} from "./session/session-choose-cards.compon
 import {SessionReviewCardsComponent} from "./session/review-cards.component";
 import {SessionComponent} from "./session/session.component";
 
+/**
+ * This component is the root component of the Angular 2 application.
+ * Routes are registered here.
+ * */
 @Component({
     selector: 'my-app',
     template: `
@@ -53,8 +57,8 @@ import {SessionComponent} from "./session/session.component";
     {path:'/session/:sessionId/invite-users',   name:'InviteUsers',             component:InviteUsersComponent},
     {path:'/session/:sessionId/add-cards',      name:'SessionAddCards',         component: SessionAddCardsComponent},
     {path:'/session/:sessionId/review-cards',   name:'SessionReviewCards',       component:SessionReviewCardsComponent}*/
-    {path: '/session/:sessionId',               name: 'Session',                component: SessionComponent},
-    {path: '/active-session/:sessionId',        name: 'ActiveSession',          component: ActiveSessionComponent}
+    {path: '/session/:sessionId',               name: 'Session',                component: SessionComponent}/*,
+    {path: '/active-session/:sessionId',        name: 'ActiveSession',          component: ActiveSessionComponent}*/
 ])
 export class AppComponent {
 }

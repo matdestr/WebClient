@@ -2,6 +2,10 @@ import {Serializable} from "../../util/serializable";
 import {Topic} from "../../entities/topic/topic"
 import {Tag} from "../tag";
 
+/**
+ * This class contains detailed information about a single category, including its
+ * name, description and related topics.
+ * */
 export class Category implements Serializable<Category>{
     public categoryId: number;
     public name : string;

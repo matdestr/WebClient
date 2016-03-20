@@ -1,3 +1,6 @@
+/**
+ * This class is used to create a new category.
+ * */
 export class CreateCategoryModel {
     name:string = "";
     description:string = "";

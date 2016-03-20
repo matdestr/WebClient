@@ -7,6 +7,9 @@ import {Session} from "../../entities/session/session";
 import {CardDetails} from "../../entities/category/card-details";
 import {CardDetailComponent} from "../cards/card-detail.component";
 
+/**
+ * This component is responsible for displaying the winning cards after a session has ended.
+ * */
 @Component({
     selector: 'session-finished',
     templateUrl: 'html/session/session-finished.html',

@@ -1,7 +1,3 @@
-/**
- * An organization consists of a name and has an owner and multiple organizers
- * The organizers have administration rights in the organization
- */
 package be.kdg.kandoe.backend.model.organizations;
 
 import be.kdg.kandoe.backend.model.users.User;
@@ -11,6 +7,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An organization consists of a name and has an owner and multiple organizers
+ * The organizers have administration rights in the organization
+ */
 @Data
 @NoArgsConstructor
 @Entity

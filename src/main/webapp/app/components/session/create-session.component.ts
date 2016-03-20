@@ -16,6 +16,9 @@ import {SessionService} from "../../services/session.service";
 import {isNumber} from "angular2/src/facade/lang";
 import {OnInit} from "angular2/core";
 
+/**
+ * This component is responsible for the functionality of creating a new session.
+ * */
 @Component({
     selector: 'create-session',
     templateUrl: 'html/create-session.html',

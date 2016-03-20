@@ -1,6 +1,3 @@
-/**
- * An invitation for a user to join an organization
- */
 package be.kdg.kandoe.backend.model.invitations;
 
 import be.kdg.kandoe.backend.model.organizations.Organization;
@@ -13,6 +10,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * An invitation for a user to join an organization
+ */
 @Entity
 @Data
 @NoArgsConstructor

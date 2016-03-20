@@ -10,6 +10,10 @@ import {ChatMessage} from "../../entities/session/create-chat-message";
 import {SessionService} from "../../services/session.service";
 import {SessionGameService} from "../../services/session-game.service";
 
+/**
+ * This component is responsible for the functionality of playing a circle game of a session.
+ * This functionality includes things such as generating circles and positioning the cards on those circles.
+ * */
 @Component({
     selector: 'session-in-progress',
     templateUrl: 'html/session/session-in-progress.html'

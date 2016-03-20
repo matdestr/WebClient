@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+/**
+ * Contains the needed properties to send e-mails from within the application.
+ * */
 @PropertySource("classpath:application.properties")
 @Component
 @lombok.Value

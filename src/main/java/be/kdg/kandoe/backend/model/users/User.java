@@ -1,6 +1,3 @@
-/**
- * A user has a username, name, surname, email and password
- */
 package be.kdg.kandoe.backend.model.users;
 
 import be.kdg.kandoe.backend.model.users.roles.Role;
@@ -20,6 +17,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a user of the application.
+ * A user has a username, name, surname, email and password
+ */
 @Entity
 @Table(name = "`User`")
 @NoArgsConstructor

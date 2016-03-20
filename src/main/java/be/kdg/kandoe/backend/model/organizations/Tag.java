@@ -1,7 +1,3 @@
-/**
- * A tag can belong to multiple categories
- * Consists of a name and a description
- */
 package be.kdg.kandoe.backend.model.organizations;
 
 import lombok.Getter;
@@ -11,6 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+/**
+ * A tag can belong to multiple categories
+ * Consists of a name and a description
+ */
 @Entity
 public class Tag {
     @Id

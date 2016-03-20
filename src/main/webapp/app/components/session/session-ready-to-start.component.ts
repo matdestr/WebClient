@@ -5,6 +5,10 @@ import {Session} from "../../entities/session/session";
 import {SessionGameService} from "../../services/session-game.service";
 import {SessionService} from "../../services/session.service";
 
+/**
+ * This component offers functionality for starting the game (as the session organizer).
+ * The functionality also includes displaying a list of participating users.
+ * */
 @Component({
     selector: 'session-ready',
     templateUrl: 'html/session/session-ready-to-start.html'

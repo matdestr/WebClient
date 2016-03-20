@@ -1,8 +1,8 @@
-/**
- * The status of a session in the right order
- */
 package be.kdg.kandoe.backend.model.sessions;
 
+/**
+ * The possible statuses a session can have, in chronological order
+ */
 public enum SessionStatus {
     CREATED,
     USERS_JOINING,

@@ -37,6 +37,10 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                 router_2 = router_2_1;
             }],
         execute: function() {
+            /**
+             * This component offers functionality for displaying and interacting with the toolbar.
+             * Its functionality includes navigating to the user's profile page and signing out.
+             * */
             ToolbarComponent = (function () {
                 function ToolbarComponent(_userService, _router, _organizationService) {
                     var _this = this;

@@ -2,6 +2,9 @@ import {Component, Input, Output, OnInit, EventEmitter} from 'angular2/core'
 import {NgIf} from 'angular2/common'
 import {CardDetails} from "../../entities/category/card-details";
 
+/**
+ * Component for displaying and selecting a card.
+ * */
 @Component({
     selector: 'card-detail',
     template: `

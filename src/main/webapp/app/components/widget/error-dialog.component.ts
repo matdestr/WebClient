@@ -1,6 +1,9 @@
 import {Component, Input} from "angular2/core";
 import {NgFor, NgIf} from "angular2/common";
 
+/**
+ * This component is responsible for showing a dialog when an error occurs.
+ * */
 @Component({
     selector: 'error-dialog',
     template: `

@@ -8,6 +8,9 @@ import {SessionService} from "../../services/session.service";
 import {InvitationService} from "../../services/invitation.service";
 import {SessionInvitationService} from "../../services/session-invitation.service";
 
+/**
+ * This component offers functionality for inviting users to a session.
+ * */
 @Component({
     selector: 'session-invite',
     templateUrl: 'html/session/session-invite.html'

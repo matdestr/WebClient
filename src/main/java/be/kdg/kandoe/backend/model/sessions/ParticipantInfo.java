@@ -1,6 +1,3 @@
-/**
- * The information about the status of a participant in a session
- */
 package be.kdg.kandoe.backend.model.sessions;
 
 import be.kdg.kandoe.backend.model.users.User;
@@ -8,6 +5,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * This class holds information about the status of a participant of a session.
+ */
 @Data
 @Entity
 public class ParticipantInfo {

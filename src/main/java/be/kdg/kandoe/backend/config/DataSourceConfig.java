@@ -9,9 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.sql.DataSource;
 
 /**
- * Configures the datasource and exposes the {@Code BCryptPasswordEncoder} for encoding of passwords
+ * Configures the datasource and exposes the {@code BCryptPasswordEncoder} for encoding of passwords
  */
-
 @Configuration
 public class DataSourceConfig {
     @Bean(name = "datasource")

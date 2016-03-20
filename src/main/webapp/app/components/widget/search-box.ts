@@ -1,5 +1,8 @@
 import {Component, Output, EventEmitter} from 'angular2/core'
 
+/**
+ * This component offers functionality for implementing a search bar.
+ * */
 @Component({
     selector: 'search-box',
     template: `

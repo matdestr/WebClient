@@ -9,6 +9,10 @@ import {Organization} from "../../entities/organization/organization";
 
 import {Router} from "angular2/router";
 
+/**
+ * This component offers functionality for displaying and interacting with the toolbar.
+ * Its functionality includes navigating to the user's profile page and signing out.
+ * */
 @Component({
     selector: 'toolbar',
     templateUrl: 'html/toolbar.html',

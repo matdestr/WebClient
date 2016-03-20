@@ -64,7 +64,7 @@ public class AsynchronousSessionSchedulerServiceImpl implements AsynchronousSess
                 TransportStrategy.SMTP_SSL
         );
     }
-
+    
     @Autowired
     public void setSessionGameService(SessionGameService sessionGameService) {
         this.sessionGameService = sessionGameService;
@@ -93,7 +93,7 @@ public class AsynchronousSessionSchedulerServiceImpl implements AsynchronousSess
                         "</body>");
 
         int secondsToAddToCurrentTime = (int) (session.getSecondsBetweenMoves() * NOTIFICATION_TRIGGER_TIME_PERCENTAGE);
-
+        
         ScheduledFuture scheduledFuture = jobScheduler.scheduleJob(
                 new MailJob(mailer, email),
                 Date.from(new Date().toInstant().plusSeconds(secondsToAddToCurrentTime))
@@ -127,12 +127,18 @@ public class AsynchronousSessionSchedulerServiceImpl implements AsynchronousSess
     @Override
     public void scheduleNextParticipantAssignment(AsynchronousSession session) {
         Date dateToPerformActionAt = Date.from(new Date().toInstant().plusSeconds(session.getSecondsBetweenMoves()));
+        
         ScheduledFuture scheduledFuture = jobScheduler.scheduleJob(new Runnable() {
             @Override
             public void run() {
                 ParticipantInfo nextParticipant = sessionGameService.getNextParticipant(session);
                 session.setCurrentParticipantPlaying(nextParticipant);
                 sessionService.updateSession(session);
+                
+                cancelParticipantNotification(session, session.getCurrentParticipantPlaying().getParticipant());
+                cancelNextParticipantAssignment(session);
+                scheduleNextParticipantAssignment(session);
+                scheduleParticipantNotificationTurnAboutToExpire(session, session.getCurrentParticipantPlaying().getParticipant());
             }
         }, dateToPerformActionAt);
 

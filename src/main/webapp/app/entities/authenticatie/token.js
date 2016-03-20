@@ -3,6 +3,9 @@ System.register([], function(exports_1) {
     return {
         setters:[],
         execute: function() {
+            /**
+             * This class represents a token used to authenticate the user.
+             * */
             Token = (function () {
                 function Token() {
                 }

@@ -11,6 +11,10 @@ import {HttpStatus} from "../../util/http/http-status";
 import {SessionGameService} from "../../services/session-game.service";
 import {getUsername} from "../../libraries/angular2-jwt";
 
+/**
+ * This component handles the functionality for adding cards to a session before reviewing and choosing them.
+ * This component will only be loaded when participants are allowed to add cards.
+ * */
 @Component({
     selector: 'session-add-cards',
     templateUrl: 'html/session/session-add-cards.html',

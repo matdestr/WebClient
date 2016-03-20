@@ -16,6 +16,14 @@ import {SessionReadyToStartComponent} from "./session-ready-to-start.component";
 import {SessionInProgressComponent} from "./session-in-progress.component";
 import {SessionFinishedComponent} from "./session-finished-component";
 
+/**
+ * This component serves as a container for more specific components for a session.
+ * This component handles the general functionality for a session, but loads other components
+ * depending on the current state of the session.
+ * 
+ * General functionality includes redirecting to the dashboard when the user is not a participant of the session
+ * and initializing web socket connections.
+ * */
 @Component({
     selector: 'session',
     templateUrl: 'html/session/session.html',

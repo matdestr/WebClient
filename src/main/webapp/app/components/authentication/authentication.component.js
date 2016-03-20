@@ -31,6 +31,9 @@ System.register(['angular2/core', "./sign-in.component", "./sign-up.component", 
                 router_1 = router_1_1;
             }],
         execute: function() {
+            /**
+             * Redirects the user to the dashboard when a valid token is found.
+             * */
             AuthenticationComponent = (function () {
                 function AuthenticationComponent(tokenName, router) {
                     if (angular2_jwt_1.tokenNotExpired(tokenName)) {

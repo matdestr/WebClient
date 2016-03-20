@@ -4,6 +4,9 @@ import {Session} from "../../entities/session/session";
 
 import {SessionGameService} from "../../services/session-game.service";
 
+/**
+ * This component offers functionality for joining the session as an invited user.
+ * */
 @Component({
     selector: 'session-joining',
     templateUrl: 'html/session/session-join.html'

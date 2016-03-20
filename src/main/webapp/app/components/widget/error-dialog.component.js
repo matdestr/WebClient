@@ -16,6 +16,9 @@ System.register(["angular2/core"], function(exports_1) {
                 core_1 = core_1_1;
             }],
         execute: function() {
+            /**
+             * This component is responsible for showing a dialog when an error occurs.
+             * */
             ErrorDialogComponent = (function () {
                 function ErrorDialogComponent() {
                     this.messages = new Array();

@@ -6,6 +6,9 @@ import {Router} from "angular2/router";
 import {getUsername} from "../../libraries/angular2-jwt";
 import {EventEmitter} from "angular2/core";
 
+/**
+ * This component is responsible for the functionality of accepting and declining invitations for organizations.
+ * */
 @Component({
     selector: 'invitations',
     template:

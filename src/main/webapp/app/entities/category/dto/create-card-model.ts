@@ -1,3 +1,6 @@
+/**
+ * This class is used to create a new card and is sent to the server.
+ * */
 export class CreateCardModel {
     text: string;
     imageUrl: string;

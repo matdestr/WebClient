@@ -4,6 +4,10 @@ import {Category} from "./category";
 import {Topic} from "../topic/topic";
 import {Comment} from "./comment";
 
+/**
+ * This class contains detailed information about a single card, such as the text it contains,
+ * its image URL and the related comments.
+ * */
 export class CardDetails implements Serializable<CardDetails> {
     public cardDetailsId : number;
     public text : string;

@@ -17,6 +17,10 @@ import {CreateReviewModel} from "../../entities/category/dto/create-review-model
 import {SessionGameService} from "../../services/session-game.service";
 import {SessionService} from "../../services/session.service";
 
+/**
+ * This component is responsible for the functionality of reviewing cards before the start of a session.
+ * Using this component, users can write comments about the cards which will be available to choose from for a session.
+ * */
 @Component({
     selector: 'session-review-cards',
     templateUrl: 'html/session/session-review-cards.html',

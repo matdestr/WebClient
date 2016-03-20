@@ -10,6 +10,9 @@ import {Session} from "../../entities/session/session";
 import {CreateReviewModel} from "../../entities/category/dto/create-review-model";
 import {SessionGameService} from "../../services/session-game.service";
 
+/**
+ * This component offers functionality for choosing cards before the start of a session game.
+ * */
 @Component({
     selector: 'session-choose-cards',
     templateUrl: 'html/session/session-choose-cards.html',

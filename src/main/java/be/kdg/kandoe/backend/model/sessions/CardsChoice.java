@@ -11,6 +11,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents the choice of cards a user has made for a session.
+ * */
 @Data
 @Entity
 @EqualsAndHashCode(exclude = {"participant", "chosenCards", "cardsChosen"})

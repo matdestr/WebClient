@@ -1,6 +1,3 @@
-/**
- * Authorization of a user using a token
- */
 package be.kdg.kandoe.backend.model.oauth;
 
 import lombok.Data;
@@ -11,6 +8,10 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import javax.persistence.*;
 import java.util.*;
 
+/**
+ * Represents the OAuth client details needed to represent an application and its permissions.
+ * Users are authenticated by the use of a token.
+ */
 @Entity
 @Data
 public class OAuthClientDetails implements ClientDetails {

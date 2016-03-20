@@ -5,6 +5,9 @@ import {tokenNotExpired} from "../../libraries/angular2-jwt";
 import {Router} from "angular2/router";
 import {RouteParams} from "angular2/router";
 
+/**
+ * Redirects the user to the dashboard when a valid token is found.
+ * */
 @Component({
     selector: 'authentication',
     templateUrl: 'html/authentication.html',

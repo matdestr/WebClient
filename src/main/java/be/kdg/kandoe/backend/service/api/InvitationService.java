@@ -1,6 +1,3 @@
-/**
- * Interface to manage the invitations
- */
 package be.kdg.kandoe.backend.service.api;
 
 import be.kdg.kandoe.backend.model.invitations.OrganizationInvitation;
@@ -13,7 +10,6 @@ import java.util.List;
 /**
  * Interface contract for service of {@link OrganizationInvitation} model
  */
-
 public interface InvitationService {
     /**
      * Generates an invitation for an existing user to an organization

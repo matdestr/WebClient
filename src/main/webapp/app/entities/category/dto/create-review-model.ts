@@ -1,4 +1,8 @@
 import {CardDetails} from "../card-details";
+
+/**
+ * This class is used to create a comment about a card.
+ * */
 export class CreateReviewModel {
     cardDetailsId : number = 0;
     message : string = "";

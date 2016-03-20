@@ -3,6 +3,9 @@ import {Category} from "../../entities/category/category"
 
 import {Email} from "../../entities/user/email";
 
+/**
+ * This class represents an organization, owned by a user and containing zero, one or more members.
+ * */
 export class Organization {
     public organizationId : number;
     public name : string;
