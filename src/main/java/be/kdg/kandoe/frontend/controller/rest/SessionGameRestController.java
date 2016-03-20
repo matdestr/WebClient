@@ -3,6 +3,7 @@ package be.kdg.kandoe.frontend.controller.rest;
 import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.cards.CardPosition;
 import be.kdg.kandoe.backend.model.cards.Comment;
+import be.kdg.kandoe.backend.model.sessions.CardsChoice;
 import be.kdg.kandoe.backend.model.sessions.Session;
 import be.kdg.kandoe.backend.model.sessions.SessionStatus;
 import be.kdg.kandoe.backend.model.users.User;
@@ -98,11 +99,11 @@ public class SessionGameRestController {
     public ResponseEntity inviteUser(@AuthenticationPrincipal User user,
                                      @PathVariable("sessionId") int sessionId) {
         Session session = sessionService.getSessionById(sessionId);
-        
+
         checkUserIsOrganizer(user, session);
         sessionGameService.confirmInvitedUsers(session);
         this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
-        
+
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -115,10 +116,10 @@ public class SessionGameRestController {
 
         sessionGameService.setUserJoined(session, user);
         this.sendSessionParticipantJoined(sessionId, this.mapperFacade.map(user, UserResource.class));
-        
+
         if (session.getSessionStatus() != SessionStatus.USERS_JOINING)
             this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
-        
+
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -157,12 +158,22 @@ public class SessionGameRestController {
         return new ResponseEntity<List<CardDetailsResource>>(resources, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{sessionId}/can-add-cards", method = RequestMethod.GET)
+    public ResponseEntity canUserStillAddCards(@AuthenticationPrincipal User user,
+                                               @PathVariable("sessionId") int sessionId){
+        Session session = sessionService.getSessionById(sessionId);
+        checkUserHasAlreadyAddedCards(user, session);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{sessionId}/all-cards/addall")
     public ResponseEntity addCardsToSession(@AuthenticationPrincipal User user,
                                             @PathVariable("sessionId") int sessionId,
                                             @Valid @RequestBody List<CreateCardDetailsResource> resources) {
         Session session = sessionService.getSessionById(sessionId);
         checkUserIsParticipant(user, session);
+        checkUserHasAlreadyAddedCards(user, session);
 
         if (!session.isParticipantsCanAddCards())
             throw new CanDoControllerRuntimeException("Participants are not allowed to add cards for this session", HttpStatus.FORBIDDEN);
@@ -179,6 +190,26 @@ public class SessionGameRestController {
             cardService.addAllCardDetailsToCategory(session.getCategory(), allCardDetails);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    private void checkUserHasAlreadyAddedCards(User user, Session session) {
+        List<CardsChoice> cardsChoices = session.getParticipantCardChoices();
+        int userIndex = -1;
+
+        for (int i = 0; i < cardsChoices.size(); i++) {
+            CardsChoice cardsChoice = cardsChoices.get(i);
+            if (cardsChoice.getParticipant().getUserId() == user.getUserId()) {
+                userIndex = i;
+                break;
+            }
+        }
+
+        if (userIndex > -1) {
+            List<CardDetails> cardsChosenByUser = cardsChoices.get(userIndex).getChosenCards();
+
+            if (!cardsChosenByUser.isEmpty())
+                throw new CanDoControllerRuntimeException("User has already added cards to this session", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(value = "/{sessionId}/all-cards", method = RequestMethod.POST)
@@ -221,10 +252,10 @@ public class SessionGameRestController {
             throw new CanDoControllerRuntimeException("Participants are not allowed to add cards for this session", HttpStatus.FORBIDDEN);
 
         sessionGameService.confirmUserAddedCards(session, user);
-        
+
         if (session.getSessionStatus() != SessionStatus.ADDING_CARDS)
             this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
-        
+
         return new ResponseEntity(HttpStatus.CREATED);
     }
     
@@ -266,10 +297,10 @@ public class SessionGameRestController {
         Session session = sessionService.getSessionById(sessionId);
         checkUserIsOrganizer(user, session);
         sessionGameService.startGame(session);
-        
-        UserResource currentParticipantResource = 
+
+        UserResource currentParticipantResource =
                 mapperFacade.map(session.getCurrentParticipantPlaying().getParticipant(), UserResource.class);
-        
+
         this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
         this.sendSessionCurrentParticipantUpdate(sessionId, currentParticipantResource);
 
@@ -308,7 +339,7 @@ public class SessionGameRestController {
         this.checkUserIsParticipant(user, session);
 
         CardDetails cardDetails = cardService.getCardDetailsById(createCardReviewOverview.getCardDetailsId());
-        
+
         if (cardDetails == null)
             throw new CanDoControllerRuntimeException("Could not find carddetails with ID " + createCardReviewOverview.getCardDetailsId(), HttpStatus.NOT_FOUND);
 
@@ -331,7 +362,7 @@ public class SessionGameRestController {
 
         this.checkUserIsParticipant(user, session);
         sessionGameService.confirmReviews(session, user);
-        
+
         if (session.getSessionStatus() != SessionStatus.REVIEWING_CARDS)
             this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
 
@@ -340,8 +371,8 @@ public class SessionGameRestController {
 
     @RequestMapping(value = "/{sessionId}/positions", method = RequestMethod.PUT)
     public ResponseEntity increaseCardPriority(@AuthenticationPrincipal User user,
-                                           @PathVariable("sessionId") int sessionId,
-                                           @RequestParam("cardDetailsId") int cardDetailsId) {
+                                               @PathVariable("sessionId") int sessionId,
+                                               @RequestParam("cardDetailsId") int cardDetailsId) {
         Session session = sessionService.getSessionById(sessionId);
         CardDetails cardDetails = cardService.getCardDetailsById(cardDetailsId);
 
@@ -350,36 +381,36 @@ public class SessionGameRestController {
 
         CardPosition cardPosition = sessionGameService.increaseCardPriority(session, user, cardDetails);
         CardPositionResource cardPositionResource = mapperFacade.map(cardPosition, CardPositionResource.class);
-        
-        UserResource currentParticipantResource = 
+
+        UserResource currentParticipantResource =
                 mapperFacade.map(session.getCurrentParticipantPlaying().getParticipant(), UserResource.class);
 
         this.sendSessionCardPositionUpdate(sessionId, cardPositionResource);
         this.sendSessionCurrentParticipantUpdate(sessionId, currentParticipantResource);
-        
+
         if (session.getSessionStatus() != SessionStatus.IN_PROGRESS)
             this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
-        
+
         return new ResponseEntity<>(cardPositionResource, HttpStatus.OK);
     }
-    
+
     @RequestMapping(value = "/{sessionId}/chat", method = RequestMethod.GET)
     public ResponseEntity<List<ChatMessageResource>> getChatMessagesOfSession(@AuthenticationPrincipal User user,
-                                                                        @PathVariable("sessionId") int sessionId) {
+                                                                              @PathVariable("sessionId") int sessionId) {
         Session session = sessionService.getSessionById(sessionId);
-        
+
         if (session == null)
             throw new CanDoControllerRuntimeException("Could not find session with ID " + sessionId, HttpStatus.NOT_FOUND);
 
         checkUserIsParticipant(user, session);
         List<ChatMessageResource> chatMessageResources = mapperFacade.mapAsList(session.getChatMessages(), ChatMessageResource.class);
-        
+
         return new ResponseEntity<>(chatMessageResources, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{sessionId}/end", method = RequestMethod.POST)
     public ResponseEntity endGame(@AuthenticationPrincipal User user,
-                                           @PathVariable("sessionId") int sessionId) {
+                                  @PathVariable("sessionId") int sessionId) {
         Session session = sessionService.getSessionById(sessionId);
 
         if (session == null)
@@ -387,12 +418,12 @@ public class SessionGameRestController {
 
         checkUserIsOrganizer(user, session);
         sessionGameService.endGame(session);
-        
+
         this.sendSessionStatusUpdate(sessionId, session.getSessionStatus());
 
         return new ResponseEntity(HttpStatus.OK);
     }
-    
+
     @RequestMapping(value = "/{sessionId}/winning-cards", method = RequestMethod.GET)
     public ResponseEntity<List<CardDetailsResource>> getWinningCards(@AuthenticationPrincipal User user,
                                                                      @PathVariable("sessionId") int sessionId) {
@@ -400,31 +431,31 @@ public class SessionGameRestController {
 
         if (session == null)
             throw new CanDoControllerRuntimeException("Could not find session with ID " + sessionId, HttpStatus.NOT_FOUND);
-        
+
         checkUserIsParticipant(user, session);
         List<CardDetailsResource> cardDetailsResources = mapperFacade.mapAsList(session.getWinners(), CardDetailsResource.class);
-        
+
         return new ResponseEntity<>(cardDetailsResources, HttpStatus.OK);
     }
-    
+
     private void sendSessionCardPositionUpdate(int sessionId, CardPositionResource cardPositionResource) {
         this.simpMessagingTemplate.convertAndSend(
                 "/topic/sessions/" + sessionId + "/positions", cardPositionResource
         );
     }
-    
+
     private void sendSessionParticipantJoined(int sessionId, UserResource participant) {
         this.simpMessagingTemplate.convertAndSend(
                 "/topic/sessions/" + sessionId + "/participants", participant
         );
     }
-    
+
     private void sendSessionCurrentParticipantUpdate(int sessionId, UserResource participant) {
         this.simpMessagingTemplate.convertAndSend(
                 "/topic/sessions/" + sessionId + "/current-participant", participant
         );
     }
-    
+
     private void sendSessionStatusUpdate(int sessionId, SessionStatus sessionStatus) {
         this.simpMessagingTemplate.convertAndSend(
                 "/topic/sessions/" + sessionId + "/status", sessionStatus
