@@ -16,6 +16,9 @@ import {TokenService} from "../../services/token.service";
 import {Token} from "../../entities/authenticatie/token";
 import {ErrorDialogComponent} from "../widget/error-dialog.component";
 
+/**
+ * This component is responsible for all the functionality of the userprofile edit page
+ */
 @Component({
     selector: 'profile',
     templateUrl: 'html/userprofile-edit.html',

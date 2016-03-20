@@ -17,6 +17,9 @@ import {Session} from "../../entities/session/session";
 import {SessionService} from "../../services/session.service";
 import {SessionListItem} from "../../entities/session/session-list-item";
 
+/**
+ * This component is responsible for all the functionality of the category detail page.
+ */
 @Component({
     selector: 'category-detail',
     templateUrl: 'html/category-detail.html',

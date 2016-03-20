@@ -43,6 +43,9 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                 session_status_1 = session_status_1_1;
             }],
         execute: function() {
+            /**
+             * This component is responsible for all the functionality of the dashboard page
+             */
             DashboardComponent = (function () {
                 function DashboardComponent(_router, _organizationService, _userService, _sessionService) {
                     this._router = _router;

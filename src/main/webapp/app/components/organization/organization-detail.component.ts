@@ -10,7 +10,9 @@ import {CategoryService} from "../../services/category.service";
 import {Email} from "../../entities/user/email";
 import {CreateCategoryModel} from "../../entities/category/dto/create-category-model";
 
-
+/**
+ * This component is responsible for all the functionality of the organization detail page.
+ */
 @Component({
     selector: 'organization-detail',
     templateUrl: 'html/organization-detail.html',

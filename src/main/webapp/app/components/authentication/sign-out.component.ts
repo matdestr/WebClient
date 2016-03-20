@@ -1,6 +1,9 @@
 import {Component, Input, Inject} from 'angular2/core';
 import {Router} from "angular2/router";
 
+/**
+ * This component is responsible for all the functionality of sign out
+ */
 @Component({
     selector: 'sign-out',
     template: '<a [className]="anchorSignOutClassName" (click)="onSignOut()">Sign out</a>'

@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * This controller is responsible for all the functionality of invite.
+ */
 @RestController
 @RequestMapping(value = "/api/invitations")
 public class InvitationRestController {
@@ -32,6 +35,9 @@ public class InvitationRestController {
     @Autowired
     private MapperFacade mapperFacade;
 
+    /**
+     * Accepts an invite
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity acceptInvite(@AuthenticationPrincipal User user, @RequestParam("acceptId") String acceptId, @RequestParam("organizationId") int organizationId){
         OrganizationInvitation invitation = invitationService.getInvitationByAcceptId(acceptId);
@@ -73,6 +79,9 @@ public class InvitationRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    /**
+     * Declines an invite
+     */
     @RequestMapping(value = "/decline", method = RequestMethod.GET)
     public ResponseEntity declineInvite(@AuthenticationPrincipal User user, @RequestParam("acceptId") String acceptId, @RequestParam("organizationId") int organizationId){
         OrganizationInvitation invitation = invitationService.getInvitationByAcceptId(acceptId);
@@ -97,6 +106,9 @@ public class InvitationRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    /**
+     * Gets all the open invitations of the given user.
+     */
     @RequestMapping(value = "/open", method = RequestMethod.GET)
     public List<InvitationResource> getOpenInvitationsForUser(@AuthenticationPrincipal User user, @RequestParam("email") String email){
         if (! user.getEmail().equals(email)){

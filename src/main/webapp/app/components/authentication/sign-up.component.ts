@@ -10,6 +10,9 @@ import {User} from "../../entities/user/user";
 import {TokenService} from "../../services/token.service";
 import {ErrorDialogComponent} from "../widget/error-dialog.component";
 
+/**
+ * This component is responsible for all the functionality of the sign up page
+ */
 @Component({
     selector: 'sign-up',
     templateUrl: 'html/sign-up.html',

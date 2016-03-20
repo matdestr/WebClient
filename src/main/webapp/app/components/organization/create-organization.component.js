@@ -37,6 +37,9 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../e
                 error_dialog_component_1 = error_dialog_component_1_1;
             }],
         execute: function() {
+            /**
+             * This component is responsible for all the functionality of the create organization page.
+             */
             CreateOrganizationComponent = (function () {
                 function CreateOrganizationComponent(_organizationService, _router) {
                     this._organizationService = _organizationService;

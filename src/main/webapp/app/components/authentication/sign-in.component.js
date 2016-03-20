@@ -34,6 +34,9 @@ System.register(['angular2/core', "angular2/common", "angular2/router", "../../s
                 core_2 = core_2_1;
             }],
         execute: function() {
+            /**
+             * This component is responsible for all the functionality of the sign in page.
+             */
             SignInComponent = (function () {
                 function SignInComponent(_signInService, _tokenService, _router) {
                     this._signInService = _signInService;

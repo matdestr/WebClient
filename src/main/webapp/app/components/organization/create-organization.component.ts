@@ -12,6 +12,9 @@ import {ToolbarComponent} from "../widget/toolbar.component";
 import {ErrorDialogComponent} from "../widget/error-dialog.component";
 import {Response} from "angular2/http";
 
+/**
+ * This component is responsible for all the functionality of the create organization page.
+ */
 @Component({
     selector: 'create-organization',
     templateUrl: 'html/create-organization.html',

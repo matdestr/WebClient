@@ -10,6 +10,9 @@ import {OrganizationService} from "../../services/organization.service";
 import {routerCanDeactivate} from "angular2/src/router/lifecycle_annotations_impl";
 import {ErrorDialogComponent} from "../widget/error-dialog.component";
 
+/**
+ * This component is responsible for all the functionality of the invitation page.
+ */
 @Component({
     selector: 'invitation',
     templateUrl : 'html/invitation.html',
