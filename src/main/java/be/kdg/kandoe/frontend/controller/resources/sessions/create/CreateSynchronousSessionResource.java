@@ -1,10 +1,12 @@
 package be.kdg.kandoe.frontend.controller.resources.sessions.create;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+
+/**
+ * Session resource for the creation of a SynchronousSession
+ */
 
 @Data
 public class CreateSynchronousSessionResource extends CreateSessionResource {

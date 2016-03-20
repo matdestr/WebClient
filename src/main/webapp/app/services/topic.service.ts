@@ -11,6 +11,9 @@ import {URLSearchParams} from "angular2/http";
 
 import {CreateTopicModel} from "../entities/topic/create-topic-model";
 
+/**
+ * Service for doing http calls for topics endpoint
+ */
 
 @Injectable()
 export class TopicService {

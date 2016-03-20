@@ -1,9 +1,10 @@
 package be.kdg.kandoe.frontend.config.filters;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
-import javax.servlet.Filter;
+/**
+ * Filter for catching the MaxFileUploadException
+ */
 
 public class MaxFileUploadExceptionFilter extends DelegatingFilterProxy {
 }

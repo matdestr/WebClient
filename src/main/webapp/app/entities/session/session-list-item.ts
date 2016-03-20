@@ -1,6 +1,10 @@
 import {Serializable} from "../../util/serializable";
 import {SessionStatus} from "./session-status";
 
+/**
+ * Entity that represents a SessionListItem JSON object
+ */
+
 export class SessionListItem implements Serializable<SessionListItem>{
     public  sessionId:number;
     public  organizationTitle:string;

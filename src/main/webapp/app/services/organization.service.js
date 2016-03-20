@@ -1,4 +1,6 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angular2-jwt', "angular2/http"], function(exports_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angular2-jwt'], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -17,16 +19,17 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
             },
             function (http_1_1) {
                 http_1 = http_1_1;
+                http_2 = http_1_1;
+                http_3 = http_1_1;
             },
             function (_1) {},
             function (angular2_jwt_1_1) {
                 angular2_jwt_1 = angular2_jwt_1_1;
-            },
-            function (http_2_1) {
-                http_2 = http_2_1;
-                http_3 = http_2_1;
             }],
         execute: function() {
+            /**
+             * Service for doing http calls for Organization endpoint
+             */
             OrganizationService = (function () {
                 function OrganizationService(_http, _authHttp) {
                     this._http = _http;
@@ -76,7 +79,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../libraries/angu
                     __metadata('design:paramtypes', [http_1.Http, angular2_jwt_1.AuthHttp])
                 ], OrganizationService);
                 return OrganizationService;
-            })();
+            }());
             exports_1("OrganizationService", OrganizationService);
         }
     }

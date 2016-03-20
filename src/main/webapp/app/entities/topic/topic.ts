@@ -1,5 +1,9 @@
 import {Serializable} from "../../util/serializable";
 
+/**
+ * Entity that represents a topic JSON object
+ */
+
 export class Topic implements Serializable<Topic>{
     public topicId: number;
     public name : string;

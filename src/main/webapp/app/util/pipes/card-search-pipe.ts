@@ -1,6 +1,10 @@
 import {Pipe, PipeTransform} from 'angular2/core'
 import {CardDetails} from "../../entities/category/card-details";
 
+/**
+ * Pipe for filtering cards
+ */
+
 @Pipe({
     name: "cardSearch"
 })

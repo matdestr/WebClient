@@ -19,6 +19,9 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Controller for Facebook Authentication
+ */
 
 @RestController()
 @RequestMapping(value = "/api/social/facebook")

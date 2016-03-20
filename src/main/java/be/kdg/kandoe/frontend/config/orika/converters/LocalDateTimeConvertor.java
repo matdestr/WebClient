@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+/**
+ * Converter used by orika to be able to convert a {@link LocalDateTime} object
+ */
+
 @Component
 public class LocalDateTimeConvertor extends BidirectionalConverter<LocalDateTime, LocalDateTime>
 {

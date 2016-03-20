@@ -9,6 +9,10 @@ import 'rxjs/add/operator/map';
 import {JwtHelper} from "../libraries/angular2-jwt";
 import {Inject} from "angular2/core";
 
+/**
+ * Service for doing http calls for token endpoint
+ */
+
 @Injectable()
 export class TokenService {
     public static tokenEndpoint:string = "./oauth/token";

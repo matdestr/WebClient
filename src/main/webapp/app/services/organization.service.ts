@@ -11,6 +11,10 @@ import {RequestOptionsArgs} from "angular2/http";
 import {RequestOptions} from "angular2/http";
 import {URLSearchParams} from "angular2/http";
 
+/**
+ * Service for doing http calls for Organization endpoint
+ */
+
 @Injectable()
 export class OrganizationService {
     public static endPoint:string = "./api/organizations/";

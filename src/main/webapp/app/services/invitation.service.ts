@@ -5,6 +5,10 @@ import 'rxjs/Rx';
 import {Headers, Response, RequestOptions} from 'angular2/http';
 import {URLSearchParams} from "angular2/http";
 
+/**
+ * Service for doing http calls for Invitation endpoint
+ */
+
 @Injectable()
 export class InvitationService {
     private static endPoint:string = "./api/invitations";

@@ -7,6 +7,10 @@ import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 import org.springframework.stereotype.Component;
 
+/**
+ * Orika mapper for the Organization and OrganizationResource
+ */
+
 @Component
 public class OrganizationResourceMapper extends CustomMapper<Organization, OrganizationResource>{
     @Override

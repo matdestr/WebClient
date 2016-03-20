@@ -21,6 +21,10 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Configuration class for SpringMVC
+ */
+
 @Configuration
 @EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -103,7 +107,5 @@ public class WebContextConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         super.addFormatters(registry);
-        //registry.addConverter(new LocalDateTimeConverter("yyyy-MM-dd HH:mm"));
-        //registry.addFormatter(new LocalDateTimeFormatter("yyyy-MM-dd HH:mm"));
     }
 }

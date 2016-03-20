@@ -33,6 +33,10 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * Rest controller for the game session.
+ */
+
 @RestController
 @RequestMapping("/api/sessions")
 @PreAuthorize("isAuthenticated()")

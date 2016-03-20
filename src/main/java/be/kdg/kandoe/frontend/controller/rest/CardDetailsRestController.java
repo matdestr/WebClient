@@ -24,6 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Rest controller that exposes {@link CardDetails} model
+ */
+
 @RestController
 @RequestMapping("/api/carddetails")
 public class CardDetailsRestController {

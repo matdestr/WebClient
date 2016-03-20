@@ -1,6 +1,10 @@
 import {CardDetails} from "../category/card-details";
 import {Serializable} from "../../util/serializable";
 
+/**
+ * Entity that represents a CardPosition JSON object
+ */
+
 export class CardPosition implements Serializable<CardPosition> {
     /*public cardDetailsId : number;
     public text : string;
@@ -13,8 +17,7 @@ export class CardPosition implements Serializable<CardPosition> {
     public cardHeight : number;
     public positionLeft : number;
     public positionTop : number;
-    
-    // TODO : All-args constructor obsolete ??
+
     constructor(cardDetails : CardDetails, priority : number,
                 cardWidth : number, cardHeight : number, positionLeft : number, positionTop : number) {
         /*this.cardDetailsId = cardDetailsId;

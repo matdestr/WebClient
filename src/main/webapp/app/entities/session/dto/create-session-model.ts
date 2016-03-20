@@ -1,4 +1,9 @@
 import DateTimeFormat = Intl.DateTimeFormat;
+
+/**
+ * entity for the creation of a session
+ */
+
 export class CreateSessionModel {
     categoryId: number = 0;
     topicId: number = null;

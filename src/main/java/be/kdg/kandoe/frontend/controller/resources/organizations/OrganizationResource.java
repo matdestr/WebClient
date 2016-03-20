@@ -2,9 +2,12 @@ package be.kdg.kandoe.frontend.controller.resources.organizations;
 
 import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.List;
+
+/**
+ * Resource for an organization
+ */
 
 @Data
 public class OrganizationResource {

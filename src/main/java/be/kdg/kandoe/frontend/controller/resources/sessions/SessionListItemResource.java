@@ -7,7 +7,10 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-//@NoArgsConstructor
+/**
+ * Resource for the {@link SessionListItemResource}
+ */
+
 @Data
 public class SessionListItemResource {
     private int sessionId;

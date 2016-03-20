@@ -1,3 +1,6 @@
+/**
+ * Static class that contains known HttpStatus codes
+ */
 export class HttpStatus {
 
     // section 2xx

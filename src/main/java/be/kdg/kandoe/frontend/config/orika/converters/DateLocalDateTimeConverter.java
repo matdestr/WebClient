@@ -8,6 +8,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+/**
+ * Converter used by orika for converting from Date to LocalDateTime and vice versa
+ */
+
 @Component
 public class DateLocalDateTimeConverter extends BidirectionalConverter<Date, LocalDateTime> {
     @Override

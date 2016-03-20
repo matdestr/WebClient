@@ -1,5 +1,9 @@
 import {Serializable} from "../../util/serializable";
 
+/***
+ * Entity that represent an User json object
+ */
+
 export class User implements Serializable<User> {
     public userId:number;
     public username:string;

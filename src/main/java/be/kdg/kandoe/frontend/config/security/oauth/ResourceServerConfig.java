@@ -6,6 +6,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
+/**
+ * This class configures the resource server for use of OAuth 2.0
+ */
+
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig  extends ResourceServerConfigurerAdapter{

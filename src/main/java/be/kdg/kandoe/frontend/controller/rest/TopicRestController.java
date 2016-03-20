@@ -53,9 +53,6 @@ public class TopicRestController {
         this.sessionService = sessionService;
     }
 
-    /**
-     * Creates a topic from the given CreateTopicResource
-     */
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<TopicResource> createTopic(@AuthenticationPrincipal User user,
@@ -73,9 +70,6 @@ public class TopicRestController {
         return new ResponseEntity<>(mapper.map(topic, TopicResource.class), HttpStatus.CREATED);
     }
 
-    /**
-     * Returns all the topics of the requested category
-     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<TopicResource>> getTopics(@RequestParam("categoryId") int categoryId) {
         List<Topic> topics = topicService.getTopicsByCategoryId(categoryId);
@@ -83,9 +77,6 @@ public class TopicRestController {
         return new ResponseEntity<>(mapper.mapAsList(topics, TopicResource.class), HttpStatus.OK);
     }
 
-    /**
-     * Returns the requested topic
-     */
     @RequestMapping(value = "/{topicId}", method = RequestMethod.GET)
     public ResponseEntity<TopicResource> getTopic(@PathVariable("topicId") int topicId) {
         Topic topic = topicService.getTopicByTopicId(topicId);
@@ -93,9 +84,6 @@ public class TopicRestController {
         return new ResponseEntity<>(mapper.map(topic, TopicResource.class), HttpStatus.OK);
     }
 
-    /**
-     * Returns all the sessions of the requested topic.
-     */
     @RequestMapping(value = "/{topicId}/sessions", method = RequestMethod.GET)
     public ResponseEntity<List<SessionResource>> getSessionsFromTopic(@PathVariable("topicId") int topicId) {
 
@@ -116,12 +104,8 @@ public class TopicRestController {
             sessionResources.add(resource);
         }
         return new ResponseEntity<>(sessionResources, HttpStatus.OK);
-        //return new ResponseEntity<>(mapper.mapAsList(sessions, SessionResource.class), HttpStatus.OK);
     }
 
-    /**
-     * Updates the name of the given topic.
-     */
     @RequestMapping(value = "/{topicId}", method = RequestMethod.PUT)
     public ResponseEntity setTopicName(@PathVariable("topicId") int topicId, @RequestParam(value="topicName")String topicName){
         Topic topic = topicService.getTopicByTopicId(topicId);

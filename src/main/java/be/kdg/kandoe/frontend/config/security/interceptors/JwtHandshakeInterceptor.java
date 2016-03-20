@@ -25,6 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class that adds the possibility to have JWT authentication via websockets
+ */
+
 public class JwtHandshakeInterceptor implements HandshakeInterceptor {
     private Logger logger = LoggerFactory.getLogger(JwtHandshakeInterceptor.class);
     private JwtAccessTokenConverter accessTokenConverter;

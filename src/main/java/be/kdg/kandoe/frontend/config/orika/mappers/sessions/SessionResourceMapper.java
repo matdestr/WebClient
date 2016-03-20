@@ -11,6 +11,10 @@ import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 import org.springframework.stereotype.Component;
 
+/**
+ * Orika mapper for Session and SessionResource
+ */
+
 @Component
 public class SessionResourceMapper extends CustomMapper<Session, SessionResource> {
     @Override

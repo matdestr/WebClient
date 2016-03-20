@@ -8,20 +8,13 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-//@NoArgsConstructor
+/**
+ * Resource for the {@link be.kdg.kandoe.backend.model.sessions.Session}
+ */
+
 @Data
 public class SessionResource {
-    /*private int sessionId;
-    private int organizerId;
-    private List<UserResource> participants = new ArrayList<>();
-    private int topicId;
-    private String url;
-    private boolean commentsAllowed;
-    private boolean userCanAddCards;
-    private int minNumberOfCards;
-    private int maxNumberOfCards;
-    private boolean finished;*/
-    
+
     private int sessionId;
     private int categoryId;
     private Integer topicId;
