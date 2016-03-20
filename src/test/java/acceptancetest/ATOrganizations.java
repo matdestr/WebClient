@@ -12,8 +12,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.List;
-
 public class ATOrganizations {
     private String baseUrl;
     private String username = "user";
@@ -27,14 +25,14 @@ public class ATOrganizations {
         LoginHelper.login(driver, username, password);
         driver.get(String.format("%s/#/organization/create", baseUrl));
     }
-    
+
     @Test
     public void testCreateNewOrganization() {
 
         (new WebDriverWait(driver, 5)).until(
                 (WebDriver d) -> d.findElement(By.name("new-organization")) != null
         );
-        
+
         WebElement newOrganizationButton = driver.findElement(By.name("new-organization"));
         newOrganizationButton.click();
 
@@ -44,7 +42,7 @@ public class ATOrganizations {
         );
 
         WebElement nameElement=driver.findElement(By.name("organization-name"));
-        InputHelper.sendKeys(driver,nameElement,"Karel de grote4");
+        InputHelper.sendKeys(driver,nameElement,"Karel de grote");
 
         driver.findElement(By.name("add-organization")).click();
 
@@ -55,8 +53,6 @@ public class ATOrganizations {
 
         driver.findElement(By.name("my-organizations")).click();
 
-
     }
-
 
 }

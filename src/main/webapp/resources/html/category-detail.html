@@ -59,7 +59,7 @@
             <div class="fabsContainer">
                 <h2 class="marDetailLeftSubTitle">Topics</h2>
                 <a class=" marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
-                   (click)="toAddNewTopic(category.categoryId)"><i class="material-icons">add</i></a>
+                   (click)="toAddNewTopic(category.categoryId)" name="new-topic"><i class="material-icons">add</i></a>
             </div>
 
             <div class="organization-arrow">
@@ -67,7 +67,7 @@
                     <i></i><i></i></button>
             </div>
             <div *ngFor="#topic of topicSubSet">
-                <div class="black-block" (click)="toTopic(topic.topicId)">
+                <div class="black-block" (click)="toTopic(topic.topicId)" [attr.name]="topic.name">
                     <h3 class="text-center">{{topic.name}}</h3>
                     <h6 class="text-center"><i class="glyphicon glyphicon-pencil"></i> {{topic.description}}</h6>
                 </div>
@@ -80,7 +80,7 @@
             <div class="fabsContainer" style="margin-top: 12em">
                 <h2 class="marDetailLeftSubTitle">Cards</h2>
                 <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
-                   (click)="toAddNewCard(category.categoryId)"><i class="material-icons">add</i></a>
+                   (click)="toAddNewCard(category.categoryId)" name="new-card"><i class="material-icons">add</i></a>
             </div>
 
             <ul style="margin-left: 3em">
@@ -155,7 +155,7 @@
                     <i></i><i></i></button>
             </div>
             <div *ngFor="#session of sessionSubset">
-                <div class="black-block" (click)="toSession(session.sessionId)">
+                <div class="black-block" (click)="toSession(session.sessionId)" [attr.name]="session.sessionId">
                     <h3 class="text-center">Session {{session.sessionId}}</h3>
                     <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}}
                         Participant(s)</h6>

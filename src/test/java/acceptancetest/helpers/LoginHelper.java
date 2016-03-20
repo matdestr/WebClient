@@ -52,6 +52,9 @@ public class LoginHelper {
         String baseUrl = System.getProperty("app.baseUrl");
         driver.get(baseUrl);
 
+        (new WebDriverWait(driver, 5)).until(
+                (WebDriver d) -> d.findElement(By.name("form-sign-in")) != null
+        );
         WebElement loginForm = driver.findElement(By.name("form-sign-in"));
 
 
