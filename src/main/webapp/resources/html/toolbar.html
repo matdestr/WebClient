@@ -30,7 +30,7 @@
                         </a>
                         <ul class="toolbar-dropdown-menu dropdown-menu">
                             <li *ngFor="#org of organizations">
-                                <a class="toolbar-dropdown-menu-item" (click)="toOrganization(org.organizationId)"> {{org.name}}</a>
+                                <a class="toolbar-dropdown-menu-item" (click)="toOrganization(org.organizationId)" [name]="org.name"> {{org.name}}</a>
                             </li>
                         </ul>
                     </li>

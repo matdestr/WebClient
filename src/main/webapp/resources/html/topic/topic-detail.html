@@ -58,7 +58,7 @@
             <div class="fabsContainer">
                 <h2 class="marDetailLeftSubTitle">Cards</h2>
                 <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
-                   (click)="openCardChooser()"><i class="material-icons">add</i></a>
+                   (click)="openCardChooser()" name="add-card"><i class="material-icons">add</i></a>
             </div>
 
             <div style="margin-left: 4em">
@@ -83,16 +83,16 @@
             <div class="fabsContainer">
                 <h2 class="marDetailLeftSubTitle">Sessions</h2>
                 <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
-                   (click)="toAddNewSession(topic.categoryId,topic.topicId)"><i class="material-icons">add</i></a>
+                   (click)="toAddNewSession(topic.categoryId,topic.topicId)" name="new-session"><i class="material-icons">add</i></a>
             </div>
 
-            <div style="margin-top: 5em;margin-left: 4em">
+            <div style="margin-top: 5em;margin-left: 4em; margin-bottom: 2em">
                 <div class="organization-arrow" style="margin-top: -80px">
                     <button class="paginate left" (click)="previousSesPage()" [style.display]="myLeftSesDisplay">
                         <i></i><i></i></button>
                 </div>
                 <div *ngFor="#session of sessionSubset">
-                    <div class="black-block" (click)="toSession(session.sessionId)">
+                    <div class="black-block" (click)="toSession(session.sessionId)" [attr.name]="session.sessionId">
                         <h3 class="text-center">Session {{session.sessionId}}</h3>
                         <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}}
                             Participant(s)</h6>

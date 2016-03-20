@@ -19,7 +19,9 @@
                          [cardClassName]="'card-small'"
                          [selectable]="true"
                          [clickable]="true"
-                         (cardClick)="onCategoryCardClick($event)">
+                         (cardClick)="onCategoryCardClick($event)"
+                         name = "{{catCard.text}}"
+            >
             </card-detail>
         </ul>
 
@@ -30,7 +32,7 @@
                     class="add-new-button">
                 <i class="glyphicon glyphicon-floppy-disk"></i> Create
             </button>
-            <button type="button" class="add-new-button add-new-button-secondary" (click)="navigateUp()">Dismiss</button>
+            <button type="button" class="add-new-button add-new-button-secondary" (click)="navigateUp()" name="dismiss">Dismiss</button>
         </div>
     </div>
 

@@ -1,78 +1,90 @@
 <toolbar></toolbar>
-<div id="main-content-detail" >
+<div id="main-content-detail">
     <div id="container">
         <h1 class="marDetailLeftTitle">My Dashboard</h1>
         <h2 class="marDetailLeft" style="margin-bottom: 1em">All Organizations</h2>
         <div>
             <div class="organization-arrow">
-                <button class="paginate left" (click)="previousOrgPage()" [style.display]="myLeftDisplay"><i></i><i></i></button>
+                <button class="paginate left" (click)="previousOrgPage()" [style.display]="myLeftDisplay"><i></i><i></i>
+                </button>
             </div>
-                <div *ngFor="#organization of organizationsSubSet" class="black-block text-center" (click)="toOrganization(organization.organizationId)">
-                    <p class="organization-block-text">{{organization.name}}</p>
-                </div>
+            <div *ngFor="#organization of organizationsSubSet" class="black-block text-center"
+                 (click)="toOrganization(organization.organizationId)">
+                <p class="organization-block-text">{{organization.name}}</p>
+            </div>
             <div class="organization-arrow">
-                <button class="paginate right" style="float: right" (click)="nextOrgPage()" [style.display]="myRightDisplay"><i></i><i></i></button>
+                <button class="paginate right" style="float: right" (click)="nextOrgPage()"
+                        [style.display]="myRightDisplay"><i></i><i></i></button>
             </div>
         </div>
         <div class="counter"></div>
 
 
-
         <h2 class="header-for-block">Active Sessions</h2>
-        <div class="organization-arrow" >
-            <button class="paginate left" (click)="previousActiveSesPage()"  [style.display]="myLeftActDisplay"><i></i><i></i></button>
+        <div class="organization-arrow">
+            <button class="paginate left" (click)="previousActiveSesPage()" [style.display]="myLeftActDisplay">
+                <i></i><i></i></button>
         </div>
         <div *ngFor="#session of activeSessionsSubset">
-        <div class="red-block" (click)="toSession(session.sessionId)">
-            <h3 class="text-center">Session {{session.sessionId}}</h3>
-            <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}} Participant(s)</h6>
-            <h6 class="text-center"><i class="glyphicon glyphicon-globe"></i> {{session.organizationTitle}}</h6>
-            <!-- <div  class="progressdiv">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar"
-                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
-                        60%
+            <div class="red-block" (click)="toSession(session.sessionId)">
+                <h3 class="text-center">Session {{session.sessionId}}</h3>
+                <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}}
+                    Participant(s)</h6>
+                <h6 class="text-center"><i class="glyphicon glyphicon-globe"></i> {{session.organizationTitle}}</h6>
+                <!-- <div  class="progressdiv">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar"
+                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
+                            60%
+                        </div>
                     </div>
                 </div>
+                <h6 style="margin-left: 10%">5h 30m 64sec</h6>    -->
             </div>
-            <h6 style="margin-left: 10%">5h 30m 64sec</h6>    -->
-        </div>
         </div>
         <div class="organization-arrow">
-            <button class="paginate right" style="float: right" (click)="nextActiveSesPage()"  [style.display]="myRightActDisplay"><i></i><i></i></button>
+            <button class="paginate right" style="float: right" (click)="nextActiveSesPage()"
+                    [style.display]="myRightActDisplay"><i></i><i></i></button>
         </div>
 
 
         <h2 class="header-for-block">Future Sessions</h2>
 
-        <div class="organization-arrow" >
-            <button class="paginate left" (click)="previousFutSesPage()"  [style.display]="myLeftFutDisplay"><i></i><i></i></button>
+        <div class="organization-arrow">
+            <button class="paginate left" (click)="previousFutSesPage()" [style.display]="myLeftFutDisplay">
+                <i></i><i></i></button>
         </div>
         <div *ngFor="#session of futureSessionsSubset">
             <div class="red-block" (click)="toSession(session.sessionId)">
                 <h3 class="text-center">Session {{session.sessionId}}</h3>
-                <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}} Participant(s)</h6>
+                <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}}
+                    Participant(s)</h6>
                 <h6 class="text-center"><i class="glyphicon glyphicon-globe"></i> {{session.organizationTitle}}</h6>
             </div>
         </div>
         <div class="organization-arrow">
-            <button class="paginate right" style="float: right" (click)="nextFutSesPage()"  [style.display]="myRightFutDisplay"><i></i><i></i></button>
+            <button class="paginate right" style="float: right" (click)="nextFutSesPage()"
+                    [style.display]="myRightFutDisplay"><i></i><i></i></button>
         </div>
 
         <h2 class="header-for-block">Previous Sessions</h2>
-        <div class="organization-arrow" >
-            <button class="paginate left" (click)="previousPrevSesPage()"  [style.display]="myLeftPrevDisplay"><i></i><i></i></button>
-        </div>
-        <div *ngFor="#session of previousSessionsSubset">
-            <div class="red-block" (click)="toSession(session.sessionId)">
-                <h3 class="text-center">Session {{session.sessionId}}</h3>
-                <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}} Participant(s)</h6>
-                <h6 class="text-center"><i class="glyphicon glyphicon-globe"></i> {{session.organizationTitle}}</h6>
+            <div class="organization-arrow">
+                <button class="paginate left" (click)="previousPrevSesPage()" [style.display]="myLeftPrevDisplay">
+                    <i></i><i></i></button>
             </div>
-        </div>
-        <div class="organization-arrow">
-            <button class="paginate right" style="float: right" (click)="nextPrevSesPage()"  [style.display]="myRightPrevDisplay"><i></i><i></i></button>
-        </div>
+            <div *ngFor="#session of previousSessionsSubset">
+                <div class="red-block" style="margin-bottom: 2em" (click)="toSession(session.sessionId)">
+                    <h3 class="text-center">Session {{session.sessionId}}</h3>
+                    <h6 class="text-center"><i class="glyphicon glyphicon-user"></i> {{session.participantAmount}}
+                        Participant(s)</h6>
+                    <h6 class="text-center"><i class="glyphicon glyphicon-globe"></i> {{session.organizationTitle}}</h6>
+                </div>
+            </div>
+            <div class="organization-arrow">
+                <button class="paginate right" style="float: right" (click)="nextPrevSesPage()"
+                        [style.display]="myRightPrevDisplay"><i></i><i></i></button>
+            </div>
+
     </div>
 </div>
 

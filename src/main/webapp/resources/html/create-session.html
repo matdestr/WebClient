@@ -27,7 +27,7 @@
 
                             <div class="radio-button-type">
                                 <label>
-                                    <input id="radio-button-async" name="type" type="radio" value="async"
+                                    <input id="radio-button-async" name="asynchronous" type="radio" value="async"
                                            (click)="async()"
                                            required/>
                                     Asynchronous
@@ -35,7 +35,7 @@
                             </div>
                             <div class="radio-button-type">
                                 <label>
-                                    <input id="radio-button-sync" name="type" type="radio" value="sync" (click)="sync()"
+                                    <input id="radio-button-sync" name="synchronous" type="radio" value="sync" (click)="sync()"
                                     />
                                     Synchronous
                                 </label>
@@ -46,7 +46,7 @@
                         <div class="input-group forms-input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-minus"></i></span>
                             <input id="minNumberOfCardsPerParticipant"
-                                   name="minNumberOfCardsPerParticipant-name"
+                                   name="minNumberOfCardsPerParticipant"
                                    class="form-control"
                                    type="number"
                                    placeholder="Minimum number of cards per participant"
@@ -58,7 +58,7 @@
                         <div class="input-group forms-input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
                             <input id="maxNumberOfCardsPerParticipant"
-                                   name="maxNumberOfCardsPerParticipant-name"
+                                   name="maxNumberOfCardsPerParticipant"
                                    class="form-control"
                                    type="number"
                                    placeholder="Maximum number of cards per participant"
@@ -70,7 +70,7 @@
                         <div class="input-group forms-input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                             <input id="amountOfCircles"
-                                   name="amountOfCircles-name"
+                                   name="amountOfCircles"
                                    class="form-control"
                                    type="number"
                                    placeholder="Amount of circles"
@@ -84,7 +84,7 @@
                         <div id="date" class="input-group forms-input-group">
                             <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                             <input id="startDateTime"
-                                   name="startDateTime-name"
+                                   name="startDateTime"
                                    class="form-control"
                                    type="datetime-local"
                                    placeholder="Date of the start of the session"
@@ -105,14 +105,14 @@
 
 
                         <label class="sessionCheckBox"><input id="participantsCanAddCards"
-                                                              name="participantsCanAddCards-name"
+                                                              name="participantsCanAddCards"
                                                               class="sessionCheckBox"
                                                               type="checkbox"
                                                               #categoryName="ngForm"
                                                               [(ngModel)]="model.participantsCanAddCards">Add cards</label>
 
                         <label class="sessionCheckBox"><input id="cardCommentsAllowed"
-                                                              name="cardCommentsAllowed-name"
+                                                              name="cardCommentsAllowed"
                                                               type="checkbox"
                                                               #categoryName="ngForm"
                                                               [(ngModel)]="model.cardCommentsAllowed">Card comments</label>
