@@ -14,6 +14,7 @@ import be.kdg.kandoe.backend.service.api.UserService;
 import be.kdg.kandoe.frontend.controller.resources.cards.CardDetailsResource;
 import be.kdg.kandoe.frontend.controller.resources.cards.CommentResource;
 import be.kdg.kandoe.frontend.controller.resources.cards.CreateCardDetailsResource;
+import be.kdg.kandoe.frontend.controller.resources.organizations.EmailResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.CardPositionResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.chat.ChatMessageResource;
 import be.kdg.kandoe.frontend.controller.resources.sessions.reviews.CreateCardReviewOverview;
@@ -29,7 +30,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -95,6 +95,21 @@ public class SessionGameRestController {
         }
     }
 
+    @RequestMapping(value = "/{sessionId}/invite-all", method = RequestMethod.POST)
+    public ResponseEntity inviteUsers(@AuthenticationPrincipal User user,
+                                      @PathVariable("sessionId") int sessionId,
+                                      @RequestBody List<EmailResource> emails) {
+        Session session = sessionService.getSessionById(sessionId);
+
+        for (EmailResource email : emails) {
+            User userToInvite = userService.getUserByEmail(email.getEmail());
+            checkUserIsOrganizer(user, session);
+            sessionGameService.inviteUserForSession(session, userToInvite);
+        }
+
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
     @RequestMapping(value = "/{sessionId}/invite/confirm", method = RequestMethod.POST)
     public ResponseEntity inviteUser(@AuthenticationPrincipal User user,
                                      @PathVariable("sessionId") int sessionId) {
@@ -124,9 +139,9 @@ public class SessionGameRestController {
     }
 
     //Todo reset status
-    @RequestMapping(value = "/{sessionId}/decline", method= RequestMethod.POST)
+    @RequestMapping(value = "/{sessionId}/decline", method = RequestMethod.POST)
     public ResponseEntity declineSession(@AuthenticationPrincipal User user,
-                                         @PathVariable("sessionId") int sessionId){
+                                         @PathVariable("sessionId") int sessionId) {
         Session session = sessionService.getSessionById(sessionId);
 
         checkUserIsParticipant(user, session);
@@ -332,7 +347,7 @@ public class SessionGameRestController {
         if (session == null)
             throw new CanDoControllerRuntimeException("Could not find session with ID " + sessionId, HttpStatus.NOT_FOUND);
 
-        if (session.getSessionStatus() != SessionStatus.REVIEWING_CARDS || !session.isCardCommentsAllowed()){
+        if (session.getSessionStatus() != SessionStatus.REVIEWING_CARDS || !session.isCardCommentsAllowed()) {
             throw new CanDoControllerRuntimeException("Session is not in review modus or comments allowed");
         }
 
@@ -343,7 +358,7 @@ public class SessionGameRestController {
         if (cardDetails == null)
             throw new CanDoControllerRuntimeException("Could not find carddetails with ID " + createCardReviewOverview.getCardDetailsId(), HttpStatus.NOT_FOUND);
 
-        Comment comment = cardService.addReview(user, cardDetails, createCardReviewOverview.getMessage() );
+        Comment comment = cardService.addReview(user, cardDetails, createCardReviewOverview.getMessage());
         CommentResource commentResource = mapperFacade.map(comment, CommentResource.class);
 
         return new ResponseEntity<>(commentResource, HttpStatus.CREATED);
@@ -356,7 +371,7 @@ public class SessionGameRestController {
         if (session == null)
             throw new CanDoControllerRuntimeException("Could not find session with ID " + sessionId, HttpStatus.NOT_FOUND);
 
-        if (session.getSessionStatus() != SessionStatus.REVIEWING_CARDS || !session.isCardCommentsAllowed()){
+        if (session.getSessionStatus() != SessionStatus.REVIEWING_CARDS || !session.isCardCommentsAllowed()) {
             throw new CanDoControllerRuntimeException("Session is not in review modus or comments allowed");
         }
 

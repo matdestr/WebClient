@@ -107,7 +107,6 @@ public class ITCategoryRestController {
 
     @Test
     public void testCreateCategoryAndGetCreatedCategory() throws Exception {
-
         CreateCategoryResource categoryResource = new CreateCategoryResource();
         categoryResource.setName("test-category");
         categoryResource.setDescription("This is a test category for test purposes only.");
@@ -139,6 +138,57 @@ public class ITCategoryRestController {
                 .andExpect(jsonPath("$.name", is("test-category")))
                 .andExpect(jsonPath("$.description", is("This is a test category for test purposes only.")))
                 .andExpect(jsonPath("$.organizationId", is(organization1.getOrganizationId())));
+    }
+
+    @Test
+    public void testCreateCategoryByCoOrganizator() throws Exception {
+        User coOrganizator = new User("coOrganizator", "pass");
+        coOrganizator.setEmail("coOrganizator@localhost");
+        userService.addUser(coOrganizator);
+
+        organization1.addOrganizer(coOrganizator);
+        organizationService.updateOrganization(organization1);
+
+        String coOrganizatorToken = TokenProvider.getToken(mockMvc, clientDetails, coOrganizator.getUsername(), "pass");
+        String coOrganizatorHeader = String.format("Bearer %s", coOrganizatorToken);
+
+        CreateCategoryResource categoryResource = new CreateCategoryResource();
+        categoryResource.setName("test-category");
+        categoryResource.setDescription("This is a test category for test purposes only.");
+
+        JSONObject jsonObject = new JSONObject(categoryResource);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post(baseApiUrl)
+                        .header("Authorization", coOrganizatorHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("organizationId", String.valueOf(organization1.getOrganizationId())))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+    }
+
+    @Test
+    public void testCreateCategoryByNonOrganizator() throws Exception {
+        User nonOrganizationUser = new User("nonorganizator", "pass");
+        nonOrganizationUser.setEmail("nonorganizator@localhost");
+        userService.addUser(nonOrganizationUser);
+
+        String nonOrganizationToken = TokenProvider.getToken(mockMvc, clientDetails, nonOrganizationUser.getUsername(), "pass");
+        String nonOrganizationHeader = String.format("Bearer %s", nonOrganizationToken);
+
+        CreateCategoryResource categoryResource = new CreateCategoryResource();
+        categoryResource.setName("test-category");
+        categoryResource.setDescription("This is a test category for test purposes only.");
+
+        JSONObject jsonObject = new JSONObject(categoryResource);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post(baseApiUrl)
+                        .header("Authorization", nonOrganizationHeader)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("organizationId", String.valueOf(organization1.getOrganizationId())))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test

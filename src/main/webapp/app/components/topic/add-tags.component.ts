@@ -8,6 +8,9 @@ import {Topic} from "../../entities/topic/topic";
 import {CategoryService} from "../../services/category.service";
 import {Category} from "../../entities/category/category";
 
+/**
+ * This component is responsible for all the functionality  of the add tags page
+ */
 @Component({
     selector: 'add-tag',
     templateUrl: 'html/add-tags.html',

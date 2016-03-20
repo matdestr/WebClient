@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
-
+/**
+ * This controller is responsible for all the functionality of a organization.
+ */
 @RestController
 @RequestMapping("/api/organizations")
 public class OrganizationRestController {
@@ -38,6 +40,9 @@ public class OrganizationRestController {
     @Autowired
     private MapperFacade mapperFacade;
 
+    /**
+     * Creates an organization from the given CreateOrganizationResource.
+     */
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createOrganization(@AuthenticationPrincipal User user,
@@ -60,6 +65,9 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resultResource, HttpStatus.CREATED);
     }
 
+    /**
+     * Updates an organization.
+     */
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity updateOrganization(@AuthenticationPrincipal User user,
@@ -74,6 +82,9 @@ public class OrganizationRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    /**
+     * Adds users from the given list with emails to the organization with the given organizationID
+     */
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/add/{organizationId}", method = RequestMethod.POST)
     public ResponseEntity addUsersToOrganization(@AuthenticationPrincipal User user,
@@ -113,12 +124,18 @@ public class OrganizationRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    /**
+     * Gets all the organizations.
+     */
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(method = RequestMethod.GET)
     public List<OrganizationResource> getOrganizations(){
         return mapperFacade.mapAsList(organizationService.getOrganizations(), OrganizationResource.class);
     }
 
+    /**
+     * Finds the organization with the given organizationID.
+     */
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{organizationId}", method = RequestMethod.GET)
     public ResponseEntity<OrganizationResource> findOrganization(@PathVariable("organizationId") int organizationId) {
@@ -128,6 +145,9 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 
+    /**
+     * Finds all the owned organizations from the given user.
+     */
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/user/{user}", method = RequestMethod.GET)
     public ResponseEntity<List<OrganizationResource>> findOrganizationsByUser(@PathVariable("user") String username, @RequestParam(value = "owner", defaultValue = "false", required = false) boolean isOwner) {
@@ -147,8 +167,11 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
+    /**
+     * Updates the organization name from the organization with the given organizationID.
+     */
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/edit/{organizationId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "{organizationId}", method = RequestMethod.PUT)
     public ResponseEntity setOrganizationName(@PathVariable("organizationId") int organizationId, @RequestParam(value="organizationName")String organizationName){
         Organization organization = organizationService.getOrganizationById(organizationId);
         organization.setName(organizationName);
@@ -158,6 +181,9 @@ public class OrganizationRestController {
         return new ResponseEntity<>(resource,HttpStatus.OK);
     }
 
+    /**
+     * Invites users to the organization.
+     */
     private void inviteUsers(Organization organization, User user, List<EmailResource> emailResources){
         List<String> emails = new ArrayList<>();
         List<User> users = new ArrayList<>();

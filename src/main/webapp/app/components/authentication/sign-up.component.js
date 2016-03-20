@@ -31,6 +31,9 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                 error_dialog_component_1 = error_dialog_component_1_1;
             }],
         execute: function() {
+            /**
+             * This component is responsible for all the functionality of the sign up page
+             */
             SignUpComponent = (function () {
                 function SignUpComponent(_userService, _tokenService, _router) {
                     this._userService = _userService;

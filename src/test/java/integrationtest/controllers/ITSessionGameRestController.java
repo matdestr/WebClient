@@ -794,7 +794,7 @@ public class ITSessionGameRestController {
     }
 
     @Test
-    public void testAddCardsInSessionThatDoesntAllowIt() throws Exception {
+    public void testAddCardsInSessionThatDoesNotAllowIt() throws Exception {
         CreateSynchronousSessionResource resource = new CreateSynchronousSessionResource();
         resource.setCategoryId(category.getCategoryId());
         resource.setMinNumberOfCardsPerParticipant(3);
@@ -1136,7 +1136,7 @@ public class ITSessionGameRestController {
     }
 
     @Test
-    public void testStartingNonExisitingSession() throws Exception {
+    public void testStartingNonExistingSession() throws Exception {
         String participant1Username = "participant-1";
         String participant1Password = "participant-1-pass";
 
@@ -1245,7 +1245,7 @@ public class ITSessionGameRestController {
         String participant1Password = "participant-1-pass";
 
         User participant1 = new User(participant1Username, participant1Password);
-        participant1.setEmail("test@mail.com");
+        participant1.setEmail("test@localhost");
         participant1 = userService.addUser(participant1);
 
         String tokenParticipant1 = TokenProvider.getToken(mockMvc, clientDetails, participant1Username, participant1Password);
@@ -2074,7 +2074,6 @@ public class ITSessionGameRestController {
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
         ).andExpect(status().isBadRequest());
     }
-
 
     @Test
     public void testConfirmReviewByNonUser() throws Exception {

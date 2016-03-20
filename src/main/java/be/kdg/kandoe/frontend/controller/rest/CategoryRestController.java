@@ -30,6 +30,9 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This controller is responsible for all the functionality of category.
+ */
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryRestController {
@@ -54,6 +57,10 @@ public class CategoryRestController {
         this.tagService = tagService;
     }
 
+    /**
+     * Creates a category from the given CreateCategoryResource
+     * and adds this category to the organization with the given organizationID.
+     */
     @RequestMapping(method = RequestMethod.POST)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CategoryResource> createCategory(@AuthenticationPrincipal User user,
@@ -86,6 +93,9 @@ public class CategoryRestController {
         return new ResponseEntity<>(mapper.map(category, CategoryResource.class), HttpStatus.CREATED);
     }
 
+    /**
+     * Returns all the categories from the requested organization.
+     */
     @RequestMapping(method = RequestMethod.GET)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<CategoryResource>> getCategories(@RequestParam("organizationId") int organizationId) {
@@ -93,6 +103,9 @@ public class CategoryRestController {
         return new ResponseEntity<>(mapper.mapAsList(categories, CategoryResource.class), HttpStatus.OK);
     }
 
+    /**
+     * Returns the category from the requested categoryID.
+     */
     @RequestMapping(value = "/{categoryId}", method = RequestMethod.GET)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CategoryResource> getCategory(@PathVariable("categoryId") int categoryId) {
@@ -100,6 +113,9 @@ public class CategoryRestController {
         return new ResponseEntity<>(mapper.map(category, CategoryResource.class), HttpStatus.OK);
     }
 
+    /**
+     * Returns all the sessions of the requested category.
+     */
     @RequestMapping(value = "/{categoryId}/sessions", method = RequestMethod.GET)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<SessionResource>> getSessionsFromCategory(@PathVariable("categoryId") int categoryId) {
@@ -117,10 +133,12 @@ public class CategoryRestController {
                 sessionResources.add(resource);
             }
         }
-        //return new ResponseEntity<>(mapper.mapAsList(sessions, SessionResource.class), HttpStatus.OK);
         return new ResponseEntity<>(sessionResources, HttpStatus.OK);
     }
 
+    /**
+     * Adds the tags from the given list with tagID's to the category with the given categoryId.
+     */
     @RequestMapping(value = "/{categoryId}/tags", method = RequestMethod.POST)
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity addTagsToCategory(@AuthenticationPrincipal User user, @PathVariable("categoryId") int categoryId, @RequestBody List<Integer> tagIds) {
@@ -139,9 +157,11 @@ public class CategoryRestController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-
+    /**
+     * Updates the category name from the category with the given categoryID.
+     */
     @RequestMapping(value = "/{categoryId}", method = RequestMethod.PUT)
-    public ResponseEntity setOrganizationName(@PathVariable("categoryId") int categoryId, @RequestParam(value="categoryName")String categoryName){
+    public ResponseEntity setCategoryName(@PathVariable("categoryId") int categoryId, @RequestParam(value="categoryName")String categoryName){
         Category category = categoryService.getCategoryById(categoryId);
         category.setName(categoryName);
         categoryService.updateCategory(category);

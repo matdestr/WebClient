@@ -1,6 +1,7 @@
 package be.kdg.kandoe.backend.service.api;
 
 import be.kdg.kandoe.backend.model.sessions.AsynchronousSession;
+import be.kdg.kandoe.backend.model.sessions.ParticipantInfo;
 import be.kdg.kandoe.backend.model.users.User;
 
 /** 
@@ -15,7 +16,7 @@ public interface AsynchronousSessionSchedulerService {
      * @param user The {@link User} to send the notification to
      * */
     void scheduleParticipantNotificationTurnAboutToExpire(AsynchronousSession session, User user);
-    
+
     /**
      * Cancels the scheduled notification for the specified user.
      * This method should be called when the participant moved a card on the circle
@@ -33,7 +34,7 @@ public interface AsynchronousSessionSchedulerService {
      * @param session The {@link AsynchronousSession} to assign the next participant for
      * */
     void scheduleNextParticipantAssignment(AsynchronousSession session);
-    
+
     /**
      * Cancels the scheduled action of assigning the next participant of the session.
      * 

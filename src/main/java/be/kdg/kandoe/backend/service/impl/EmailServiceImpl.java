@@ -2,10 +2,10 @@ package be.kdg.kandoe.backend.service.impl;
 
 import be.kdg.kandoe.backend.model.organizations.Organization;
 import be.kdg.kandoe.backend.model.sessions.Session;
-import be.kdg.kandoe.backend.model.users.Invitation;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.EmailService;
 import be.kdg.kandoe.backend.service.api.InvitationService;
+import be.kdg.kandoe.backend.service.exceptions.EmailServiceException;
 import be.kdg.kandoe.backend.service.properties.MailProperties;
 import be.kdg.kandoe.backend.utils.JobScheduler;
 import be.kdg.kandoe.backend.utils.jobs.MailJob;
@@ -55,12 +55,12 @@ public class EmailServiceImpl implements EmailService {
 
                 invitationService.generateInvitationForUnexistingUser(emailAddress, organization);
 
-                System.out.println("Invitation created for " + emailAddress);
+                System.out.println("OrganizationInvitation created for " + emailAddress);
 
                 email.setFromAddress("CanDo Team E", mailProperties.getUsername());
-                email.setSubject("CanDo: Invitation to join organization " + organization.getName());
+                email.setSubject("CanDo: OrganizationInvitation to join organization " + organization.getName());
                 email.addRecipient("", emailAddress, Message.RecipientType.TO);
-                email.setTextHTML("<body style=\"font-family: Arial;\">Hi,<br><br>You have been invited to join the CanDo organization <b>" + organization.getName() + "</b> by <b>" + requester.getName() + " " + requester.getSurname() + ".</b><br>You can join by creating an account here: " + baseUrl + ". You can accept the invitation in your newly created profile.<br><br>Regards,<br>Team Cando</body>");
+                email.setTextHTML("<body style=\"font-family: Arial;\">Hi,<br><br>You have been invited to join the CanDo organization <b>" + organization.getName() + "</b> by <b>" + requester.getName() + " " + requester.getSurname() + ".</b><br>You can join by creating an account here: " +  baseUrl + ". You can accept the invitation in your newly created profile.<br><br>Regards,<br>Team Cando</body>");
 
                 jobScheduler.scheduleJob(new MailJob(mailer, email), new Date());
             }
@@ -80,7 +80,7 @@ public class EmailServiceImpl implements EmailService {
 
                 Email email = new Email();
                 email.setFromAddress("CanDo Team E", mailProperties.getUsername());
-                email.setSubject("CanDo: Invitation to join organization " + organization.getName());
+                email.setSubject("CanDo: OrganizationInvitation to join organization " + organization.getName());
                 email.addRecipient("", emailAddress, Message.RecipientType.TO);
                 email.setTextHTML("<body style=\"font-family: Arial;\">Hi,<br><br>You have been invited to join the CanDo organization <b>" + organization.getName() + "</b> by <b>" + requester.getName() + " " + requester.getSurname() + ".</b><br>You can join by checking your profile " + profileUrl + ".<br><br>Regards,<br>Team Cando</body>");
 
@@ -91,17 +91,16 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendSessionInvitationToUser(Session session, User organizer, User user) {
-        if (user.getEmail() == null || user.getEmail().isEmpty())
-            return;
+        if (user.getEmail() == null || user.getEmail().isEmpty()){
+            throw new EmailServiceException("Email can't be empty");
+        }
 
-        // TODO : Find better solution for user without email
-
-        String invitationUrl = baseUrl + String.format("sessions/%s/join", session.getSessionId());
+        String invitationUrl = baseUrl + String.format("session/%d", session.getSessionId());
 
         Email email = new Email();
 
         email.setFromAddress("CanDo Team E", mailProperties.getUsername());
-        email.setSubject("CanDo: Invitation to join session");
+        email.setSubject("CanDo: OrganizationInvitation to join session");
         email.addRecipient("", user.getEmail(), Message.RecipientType.TO);
         email.setTextHTML(
                 String.format("<body style=\"font-family: Arial;\">" +
@@ -109,6 +108,29 @@ public class EmailServiceImpl implements EmailService {
                         "<p>%s has invited you to join their session." +
                         "<br>You can accept the invite by clicking <a href=\"%s\">this link</a></p>" +
                         "<p>Team CanDo</p>", user.getName(), organizer.getName(), invitationUrl)
+        );
+
+        jobScheduler.scheduleJob(new MailJob(mailer, email), new Date());
+    }
+
+    @Override
+    public void sendSessionInvitationToUnexistingUser(Session session, User organizer, String emailString) {
+        if (emailString == null || emailString.isEmpty())
+            throw new EmailServiceException("Email can't be empty");;
+
+        String invitationUrl = baseUrl + String.format("session/%d", session.getSessionId());
+
+        Email email = new Email();
+
+        email.setFromAddress("CanDo Team E", mailProperties.getUsername());
+        email.setSubject("CanDo: OrganizationInvitation to join session");
+        email.addRecipient("", emailString, Message.RecipientType.TO);
+        email.setTextHTML(
+                String.format("<body style=\"font-family: Arial;\">" +
+                        "<p>Hello %s</p>" +
+                        "<p>%s has invited you to join their session." +
+                        "<br>You need to register first to be able to join the session. After registering you can join by clicking <a href=\"%s\">this link</a></p>" +
+                        "<p>Team CanDo</p>", emailString, organizer.getName(), invitationUrl)
         );
 
         jobScheduler.scheduleJob(new MailJob(mailer, email), new Date());

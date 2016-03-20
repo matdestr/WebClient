@@ -9,7 +9,8 @@
                     <h1 clas="margDetailLeft">{{organization.name}}</h1>
                 </div>
                 <div class="col-md-2 ptop">
-                    <p class="profile-button" data-toggle="modal" data-target="#myEditModal"><span class="glyphicon glyphicon-edit"></span> EDIT ORGANIZATION</p>
+                    <p class="profile-button" data-toggle="modal" data-target="#myEditModal"><span
+                            class="glyphicon glyphicon-edit"></span> EDIT ORGANIZATION</p>
                 </div>
             </div>
 
@@ -31,7 +32,8 @@
                                     <div class="input-group forms-input-group"
                                          [class.has-error]="!organizationName.valid && !organizationName.pristine"
                                          title="Organization name">
-                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                        <span class="input-group-addon"><i
+                                                class="glyphicon glyphicon-pencil"></i></span>
                                         <input id="organizationName"
                                                name="organization-name"
                                                class="form-control"
@@ -54,16 +56,22 @@
                 </div>
             </div>
 
-        <h2 class="marDetailLeft"> Members</h2>
-        <ul>
-            <table style="width:100% ;margin-bottom: 2em" id="memberTable">
-                <tr class="spaceUnder" *ngFor="#member of members">
-                    <td class="imageTable"><img class="memberprofile-picture" src="{{ member.profilePictureUrl }}"></td>
-                    <td class="nameTable">{{member.name}}</td>
-                    <td>{{member.email}}</td>
-                </tr>
-            </table>
-        </ul>
+            <div class="fabsContainer">
+            <h2 class="marDetailLeftSubTitle"> Members</h2>
+            <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
+               data-toggle="modal" data-target="#myMemberModal"><i class="material-icons">add</i></a>
+            </div>
+
+            <ul>
+                <table style="width:100% ;margin-bottom: 2em" id="memberTable">
+                    <tr class="spaceUnder" *ngFor="#member of members">
+                        <td class="imageTable"><img class="memberprofile-picture" src="{{ member.profilePictureUrl }}">
+                        </td>
+                        <td class="nameTable">{{member.name}}</td>
+                        <td>{{member.email}}</td>
+                    </tr>
+                </table>
+            </ul>
 
             <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red" data-toggle="modal" data-target="#myMemberModal"><i class="material-icons">add</i></a>
 
@@ -124,10 +132,15 @@
             </div>
 
 
-            <h2 class="marDetailLeft" style="margin-bottom: 1em">Categories</h2>
+            <div class="fabsContainer">
+                <h2 class="marDetailLeftSubTitle"> Categories</h2>
+                <a class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"
+                   (click)="toAddNewCategory(organization.organizationId)"><i class="material-icons">add</i></a>
+            </div>
 
-            <div class="organization-arrow" >
-                <button class="paginate left" (click)="previousCatPage()"  [style.display]="myLeftCatDisplay"><i></i><i></i></button>
+            <div class="organization-arrow">
+                <button class="paginate left" (click)="previousCatPage()" [style.display]="myLeftCatDisplay">
+                    </button>
             </div>
             <div *ngFor="#category of categoriesSubSet">
                 <div class="black-block" (click)="toCategory(category.categoryId)">
@@ -136,13 +149,10 @@
                 </div>
             </div>
             <div class="organization-arrow">
-                <button class="paginate right" style="float: right" (click)="nextCatPage()"  [style.display]="myRightCatDisplay"><i></i><i></i></button>
+                <button class="paginate right" style="float: right" (click)="nextCatPage()"
+                        [style.display]="myRightCatDisplay"><i></i><i></i></button>
             </div>
 
-
-            <div style="margin-top:12em">
-                <a  class="marButtonLeft materialize-btn-floating materialize-btn-large materialize-waves-effect materialize-waves-light materialize-red"  (click)="toAddNewCategory(organization.organizationId)"><i class="material-icons">add</i></a>
-            </div>
-            </div>
+        </div>
     </div>
 </div>

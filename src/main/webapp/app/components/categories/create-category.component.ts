@@ -14,6 +14,9 @@ import {TagService} from "../../services/tag.service";
 import {HttpStatus} from "../../util/http/http-status";
 import {link} from "fs";
 
+/**
+ * This component is responsible for all the functionality of the create category page.
+ */
 @Component({
     selector: 'create-category',
     templateUrl: 'html/create-category.html',

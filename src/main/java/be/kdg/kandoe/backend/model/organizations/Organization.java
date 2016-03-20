@@ -11,9 +11,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@Entity
 public class Organization {
     @Id
     @GeneratedValue
@@ -28,12 +28,11 @@ public class Organization {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "OrganizationOrganizers")
-    private List<User> organizers;
+    private List<User> organizers = new ArrayList<>();
 
     public Organization(String name, User owner) {
         this.name = name;
         this.owner = owner;
-        this.organizers = new ArrayList<>();
     }
 
 
@@ -42,6 +41,6 @@ public class Organization {
     }
     
     public boolean isOrganizer(User user) {
-        return (this.owner.equals(user) || this.organizers.contains(user));
+        return owner.getUserId() == user.getUserId() || organizers.stream().anyMatch(u -> u.getUserId() == user.getUserId());
     }
 }

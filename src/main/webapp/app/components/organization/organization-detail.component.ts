@@ -10,7 +10,9 @@ import {CategoryService} from "../../services/category.service";
 import {Email} from "../../entities/user/email";
 import {CreateCategoryModel} from "../../entities/category/dto/create-category-model";
 
-
+/**
+ * This component is responsible for all the functionality of the organization detail page.
+ */
 @Component({
     selector: 'organization-detail',
     templateUrl: 'html/organization-detail.html',
@@ -40,6 +42,7 @@ export class OrganizationDetailComponent {
         this._organizationService.getOrganization(organizationId).subscribe(
             data => {
                 this.organization = data.json();
+                console.log(data.json());
                 this.members = this.organization.members;
                 this.getCategories();
             });
@@ -70,7 +73,7 @@ export class OrganizationDetailComponent {
                 console.log(error);
             },
             () => {
-                console.log("XD");
+                console.log("done");
             }
         );
     }

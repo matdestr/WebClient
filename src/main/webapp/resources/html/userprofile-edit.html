@@ -1,5 +1,6 @@
 <toolbar></toolbar>
 <div class="container">
+    <div id="main-content-detail">
     <error-dialog class="alert-dialog-profile" *ngIf="errorMessages.length > 0" [messages]="errorMessages"></error-dialog>
     <div class="row">
         <div class="col-md-3 ptop">
@@ -44,5 +45,6 @@
             <p class="profile-button" (click)="saveChanges()"><span class="glyphicon glyphicon-ok"></span> SAVE </p>
             <p class="profile-button" (click)="returnToProfile()"><span class="glyphicon glyphicon-remove"></span> DISCARD </p>
         </div>
+    </div>
     </div>
 </div>

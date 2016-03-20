@@ -28,7 +28,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-
+/**
+ * This controller is responsible for all the functionality of Session.
+ */
 @RestController
 @RequestMapping("/api/sessions")
 @PreAuthorize("isAuthenticated()")
@@ -48,6 +50,9 @@ public class SessionRestController {
     @Autowired
     private MapperFacade mapper;
 
+    /**
+     * Returns the requested session.
+     */
     @RequestMapping(value = "/{sessionId}", method = RequestMethod.GET)
     public ResponseEntity<SessionResource> getSession(@AuthenticationPrincipal User user,
                                                       @PathVariable("sessionId") int sessionId) {
@@ -68,10 +73,15 @@ public class SessionRestController {
         return new ResponseEntity<>(sessionResource, HttpStatus.OK);
     }
 
+    /**
+     * Creates a session of the given CreateSessionResource
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createSession(@AuthenticationPrincipal User user,
                                         @Valid @RequestBody CreateSessionResource createSessionResource) {
-        //TODO check if user is part of any organisation
+        if (organizationService.getOrganizationsOfMember(user.getUsername()).isEmpty()){
+            return new ResponseEntity("User is not owner or member of any organization", HttpStatus.BAD_REQUEST);
+        }
         Category category = categoryService.getCategoryById(createSessionResource.getCategoryId());
         Topic topic = null;
 
@@ -106,10 +116,12 @@ public class SessionRestController {
     }
 
 
+    /**
+     * Returns the sessions of the requested user.
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<SessionListItemResource>> getSessionsUser(@AuthenticationPrincipal User user){
         List<Session> sessions = sessionService.getSessionsUser(user.getUserId());
-
         return new ResponseEntity<>(mapper.mapAsList(sessions, SessionListItemResource.class), HttpStatus.OK);
     }
 }

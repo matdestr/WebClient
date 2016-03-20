@@ -13,6 +13,9 @@ import {Category} from "../../entities/category/category"
 import {CreateTopicModel} from "../../entities/topic/create-topic-model";
 import {TopicService} from "../../services/topic.service";
 
+/**
+ * This component is responsible for all the functionality of the create topic page
+ */
 @Component({
     selector: 'create-topic',
     templateUrl: 'html/topic/create-topic.html',

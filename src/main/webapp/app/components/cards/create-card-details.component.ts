@@ -13,7 +13,9 @@ import {Organization} from "../../entities/organization/organization";
 import {ToolbarComponent} from "../widget/toolbar.component";
 import {HttpStatus} from "../../util/http/http-status";
 
-
+/**
+ * This component is responsible for all the functionality of the create new card page
+ */
 @Component({
     selector: 'create-card-details',
     templateUrl: 'html/create-card.html',

@@ -14,6 +14,9 @@ import {SessionListItem} from "../../entities/session/session-list-item";
 import {SessionService} from "../../services/session.service";
 import {SessionStatus} from "../../entities/session/session-status";
 
+/**
+ * This component is responsible for all the functionality of the dashboard page
+ */
 @Component({
     selector: 'dashboard',
     templateUrl: 'html/dashboard.html',

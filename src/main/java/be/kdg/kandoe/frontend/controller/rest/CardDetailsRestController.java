@@ -30,33 +30,24 @@ public class CardDetailsRestController {
     private CardService cardService;
     private TopicService topicService;
     private CategoryService categoryService;
-    private SessionService sessionService;
-
     private MapperFacade mapperFacade;
 
     @Autowired
     public CardDetailsRestController(CardService cardService, TopicService topicService,
-                                     CategoryService categoryService, SessionService sessionService,
+                                     CategoryService categoryService,
                                      MapperFacade mapperFacade) {
         this.cardService = cardService;
         this.topicService = topicService;
         this.categoryService = categoryService;
-        this.sessionService = sessionService;
         this.mapperFacade = mapperFacade;
     }
-
-    // TODO : Write test + implement later
-    /*@RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<CardDetailsResource>> getCardDetailsOfSession(@AuthenticationPrincipal User user, @RequestParam("sessionId") int sessionId) {
-        
-    }*/
 
     @RequestMapping(value = "/topics/{topicId}", method = RequestMethod.GET)
     public ResponseEntity<List<CardDetailsResource>> getCardDetailsOfTopic(@AuthenticationPrincipal User user,
                                                                            @PathVariable("topicId") int topicId) {
         Organization organization = this.topicService.getTopicByTopicId(topicId).getCategory().getOrganization();
 
-        if (!this.checkUserIsOrganizer(user, organization)) {
+        if (!organization.isOrganizer(user)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -70,7 +61,7 @@ public class CardDetailsRestController {
                                                                               @PathVariable("categoryId") int categoryId) {
         Category category = this.categoryService.getCategoryById(categoryId);
 
-        if (!this.checkUserIsOrganizer(user, category.getOrganization()))
+        if (!category.getOrganization().isOrganizer(user))
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
         Set<CardDetails> cardDetailsSet = cardService.getCardDetailsOfCategory(categoryId);
@@ -89,7 +80,7 @@ public class CardDetailsRestController {
         
         Organization organization = topic.getCategory().getOrganization();
 
-        if (!this.checkUserIsOrganizer(user, organization))
+        if (!organization.isOrganizer(user))
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
         CardDetails cardDetails = this.cardService.getCardDetailsById(cardDetailsId);
@@ -109,7 +100,7 @@ public class CardDetailsRestController {
         Category category = this.categoryService.getCategoryById(categoryId);
         Organization organization = category.getOrganization();
 
-        if (!this.checkUserIsOrganizer(user, organization))
+        if (!organization.isOrganizer(user))
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
         CardDetails cardDetails = mapperFacade.map(resource, CardDetails.class);
@@ -119,13 +110,4 @@ public class CardDetailsRestController {
 
         return new ResponseEntity<>(mapperFacade.map(cardDetails, CardDetailsResource.class), HttpStatus.CREATED);
     }
-
-    private boolean checkUserIsOrganizer(User user, Organization organization) {
-        return organization.getOwner().getUserId() == user.getUserId() || organization.getOrganizers().contains(user);
-
-    }
-
-    /*private boolean checkUserIsMember(User user, Session session) {
-        return session.getParticipants().contains(user);
-    }*/
 }

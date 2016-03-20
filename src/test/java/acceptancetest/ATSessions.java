@@ -12,17 +12,17 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ATSessions {
-    private String baseUrl;
+    private static String baseUrl;
     
-    private String username = "test-user";
-    private String password = "pass";
+    private static String username = "testtest";
+    private static String password = "pass";
     
-    private String organizationName = "test organization 1";
+    private static String organizationName = "test organization 1";
     private String categoryName = "test category 1";
     private String topicName = "test topic 1";
     
     @BeforeClass
-    public void setupClass() {
+    public static void setupClass() {
         baseUrl = System.getProperty("app.baseUrl");
         WebDriver driver = new ChromeDriver();
         LoginHelper.register(driver, username, password);

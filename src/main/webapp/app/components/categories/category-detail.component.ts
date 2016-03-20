@@ -17,6 +17,9 @@ import {Session} from "../../entities/session/session";
 import {SessionService} from "../../services/session.service";
 import {SessionListItem} from "../../entities/session/session-list-item";
 
+/**
+ * This component is responsible for all the functionality of the category detail page.
+ */
 @Component({
     selector: 'category-detail',
     templateUrl: 'html/category-detail.html',
@@ -28,20 +31,20 @@ export class CategoryDetailComponent implements OnInit {
     private topics:Topic[] = [];
     private topicSubSet:Topic[] = [];
     private sessions:SessionListItem[] = [];
-    private sessionSubset:SessionListItem[]=[];
+    private sessionSubset:SessionListItem[] = [];
     private selectedTags:Tag[] = [];
     private tags:Tag[] = [];
     private listTagId:number[] = [];
     private currentCard:CardDetails = CardDetails.createEmptyCard();
     private categoryId:number;
-    private counterTopBegin:number=0;
-    private counterTopEnd:number=4;
-    private myLeftTopDisplay:string="block";
-    private myRightTopDisplay:string="block";
-    private counterSesBegin:number=0;
-    private counterSesEnd:number=4;
-    private myLeftSesDisplay:string="block";
-    private myRightSesDisplay:string="block";
+    private counterTopBegin:number = 0;
+    private counterTopEnd:number = 4;
+    private myLeftTopDisplay:string = "block";
+    private myRightTopDisplay:string = "block";
+    private counterSesBegin:number = 0;
+    private counterSesEnd:number = 4;
+    private myLeftSesDisplay:string = "block";
+    private myRightSesDisplay:string = "block";
 
     constructor(private _router:Router,
                 private _routeArgs:RouteParams,
@@ -74,16 +77,21 @@ export class CategoryDetailComponent implements OnInit {
 
         this._topicService.getTopicsFromCategory(this.categoryId).subscribe(
             data => {
-                for (let topic of data.json()) {
-                    this.topics.push(Topic.createEmptyTopic().deserialize(topic));
-                }
-                this.topicSubSet = this.topics.slice(0, 4);
-                if (this.topics.length <= 4) {
+                if (data.json() == null) {
                     this.myLeftTopDisplay = "none";
                     this.myRightTopDisplay = "none";
                 } else {
-                    this.myLeftTopDisplay = "none";
-                    this.myRightTopDisplay = "block";
+                    for (let topic of data.json()) {
+                        this.topics.push(Topic.createEmptyTopic().deserialize(topic));
+                    }
+                    this.topicSubSet = this.topics.slice(0, 4);
+                    if (this.topics.length <= 4) {
+                        this.myLeftTopDisplay = "none";
+                        this.myRightTopDisplay = "none";
+                    } else {
+                        this.myLeftTopDisplay = "none";
+                        this.myRightTopDisplay = "block";
+                    }
                 }
             },
             error => console.log(error),
@@ -92,16 +100,21 @@ export class CategoryDetailComponent implements OnInit {
 
         this._categoryService.getSessionsFromCategory(this.categoryId).subscribe(
             data => {
-                for (let session of data.json()){
-                    this.sessions.push(SessionListItem.createEmptySessionListItem().deserialize(session));
-                }
-                this.sessionSubset = this.sessions.slice(0,4);
-                if(this.sessions.length<=4) {
+                if (data.json() == null) {
                     this.myLeftSesDisplay = "none";
                     this.myRightSesDisplay = "none";
-                }else {
-                    this.myLeftSesDisplay = "none";
-                    this.myRightSesDisplay = "block";
+                } else {
+                    for (let session of data.json()) {
+                        this.sessions.push(SessionListItem.createEmptySessionListItem().deserialize(session));
+                    }
+                    this.sessionSubset = this.sessions.slice(0, 4);
+                    if (this.sessions.length <= 4) {
+                        this.myLeftSesDisplay = "none";
+                        this.myRightSesDisplay = "none";
+                    } else {
+                        this.myLeftSesDisplay = "none";
+                        this.myRightSesDisplay = "block";
+                    }
                 }
             },
             error => console.log(error),
@@ -199,37 +212,37 @@ export class CategoryDetailComponent implements OnInit {
         this.listTagId = [];
     }
 
-    public nextSesPage(){
+    public nextSesPage() {
         this.myLeftSesDisplay = "block";
-        if(this.counterSesEnd >= this.sessions.length-1){
-            this.myRightSesDisplay="none";
+        if (this.counterSesEnd >= this.sessions.length - 1) {
+            this.myRightSesDisplay = "none";
         }
-        if(this.counterSesEnd >= this.sessions.length){
+        if (this.counterSesEnd >= this.sessions.length) {
             return;
         }
-        else{
+        else {
             this.counterSesBegin++;
             this.counterSesEnd++;
-            this.sessionSubset= this.sessions.slice(this.counterSesBegin,this.counterSesEnd);
+            this.sessionSubset = this.sessions.slice(this.counterSesBegin, this.counterSesEnd);
         }
     }
 
-    public previousSesPage(){
+    public previousSesPage() {
         this.myRightSesDisplay = "block";
-        if(this.counterSesBegin <= 1){
-            this.myLeftSesDisplay="none";
+        if (this.counterSesBegin <= 1) {
+            this.myLeftSesDisplay = "none";
         }
-        if(this.counterSesBegin <= 0){
+        if (this.counterSesBegin <= 0) {
             return;
-        }  else {
+        } else {
             this.counterSesBegin--;
             this.counterSesEnd--;
             this.sessionSubset = this.sessions.slice(this.counterSesBegin, this.counterSesEnd);
         }
     }
 
-    public onEditClick(categoryName:string){
-        this._categoryService.setCategoryName(this.category.categoryId,categoryName).subscribe(
+    public onEditClick(categoryName:string) {
+        this._categoryService.setCategoryName(this.category.categoryId, categoryName).subscribe(
             () => console.log("Succeeeeeed"),
             error => console.log(error));
     }

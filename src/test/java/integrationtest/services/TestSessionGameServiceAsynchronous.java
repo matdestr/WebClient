@@ -5,10 +5,7 @@ import be.kdg.kandoe.backend.model.cards.CardDetails;
 import be.kdg.kandoe.backend.model.cards.CardPosition;
 import be.kdg.kandoe.backend.model.organizations.Category;
 import be.kdg.kandoe.backend.model.organizations.Organization;
-import be.kdg.kandoe.backend.model.sessions.ParticipantInfo;
-import be.kdg.kandoe.backend.model.sessions.Session;
-import be.kdg.kandoe.backend.model.sessions.SessionStatus;
-import be.kdg.kandoe.backend.model.sessions.SynchronousSession;
+import be.kdg.kandoe.backend.model.sessions.*;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.*;
 import be.kdg.kandoe.backend.service.exceptions.SessionGameServiceException;
@@ -32,7 +29,7 @@ import static org.hamcrest.CoreMatchers.is;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {BackendContextConfig.class})
 @Transactional
-public class TestSessionGameServiceSynchronous {
+public class TestSessionGameServiceAsynchronous {
     @Autowired
     private UserService userService;
 
@@ -127,7 +124,8 @@ public class TestSessionGameServiceSynchronous {
         cardDetails5 = cardService.addCardDetailsToCategory(category, cardDetails5);
 
 
-        session = new SynchronousSession();
+        AsynchronousSession session = new AsynchronousSession();
+        session.setSecondsBetweenMoves(10);
         session.setCategory(category);
         session.setOrganizer(user);
         session.setCardCommentsAllowed(true);
@@ -136,7 +134,7 @@ public class TestSessionGameServiceSynchronous {
         session.getParticipantInfo().add(sessionCreatedOrganizerParticipantInfo);
         session.setMinNumberOfCardsPerParticipant(1);
         session.setMaxNumberOfCardsPerParticipant(3);
-        session = sessionService.addSession(session);
+        this.session = sessionService.addSession(session);
     }
 
     @Test
@@ -157,6 +155,21 @@ public class TestSessionGameServiceSynchronous {
         sessionGameService.setUserJoined(session, player1);
         Assert.assertEquals(2, session.getParticipantInfo().size());
         Assert.assertTrue(session.getParticipantInfo().stream().allMatch(p -> p.isJoined()));
+    }
+
+    @Test(expected = SessionServiceException.class)
+    public void testSessionWithTimesBetweenMovesLessThanZero(){
+        AsynchronousSession asynchronousSession = new AsynchronousSession();
+        asynchronousSession.setSecondsBetweenMoves(-1);
+        asynchronousSession.setCategory(category);
+        asynchronousSession.setOrganizer(user);
+        asynchronousSession.setCardCommentsAllowed(true);
+        ParticipantInfo sessionCreatedOrganizerParticipantInfo = new ParticipantInfo();
+        sessionCreatedOrganizerParticipantInfo.setParticipant(organizer);
+        asynchronousSession.getParticipantInfo().add(sessionCreatedOrganizerParticipantInfo);
+        asynchronousSession.setMinNumberOfCardsPerParticipant(1);
+        asynchronousSession.setMaxNumberOfCardsPerParticipant(3);
+        sessionService.addSession(asynchronousSession);
     }
 
     @Test(expected = SessionGameServiceException.class)
@@ -767,10 +780,6 @@ public class TestSessionGameServiceSynchronous {
         cardDetailsSet.add(cardDetails3);
 
         sessionGameService.chooseCards(session, organizer, cardDetailsSet);
-
-        /*sessionGameService.confirmCardsChosen(session, player1);
-        sessionGameService.confirmCardsChosen(session, player2);
-        sessionGameService.confirmCardsChosen(session, organizer);*/
 
         Assert.assertEquals(SessionStatus.READY_TO_START, session.getSessionStatus());
         List<CardPosition> cardPositionList = session.getCardPositions();

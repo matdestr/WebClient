@@ -18,7 +18,7 @@ public interface SessionGameService {
      * @param user = The user who wants to join the session
      */
     void inviteUserForSession(Session session, User user);
-    //void inviteNonExisitingUserForSession();
+    void inviteNonExisitingUserForSession(Session session, String email);
     void confirmInvitedUsers(Session session);
     void setUserJoined(Session session, User user);
     void setUserLeft(Session session, User user);
@@ -32,6 +32,7 @@ public interface SessionGameService {
     void confirmReviews(Session session, User user);
 
     ParticipantInfo getNextParticipant(Session session);
+    ParticipantInfo getNextParticipant(Session session, ParticipantInfo participantInfo);
 
     CardPosition increaseCardPriority(Session session, User user, CardDetails cardDetails);
 

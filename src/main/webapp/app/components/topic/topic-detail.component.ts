@@ -16,6 +16,9 @@ import {CardDetailComponent} from "../cards/card-detail.component";
 import {error} from "util";
 import {Session} from "../../entities/session/session";
 
+/**
+ * This component is responsible for all the functionality of the topic detail page
+ */
 @Component({
     selector: 'topic-detail',
     templateUrl: 'html/topic/topic-detail.html',
@@ -26,9 +29,7 @@ export class TopicDetailComponent implements OnInit {
     private cards:CardDetails[] = [];
     private sessions:Session[] = [];
     private sessionSubset:Session[]=[];
-    private currentCard:CardDetails;
-    private categoryCards:CardDetails[] = [];
-    private categoryCardsToAdd:CardDetails[] = [];
+    private currentCard:CardDetails = CardDetails.createEmptyCard();
     private counterSesBegin:number=0;
     private counterSesEnd:number=4;
     private myLeftSesDisplay:string="block";

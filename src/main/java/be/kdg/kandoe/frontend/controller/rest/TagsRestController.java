@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+/**
+ * This controller is responsible for all the functionality of Tag.
+ */
 @RestController
 @RequestMapping("/api/tags")
 @PreAuthorize("isAuthenticated()")
@@ -29,6 +31,9 @@ public class TagsRestController {
         this.mapper = mapper;
     }
 
+    /**
+     * Returns all the tags.
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<TagResource>> getTags() {
         List<Tag> tags = tagService.getTags();

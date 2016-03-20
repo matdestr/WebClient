@@ -6032,6 +6032,8 @@ a {
         justify-content: center; }
         .toolbar .toolbar-container .toolbar-dropdown .toolbar-dropdown-toggle .toolbar-dropdown-toggle-container {
           padding: 0 0.5em; }
+          .toolbar .toolbar-container .toolbar-dropdown .toolbar-dropdown-toggle .toolbar-dropdown-toggle-container a {
+            text-decoration: none; }
       .toolbar .toolbar-container .toolbar-dropdown .toolbar-dropdown-toggle:hover {
         background-color: #F44336; }
     .toolbar .toolbar-container .toolbar-dropdown-menu {
@@ -6441,7 +6443,7 @@ h2 {
 .tagBlock {
   background-color: #2a2c2b;
   color: white;
-  width: 6em;
+  width: 7.5em;
   height: 2em;
   display: inline-block;
   margin-right: 1em;
@@ -6454,7 +6456,7 @@ h2 {
   color: rgba(212, 212, 212, 0.81); }
 
 .tagContainer {
-  width: 50%;
+  width: 60%;
   margin-bottom: 2em;
   margin-left: 4em; }
 
@@ -6465,8 +6467,16 @@ h2 {
   margin-left: 1em; }
 
 .marButtonLeft {
-  margin-left: 4em;
-  margin-bottom: 1em; }
+  display: inline-block; }
+
+.marDetailLeftSubTitle {
+  margin-left: 1em;
+  display: inline-block;
+  width: 5em; }
+
+.fabsContainer {
+  margin-bottom: 2.5em;
+  display: block; }
 
 .error-list > li {
   list-style: none !important;
@@ -6502,19 +6512,14 @@ form.invitation-accept-form {
   border: solid 1px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
-  border-radius: 2px; }
+  border-radius: 2px;
+  /*border: solid black 3px;
+  @include border-radius(10px);*/ }
 
 .card-clickable {
-  cursor: pointer;
-  -webkit-filter: grayscale(100%);
-  filter: url("data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg'&gt;&lt;filter id='grayscale'&gt;&lt;feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/&gt;&lt;/filter&gt;&lt;/svg&gt;#grayscale");
-  /* Firefox 10+, Firefox on Android */
-  filter: gray;
-  /* IE6-9 */ }
+  cursor: pointer; }
   .card-clickable:hover {
-    box-shadow: 0 0 1.25em #B71C1C;
-    filter: url("data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg'&gt;&lt;filter id='grayscale'&gt;&lt;feColorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0'/&gt;&lt;/filter&gt;&lt;/svg&gt;#grayscale");
-    -webkit-filter: grayscale(0%); }
+    box-shadow: 0 0 1.25em #B71C1C; }
 
 .card-active {
   box-shadow: 0 0 1.25em #B71C1C; }
@@ -6523,7 +6528,9 @@ form.invitation-accept-form {
   display: inline-block;
   margin: 1.5em 0.5em;
   margin-right: 2em;
-  width: 10em; }
+  width: 10em;
+  /*border: solid black $card-border-thickness;
+  @include border-radius($card-border-radius);*/ }
   @media screen and (min-width: 600px) {
     .card-small {
       width: 15em;
@@ -6535,7 +6542,9 @@ form.invitation-accept-form {
   .card-small .card-img {
     overflow: hidden;
     width: 100%;
-    height: 7.5em; }
+    height: 7.5em;
+    /*border-top-left-radius: $card-border-radius;
+    border-top-right-radius: $card-border-radius;*/ }
     @media screen and (min-width: 600px) {
       .card-small .card-img {
         height: 10em; } }

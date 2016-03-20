@@ -25,6 +25,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * This controller is responsible for all the functionality of User.
+ */
 @RestController
 @RequestMapping("/api/users")
 public class UserRestController {
@@ -35,7 +38,10 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
-    
+
+    /**
+     * Creates an user of the given CreateUserResource
+     */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<UserResource> createUser(@Valid @RequestBody CreateUserResource createUserResource){
         User userIn = mapper.map(createUserResource, User.class);
@@ -46,6 +52,9 @@ public class UserRestController {
         return new ResponseEntity<UserResource>(mapper.map(userOut, UserResource.class), HttpStatus.CREATED);
     }
 
+    /**
+     * Returns an user by searching on the given username.
+     */
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public ResponseEntity<UserResource> getUserByName(@PathVariable String username) {
         User user = userService.getUserByUsername(username);
@@ -56,6 +65,9 @@ public class UserRestController {
         return new ResponseEntity<>(mapper.map(user, UserResource.class), HttpStatus.OK);
     }
 
+    /**
+     * Upload profileImage for the given user.
+     */
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{userId}/photo", method = RequestMethod.POST)
     public ResponseEntity uploadPhoto(@PathVariable int userId, @AuthenticationPrincipal User user, @RequestParam("file") MultipartFile uploadedFile, HttpServletRequest servletRequest) throws IOException, MaxUploadSizeExceededException {
@@ -101,6 +113,9 @@ public class UserRestController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    /**
+     * Updates the requested user with the new resource.
+     */
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
     public ResponseEntity<UserResource> updateProfile(@PathVariable int userId, @AuthenticationPrincipal User user,@Valid @RequestBody UpdateUserResource resource) {

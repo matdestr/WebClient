@@ -2,7 +2,7 @@ package integrationtest.services;
 
 import be.kdg.kandoe.backend.config.BackendContextConfig;
 import be.kdg.kandoe.backend.model.organizations.Organization;
-import be.kdg.kandoe.backend.model.users.Invitation;
+import be.kdg.kandoe.backend.model.invitations.OrganizationInvitation;
 import be.kdg.kandoe.backend.model.users.User;
 import be.kdg.kandoe.backend.service.api.InvitationService;
 import be.kdg.kandoe.backend.service.api.OrganizationService;
@@ -48,9 +48,9 @@ public class TestInvitationService {
         User user = userService.getUserByUsername("username");
         Organization organization = organizationService.getOrganizationByName("TestOrganization");
 
-        Invitation invitation = invitationService.generateInvitation(user, organization);
+        OrganizationInvitation invitation = invitationService.generateInvitation(user, organization);
 
-        List<Invitation> invitationList = invitationService.getInvitationsByUserId(user.getUserId());
+        List<OrganizationInvitation> invitationList = invitationService.getInvitationsByUserId(user.getUserId());
 
         assertEquals("Objects should be equal", invitation, invitationList.get(0));
     }
