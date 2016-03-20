@@ -1,6 +1,4 @@
-System.register(['angular2/core', "angular2/router", "../../entities/user/register", "../../services/user.service", "../../services/token.service", "../widget/error-dialog.component"], function(exports_1, context_1) {
-    "use strict";
-    var __moduleName = context_1 && context_1.id;
+System.register(['angular2/core', "angular2/router", "../../entities/user/register", "../../services/user.service", "../../services/token.service", "../widget/error-dialog.component"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -99,7 +97,7 @@ System.register(['angular2/core', "angular2/router", "../../entities/user/regist
                     __metadata('design:paramtypes', [user_service_1.UserService, token_service_1.TokenService, router_1.Router])
                 ], SignUpComponent);
                 return SignUpComponent;
-            }());
+            })();
             exports_1("SignUpComponent", SignUpComponent);
         }
     }

@@ -1,6 +1,4 @@
-System.register(["angular2/core", "angular2/router", "../widget/toolbar.component", "../../services/organization.service", "../../entities/user/user", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/session/session-list-item", "../../services/session.service", "../../entities/session/session-status"], function(exports_1, context_1) {
-    "use strict";
-    var __moduleName = context_1 && context_1.id;
+System.register(["angular2/core", "angular2/router", "../widget/toolbar.component", "../../services/organization.service", "../../entities/user/user", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/session/session-list-item", "../../services/session.service", "../../entities/session/session-status"], function(exports_1) {
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -287,7 +285,7 @@ System.register(["angular2/core", "angular2/router", "../widget/toolbar.componen
                     __metadata('design:paramtypes', [router_1.Router, organization_service_1.OrganizationService, user_service_1.UserService, session_service_1.SessionService])
                 ], DashboardComponent);
                 return DashboardComponent;
-            }());
+            })();
             exports_1("DashboardComponent", DashboardComponent);
         }
     }
