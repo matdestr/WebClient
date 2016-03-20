@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * This controller is responsible for all the functionality of invite.
  */
+
 @RestController
 @RequestMapping(value = "/api/invitations")
 public class InvitationRestController {

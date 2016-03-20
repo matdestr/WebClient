@@ -5,6 +5,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Resource for the {@link SessionResource}
+ */
+
 @Data
 @NoArgsConstructor
 public class SynchronousSessionResource extends SessionResource {

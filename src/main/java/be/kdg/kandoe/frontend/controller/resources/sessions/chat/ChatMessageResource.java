@@ -5,6 +5,10 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * Resource for the {@link be.kdg.kandoe.backend.model.sessions.ChatMessage} model
+ */
+
 @Data
 public class ChatMessageResource {
     private UserResource user;

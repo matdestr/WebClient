@@ -50,9 +50,6 @@ public class SessionRestController {
     @Autowired
     private MapperFacade mapper;
 
-    /**
-     * Returns the requested session.
-     */
     @RequestMapping(value = "/{sessionId}", method = RequestMethod.GET)
     public ResponseEntity<SessionResource> getSession(@AuthenticationPrincipal User user,
                                                       @PathVariable("sessionId") int sessionId) {
@@ -73,9 +70,6 @@ public class SessionRestController {
         return new ResponseEntity<>(sessionResource, HttpStatus.OK);
     }
 
-    /**
-     * Creates a session of the given CreateSessionResource
-     */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createSession(@AuthenticationPrincipal User user,
                                         @Valid @RequestBody CreateSessionResource createSessionResource) {
@@ -116,9 +110,6 @@ public class SessionRestController {
     }
 
 
-    /**
-     * Returns the sessions of the requested user.
-     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<SessionListItemResource>> getSessionsUser(@AuthenticationPrincipal User user){
         List<Session> sessions = sessionService.getSessionsUser(user.getUserId());

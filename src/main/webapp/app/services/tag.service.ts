@@ -8,6 +8,9 @@ import {RequestOptionsArgs} from "angular2/http";
 import {RequestOptions} from "angular2/http";
 import {URLSearchParams} from "angular2/http";
 
+/**
+ * Service for doing http calls for Tags endpoint
+ */
 
 @Injectable()
 export class TagService {

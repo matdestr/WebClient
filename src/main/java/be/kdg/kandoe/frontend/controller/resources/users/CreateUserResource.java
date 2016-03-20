@@ -9,6 +9,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Resource for the creation of an user
+ */
+
 @Data
 @NoArgsConstructor
 public class CreateUserResource {

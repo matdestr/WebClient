@@ -7,6 +7,11 @@ import {CardPosition} from "../entities/session/card-position";
 import {CreateCardModel} from "../entities/category/dto/create-card-model";
 import {CreateReviewModel} from "../entities/category/dto/create-review-model";
 
+/**
+ * Service for doing http calls for the game endpoint
+ */
+
+
 @Injectable()
 export class SessionGameService {
     public static endpoint : string = './api/sessions';

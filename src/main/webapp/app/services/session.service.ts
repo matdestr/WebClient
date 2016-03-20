@@ -12,6 +12,10 @@ import {CreateTopicModel} from "../entities/topic/create-topic-model";
 import {CreateSessionModel} from "../entities/session/dto/create-session-model";
 import {CreateCardModel} from "../entities/category/dto/create-card-model";
 
+/**
+ * Service for doing http calls for Session endpoint
+ */
+
 @Injectable()
 export class SessionService {
     public static endPoint: string = "./api/sessions";

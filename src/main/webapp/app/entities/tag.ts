@@ -1,5 +1,9 @@
 import {Serializable} from "../util/serializable";
 
+/**
+ * Entity that represents a Tag json object
+ */
+
 export class Tag implements Serializable<Tag>{
     public name : string;
     public tagId : number;

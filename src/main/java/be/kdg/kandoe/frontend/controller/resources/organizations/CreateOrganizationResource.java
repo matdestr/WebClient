@@ -8,6 +8,11 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Resource for the creation of an Organization
+ */
+
+
 @Data
 public class CreateOrganizationResource {
     @NotEmpty(message = "{organization.wrong.name}")

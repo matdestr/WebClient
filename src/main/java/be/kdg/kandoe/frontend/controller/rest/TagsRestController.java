@@ -31,9 +31,6 @@ public class TagsRestController {
         this.mapper = mapper;
     }
 
-    /**
-     * Returns all the tags.
-     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<TagResource>> getTags() {
         List<Tag> tags = tagService.getTags();

@@ -7,6 +7,10 @@ import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 import org.springframework.stereotype.Component;
 
+/**
+ *  Mapper for category to and from category resource
+ */
+
 @Component
 public class CategoryResourceMapper extends CustomMapper<Category, CategoryResource> {
     @Override

@@ -5,6 +5,10 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Resource for a tag
+ */
+
 @Data
 public class TagResource {
     private String name;

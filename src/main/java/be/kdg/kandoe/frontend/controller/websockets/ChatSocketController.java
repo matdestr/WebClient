@@ -22,6 +22,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+/**
+ * Websocket controller for ChatMessages
+ */
+
 @Controller
 public class ChatSocketController {
     private SessionService sessionService;

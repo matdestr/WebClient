@@ -7,6 +7,10 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.AssertTrue;
 
+/**
+ * Session resource for the creation of a Session
+ */
+
 @Data
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
 @JsonSubTypes(

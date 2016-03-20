@@ -26,6 +26,9 @@ import org.springframework.web.socket.server.HandshakeHandler;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Configuration class that enables the Stomp protocol via websockets and enables websocket security
+ */
 
 @Configuration
 @EnableWebSocketMessageBroker

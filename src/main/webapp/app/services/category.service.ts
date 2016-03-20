@@ -8,6 +8,10 @@ import {CreateCategoryModel} from "../entities/category/dto/create-category-mode
 import {Category} from "../entities/category/category";
 import {Tag} from "../entities/tag";
 
+/**
+ * Service for doing http calls for Category endpoint
+ */
+
 @Injectable()
 export class CategoryService {
     public static endPoint:string = "./api/categories/";

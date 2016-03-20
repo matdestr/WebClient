@@ -5,6 +5,10 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Error resource for validation errors
+ */
+
 public class ValidationErrorResource
 {
     @Getter

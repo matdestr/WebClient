@@ -5,6 +5,10 @@ import {Observable} from 'rxjs/Rx'
 import {CreateCardModel} from "../entities/category/dto/create-card-model";
 import {CardDetails} from "../entities/category/card-details";
 
+/**
+ * Service for doing http calls for CardDetails endpoint
+ */
+
 @Injectable()
 export class CardDetailsService {
     public static endpoint:string = './api/carddetails';

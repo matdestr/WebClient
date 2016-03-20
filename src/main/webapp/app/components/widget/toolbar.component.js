@@ -1,4 +1,6 @@
-System.register(['angular2/core', 'angular2/router', "../authentication/sign-out.component", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/user/user", "../../services/organization.service", "angular2/router"], function(exports_1) {
+System.register(['angular2/core', 'angular2/router', "../authentication/sign-out.component", "../../services/user.service", "../../libraries/angular2-jwt", "../../entities/user/user", "../../services/organization.service"], function(exports_1, context_1) {
+    "use strict";
+    var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
         var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
         if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -17,6 +19,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+                router_2 = router_1_1;
             },
             function (sign_out_component_1_1) {
                 sign_out_component_1 = sign_out_component_1_1;
@@ -32,9 +35,6 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
             },
             function (organization_service_1_1) {
                 organization_service_1 = organization_service_1_1;
-            },
-            function (router_2_1) {
-                router_2 = router_2_1;
             }],
         execute: function() {
             /**
@@ -83,7 +83,7 @@ System.register(['angular2/core', 'angular2/router', "../authentication/sign-out
                     __metadata('design:paramtypes', [user_service_1.UserService, router_2.Router, organization_service_1.OrganizationService])
                 ], ToolbarComponent);
                 return ToolbarComponent;
-            })();
+            }());
             exports_1("ToolbarComponent", ToolbarComponent);
         }
     }

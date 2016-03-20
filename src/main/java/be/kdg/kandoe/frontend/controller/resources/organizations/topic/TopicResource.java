@@ -1,11 +1,11 @@
 package be.kdg.kandoe.frontend.controller.resources.organizations.topic;
 
-import be.kdg.kandoe.frontend.controller.resources.organizations.OrganizationResource;
-import be.kdg.kandoe.frontend.controller.resources.organizations.categories.CategoryResource;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotEmpty;
 
+/**
+ * Resource for a topic
+ */
 
 @Data
 @NoArgsConstructor

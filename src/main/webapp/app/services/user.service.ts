@@ -10,6 +10,11 @@ import {CredentialsModel} from "../entities/authenticatie/credentials";
 import {UpdateUserModel} from "../entities/user/edit";
 import {TokenService} from "./token.service";
 
+
+/**
+ * Service for doing http calls for user endpoint
+ */
+
 @Injectable()
 export class UserService {
     public static endpoint: string = "./api/users";

@@ -5,6 +5,10 @@ import be.kdg.kandoe.frontend.controller.resources.users.UserResource;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Resource for the Invitation model
+ */
+
 @Data
 @NoArgsConstructor
 public class InvitationResource {

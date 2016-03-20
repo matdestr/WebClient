@@ -7,6 +7,10 @@ import org.hibernate.validator.constraints.URL;
 
 import javax.annotation.Nullable;
 
+/**
+ * Resource for the creation of a CardDetails
+ */
+
 @Data
 @NoArgsConstructor
 public class CreateCardDetailsResource {

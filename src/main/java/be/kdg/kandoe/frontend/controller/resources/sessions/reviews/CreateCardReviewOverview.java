@@ -7,6 +7,10 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Resource for the creation of a card review
+ */
+
 @Data
 @NoArgsConstructor
 public class CreateCardReviewOverview {

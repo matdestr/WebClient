@@ -2,6 +2,10 @@ import {Directive, Attribute, ElementRef, DynamicComponentLoader} from "angular2
 import {Router, RouterOutlet, ComponentInstruction} from "angular2/router";
 import {TokenService, isTokenExpired, isTokenAvailable} from "../services/token.service";
 
+/**
+ * Router outlet that navigates back to the login page when authentication is not valid 
+ */
+
 @Directive({
     selector: 'router-outlet'
 })
@@ -38,15 +42,6 @@ export class AuthenticatedRouterOutlet extends RouterOutlet {
             }
 
         }
-
-        /*if (this.publicRoutes.indexOf(url) < 0 && isTokenExpired()) {
-         if (isTokenAvailable()) {
-         this.tokenService.refreshToken();
-         this.parentRouter.renavigate();
-         }
-
-         this.parentRouter.navigate([AuthenticatedRouterOutlet.redirectUrl]);
-         }*/
 
         return super.activate(nextInstruction);
     }

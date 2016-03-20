@@ -4,6 +4,10 @@ import {User} from "../user/user";
 import {SessionStatus} from "./session-status";
 import {ParticipantInfo} from "./participant-info";
 
+/**
+ * entity that represents an Session JSON object
+ */
+
 export class Session implements Serializable<Session>{
     sessionId : number;
     categoryId : number;

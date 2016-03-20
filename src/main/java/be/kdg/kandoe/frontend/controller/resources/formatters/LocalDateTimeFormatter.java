@@ -7,6 +7,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+/**
+ * Formatter to convert from and to {@link LocalDateTime} for Jackson JSON Mapping
+ */
+
 public class LocalDateTimeFormatter implements Formatter<LocalDateTime> {
     private String pattern;
     

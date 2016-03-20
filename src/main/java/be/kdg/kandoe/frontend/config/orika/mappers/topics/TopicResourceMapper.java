@@ -6,6 +6,10 @@ import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 import org.springframework.stereotype.Component;
 
+/**
+ * Orika mapper for Topic and TopicResource
+ */
+
 @Component
 public class TopicResourceMapper extends CustomMapper<Topic, TopicResource>{
     @Override
